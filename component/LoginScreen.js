@@ -4,15 +4,13 @@ import { loginUser } from './api';
 
 const LoginScreen = ({navigation}) => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('mail@mail.com');
+  const [password, setPassword] = useState('Ven99234');
 
   const handleLogin = async () => {
     try {
       const response = await loginUser(email, password);
-      console.log(response)
       const res = parseInt(response.data.FIIDUSUARIO, 10);
-      console.log(res)
       if(res >= 0){
         navigation.navigate('Home');
       }else{
@@ -21,10 +19,12 @@ const LoginScreen = ({navigation}) => {
     } catch (error) {
       Alert.alert('Error', 'Inicio de sesión fallido');
     }
+
   };
 
   return (
     <View style={styles.container}>
+      <Image source={require('../assets/UndoLogo.png')} style={styles.image} resizeMode="contain" />
       <TextInput
         placeholder="Correo electrónico"
         value={email}
@@ -42,6 +42,7 @@ const LoginScreen = ({navigation}) => {
       <Button title="Iniciar sesión" onPress={handleLogin} />
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({
