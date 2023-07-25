@@ -11,8 +11,17 @@ const LoginScreen = ({navigation}) => {
     try {
       const response = await loginUser(email, password);
       const res = parseInt(response.data.FIIDUSUARIO, 10);
+
       if(res >= 0){
-        navigation.navigate('Home');
+
+        const userDataParameter = {
+          IdUsr: res,
+          password: password,
+          email: email,
+        };
+
+        navigation.navigate('Home', { userDataParameter });
+
       }else{
          Alert.alert('Error', 'No se encontro el usuario');
       }
