@@ -1,40 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SectionList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { UserGrupos } from './api';
+import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from './api';
 
 const HomeScreen = ({ route }) => {
   const { userDataParameter } = route.params;
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState([]);
+  const [userDataGrupos, setUserDataGrupos] = useState([]);
+  const [userDataClientes, setUserDataClientes] = useState([]);
+  const [userDataCanales, setUserDataCanales] = useState([]);
+  const [userDataSubCanales, setUserDataSubCanales] = useState([]);
 
   useEffect(() => {
-    
-    const fetchData = async () => {
+    const fetchDataGrupos = async () => {
       try {
         const response = await UserGrupos(
           userDataParameter.email,
           userDataParameter.password,
           userDataParameter.IdUsr
         );
-
-        // Verificar si la respuesta contiene GrupoEmpresas
         if (response.data.GrupoEmpresas) {
-          // Crear una única sección con todos los elementos en userData
           const data = [{ title: 'Grupo Empresa', data: response.data.GrupoEmpresas, expanded: false }];
-
-          setUserData(data);
+          setUserDataGrupos(data);
         } else {
           console.error('La respuesta de la API no contiene GrupoEmpresas.');
         }
-
         setLoading(false);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         setLoading(false);
       }
     };
-
-    fetchData();
+    fetchDataGrupos();
   }, []);
 
   if (loading) {
@@ -45,18 +41,48 @@ const HomeScreen = ({ route }) => {
     );
   }
 
-  // Función toggleSection movida fuera del componente HomeScreen
-  const toggleSection = (section) => {
-    const updatedData = userData.map((item) => {
+
+  const toggleSectionGrupos = (section) => {
+    const updatedData = userDataGrupos.map((item) => {
       if (item.title === section.title) {
         return { ...item, expanded: !item.expanded };
       }
       return item;
     });
-    setUserData(updatedData);
+    setUserDataGrupos(updatedData);
   };
 
-  const ExpandableItem = ({ item, onPress, index}) => {
+  const toggleSectionClientes = (section) => {
+    const updatedData = userDataClientes.map((item) => {
+      if (item.title === section.title) {
+        return { ...item, expanded: !item.expanded };
+      }
+      return item;
+    });
+    setUserDataClientes(updatedData);
+  };
+
+  const toggleSectionCanales = (section) => {
+    const updatedData = userDataCanales.map((item) => {
+      if (item.title === section.title) {
+        return { ...item, expanded: !item.expanded };
+      }
+      return item;
+    });
+    setUserDataCanales(updatedData);
+  };
+
+  const toggleSectionSubcanales = (section) => {
+    const updatedData = userDataSubCanales.map((item) => {
+      if (item.title === section.title) {
+        return { ...item, expanded: !item.expanded };
+      }
+      return item;
+    });
+    setUserDataSubCanales(updatedData);
+  };
+
+  const GrupoExpandableItem = ({ item, onPress, index }) => {
     // console.log("entre a expanded....")
     // console.log(index)
     // console.log(item)
@@ -64,7 +90,7 @@ const HomeScreen = ({ route }) => {
     // console.log(item[0].data[index].Grupo)
     if (item[0].expanded) {
       return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={() => onPressGrupo(item[0].data[index].IdGrupoEmpresa)}>
           <View style={styles.itemContainer}>
             <Text style={styles.itemText}>{item[0].data[index].Grupo}</Text>
           </View>
@@ -75,16 +101,200 @@ const HomeScreen = ({ route }) => {
     }
   };
 
+  const ClientesExpandableItem = ({ item, onPress, index }) => {
+    if (item[0].expanded) {
+      return (
+        <TouchableOpacity onPress={() => onPressClientes(item[0].data[index].IdCliente)}>
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemText}>{item[0].data[index].NomCliente}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const CanalExpandableItem = ({ item, onPress, index }) => {
+    if (item[0].expanded) {
+      return (
+        <TouchableOpacity onPress={() => onPressCanal(item[0].data[index].IdCanal)}>
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemText}>{item[0].data[index].NomCanal}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const SubcanalExpandableItem = ({ item, onPress, index }) => {
+    if (item[0].expanded) {
+      return (
+        <TouchableOpacity onPress={() => onPressSubcanal(item[0].data[index].IDSubCanal)}>
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemText}>{item[0].data[index].SubCanal}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    } else {
+      return null;
+    }
+  };
+
+
+  const onPressGrupo = async (IdGrupoEmpresa) => {
+    try {
+
+      setUserDataClientes([]);
+      setUserDataCanales([]);
+      setUserDataSubCanales([]);
+
+      const response = await UserClientes(
+        userDataParameter.email,
+        userDataParameter.password,
+        userDataParameter.IdUsr,
+        IdGrupoEmpresa
+      );
+
+      if (response.data.Clientes) {
+        const data = [{ title: 'Clientes', data: response.data.Clientes, expanded: false }];
+        setUserDataClientes(data);
+      } else {
+        console.error('La respuesta de la API no contiene Clientes.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const onPressClientes = async (IdCliente) => {
+
+    try {
+
+      setUserDataCanales([]);
+      setUserDataSubCanales([]);
+
+      const response = await UserCanales(
+        userDataParameter.email,
+        userDataParameter.password,
+        userDataParameter.IdUsr,
+        IdCliente
+      );
+
+      if (response.data.Canal) {
+        const data = [{ title: 'Canales', data: response.data.Canal, expanded: false }];
+        setUserDataCanales(data);
+      }
+      else {
+        console.error('La respuesta de la API no contiene canales.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const onPressCanal = async (IdCanal) => {
+
+    try {
+
+      setUserDataSubCanales([]);
+      const response = await UserSubcanales(
+        userDataParameter.email,
+        userDataParameter.password,
+        userDataParameter.IdUsr,
+        IdCanal
+      );
+
+      if (response.data.Subcanales) {
+        const data = [{ title: 'SubCanales', data: response.data.Subcanales, expanded: false }];
+        setUserDataSubCanales(data);
+      } else {
+        console.error('La respuesta de la API no contiene SubCanales.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const onPressSubcanal = async (IdSubCanal) => {
+
+    console.log("subcanal seleccionado", IdSubCanal);
+
+  };
+
+
   return (
-    <View style={{ flex: 1 }}>
+
+    <View style={{ marginHorizontal: 10 }}>
+      
+      {/* SELECT GrupoEmpresa */}
       <SectionList
-        sections={userData}
+        style={{ marginBottom: 10 }}
+        sections={userDataGrupos}
         keyExtractor={(item, index) => item.IdGrupoEmpresa.toString()}
         renderItem={({ item, index }) => (
-          <ExpandableItem item={userData} onPress={() => toggleSection(item)} index={index} />
+          <GrupoExpandableItem item={userDataGrupos} onPress={() => toggleSectionGrupos(item)} index={index} />
         )}
         renderSectionHeader={({ section }) => (
-          <TouchableOpacity onPress={() => toggleSection(section)}>
+          <TouchableOpacity onPress={() => toggleSectionGrupos(section)}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+
+      {/* SELECT CLIENTES */}
+
+      <SectionList
+       style={{ marginBottom: 10 }}
+        sections={userDataClientes}
+        keyExtractor={(item, index) => item.IdCliente.toString()}
+        renderItem={({ item, index }) => (
+          <ClientesExpandableItem item={userDataClientes} onPress={() => toggleSectionClientes(item)} index={index} />
+        )}
+        renderSectionHeader={({ section }) => (
+          <TouchableOpacity onPress={() => toggleSectionClientes(section)}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      {/* SELECT CANALES */}
+      <SectionList
+        style={{ marginBottom: 10 }}
+        sections={userDataCanales}
+        keyExtractor={(item, index) => item.IdCanal.toString()}
+        renderItem={({ item, index }) => (
+          <CanalExpandableItem item={userDataCanales} onPress={() => toggleSectionCanales(item)} index={index} />
+        )}
+        renderSectionHeader={({ section }) => (
+          <TouchableOpacity onPress={() => toggleSectionCanales(section)}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionHeaderText}>{section.title}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      {/* SELECT SUBCANALES */}
+      <SectionList
+        style={{ marginBottom: 10 }}
+        sections={userDataSubCanales}
+        keyExtractor={(item, index) => item.IDSubCanal.toString()}
+        renderItem={({ item, index }) => (
+          <SubcanalExpandableItem item={userDataSubCanales} onPress={() => toggleSectionSubcanales(item)} index={index} />
+        )}
+        renderSectionHeader={({ section }) => (
+          <TouchableOpacity onPress={() => toggleSectionSubcanales(section)}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionHeaderText}>{section.title}</Text>
             </View>
@@ -96,24 +306,24 @@ const HomeScreen = ({ route }) => {
 };
 
 const styles = {
-  // Estilos de la lista
   itemContainer: {
-    padding: 10,
+    padding: 5,
     backgroundColor: '#f0f0f0',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    marginBottom: 5
   },
   itemText: {
     fontSize: 16,
   },
   sectionHeader: {
-    backgroundColor: '#007bff', // Color para el encabezado de sección
-    padding: 10,
+    backgroundColor: '#007bff',
+    padding: 5,
   },
   sectionHeaderText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff', // Color para el texto del encabezado de sección
+    color: '#fff',
   },
 };
 

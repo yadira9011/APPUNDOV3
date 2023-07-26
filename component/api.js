@@ -49,7 +49,7 @@ export const UserClientes = (email, password, _IdUsuario, _IdGrupoEmpresa ) => {
   return axios.post(`${BASE_URL}/API/Login/Clientes`,credential);
 };
 
-export const UserCanales = (email, password, _IdCliente) => {
+export const UserCanales = (email, password,_IdUsuario, _IdCliente) => {
 
   const credential = {
     Usuario:email,
@@ -66,7 +66,7 @@ export const UserCanales = (email, password, _IdCliente) => {
   return axios.post(`${BASE_URL}/API/Login/Canales`,credential);
 };
 
-export const UserSubcanales = (email, password, _IdCanal) => {
+export const UserSubcanales = (email, password,_IdUsuario, _IdCanal) => {
   const credential = {
     Usuario:email,
     Contraseña: password,
