@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SectionList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, SectionList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from './api';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { userDataParameter } = route.params;
   const [loading, setLoading] = useState(true);
   const [userDataGrupos, setUserDataGrupos] = useState([]);
@@ -132,7 +134,7 @@ const HomeScreen = ({ route }) => {
   const SubcanalExpandableItem = ({ item, onPress, index }) => {
     if (item[0].expanded) {
       return (
-        <TouchableOpacity onPress={() => onPressSubcanal(item[0].data[index].IDSubCanal)}>
+        <TouchableOpacity onPress={() => onPressSubcanal(item[0].data[index].IDSubCanal, item[0].data[index].SubCanal)}>
           <View style={styles.itemContainer}>
             <Text style={styles.itemText}>{item[0].data[index].SubCanal}</Text>
           </View>
@@ -142,7 +144,6 @@ const HomeScreen = ({ route }) => {
       return null;
     }
   };
-
 
   const onPressGrupo = async (IdGrupoEmpresa) => {
     try {
@@ -224,17 +225,22 @@ const HomeScreen = ({ route }) => {
     }
   };
 
-  const onPressSubcanal = async (IdSubCanal) => {
-
+  const onPressSubcanal = async (IdSubCanal, NomSubCanal) => {
     console.log("subcanal seleccionado", IdSubCanal);
-
+    Alert.alert(
+      'Informacion',
+      'Subcanal seleccionado ' + NomSubCanal,
+      [
+        { text: 'OK', onPress: () => navigation.navigate('Modulos') }
+      ],
+      { cancelable: false }
+    );
   };
-
 
   return (
 
     <View style={{ marginHorizontal: 10 }}>
-      
+
       {/* SELECT GrupoEmpresa */}
       <SectionList
         style={{ marginBottom: 10 }}
@@ -255,7 +261,7 @@ const HomeScreen = ({ route }) => {
       {/* SELECT CLIENTES */}
 
       <SectionList
-       style={{ marginBottom: 10 }}
+        style={{ marginBottom: 10 }}
         sections={userDataClientes}
         keyExtractor={(item, index) => item.IdCliente.toString()}
         renderItem={({ item, index }) => (
