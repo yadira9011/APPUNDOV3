@@ -5,14 +5,14 @@ const BASE_URL = config.EXPO_PUBLIC_API_URL;
 
 export const loginUser = (email, password) => {
 
-  console.log(BASE_URL)
+  // console.log(BASE_URL)
 
   const credential = {
     Usuario: email,
     Contraseña: password,
   };
 
-  console.log(credential);
+  // console.log(credential);
 
   return axios.post(`${BASE_URL}/API/Login/SignIn`, credential);
 };
@@ -44,7 +44,7 @@ export const UserClientes = (email, password, _IdUsuario, _IdGrupoEmpresa) => {
     IdSubcanal: 0
   };
 
-  console.log(credential);
+  // console.log(credential);
 
   return axios.post(`${BASE_URL}/API/Login/Clientes`, credential);
 };
@@ -61,7 +61,7 @@ export const UserCanales = (email, password, _IdUsuario, _IdCliente) => {
     IdSubcanal: 0
   };
 
-  console.log(credential);
+  // console.log(credential);
 
   return axios.post(`${BASE_URL}/API/Login/Canales`, credential);
 };
@@ -76,7 +76,7 @@ export const UserSubcanales = (email, password, _IdUsuario, _IdCanal) => {
     IdCanal: _IdCanal,
     IdSubcanal: 0
   };
-  console.log(credential);
+  // console.log(credential);
   return axios.post(`${BASE_URL}/API/Login/Subcanales`, credential);
 };
 
@@ -86,12 +86,10 @@ export const CotEstatusVehiculos = (email,password,IdSubCanal) => {
     Contraseña: password,
     IdSubcanal: IdSubCanal
   };
-
-  console.log(credential);
+  // console.log(credential);
   return axios.get(`${BASE_URL}/API/Autos/ConsultaEstatusVehiculos`, {
     params: credential
   });
-
 };
 
 export const CotTiposDeVehiculos = (email,password,IdSubCanal) => {
@@ -100,32 +98,34 @@ export const CotTiposDeVehiculos = (email,password,IdSubCanal) => {
     Contraseña: password,
     IdSubcanal: IdSubCanal
   };
-  console.log(credential);
+  // console.log(credential);
   return axios.get(`${BASE_URL}/API/Autos/ConsultaTiposDeVehiculos`, {
     params: credential
   });
 
 };
 
-export const CotModelo = (email,password,_IdSubCanal,_IDEstatusVehiculo) => {
+export const CotModelos = (email,password,_IdSubCanal,_IDEstatusVehiculo) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
     IdSubcanal: _IdSubCanal,
     IDEstatusVehiculo:_IDEstatusVehiculo
   };
-  console.log(credential);
+  // // console.log(credential);
   return axios.post(`${BASE_URL}/API/Autos/ConsultaModelos`, credential);
 };
 
-export const CotMarca= (email,password,_IDTipoVehiculo, _modelo) => {
+export const CotMarcas= (email,password,_IDTipoVehiculo, _modelo) => {
+
   const credential = {
     Usuario: email,
     Contraseña: password,
     IDTipoVehiculo:_IDTipoVehiculo,
     modelo:_modelo
   };
-  console.log(credential);
+
+  //  console.log("datos enviados...",credential);
    return axios.post(`${BASE_URL}/API/Autos/ConsultaMarcas`, credential);
 };
 
@@ -146,7 +146,7 @@ export const CotTipos= (email,password,_IDTipoVehiculo, _modelo, _submarca) => {
 
 };
 
-export const CotDescripcion= (email,password,_IDTipoVehiculo,_modelo,_submarca,_tipo) => {
+export const CotDescripciones= (email,password,_IDTipoVehiculo,_modelo,_submarca,_tipo) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -157,7 +157,79 @@ export const CotDescripcion= (email,password,_IDTipoVehiculo,_modelo,_submarca,_
   };
   console.log(credential);
   return axios.post(`${BASE_URL}/API/Autos/ConsultaDescripciones`, credential);
-
 };
 
 
+export const CotIndenmizaciones = (email,password,IdSubCanal, _iDEstatusVehiculo) => {
+
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    iDEstatusVehiculo:_iDEstatusVehiculo,
+    IdSubcanal: IdSubCanal
+  };
+  // console.log("INDENMIZACION.... ENVIO...",credential);
+  return axios.get(`${BASE_URL}/API/Autos/ConsultaIdsIndenmizaciones`, {
+    params: credential
+  });
+};
+
+export const CotTiposDeUso = (email,password,IdSubCanal) => {
+  
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    IdSubcanal: IdSubCanal
+  };
+  // console.log(credential);
+  return axios.get(`${BASE_URL}/API/Autos/ConsultaTiposUsos`, {
+    params: credential
+  });
+};
+
+export const CotDeducibles = (email,password,IdSubCanal) => {
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    IdSubcanal: IdSubCanal
+  };
+  // console.log(credential);
+  return axios.get(`${BASE_URL}/API/Autos/ConsultaDeducibles`, {
+    params: credential
+  });
+};
+
+export const CotPaquetes = (email,password,IdSubCanal) => {
+  
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    IdSubcanal: IdSubCanal
+  };
+  // console.log(credential);
+  return axios.get(`${BASE_URL}/API/Autos/ConsultaPaquetes`, {
+    params: credential
+  });
+};
+
+export const CotTipoPoliza = (email,password,IdSubCanal) => {
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    IdSubcanal: IdSubCanal
+  };
+  // console.log(credential);
+  return axios.get(`${BASE_URL}/API/Autos/ConsultaTiposPoliza`, {
+    params: credential
+  });
+};
+
+export const CotVigencias= (email,password,IdSubCanal,IDTipoPoliza) => {
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    IdSubCanal: IdSubCanal,
+    IDTipoPoliza:IDTipoPoliza,
+  };
+  return axios.post(`${BASE_URL}/API/Autos/ConsultaConfiguracionPago`, credential);
+};

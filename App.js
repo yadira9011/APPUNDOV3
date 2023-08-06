@@ -2,10 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './component/HomeScreen';
-import LoginScreen from './component/LoginScreen';
-import ModulosScreen from './component/ModulosScreen';
-import CotizacionAutosScreen from './component/CotizacionAutosScreen';
+import HomeScreen from './component/Login/HomeScreen';
+import LoginScreen from './component/Login/LoginScreen';
+import ModulosScreen from './component/Login/ModulosScreen';
+import CotizacionAutosScreen from './component/Autos/CotizacionAutosScreen';
 
 const Stack = createStackNavigator();
 

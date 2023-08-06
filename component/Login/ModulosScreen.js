@@ -21,9 +21,9 @@ const ModulosScreen = ({route}) => {
     };
 
     const imagePaths = [
-        require('../assets/Icon1.png'),
-        require('../assets/Icon2.png'),
-        require('../assets/Icon3.png'),
+        require('../../assets/Icon1.png'),
+        require('../../assets/Icon2.png'),
+        require('../../assets/Icon3.png'),
     ];
     
     const imagenTitles = [

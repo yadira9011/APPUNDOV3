@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert,Image, StyleSheet } from 'react-native';
-import { loginUser } from './api';
+import { loginUser } from '../api';
+
 
 const LoginScreen = ({navigation}) => {
 
@@ -33,7 +34,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/UndoLogo.png')} style={styles.image} resizeMode="contain" />
+      <Image source={require('../../assets/UndoLogo.png')} style={styles.image} resizeMode="contain" />
       <TextInput
         placeholder="Correo electrónico"
         value={email}
