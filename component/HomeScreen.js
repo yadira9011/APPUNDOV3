@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from './api';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,7 @@ const HomeScreen = ({ route }) => {
   const [userDataClientes, setUserDataClientes] = useState([]);
   const [userDataCanales, setUserDataCanales] = useState([]);
   const [userDataSubCanales, setUserDataSubCanales] = useState([]);
+  const dataParameterRef = useRef(null);
 
   useEffect(() => {
     const fetchDataGrupos = async () => {
@@ -226,12 +227,27 @@ const HomeScreen = ({ route }) => {
   };
 
   const onPressSubcanal = async (IdSubCanal, NomSubCanal) => {
+
     console.log("subcanal seleccionado", IdSubCanal);
+    const _DataParameter = {
+      IdUsr: userDataParameter.IdUsr,
+      password: userDataParameter.password,
+      email: userDataParameter.email,
+      IdSubCanal: IdSubCanal,
+      NomSubCanal: NomSubCanal
+    };
+    dataParameterRef.current = _DataParameter;
     Alert.alert(
       'Informacion',
       'Subcanal seleccionado ' + NomSubCanal,
       [
-        { text: 'OK', onPress: () => navigation.navigate('Modulos') }
+        {
+          text: 'OK', onPress: () => {
+       
+            navigation.navigate('Modulos', { DataParameter: _DataParameter });
+            // navigation.navigate('Modulos', { userDataParameter });
+          }
+        }
       ],
       { cancelable: false }
     );

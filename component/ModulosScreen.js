@@ -1,46 +1,54 @@
 import React from 'react';
 import { SafeAreaView, View, VirtualizedList, StyleSheet, Text, StatusBar, Image, Alert, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const imagePaths = [
-    require('../assets/Icon1.png'),
-    require('../assets/Icon2.png'),
-    require('../assets/Icon3.png'),
-];
+const ModulosScreen = ({route}) => {
 
-const imagenTitles = [
-    'Autos',
-    'Casa Habitacion',
-    'Agropecuario',
-];
+    const navigation = useNavigation();
+    const { DataParameter } = route.params;
 
-const getItem = (_data, index) => ({
-    id: Math.random().toString(12).substring(0),
-    title: imagenTitles[index % imagenTitles.length],
-    image: imagePaths[index % imagePaths.length],
-});
-const getItemCount = _data => 50;
+    const onPressItem = (item) => {
+        switch (item.title) {
+            case 'Autos':
+    
+                navigation.navigate('CotizacionAutos', { DataParameter: DataParameter });
+    
+                break;
+            default:
+                Alert.alert('Item presionado:', item.title);
+                break;
+        }
+    };
 
-// const Item = ({ title, image }) => (
-//     <View style={styles.item}>
-//         <Image source={image} style={styles.image} />
-//         <Text style={styles.title}>{title}</Text>
-//     </View>
-// );
-
-const Item = ({ title, image, onPress }) => (
-    <TouchableOpacity onPress={onPress}>
-        <View style={styles.item}>
-            <Image source={image} style={styles.image} />
-            <Text style={styles.title}>{title}</Text>
-        </View>
-    </TouchableOpacity>
-);
-
-const onPressItem = (item) => {
-    Alert.alert('Item presionado:', item.title);
-};
-
-const ModulosScreen = () => {
+    const imagePaths = [
+        require('../assets/Icon1.png'),
+        require('../assets/Icon2.png'),
+        require('../assets/Icon3.png'),
+    ];
+    
+    const imagenTitles = [
+        'Autos',
+        'Casa Habitacion',
+        'Agropecuario',
+    ];
+    
+    const getItem = (_data, index) => ({
+        id: Math.random().toString(12).substring(0),
+        title: imagenTitles[index % imagenTitles.length],
+        image: imagePaths[index % imagePaths.length],
+    });
+    
+    const getItemCount = _data => 50;
+    
+    const Item = ({ title, image, onPress }) => (
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.item}>
+                <Image source={image} style={styles.image} />
+                <Text style={styles.title}>{title}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+    
     return (
         <SafeAreaView style={styles.container}>
             <VirtualizedList
