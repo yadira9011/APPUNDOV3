@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { CotEstatusVehiculos } from './api';
 import { useNavigation } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const CotizacionAutosScreen = ({ route }) => {
@@ -15,9 +14,17 @@ const CotizacionAutosScreen = ({ route }) => {
   const [selectedFruit, setSelectedFruit] = useState(null);
   const [fruitOptions, setFruitOptions] = useState([]);
 
+  const [selectedAnimal, setSelectedAnimal] = useState(null);
+  const [animalOptions, setAnimalOptions] = useState([
+    { label: 'Dog', value: 'dog' },
+    { label: 'Cat', value: 'cat' },
+    { label: 'Elephant', value: 'elephant' },
+    { label: 'Lion', value: 'lion' },
+    { label: 'Monkey', value: 'monkey' },
+  ]);
+
   useEffect(() => {
     const fetchAutoEstatusVehiculos = async () => {
-
       try {
         const response = await CotEstatusVehiculos(
           DataParameter.email,
@@ -26,26 +33,18 @@ const CotizacionAutosScreen = ({ route }) => {
         );
 
         if (response.data.Data.Data) {
-
           const data = response.data.Data.Data;
-
           const transformedOptions = data.map((fruit) => ({
             label: fruit.Valor,
             value: fruit.Id.toString(),
           }));
-
-          console.log("Dataaaaa",transformedOptions)
-
           setFruitOptions(transformedOptions);
-          setSelectedFruit(transformedOptions[0].Id);
-
-
-          setAutoEstatusVehiculos(data);
-          setSelectedOption(data[0].Id);
+          setSelectedFruit(transformedOptions[0].value);
+          setLoading(false);
         } else {
           console.error('La respuesta de la API no contiene Estaus vehiculos.');
+          setLoading(false);
         }
-        setLoading(false);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         setLoading(false);
@@ -54,49 +53,76 @@ const CotizacionAutosScreen = ({ route }) => {
     fetchAutoEstatusVehiculos();
   }, []);
 
-  const handleOptionChange = (itemValue) => {
-    console.log(itemValue);
-    setSelectedOption(itemValue);
-    // Alert.alert('Item seleccionado:', itemValue);
-    // setSelectedOption(itemValue);
-  };
-
   const handleFruitChange = (item) => {
     setSelectedFruit(item.value);
     console.log(item.value);
   };
 
-  return (
-    <View style={{ marginHorizontal: 10 }}>
-      <Picker
-        selectedValue={selectedOption}
-        onValueChange={handleOptionChange}
-      >
-        {AutoEstatusVehiculos.map((AutoEstatusVehiculo) => (
-          <Picker.Item
-            key={AutoEstatusVehiculo.Id}
-            label={AutoEstatusVehiculo.Valor}
-            value={AutoEstatusVehiculo.Id}
-          />
-        ))}
-      </Picker>
+  const handleAnimalChange = (item) => {
+    setSelectedAnimal(item.value);
+  };
 
+  return (
+    <View style={styles.container}>
       <DropDownPicker
         items={fruitOptions}
         defaultValue={selectedFruit}
-        containerStyle={{ height: 40, marginTop: 10 }}
-        style={{ backgroundColor: '#fafafa' }}
-        itemStyle={{
-          justifyContent: 'flex-start',
-        }}
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
+        containerStyle={styles.dropdownContainer}
+        style={styles.dropdown}
+        itemStyle={styles.dropdownItem}
+        dropDownStyle={styles.dropdownMenu}
         onChangeItem={handleFruitChange}
       />
 
+      <Text style={styles.label}>Select an animal:</Text>
+      <DropDownPicker
+        items={animalOptions}
+        defaultValue={selectedAnimal}
+        containerStyle={styles.dropdownContainer}
+        style={styles.dropdown}
+        itemStyle={styles.dropdownItem}
+        dropDownStyle={styles.dropdownMenu}
+        onChangeItem={handleAnimalChange}
+      />
+
+      {/* Aquí puedes realizar acciones adicionales según la selección */}
+      <Text style={styles.selectedAnimalText}>Selected Animal: {selectedAnimal}</Text>
     </View>
   );
 };
 
-
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    backgroundColor: '#fff', // Agrega un color de fondo para ver los componentes
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  dropdownContainer: {
+    height: 40,
+    width: '100%',
+    marginTop: 10,
+  },
+  dropdown: {
+    backgroundColor: '#fafafa',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+  },
+  dropdownItem: {
+    justifyContent: 'flex-start',
+  },
+  dropdownMenu: {
+    backgroundColor: '#fafafa',
+  },
+  selectedAnimalText: {
+    marginTop: 20,
+    fontSize: 16,
+  },
+});
 
 export default CotizacionAutosScreen;
