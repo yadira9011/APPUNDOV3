@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
-import { UserCanales, UserClientes, UserGrupos } from '../api';
+import { UserClientes, UserGrupos } from '../api';
 import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 
-const CanalesScreen = ({ route }) => {
+const ClientesScreen = ({ route }) => {
     const navigation = useNavigation();
-    const { DataParameterCanales } = route.params;
+    const { DataParameterClientes } = route.params;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -17,21 +17,21 @@ const CanalesScreen = ({ route }) => {
 
     const fetchData = async () => {
         try {
-            const response = await UserCanales(
-                DataParameterCanales.email,
-                DataParameterCanales.password,
-                DataParameterCanales.IdUsr,
-                DataParameterCanales.IdCliente
+            const response = await UserClientes(
+                DataParameterClientes.email,
+                DataParameterClientes.password,
+                DataParameterClientes.IdUsr,
+                DataParameterClientes.IdGrupo
             );
 
-            if (response.data.Canal) {
+            if (response.data.Clientes) {
 
-                console.log(response.data.Canal);
+                console.log(response.data.Clientes);
 
-                setData(response.data.Canal);
+                setData(response.data.Clientes);
 
             } else {
-                console.error('La respuesta de la API no contiene Canales.');
+                console.error('La respuesta de la API no contiene GrupoEmpresas.');
             }
             setLoading(false);
         } catch (error) {
@@ -42,16 +42,16 @@ const CanalesScreen = ({ route }) => {
 
     const handleItemPress = (item) => {
         setSelectedItem(item);
-        console.log("item press", item.IdCanal);
+        console.log("item press", item.IdCliente);
         // GetFlujoLogin(item.IdGrupoEmpresa);
     };
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
-            style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem]}
+            style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem]}
             onPress={() => handleItemPress(item)}
         >
-            <Text>{item.NomCanal}</Text>
+            <Text>{item.NomCliente}</Text>
         </TouchableOpacity>
     );
 
@@ -94,12 +94,12 @@ const CanalesScreen = ({ route }) => {
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.IdCanal.toString()}
+                keyExtractor={(item) => item.IdCliente.toString()}
             />
             {selectedItem && (
                 <View style={styles.selectedItemContainer}>
                     <Text>Selected Item:</Text>
-                    <Text>{selectedItem.NomCanal}</Text>
+                    <Text>{selectedItem.NomCliente}</Text>
                 </View>
             )}
         </View>
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CanalesScreen;
+export default ClientesScreen;
