@@ -243,7 +243,7 @@ const HomeScreen = ({ route }) => {
       [
         {
           text: 'OK', onPress: () => {
-       
+
             navigation.navigate('Modulos', { DataParameter: _DataParameter });
             // navigation.navigate('Modulos', { userDataParameter });
           }

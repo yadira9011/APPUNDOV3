@@ -90,7 +90,7 @@ const GrupoScreen = ({ route }) => {
                         userDataParameter.password,
                         userDataParameter.IdUsr,
                         IdCanal);
-                    if (CSubCanales.count > 0) {
+                    if (CSubCanales.count > 1) {
                         const DataParameterSubcanales = {
                             IdUsr: userDataParameter.IdUsr,
                             password: userDataParameter.password,
@@ -98,10 +98,20 @@ const GrupoScreen = ({ route }) => {
                             IdCanal: IdCanal
                         };
                         navigation.navigate('Subcanales', { DataParameterSubcanales });
+                    } else {
+                        const IDSubCanal = CCanales.FirstElement.IDSubCanal;
+                        const SubCanal = CCanales.FirstElement.SubCanal;
+                        const _DataParameter = {
+                            IdUsr: userDataParameter.IdUsr,
+                            password: userDataParameter.password,
+                            email: userDataParameter.email,
+                            IdSubCanal: IDSubCanal,
+                            NomSubCanal: SubCanal
+                        };
+                        navigation.navigate('Modulos', { DataParameter: _DataParameter });
                     }
                 }
             }
-
 
         } catch (error) {
             Alert.alert('Error', 'Inicio de sesión fallido');

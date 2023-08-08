@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
-  CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza, CotVigencias
+  CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza, CotVigencias, CotInfoPostal
 } from '../api';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const CotizacionAutosScreen = ({ route }) => {
@@ -50,12 +51,27 @@ const CotizacionAutosScreen = ({ route }) => {
   const [AutoVigencias, setAutoVigencias] = useState([]);
   const [selectedOptionVigencia, setSelectedOptionVigencia] = useState('');
 
+  const [AutoInfoPostal, setAutoInfoPostal] = useState([]);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [textMonto, setTextMonto] = useState('');
 
   const [selectedLabel, setselectedLabel] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const [textCP, setTextCP] = useState('');
+
+  const [TextColonia, setTextColonia] = useState('');
+
+  const [TextMunicipio, setTextMunicipio] = useState('');
+
+  const [TextCiudad, setTextCiudad] = useState('');
+
+  const [TextEstado, setTextEstado] = useState('');
+
+  const [TextDireccionElegida, setTextDireccionElegida] = useState('Direccion...');
 
   useEffect(() => {
 
@@ -367,6 +383,32 @@ const CotizacionAutosScreen = ({ route }) => {
     }
   };
 
+  const fetchAutoInfoPostal = async () => {
+
+    try {
+
+      setAutoInfoPostal([]);
+      const codigoPos = textCP;
+      const response = await CotInfoPostal(
+        DataParameter.email,
+        DataParameter.password,
+        codigoPos
+      );
+      if (response.data.Data.Data) {
+        const data = response.data.Data.Data;
+        setAutoInfoPostal(data);
+      } else {
+        setAutoInfoPostal([]);
+        console.error('La respuesta de la API no contiene paquetes.');
+      }
+      setLoading(false);
+    } catch (error) {
+      setAutoInfoPostal([]);
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
   const handleOptionChange = (itemValue) => {
     setSelectedOption(itemValue);
     fetchAutoTipoVehiculos();
@@ -424,6 +466,61 @@ const CotizacionAutosScreen = ({ route }) => {
 
   const handleOptionChangeVigencias = (itemValue) => {
     setSelectedOptionVigencia(itemValue);
+  };
+
+  // const handleOpenModal = () => {
+  //   fetchAutoInfoPostal();
+  //   setModalVisible(true);
+  // };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  // const renderColorItem = ({ item }) => (
+  //   <Text style={styles.colorText}>{item.d_asenta}</Text>
+  // );
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.item]}
+      onPress={() => handleItemPress(item)} >
+      <Text>Colonia: {item.d_asenta}</Text>
+      <Text>Municipio: {item.D_mnpio}</Text>
+      <Text>Ciudad: {item.d_ciudad}</Text>
+      <Text>Estado: {item.d_estado}</Text>
+    </TouchableOpacity>
+  );
+
+  const handleItemPress = (item) => {
+
+    setTextColonia(item.d_asenta);
+    setTextMunicipio(item.D_mnpio);
+    setTextCiudad(item.d_ciudad);
+    setTextEstado(item.d_estado);
+    const txDireccion = `Colonia: ${item.d_asenta},
+    Municipio: ${item.D_mnpio},
+    Ciudad: ${item.d_ciudad},
+    Estado: ${item.d_estado}`;
+    setTextDireccionElegida(txDireccion);
+    setModalVisible(false);
+
+  };
+
+  const handleSearch = () => {
+    const codigoPostal = textCP.trim(); // Elimina espacios en blanco al inicio y final del código postal
+    if (codigoPostal !== '') {
+      setTextColonia('');
+      setTextMunicipio('');
+      setTextCiudad('');
+      setTextEstado('');
+      setTextDireccionElegida('');
+      setTextCP(codigoPostal); // Actualiza el valor del estado textCP con el código postal ingresado
+      fetchAutoInfoPostal(); // Llama a la función para obtener los datos de la API con el código postal
+      setModalVisible(true); // Abre el modal con la información obtenida
+    } else {
+      alert('Ingresa un código postal válido.'); // Muestra una alerta si el código postal está vacío
+    }
   };
 
   const handleCotizar = () => {
@@ -533,7 +630,7 @@ const CotizacionAutosScreen = ({ route }) => {
             ))}
           </Picker>
 
-          <View style={styles.inputContainer}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
             <TextInput
               placeholder="Monto"
               value={textMonto}
@@ -541,6 +638,20 @@ const CotizacionAutosScreen = ({ route }) => {
               style={styles.input}
             />
           </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
+            <TextInput
+              placeholder="Codigo Postal"
+              value={textCP}
+              onChangeText={setTextCP}
+              style={{ fontSize: 18, flex: 1 }}
+            />
+            <TouchableOpacity onPress={handleSearch} style={{ padding: 8 }}>
+              <Ionicons name="ios-search" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.label}>{TextDireccionElegida}</Text>
 
           <Text style={styles.label}>Tipo Uso:</Text>
           <Picker
@@ -622,6 +733,37 @@ const CotizacionAutosScreen = ({ route }) => {
 
           <View style={{ height: 35 }} />
 
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={handleCloseModal}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                {AutoInfoPostal.length > 0 ? (
+                  <>
+                    <Text style={styles.modalText}>Dirección:</Text>
+                    <FlatList
+                      data={AutoInfoPostal}
+                      renderItem={renderItem}
+                      keyExtractor={(item) => item.id}
+                      style={styles.list}
+                      contentContainerStyle={styles.flatListContent}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.emptyText}>No se encontró información para el código postal ingresado.</Text>
+                    <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
+                      <Text style={styles.closeButtonText}>Cerrar</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+          </Modal>
+
         </>
       )}
 
@@ -635,7 +777,6 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
   },
-  // Estilos del botón "Cotizar"
   cotizarButton: {
     backgroundColor: '#007bff',
     padding: 10,
@@ -658,7 +799,64 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontSize: 16,
-  }
+  },
+  button: {
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 5,
+    width: '90%',
+    maxHeight: '90%',
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  closeButton: {
+    marginTop: 10,
+    backgroundColor: '#e74c3c',
+    padding: 10,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  selectedItemContainer: {
+    backgroundColor: '#f0ebeb',
+    padding: 10,
+    marginVertical: 20,
+    borderRadius: 5,
+  },
+  list: {
+    width: '100%',
+    marginBottom: 10,
+  },
+  flatListContent: {
+    flexGrow: 1,
+  },
+  item: {
+    padding: 10,
+    marginVertical: 8,
+    backgroundColor: '#f9c2ff',
+  },
 });
 
 export default CotizacionAutosScreen;

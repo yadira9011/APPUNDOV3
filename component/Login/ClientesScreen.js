@@ -43,7 +43,7 @@ const ClientesScreen = ({ route }) => {
     const handleItemPress = (item) => {
         setSelectedItem(item);
         console.log("item press", item.IdCliente);
-        // GetFlujoLogin(item.IdGrupoEmpresa);
+        GetFlujoLogin(item.IdCliente);
     };
 
     const renderItem = ({ item }) => (
@@ -55,39 +55,52 @@ const ClientesScreen = ({ route }) => {
         </TouchableOpacity>
     );
 
-    // const GetFlujoLogin = async (IdGrupo) => {
-    //     try {
-    //         const CClientes = await CountClientes(userDataParameter.email,
-    //             userDataParameter.password,
-    //             userDataParameter.IdUsr,
-    //             IdGrupo);
-    //         if (CClientes.count > 0) {
-    //             navigation.navigate('Clientes', { userDataParameter });
-    //         } else {
-    //             const IdCliente = CClientes.FirstElement.IdCliente;
-    //             const CCanales = await CountCanales(userDataParameter.email,
-    //                 userDataParameter.password,
-    //                 userDataParameter.IdUsr,
-    //                 IdCliente);
-    //             if (CCanales.count > 0) {
-    //                 navigation.navigate('Canales', { userDataParameter });
-    //             } else {
-    //                 const IdCanal = CCanales.FirstElement.IdCanal;
-    //                 const CSubCanales = await CountSubCanales(userDataParameter.email,
-    //                     userDataParameter.password,
-    //                     userDataParameter.IdUsr,
-    //                     IdCanal);
-    //                 if (CSubCanales.count > 0) {
-    //                     navigation.navigate('Subcanales', { userDataParameter });
-    //                 }
-    //             }
-    //         }
+    const GetFlujoLogin = async (IdCliente) => {
+        try {
 
-
-    //     } catch (error) {
-    //         Alert.alert('Error', 'Inicio de sesión fallido');
-    //     }
-    // };
+            const CCanales = await CountCanales(DataParameterClientes.email,
+                DataParameterClientes.password,
+                DataParameterClientes.IdUsr,
+                IdCliente);
+            if (CCanales.count > 1) {
+                const DataParameterCanales = {
+                    IdUsr: DataParameterClientes.IdUsr,
+                    password: DataParameterClientes.password,
+                    email: DataParameterClientes.email,
+                    IdCliente: IdCliente
+                };
+                navigation.navigate('Canales', { DataParameterCanales });
+            } else {
+                const IdCanal = CCanales.FirstElement.IdCanal;
+                const CSubCanales = await CountSubCanales(DataParameterClientes.email,
+                    DataParameterClientes.password,
+                    DataParameterClientes.IdUsr,
+                    IdCanal);
+                if (CSubCanales.count > 1) {
+                    const DataParameterSubcanales = {
+                        IdUsr: DataParameterClientes.IdUsr,
+                        password: DataParameterClientes.password,
+                        email: DataParameterClientes.email,
+                        IdCanal: IdCanal
+                    };
+                    navigation.navigate('Subcanales', { DataParameterSubcanales });
+                } else {
+                    const IDSubCanal = CCanales.FirstElement.IDSubCanal;
+                    const SubCanal = CCanales.FirstElement.SubCanal;
+                    const _DataParameter = {
+                        IdUsr: DataParameterClientes.IdUsr,
+                        password: DataParameterClientes.password,
+                        email: DataParameterClientes.email,
+                        IdSubCanal: IDSubCanal,
+                        NomSubCanal: SubCanal
+                    };
+                    navigation.navigate('Modulos', { DataParameter: _DataParameter });
+                }
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Inicio de sesión fallido');
+        }
+    };
 
     return (
         <View style={styles.container}>

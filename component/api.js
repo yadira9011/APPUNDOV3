@@ -159,7 +159,6 @@ export const CotDescripciones= (email,password,_IDTipoVehiculo,_modelo,_submarca
   return axios.post(`${BASE_URL}/API/Autos/ConsultaDescripciones`, credential);
 };
 
-
 export const CotIndenmizaciones = (email,password,IdSubCanal, _iDEstatusVehiculo) => {
 
   const credential = {
@@ -232,4 +231,15 @@ export const CotVigencias= (email,password,IdSubCanal,IDTipoPoliza) => {
     IDTipoPoliza:IDTipoPoliza,
   };
   return axios.post(`${BASE_URL}/API/Autos/ConsultaConfiguracionPago`, credential);
+};
+
+export const CotInfoPostal = (email,password,CodigoPostal) => {
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    codigoPostal: CodigoPostal
+  };
+  return axios.get(`${BASE_URL}/API/Autos/ConsultaInfoPostal`, {
+    params: credential
+  });
 };

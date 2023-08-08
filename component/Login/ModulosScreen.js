@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, View, VirtualizedList, StyleSheet, Text, StatusBar, Image, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const ModulosScreen = ({route}) => {
+const ModulosScreen = ({ route }) => {
 
     const navigation = useNavigation();
     const { DataParameter } = route.params;
@@ -10,9 +10,7 @@ const ModulosScreen = ({route}) => {
     const onPressItem = (item) => {
         switch (item.title) {
             case 'Autos':
-    
                 navigation.navigate('CotizacionAutos', { DataParameter: DataParameter });
-    
                 break;
             default:
                 Alert.alert('Item presionado:', item.title);
@@ -25,21 +23,21 @@ const ModulosScreen = ({route}) => {
         require('../../assets/Icon2.png'),
         require('../../assets/Icon3.png'),
     ];
-    
+
     const imagenTitles = [
         'Autos',
         'Casa Habitacion',
         'Agropecuario',
     ];
-    
+
     const getItem = (_data, index) => ({
         id: Math.random().toString(12).substring(0),
         title: imagenTitles[index % imagenTitles.length],
         image: imagePaths[index % imagePaths.length],
     });
-    
+
     const getItemCount = _data => 50;
-    
+
     const Item = ({ title, image, onPress }) => (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.item}>
@@ -48,7 +46,7 @@ const ModulosScreen = ({route}) => {
             </View>
         </TouchableOpacity>
     );
-    
+
     return (
         <SafeAreaView style={styles.container}>
             <VirtualizedList

@@ -43,7 +43,7 @@ const CanalesScreen = ({ route }) => {
     const handleItemPress = (item) => {
         setSelectedItem(item);
         console.log("item press", item.IdCanal);
-        // GetFlujoLogin(item.IdGrupoEmpresa);
+        GetFlujoLogin(item.IdCanal);
     };
 
     const renderItem = ({ item }) => (
@@ -55,39 +55,37 @@ const CanalesScreen = ({ route }) => {
         </TouchableOpacity>
     );
 
-    // const GetFlujoLogin = async (IdGrupo) => {
-    //     try {
-    //         const CClientes = await CountClientes(userDataParameter.email,
-    //             userDataParameter.password,
-    //             userDataParameter.IdUsr,
-    //             IdGrupo);
-    //         if (CClientes.count > 0) {
-    //             navigation.navigate('Clientes', { userDataParameter });
-    //         } else {
-    //             const IdCliente = CClientes.FirstElement.IdCliente;
-    //             const CCanales = await CountCanales(userDataParameter.email,
-    //                 userDataParameter.password,
-    //                 userDataParameter.IdUsr,
-    //                 IdCliente);
-    //             if (CCanales.count > 0) {
-    //                 navigation.navigate('Canales', { userDataParameter });
-    //             } else {
-    //                 const IdCanal = CCanales.FirstElement.IdCanal;
-    //                 const CSubCanales = await CountSubCanales(userDataParameter.email,
-    //                     userDataParameter.password,
-    //                     userDataParameter.IdUsr,
-    //                     IdCanal);
-    //                 if (CSubCanales.count > 0) {
-    //                     navigation.navigate('Subcanales', { userDataParameter });
-    //                 }
-    //             }
-    //         }
+    const GetFlujoLogin = async (IdCanal) => {
+        try {
 
-
-    //     } catch (error) {
-    //         Alert.alert('Error', 'Inicio de sesión fallido');
-    //     }
-    // };
+            const CSubCanales = await CountSubCanales(DataParameterCanales.email,
+                DataParameterCanales.password,
+                DataParameterCanales.IdUsr,
+                IdCanal);
+            if (CSubCanales.count > 1) {
+                const DataParameterSubcanales = {
+                    IdUsr: DataParameterCanales.IdUsr,
+                    password: DataParameterCanales.password,
+                    email: DataParameterCanales.email,
+                    IdCanal: IdCanal
+                };
+                navigation.navigate('Subcanales', { DataParameterSubcanales });
+            } else {
+                const IDSubCanal = CCanales.FirstElement.IDSubCanal;
+                const SubCanal = CCanales.FirstElement.SubCanal;
+                const _DataParameter = {
+                    IdUsr: DataParameterCanales.IdUsr,
+                    password: DataParameterCanales.password,
+                    email: DataParameterCanales.email,
+                    IdSubCanal: IDSubCanal,
+                    NomSubCanal: SubCanal
+                };
+                navigation.navigate('Modulos', { DataParameter: _DataParameter });
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Inicio de sesión fallido');
+        }
+    };
 
     return (
         <View style={styles.container}>

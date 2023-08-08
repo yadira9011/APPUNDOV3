@@ -11,6 +11,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
+      
       const response = await loginUser(email, password);
       const res = parseInt(response.data.FIIDUSUARIO, 10);
 
@@ -21,9 +22,11 @@ const LoginScreen = ({ navigation }) => {
           password: password,
           email: email,
         };
-        // navigation.navigate('Home', { userDataParameter });
-        navigation.navigate('Grupos', { userDataParameter });
-        
+
+        //navigation.navigate('Home', { userDataParameter });
+        //navigation.navigate('Grupos', { userDataParameter });
+        GetFlujoLogin(userDataParameter);
+
       } else {
         Alert.alert('Error', 'No se encontro el usuario');
       }
@@ -34,9 +37,10 @@ const LoginScreen = ({ navigation }) => {
 
   const GetFlujoLogin = async (userDataParameter) => {
     try {
-
-      const CGrupos = await CountGrupos(userDataParameter.email, userDataParameter.password, userDataParameter.IdUsr);
-      if (CGrupos.count > 0) {
+      const CGrupos = await CountGrupos(userDataParameter.email,
+        userDataParameter.password,
+        userDataParameter.IdUsr);
+      if (CGrupos.count > 1) {
         navigation.navigate('Grupos', { userDataParameter });
       } else {
         const IdGrupoEmpresa = CGrupos.FirstElement.IdGrupoEmpresa;
@@ -44,29 +48,57 @@ const LoginScreen = ({ navigation }) => {
           userDataParameter.password,
           userDataParameter.IdUsr,
           IdGrupoEmpresa);
-        if (CClientes.count > 0) {
-          navigation.navigate('Clientes', { userDataParameter });
+        if (CClientes.count > 1) {
+          const DataParameterClientes = {
+            IdUsr: userDataParameter.IdUsr,
+            password: userDataParameter.password,
+            email: userDataParameter.email,
+            IdGrupo: IdGrupoEmpresa
+          };
+          navigation.navigate('Clientes', { DataParameterClientes });
         } else {
           const IdCliente = CClientes.FirstElement.IdCliente;
           const CCanales = await CountCanales(userDataParameter.email,
             userDataParameter.password,
             userDataParameter.IdUsr,
             IdCliente);
-          if (CCanales.count > 0) {
-            navigation.navigate('Canales', { userDataParameter });
+          if (CCanales.count > 1) {
+            const DataParameterCanales = {
+              IdUsr: userDataParameter.IdUsr,
+              password: userDataParameter.password,
+              email: userDataParameter.email,
+              IdCliente: IdCliente
+            };
+            navigation.navigate('Canales', { DataParameterCanales });
           } else {
             const IdCanal = CCanales.FirstElement.IdCanal;
             const CSubCanales = await CountSubCanales(userDataParameter.email,
               userDataParameter.password,
               userDataParameter.IdUsr,
               IdCanal);
-            if (CSubCanales.count > 0) {
-              navigation.navigate('Subcanales', { userDataParameter });
+            if (CSubCanales.count > 1) {
+              const DataParameterSubcanales = {
+                IdUsr: userDataParameter.IdUsr,
+                password: userDataParameter.password,
+                email: userDataParameter.email,
+                IdCanal: IdCanal
+              };
+              navigation.navigate('Subcanales', { DataParameterSubcanales });
+            } else {
+              const IDSubCanal = CCanales.FirstElement.IDSubCanal;
+              const SubCanal = CCanales.FirstElement.SubCanal;
+              const _DataParameter = {
+                IdUsr: userDataParameter.IdUsr,
+                password: userDataParameter.password,
+                email: userDataParameter.email,
+                IdSubCanal: IDSubCanal,
+                NomSubCanal: SubCanal
+              };
+              navigation.navigate('Modulos', { DataParameter: _DataParameter });
             }
           }
         }
       }
-
     } catch (error) {
       Alert.alert('Error', 'Inicio de sesión fallido');
     }
