@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
-  CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza, CotVigencias, CotInfoPostal
+  CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
+  CotVigencias, CotInfoPostal, GetCotizacion
 } from '../api';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
-
 
 const CotizacionAutosScreen = ({ route }) => {
 
@@ -73,11 +73,14 @@ const CotizacionAutosScreen = ({ route }) => {
 
   const [TextDireccionElegida, setTextDireccionElegida] = useState('Direccion...');
 
+  const [TextClaveUnica, setClaveUnica] = useState('');
+
   useEffect(() => {
 
     const loadData = async () => {
 
       try {
+
         await fetchAutoEstatusVehiculos();
         await fetchAutoTipoVehiculos();
         await fetchAutoModelos(selectedOption);
@@ -95,6 +98,7 @@ const CotizacionAutosScreen = ({ route }) => {
         await fetchAutoVigencias(selectedOptionTipoPoliza);
 
         setIsLoading(false);
+
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         setIsLoading(false);
@@ -428,10 +432,10 @@ const CotizacionAutosScreen = ({ route }) => {
   const handleOptionChangeMarca = (itemValue, itemIndex) => {
     setSelectedOptionMarca(itemValue);
     setselectedLabel(AutoMarcas[itemIndex].Valor);
-    console.log("MARCAAA NUEVA", selectedLabel);
-    console.log("MARCAAA NUEVA 2222", AutoMarcas[itemIndex].Valor);
+    // console.log("MARCAAA NUEVA", selectedLabel);
+    // console.log("MARCAAA NUEVA 2222", AutoMarcas[itemIndex].Valor);
     const str_marca = AutoMarcas[itemIndex].Valor
-    fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
+    fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo,str_marca);
   };
 
   const handleOptionChangeTipo = (itemValue) => {
@@ -441,6 +445,8 @@ const CotizacionAutosScreen = ({ route }) => {
 
   const handleOptionChangeDescripcion = (itemValue) => {
     setSelectedOptionDescripcion(itemValue);
+    setClaveUnica(itemValue);
+    console.log("REPONSE DESCRIPCION", itemValue);
   };
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
@@ -508,22 +514,55 @@ const CotizacionAutosScreen = ({ route }) => {
   };
 
   const handleSearch = () => {
-    const codigoPostal = textCP.trim(); // Elimina espacios en blanco al inicio y final del código postal
+    const codigoPostal = textCP.trim();
     if (codigoPostal !== '') {
       setTextColonia('');
       setTextMunicipio('');
       setTextCiudad('');
       setTextEstado('');
       setTextDireccionElegida('');
-      setTextCP(codigoPostal); // Actualiza el valor del estado textCP con el código postal ingresado
-      fetchAutoInfoPostal(); // Llama a la función para obtener los datos de la API con el código postal
-      setModalVisible(true); // Abre el modal con la información obtenida
+      setTextCP(codigoPostal);
+      fetchAutoInfoPostal();
+      setModalVisible(true);
     } else {
-      alert('Ingresa un código postal válido.'); // Muestra una alerta si el código postal está vacío
+      alert('Ingresa un código postal válido.');
     }
   };
 
-  const handleCotizar = () => {
+  const handleCotizar = async () => {
+
+    try {
+
+      const dataCotizacion = {
+        ClaveVehiculo: TextClaveUnica,
+        IDTipoVehiculo: selectedOptionTipoVehiculo,
+        IDEstatusVehiculo: selectedOption,
+        IDIndenmizacion: selectedOptionIndemnizacion,
+        SumaAsegurada: textMonto,
+        CodigoPostal: textCP,
+        IDTipoUso: selectedOptionTipoUso,
+        IDDeducibles: selectedOptionDeducible,
+        IDPagoVigencia: selectedOptionVigencia,
+        IDUDI: 0,
+        IDPaquete: selectedOptionPaquete,
+        ColoniaPersona: TextColonia,
+        MunicipioPersona: TextMunicipio,
+        CiudadPersona: TextCiudad,
+        EstadoPersona: TextEstado,
+        usuario: DataParameter.email,
+        contraseña: DataParameter.password,
+        IDSubcananal: DataParameter.IdSubCanal
+      }
+
+      console.log("Datos Cotizacion", dataCotizacion);
+      const response = await GetCotizacion(dataCotizacion);
+      if (response.data.Data.Data) { }
+
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+
   };
 
   return (

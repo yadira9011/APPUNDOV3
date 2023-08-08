@@ -104,8 +104,6 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-
-
   return (
     <View style={styles.container}>
       <Image source={require('../../assets/UndoLogo.png')} style={styles.image} resizeMode="contain" />

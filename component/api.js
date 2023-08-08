@@ -243,3 +243,7 @@ export const CotInfoPostal = (email,password,CodigoPostal) => {
     params: credential
   });
 };
+
+export const GetCotizacion= (dataCotizacion) => {
+  return axios.post(`${BASE_URL}/API/Autos/Cotizaciones`, dataCotizacion);
+};
