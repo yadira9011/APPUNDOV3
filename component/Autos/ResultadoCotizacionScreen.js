@@ -19,20 +19,6 @@ const ResultadoCotizacionScreen = () => {
         { name: 'LogoSura', path: require('../../assets/Aseguradoras/LogoSura.png') }
     ];
 
-    // const data = [
-    //     {
-    //         id: '1',
-    //         imageUrl: require('../../assets/LogoHdi.png'),
-    //         title: 'Elemento 1',
-    //         description: 'Descripción del elemento 1',
-    //     },
-    //     {
-    //         id: '2',
-    //         imageUrl: require('../../assets/LogoChubb.png'),
-    //         title: 'Elemento 2',
-    //         description: 'Descripción del elemento 2',
-    //     },
-    // ];
 
     useEffect(() => {
         if (dataArray.length > 0) {
@@ -43,10 +29,7 @@ const ResultadoCotizacionScreen = () => {
 
                 const logoase = item.LogoAseguradora;
                 const logoNameWithoutExtension = logoase.split('.')[0];
-
                 const ImagePath = imagePaths.find(image => image.name === logoNameWithoutExtension);
-                console.log(logoNameWithoutExtension);
-                console.log(ImagePath);
 
                 data = {
                     id: item.IDCotizacion,
@@ -64,7 +47,6 @@ const ResultadoCotizacionScreen = () => {
                 };
                 return data;
             });
-
             setCotizacionData(newArray);
         }
     }, [dataArray]);
@@ -75,7 +57,6 @@ const ResultadoCotizacionScreen = () => {
     const renderItem = ({ item, onPress }) => (
         <TouchableOpacity style={styles.itemContainer} onPress={() => onPress(item)}>
             <Image source={item.imageUrl} style={styles.image} />
-            {/* <Image source={imageSources[item.id]} style={styles.image} /> */}
             <View style={styles.itemDetails}>
                 {item.HasError ? (
                     <Text style={styles.errorText}>{item.Message}</Text>
