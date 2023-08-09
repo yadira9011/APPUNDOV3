@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList, ActivityIndicator } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
   CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
@@ -14,6 +14,7 @@ const CotizacionAutosScreen = ({ route }) => {
   const navigation = useNavigation();
   const { DataParameter } = route.params;
   const [loading, setLoading] = useState(true);
+  const [loadingCotizacion, setLoadingCotizacion] = useState(false);
 
   const [AutoEstatusVehiculos, setAutoEstatusVehiculos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
@@ -435,7 +436,7 @@ const CotizacionAutosScreen = ({ route }) => {
     // console.log("MARCAAA NUEVA", selectedLabel);
     // console.log("MARCAAA NUEVA 2222", AutoMarcas[itemIndex].Valor);
     const str_marca = AutoMarcas[itemIndex].Valor
-    fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo,str_marca);
+    fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
   };
 
   const handleOptionChangeTipo = (itemValue) => {
@@ -533,6 +534,8 @@ const CotizacionAutosScreen = ({ route }) => {
 
     try {
 
+      setLoadingCotizacion(true);
+
       const dataCotizacion = {
         ClaveVehiculo: TextClaveUnica,
         IDTipoVehiculo: selectedOptionTipoVehiculo,
@@ -556,11 +559,19 @@ const CotizacionAutosScreen = ({ route }) => {
 
       console.log("Datos Cotizacion", dataCotizacion);
       const response = await GetCotizacion(dataCotizacion);
-      if (response.data.Data.Data) { }
+
+      if (response.data.Data.Data) {
+        const dataArray = response.data.Data.Data;
+        setLoadingCotizacion(false);
+        navigation.navigate('ResultadoCotizacion', { dataArray });
+      }
 
     } catch (error) {
+      setLoadingCotizacion(false);
       console.error('Error al obtener los datos:', error);
       setLoading(false);
+    } finally {
+      setLoadingCotizacion(false);
     }
 
   };
@@ -765,10 +776,10 @@ const CotizacionAutosScreen = ({ route }) => {
           {/* Botón de cotizar */}
           <TouchableOpacity
             style={styles.cotizarButton}
-            onPress={handleCotizar}
-          >
+            onPress={handleCotizar} >
             <Text style={styles.cotizarButtonText}>Cotizar</Text>
           </TouchableOpacity>
+          {loading && <ActivityIndicator style={styles.activityIndicator} />}
 
           <View style={{ height: 35 }} />
 
@@ -895,6 +906,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     backgroundColor: '#f9c2ff',
+  },
+  activityIndicator: {
+    marginTop: 10,
   },
 });
 

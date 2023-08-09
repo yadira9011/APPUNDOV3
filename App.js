@@ -10,6 +10,7 @@ import CanalesScreen from './component/Login/CanalesScreen';
 import SubcanalesScreen from './component/Login/SubcanalesScreen';
 import ModulosScreen from './component/Login/ModulosScreen';
 import CotizacionAutosScreen from './component/Autos/CotizacionAutosScreen';
+import ResultadoCotizacionScreen from './component/Autos/ResultadoCotizacionScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Modulos" component={ModulosScreen} />
       <Stack.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
+      <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
     </Stack.Navigator>
   </NavigationContainer>
   );
