@@ -80,7 +80,7 @@ export const UserSubcanales = (email, password, _IdUsuario, _IdCanal) => {
   return axios.post(`${BASE_URL}/API/Login/Subcanales`, credential);
 };
 
-export const CotEstatusVehiculos = (email,password,IdSubCanal) => {
+export const CotEstatusVehiculos = (email, password, IdSubCanal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -92,7 +92,7 @@ export const CotEstatusVehiculos = (email,password,IdSubCanal) => {
   });
 };
 
-export const CotTiposDeVehiculos = (email,password,IdSubCanal) => {
+export const CotTiposDeVehiculos = (email, password, IdSubCanal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -105,38 +105,38 @@ export const CotTiposDeVehiculos = (email,password,IdSubCanal) => {
 
 };
 
-export const CotModelos = (email,password,_IdSubCanal,_IDEstatusVehiculo) => {
+export const CotModelos = (email, password, _IdSubCanal, _IDEstatusVehiculo) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
     IdSubcanal: _IdSubCanal,
-    IDEstatusVehiculo:_IDEstatusVehiculo
+    IDEstatusVehiculo: _IDEstatusVehiculo
   };
   // // console.log(credential);
   return axios.post(`${BASE_URL}/API/Autos/ConsultaModelos`, credential);
 };
 
-export const CotMarcas= (email,password,_IDTipoVehiculo, _modelo) => {
-
-  const credential = {
-    Usuario: email,
-    Contraseña: password,
-    IDTipoVehiculo:_IDTipoVehiculo,
-    modelo:_modelo
-  };
-
-  //  console.log("datos enviados...",credential);
-   return axios.post(`${BASE_URL}/API/Autos/ConsultaMarcas`, credential);
-};
-
-export const CotTipos= (email,password,_IDTipoVehiculo, _modelo, _submarca) => {
+export const CotMarcas = (email, password, _IDTipoVehiculo, _modelo) => {
 
   const credential = {
     Usuario: email,
     Contraseña: password,
     IDTipoVehiculo: _IDTipoVehiculo,
-    modelo:_modelo,
-    submarca:_submarca
+    modelo: _modelo
+  };
+
+  //  console.log("datos enviados...",credential);
+  return axios.post(`${BASE_URL}/API/Autos/ConsultaMarcas`, credential);
+};
+
+export const CotTipos = (email, password, _IDTipoVehiculo, _modelo, _submarca) => {
+
+  const credential = {
+    Usuario: email,
+    Contraseña: password,
+    IDTipoVehiculo: _IDTipoVehiculo,
+    modelo: _modelo,
+    submarca: _submarca
 
   };
 
@@ -146,25 +146,25 @@ export const CotTipos= (email,password,_IDTipoVehiculo, _modelo, _submarca) => {
 
 };
 
-export const CotDescripciones= (email,password,_IDTipoVehiculo,_modelo,_submarca,_tipo) => {
+export const CotDescripciones = (email, password, _IDTipoVehiculo, _modelo, _submarca, _tipo) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
     IDTipoVehiculo: _IDTipoVehiculo,
-    modelo:_modelo,
-    submarca:_submarca,
-    tipo:_tipo
+    modelo: _modelo,
+    submarca: _submarca,
+    tipo: _tipo
   };
   console.log(credential);
   return axios.post(`${BASE_URL}/API/Autos/ConsultaDescripciones`, credential);
 };
 
-export const CotIndenmizaciones = (email,password,IdSubCanal, _iDEstatusVehiculo) => {
+export const CotIndenmizaciones = (email, password, IdSubCanal, _iDEstatusVehiculo) => {
 
   const credential = {
     Usuario: email,
     Contraseña: password,
-    iDEstatusVehiculo:_iDEstatusVehiculo,
+    iDEstatusVehiculo: _iDEstatusVehiculo,
     IdSubcanal: IdSubCanal
   };
   // console.log("INDENMIZACION.... ENVIO...",credential);
@@ -173,8 +173,8 @@ export const CotIndenmizaciones = (email,password,IdSubCanal, _iDEstatusVehiculo
   });
 };
 
-export const CotTiposDeUso = (email,password,IdSubCanal) => {
-  
+export const CotTiposDeUso = (email, password, IdSubCanal) => {
+
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -186,7 +186,7 @@ export const CotTiposDeUso = (email,password,IdSubCanal) => {
   });
 };
 
-export const CotDeducibles = (email,password,IdSubCanal) => {
+export const CotDeducibles = (email, password, IdSubCanal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -198,8 +198,8 @@ export const CotDeducibles = (email,password,IdSubCanal) => {
   });
 };
 
-export const CotPaquetes = (email,password,IdSubCanal) => {
-  
+export const CotPaquetes = (email, password, IdSubCanal) => {
+
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -211,7 +211,7 @@ export const CotPaquetes = (email,password,IdSubCanal) => {
   });
 };
 
-export const CotTipoPoliza = (email,password,IdSubCanal) => {
+export const CotTipoPoliza = (email, password, IdSubCanal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -223,17 +223,17 @@ export const CotTipoPoliza = (email,password,IdSubCanal) => {
   });
 };
 
-export const CotVigencias= (email,password,IdSubCanal,IDTipoPoliza) => {
+export const CotVigencias = (email, password, IdSubCanal, IDTipoPoliza) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
     IdSubCanal: IdSubCanal,
-    IDTipoPoliza:IDTipoPoliza,
+    IDTipoPoliza: IDTipoPoliza,
   };
   return axios.post(`${BASE_URL}/API/Autos/ConsultaConfiguracionPago`, credential);
 };
 
-export const CotInfoPostal = (email,password,CodigoPostal) => {
+export const CotInfoPostal = (email, password, CodigoPostal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -244,6 +244,13 @@ export const CotInfoPostal = (email,password,CodigoPostal) => {
   });
 };
 
-export const GetCotizacion= (dataCotizacion) => {
+export const GetCotizacion = (dataCotizacion) => {
   return axios.post(`${BASE_URL}/API/Autos/Cotizaciones`, dataCotizacion);
+};
+
+export const GetCoberturasCotizacion = (dataSearch) => {
+  return axios.get(`${BASE_URL}/API/Autos/ConsultarCoberturas`, {
+    params: dataSearch
+  });
+
 };

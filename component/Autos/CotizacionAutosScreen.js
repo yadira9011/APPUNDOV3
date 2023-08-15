@@ -537,7 +537,7 @@ const CotizacionAutosScreen = ({ route }) => {
       setLoadingCotizacion(true);
 
       const dataCotizacion = {
-        ClaveVehiculo: TextClaveUnica,
+        ClaveVehiculo: selectedOptionDescripcion,
         IDTipoVehiculo: selectedOptionTipoVehiculo,
         IDEstatusVehiculo: selectedOption,
         IDIndenmizacion: selectedOptionIndemnizacion,
@@ -560,9 +560,17 @@ const CotizacionAutosScreen = ({ route }) => {
       console.log("Datos Cotizacion", dataCotizacion);
       const response = await GetCotizacion(dataCotizacion);
 
+      console.log(response);
+
       if (response.data.Data.Data) {
-        const dataArray = response.data.Data.Data;
+        const resultData = response.data.Data.Data;
         setLoadingCotizacion(false);
+
+        const dataArray = {
+          DataResul:resultData,
+          CotiData:dataCotizacion
+        }
+
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
 

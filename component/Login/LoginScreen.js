@@ -11,7 +11,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      
+
       const response = await loginUser(email, password);
       const res = parseInt(response.data.FIIDUSUARIO, 10);
 

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, Modal, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { GetCoberturasCotizacion } from '../api';
+
 
 const ResultadoCotizacionScreen = () => {
 
@@ -8,6 +11,10 @@ const ResultadoCotizacionScreen = () => {
     const { dataArray } = route.params;
     const [folioCotizacion, setFolioCotizacion] = useState(null);
     const [CotizacionData, setCotizacionData] = useState([]);
+    const [CoberturasCotizacion, setCoberturasCotizacion] = useState([]);
+    const [TxtPqtCobertura, setTxtPqtCobertura] = useState(null);
+    const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     const imagePaths = [
         { name: 'LogoChubb', path: require('../../assets/Aseguradoras/LogoChubb.png') },
@@ -21,10 +28,11 @@ const ResultadoCotizacionScreen = () => {
 
 
     useEffect(() => {
-        if (dataArray.length > 0) {
-            const primerElemento = dataArray[0];
+        console.log('entre pantalla de resultados...')
+        if (dataArray.DataResul.length > 0) {
+            const primerElemento = dataArray.DataResul[0];
             setFolioCotizacion(primerElemento.Folio);
-            const newArray = dataArray.map(item => {
+            const newArray = dataArray.DataResul.map(item => {
                 let data = null;
 
                 const logoase = item.LogoAseguradora;
@@ -52,11 +60,23 @@ const ResultadoCotizacionScreen = () => {
     }, [dataArray]);
 
 
-
-
     const renderItem = ({ item, onPress }) => (
-        <TouchableOpacity style={styles.itemContainer} onPress={() => onPress(item)}>
-            <Image source={item.imageUrl} style={styles.image} />
+        <View style={styles.itemContainer} >
+            <View style={styles.itemDetailsUnO}>
+                <Image source={item.imageUrl} style={styles.image} />
+                <View style={styles.itemDetailsDos}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                        <Ionicons name="ios-information-circle" size={24} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                        <Ionicons name="ios-mail" size={24} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                        <Ionicons name="ios-send" size={24} color="black" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
             <View style={styles.itemDetails}>
                 {item.HasError ? (
                     <Text style={styles.errorText}>{item.Message}</Text>
@@ -73,21 +93,114 @@ const ResultadoCotizacionScreen = () => {
                     </>
                 )}
             </View>
-        </TouchableOpacity>
+
+
+        </View>
     );
+
+    const handleCoberturas = async (item) => {
+
+        try {
+            const DataRquest = {
+                usuario: dataArray.CotiData.usuario,
+                contraseña: dataArray.CotiData.contraseña,
+                IDCotizacion: item.id,
+                CorreoEnvio: 0,
+                COTIZACIONESAUTOS_ID: 0
+            }
+
+            console.log("Datos cotizacion coberturas", DataRquest);
+            const response = await GetCoberturasCotizacion(DataRquest);
+
+            if (response.data.Data) {
+                if (response.data.Data.length > 0) {
+                    setCoberturasCotizacion(response.data.Data);
+                    setTxtPqtCobertura(item.Paquete);
+                    setTxtUrlconAse(item.imageUrl);
+                    setModalVisible(!isModalVisible);
+                    console.log(CoberturasCotizacion);
+                    console.log(response.data.Data);
+                } else {
+                    Alert.alert('Error', 'No se pudo obtener la lista de coberturas');
+                }
+            } else {
+                Alert.alert('Error', 'No se encontraron coberturas');
+            }
+
+        } catch (error) {
+            Alert.alert('Error', 'error al obtener los datos' + error);
+        }
+
+    };
+
+    const handleCloseModal = () => {
+        setCoberturasCotizacion([]);
+        setTxtPqtCobertura(null);
+        setModalVisible(false);
+    };
 
     const handleItemClick = (item) => {
         console.log('Elemento clickeado:', item);
     };
 
+    const renderHeader = () => (
+        <View style={styles.header}>
+            <View style={styles.column}>
+                <Text style={styles.headerText}>Descripción</Text>
+                <Text style={styles.headerText}>Cobertura</Text>
+            </View>
+            <View style={styles.column}>
+                <Text style={styles.headerText}>Suma</Text>
+                <Text style={styles.headerText}>Asegurada</Text>
+            </View>
+        </View>
+    );
+
     return (
         <View style={styles.container}>
+
             <Text>{folioCotizacion}</Text>
             <FlatList
                 data={CotizacionData}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => renderItem({ item, onPress: handleItemClick })}
             />
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.description}>DETALLE COBERTURAS</Text>
+                        <Image source={TxtUrlconAse} style={styles.imageCober} />
+                        <Text style={styles.description}>PAQUETE: {TxtPqtCobertura}</Text>
+                        <FlatList
+                            data={CoberturasCotizacion}
+                            keyExtractor={(item, index) => index.toString()}
+                            style={styles.list}
+                            contentContainerStyle={styles.flatListContent}
+                            ListHeaderComponent={renderHeader}
+                            renderItem={({ item }) => (
+                                <View style={styles.row} key={item.sumaAsegurada}>
+                                    <View style={[styles.column, styles.borderRight]}>
+                                        <Text style={styles.dataText}>{item.descripcion}</Text>
+                                    </View>
+                                    <View style={[styles.column, styles.borderLeft]}>
+                                        <Text style={styles.dataText}>{item.sumaAsegurada}</Text>
+                                    </View>
+                                </View>
+                            )}
+                        />
+
+                        <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
+                            <Text style={styles.closeButtonText}>Cerrar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+            </Modal>
+
         </View>
     );
 };
@@ -104,11 +217,24 @@ const styles = StyleSheet.create({
     image: {
         width: 100,
         height: 100,
-        marginRight: 16,
+        marginRight: 0,
         borderRadius: 8,
+    },
+    imageCober: {
+        width: 120,
+        height: 120,
     },
     itemDetails: {
         flex: 1,
+    },
+    itemDetailsUnO: {
+        marginRight: 15,
+    },
+    itemDetailsDos: {
+        marginTop: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     title: {
         fontSize: 16,
@@ -120,6 +246,90 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: 'red',
+    },
+    iconContainer: {
+    },
+    modalContainerCom: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    row: {
+        flexDirection: 'row',
+        fontSize: 12,
+        marginVertical: 0,
+    },
+    column: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    dataText: {
+        fontSize: 12,
+        textAlign: 'center',
+        justifyContent: 'center',
+    },
+    closeButtonText: {
+        color: '#fff',
+        fontSize: 18,
+    },
+    closeButton: {
+        marginTop: 10,
+        backgroundColor: '#e74c3c',
+        padding: 10,
+        borderRadius: 5,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        maxHeight: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+        elevation: 5,
+        width: '90%',
+        maxHeight: '90%',
+    },
+    modalText: {
+        fontSize: 20,
+        marginBottom: 10,
+    },
+    flatListContent: {
+        flexGrow: 1,
+    },
+    list: {
+        width: '100%',
+        marginBottom: 10,
+        marginTop: 15,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#f2f2f2',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+    headerText: {
+        fontWeight: 'bold',
+        fontSize: 12,
+        textAlign: 'left',
+    },
+    borderRight: {
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        borderRightColor: '#ccc',
+    },
+    borderLeft: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
     },
 });
 
