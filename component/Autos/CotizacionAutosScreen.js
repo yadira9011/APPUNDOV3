@@ -14,47 +14,59 @@ const CotizacionAutosScreen = ({ route }) => {
   const navigation = useNavigation();
   const { DataParameter } = route.params;
   const [loading, setLoading] = useState(true);
+  const [loadingCombos, setloadingCombos] = useState(false);
   const [loadingCotizacion, setLoadingCotizacion] = useState(false);
 
   const [AutoEstatusVehiculos, setAutoEstatusVehiculos] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const [selectedTextEstatusVehiculo, setselectedTextEstatusVehiculo] = useState('');
 
   const [AutoTipoVehiculos, setAutoTipoVehiculos] = useState([]);
   const [selectedOptionTipoVehiculo, setSelectedOptionTipoVehiculo,] = useState('');
+  const [selectedTextTipoVehiculo, setselectedTextTipoVehiculo] = useState('');
 
   const [AutoModelos, setAutoModelos] = useState([]);
   const [selectedOptionModelo, setSelectedOptionModelo,] = useState('');
+  const [selectedTextModelo, setselectedTextModelo] = useState('');
 
   const [AutoMarcas, setAutoMarcas] = useState([]);
   const [selectedOptionMarca, setSelectedOptionMarca] = useState('');
+  const [selectedTextMarca, setselectedTextMarca] = useState('');
 
   const [AutoTipos, setAutoTipos] = useState([]);
   const [selectedOptionTipo, setSelectedOptionTipo] = useState('');
+  const [selectedTextTipos, setselectedTextTipos] = useState('');
 
   const [AutoDescripciones, setAutoDescripciones] = useState([]);
   const [selectedOptionDescripcion, setSelectedOptionDescripcion] = useState('');
+  const [selectedTextDescripcion, setselectedTextDescripcion] = useState('');
 
   const [AutoIndemnizaciones, setAutoIndemnizaciones] = useState([]);
   const [selectedOptionIndemnizacion, setSelectedOptionIndemnizacion] = useState('');
 
   const [AutoTipoUso, setAutoTipoUso] = useState([]);
   const [selectedOptionTipoUso, setSelectedOptionTipoUso] = useState('');
+  const [selectedTextTipoUso, setselectedTextTipoUso] = useState('');
 
   const [AutoDeducibles, setAutoDeducibles] = useState([]);
   const [selectedOptionDeducible, setSelectedOptionDeducible] = useState('');
 
   const [AutoPaquetes, setAutoPaquetes] = useState([]);
   const [selectedOptionPaquete, setSelectedOptionPaquete] = useState('');
+  const [selectedTextPaquetes, setselectedTextPaquetes] = useState('');
 
   const [AutoTipoPoliza, setAutoTipoPoliza] = useState([]);
   const [selectedOptionTipoPoliza, setSelectedOptionTipoPoliza] = useState('');
+  const [selectedTextTipoPoliza, setselectedTextTipoPoliza] = useState('');
 
   const [AutoVigencias, setAutoVigencias] = useState([]);
   const [selectedOptionVigencia, setSelectedOptionVigencia] = useState('');
+  const [selectedTextTipoVigencia, setselectedTextVigencia] = useState('');
 
   const [AutoInfoPostal, setAutoInfoPostal] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleDescription, setModalVisibleDescription] = useState(false);
 
   const [textMonto, setTextMonto] = useState('');
 
@@ -77,37 +89,28 @@ const CotizacionAutosScreen = ({ route }) => {
   const [TextClaveUnica, setClaveUnica] = useState('');
 
   useEffect(() => {
-
     const loadData = async () => {
 
       try {
 
         await fetchAutoEstatusVehiculos();
         await fetchAutoTipoVehiculos();
-        await fetchAutoModelos(selectedOption);
-        await fetchAutoIndenmizaciones(selectedOption);
-        await fetchAutoCotMarcas(selectedOptionTipoVehiculo, selectedOptionModelo);
-        await fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel);
-        await fetchAutoDescripciones(selectedOptionTipoVehiculo,
-          selectedOptionModelo,
-          selectedOptionMarca,
-          selectedOptionTipo);
         await fetchAutoTiposDeUso();
         await fetchAutoDeducibles();
         await fetchAutoPaquetes();
         await fetchAutoTiposPoliza();
-        await fetchAutoVigencias(selectedOptionTipoPoliza);
 
-        setIsLoading(false);
+        setloadingCombos(true);
 
       } catch (error) {
         console.error('Error al obtener los datos:', error);
-        setIsLoading(false);
+
+        setloadingCombos(false);
+
       }
     };
-
     loadData();
-  }, [selectedOption]);
+  }, []);
 
 
   const fetchAutoEstatusVehiculos = async () => {
@@ -124,6 +127,9 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoEstatusVehiculos(data);
         setSelectedOption(data[0].Id);
+        setselectedTextEstatusVehiculo(data[0].Valor);
+        await fetchAutoModelos(data[0].Id);
+        await fetchAutoIndenmizaciones(data[0].Id);
 
       } else {
         console.error('La respuesta de la API no contiene Estaus vehiculos.');
@@ -144,8 +150,11 @@ const CotizacionAutosScreen = ({ route }) => {
       );
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
+
         setAutoTipoVehiculos(data);
         setSelectedOptionTipoVehiculo(data[0].Id);
+        setselectedTextTipoVehiculo(data[0].Valor);
+
       } else {
         console.error('La respuesta de la API no contiene Estaus vehiculos.');
       }
@@ -170,6 +179,8 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data.slice(1);
         setAutoModelos(data);
         setSelectedOptionModelo(data[0].Id);
+        setselectedTextModelo(data[0].Valor);
+        await fetchAutoCotMarcas(estatusVehiculoId, data[0].Id);
       } else {
         console.error('La respuesta de la API no contiene modelos.');
       }
@@ -192,11 +203,11 @@ const CotizacionAutosScreen = ({ route }) => {
 
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
-
         setAutoMarcas(data);
-        setSelectedOptionMarca(data[0].IdMarca);
+        setSelectedOptionMarca(data[0].Valor);
         setselectedLabel(data[0].Valor);
-
+        setselectedTextMarca(data[0].Valor);
+        await fetchAutoTipos(TipoVehiculoId, Modelo, data[0].Valor);
       } else {
         console.error('La respuesta de la API no contiene marcas.');
       }
@@ -208,7 +219,9 @@ const CotizacionAutosScreen = ({ route }) => {
   };
 
   const fetchAutoTipos = async (TipoVehiculoId, Modelo, submarca) => {
+
     try {
+
       const response = await CotTipos(
         DataParameter.email,
         DataParameter.password,
@@ -220,7 +233,13 @@ const CotizacionAutosScreen = ({ route }) => {
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setAutoTipos(data);
-        setSelectedOptionTipo(data[0].Id);
+        setSelectedOptionTipo(data[0].Valor);
+        setselectedTextTipos(data[0].Valor);
+        await fetchAutoDescripciones(TipoVehiculoId,
+          Modelo,
+          submarca,
+          data[0].Valor);
+
       } else {
         console.error('La respuesta de la API no contiene tipos.');
       }
@@ -233,6 +252,7 @@ const CotizacionAutosScreen = ({ route }) => {
 
   const fetchAutoDescripciones = async (TipoVehiculoId, Modelo, submarca, tipo) => {
     try {
+      console.log("PARA DES", TipoVehiculoId, Modelo, submarca, tipo);
       const response = await CotDescripciones(
         DataParameter.email,
         DataParameter.password,
@@ -246,6 +266,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoDescripciones(data);
         setSelectedOptionDescripcion(data[0].Id);
+        setselectedTextDescripcion(data[0].Value);
       } else {
         console.error('La respuesta de la API no contiene descripciones.');
       }
@@ -257,8 +278,6 @@ const CotizacionAutosScreen = ({ route }) => {
   };
 
   const fetchAutoIndenmizaciones = async (estatusVehiculoId) => {
-
-    console.log("id estatus VEHICULO", estatusVehiculoId);
 
     try {
       const response = await CotIndenmizaciones(
@@ -293,6 +312,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoTipoUso(data);
         setSelectedOptionTipoUso(data[0].Id);
+        setselectedTextTipoUso(data[0].Valor);
       } else {
         console.error('La respuesta de la API no contiene tipos de uso.');
       }
@@ -335,6 +355,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoPaquetes(data);
         setSelectedOptionPaquete(data[0].Id);
+        setselectedTextPaquetes(data[0].Value)
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
@@ -356,6 +377,9 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoTipoPoliza(data);
         setSelectedOptionTipoPoliza(data[0].Id);
+        setselectedTextTipoPoliza(data[0].Value)
+        await fetchAutoVigencias(data[0].Id);
+
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
@@ -378,6 +402,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoVigencias(data);
         setSelectedOptionVigencia(data[0].Id);
+        setselectedTextVigencia(data[0].Value);
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
@@ -414,39 +439,51 @@ const CotizacionAutosScreen = ({ route }) => {
     }
   };
 
-  const handleOptionChange = (itemValue) => {
+  const handleOptionChange = (itemValue, itemLabel) => {
+    console.log(itemValue);
     setSelectedOption(itemValue);
-    fetchAutoTipoVehiculos();
+    setselectedTextEstatusVehiculo(itemLabel);
+    fetchAutoModelos(itemValue);
     fetchAutoIndenmizaciones(itemValue);
+    fetchAutoTipoVehiculos();
+
   };
 
-  const handleOptionChangeTipoVehiculo = (itemValue) => {
+  const handleOptionChangeTipoVehiculo = (itemValue, itemLabel) => {
     setSelectedOptionTipoVehiculo(itemValue);
+    setselectedTextTipoVehiculo(itemLabel);
     fetchAutoModelos(selectedOption);
   };
 
   const handleOptionChangeModelo = (itemValue) => {
     setSelectedOptionModelo(itemValue);
+    setselectedTextModelo(itemValue);
     fetchAutoCotMarcas(selectedOptionTipoVehiculo, itemValue);
+    console.log("Actualice marcaaaaaaaa");
+    console.log("TipoVehiculo", selectedOptionTipoVehiculo);
   };
 
   const handleOptionChangeMarca = (itemValue, itemIndex) => {
     setSelectedOptionMarca(itemValue);
     setselectedLabel(AutoMarcas[itemIndex].Valor);
+    setselectedTextMarca(AutoMarcas[itemIndex].Valor);
     // console.log("MARCAAA NUEVA", selectedLabel);
     // console.log("MARCAAA NUEVA 2222", AutoMarcas[itemIndex].Valor);
     const str_marca = AutoMarcas[itemIndex].Valor
     fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
   };
 
-  const handleOptionChangeTipo = (itemValue) => {
+  const handleOptionChangeTipo = (itemValue, itemLabel) => {
     setSelectedOptionTipo(itemValue);
+    setselectedTextTipos(itemLabel);
     fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
   };
 
-  const handleOptionChangeDescripcion = (itemValue) => {
+  const handleOptionChangeDescripcion = (itemValue, itemLabel) => {
     setSelectedOptionDescripcion(itemValue);
+    setselectedTextDescripcion(itemLabel);
     setClaveUnica(itemValue);
+    setModalVisibleDescription(true);
     console.log("REPONSE DESCRIPCION", itemValue);
   };
 
@@ -454,25 +491,29 @@ const CotizacionAutosScreen = ({ route }) => {
     setSelectedOptionIndemnizacion(itemValue);
   };
 
-  const handleOptionChangeTiposUso = (itemValue) => {
+  const handleOptionChangeTiposUso = (itemValue, itemLabel) => {
     setSelectedOptionTipoUso(itemValue);
+    setselectedTextTipoUso(itemLabel);
   };
 
   const handleOptionChangeDeducibles = (itemValue) => {
     setSelectedOptionDeducible(itemValue);
   };
 
-  const handleOptionChangePaquetes = (itemValue) => {
+  const handleOptionChangePaquetes = (itemValue, itemLabel) => {
     setSelectedOptionPaquete(itemValue);
+    setselectedTextPaquetes(itemLabel);
   };
 
-  const handleOptionChangeTipoPoliza = (itemValue) => {
-    setSelectedOptionTipoPoliza(itemValue);
+  const handleOptionChangeTipoPoliza = (itemValue, itemLabel) => {
+    setSelectedOptionTipoPoliza(itemValue); itemLabel
+    setselectedTextTipoPoliza(itemLabel);
     fetchAutoVigencias(itemValue);
   };
 
-  const handleOptionChangeVigencias = (itemValue) => {
+  const handleOptionChangeVigencias = (itemValue, itemLabel) => {
     setSelectedOptionVigencia(itemValue);
+    setselectedTextVigencia(itemLabel);
   };
 
   // const handleOpenModal = () => {
@@ -536,6 +577,18 @@ const CotizacionAutosScreen = ({ route }) => {
 
       setLoadingCotizacion(true);
 
+      const DataSolicitudTitulos = {
+        DescripcionVehiculo: selectedTextDescripcion,
+        Modelo: selectedTextModelo,
+        TipoAut: selectedTextTipoVehiculo,
+        Marca: selectedTextMarca,
+        EstatusVehiculo: selectedTextEstatusVehiculo,
+        TipoUso: selectedTextTipoUso,
+        tipoPaquete: selectedTextPaquetes,
+        tipoPoliza: selectedTextTipoPoliza,
+        tipoVigenciaPago: selectedTextTipoVigencia,
+      }
+
       const dataCotizacion = {
         ClaveVehiculo: selectedOptionDescripcion,
         IDTipoVehiculo: selectedOptionTipoVehiculo,
@@ -557,22 +610,24 @@ const CotizacionAutosScreen = ({ route }) => {
         IDSubcananal: DataParameter.IdSubCanal
       }
 
-      console.log("Datos Cotizacion", dataCotizacion);
-      const response = await GetCotizacion(dataCotizacion);
+      console.log("Datos Cotizacion", DataSolicitudTitulos);
 
+      const response = await GetCotizacion(dataCotizacion);
       console.log(response);
 
       if (response.data.Data.Data) {
+
         const resultData = response.data.Data.Data;
         setLoadingCotizacion(false);
 
         const dataArray = {
-          DataResul:resultData,
-          CotiData:dataCotizacion
+          DataResul: resultData,
+          CotiData: dataCotizacion,
+          DataTitulos: DataSolicitudTitulos
         }
-
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
+
 
     } catch (error) {
       setLoadingCotizacion(false);
@@ -584,14 +639,42 @@ const CotizacionAutosScreen = ({ route }) => {
 
   };
 
+  const closeModalDes = () => {
+    setModalVisibleDescription(false);
+  };
+
+
+  if (!loadingCombos) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+        <Text>Cargando catálogos...</Text>
+      </View>
+    );
+  }
+
   return (
 
     <ScrollView style={styles.container}>
 
-      {isLoading ? (
+      {!loadingCombos ? (
         <Text>Cargando datos...</Text>
       ) : (
         <>
+
+          <Text style={styles.label}>Tipo Uso:</Text>
+          <Picker
+            selectedValue={selectedOptionTipoUso}
+            onValueChange={handleOptionChangeTiposUso}
+            keyExtractor={(item) => item.Id.toString()}
+          >
+            {AutoTipoUso.map((AutoTU) => (
+              <Picker.Item
+                key={AutoTU.Id}
+                label={AutoTU.Valor}
+                value={AutoTU.Id} />
+            ))}
+          </Picker>
 
           <Text style={styles.label}>Estatus vehículo:</Text>
           <Picker
@@ -636,13 +719,13 @@ const CotizacionAutosScreen = ({ route }) => {
           <Picker
             selectedValue={selectedOptionMarca}
             onValueChange={handleOptionChangeMarca}
-            keyExtractor={(item) => item.Id.toString()}
+            keyExtractor={(item) => item.Valor.toString()}
           >
             {AutoMarcas.map((AutoMarca) => (
               <Picker.Item
-                key={AutoMarca.IdMarca}
+                key={AutoMarca.Valor}
                 label={AutoMarca.Valor}
-                value={AutoMarca.IdMarca} />
+                value={AutoMarca.Valor} />
             ))}
           </Picker>
 
@@ -650,11 +733,11 @@ const CotizacionAutosScreen = ({ route }) => {
           <Picker
             selectedValue={selectedOptionTipo}
             onValueChange={handleOptionChangeTipo}
-            keyExtractor={(item) => item.Id.toString()}
+            keyExtractor={(item) => item.Valor.toString()}
           >
             {AutoTipos.map((AutoTipo) => (
               <Picker.Item
-                key={AutoTipo.Id}
+                key={AutoTipo.Valor}
                 label={AutoTipo.Valor}
                 value={AutoTipo.Valor} />
             ))}
@@ -665,12 +748,14 @@ const CotizacionAutosScreen = ({ route }) => {
             selectedValue={selectedOptionDescripcion}
             onValueChange={handleOptionChangeDescripcion}
             keyExtractor={(item) => item.Id.toString()}
+            itemStyle={{ fontSize: 12 }}
           >
             {AutoDescripciones.map((AutoDescripcion) => (
               <Picker.Item
                 key={AutoDescripcion.Id}
                 label={AutoDescripcion.Valor}
-                value={AutoDescripcion.Id} />
+                value={AutoDescripcion.Id}
+              />
             ))}
           </Picker>
 
@@ -710,20 +795,6 @@ const CotizacionAutosScreen = ({ route }) => {
           </View>
 
           <Text style={styles.label}>{TextDireccionElegida}</Text>
-
-          <Text style={styles.label}>Tipo Uso:</Text>
-          <Picker
-            selectedValue={selectedOptionTipoUso}
-            onValueChange={handleOptionChangeTiposUso}
-            keyExtractor={(item) => item.Id.toString()}
-          >
-            {AutoTipoUso.map((AutoTU) => (
-              <Picker.Item
-                key={AutoTU.Id}
-                label={AutoTU.Valor}
-                value={AutoTU.Id} />
-            ))}
-          </Picker>
 
           <Text style={styles.label}>Deducibles :</Text>
           <Picker
@@ -787,7 +858,7 @@ const CotizacionAutosScreen = ({ route }) => {
             onPress={handleCotizar} >
             <Text style={styles.cotizarButtonText}>Cotizar</Text>
           </TouchableOpacity>
-          {loading && <ActivityIndicator style={styles.activityIndicator} />}
+          {loadingCotizacion && <ActivityIndicator style={styles.activityIndicator} />}
 
           <View style={{ height: 35 }} />
 
@@ -822,12 +893,36 @@ const CotizacionAutosScreen = ({ route }) => {
             </View>
           </Modal>
 
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisibleDescription}
+            onRequestClose={closeModalDes}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text>Seleccionaste: {selectedTextDescripcion}</Text>
+                <TouchableOpacity onPress={closeModalDes} style={styles.closeButton}>
+                  <Text style={styles.closeButtonText}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+
+
+
+        
+
+
         </>
       )}
 
     </ScrollView>
 
   );
+
+
+
 };
 
 const styles = StyleSheet.create({

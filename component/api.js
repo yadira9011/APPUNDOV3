@@ -254,3 +254,7 @@ export const GetCoberturasCotizacion = (dataSearch) => {
   });
 
 };
+
+export const EnvioCotizacion = (dataCotizacion) => {
+  return axios.post(`${BASE_URL}/API/Autos/EnvioCotizacion`, dataCotizacion);
+};

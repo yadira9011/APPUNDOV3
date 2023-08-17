@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, Modal, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, TextInput, Image, Modal, Alert, Switch, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { GetCoberturasCotizacion } from '../api';
+import { GetCoberturasCotizacion, EnvioCotizacion } from '../api';
 
 
 const ResultadoCotizacionScreen = () => {
@@ -15,6 +15,10 @@ const ResultadoCotizacionScreen = () => {
     const [TxtPqtCobertura, setTxtPqtCobertura] = useState(null);
     const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalEnvioCotiVisible, setModalEnvioCotiVisible] = useState(false);
+    const [email, setEmail] = useState('');
+    const [sendAll, setSendAll] = useState(false);
+    const [IdCotiSeleccionada, setIdCotiSeleccionada] = useState('');
 
     const imagePaths = [
         { name: 'LogoChubb', path: require('../../assets/Aseguradoras/LogoChubb.png') },
@@ -68,7 +72,7 @@ const ResultadoCotizacionScreen = () => {
                     <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
                         <Ionicons name="ios-information-circle" size={24} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
                         <Ionicons name="ios-mail" size={24} color="black" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
@@ -136,6 +140,9 @@ const ResultadoCotizacionScreen = () => {
     const handleCloseModal = () => {
         setCoberturasCotizacion([]);
         setTxtPqtCobertura(null);
+        setEmail(null);
+        setIdCotiSeleccionada(null);
+        setSendAll(false);
         setModalVisible(false);
     };
 
@@ -155,6 +162,53 @@ const ResultadoCotizacionScreen = () => {
             </View>
         </View>
     );
+
+    const handleEnviarClick = async () => {
+        try {
+
+            const DataSolicitud = {
+                IDCotizacion: IdCotiSeleccionada,
+                CorreoEnvio: email,
+                COTIZACIONESAUTOS_ID: 0,
+                SeleccionaTodas: sendAll,
+                DescripcionVehiculo: dataArray.DataSolicitudTitulos.DescripcionVehiculo,
+                Modelo: dataArray.DataSolicitudTitulos.Modelo,
+                TipoAut: dataArray.DataSolicitudTitulos.TipoAut,
+                Marca: dataArray.DataSolicitudTitulos.Marca,
+                EstatusVehiculo: dataArray.DataSolicitudTitulos.EstatusVehiculo,
+                TipoUso: dataArray.DataSolicitudTitulos.TipoUso,
+                SumaAsegurada: dataArray.dataCotizacion.SumaAsegurada,
+                tipoPaquete: dataArray.DataSolicitudTitulos.tipoPaquete,
+                tipoPoliza: dataArray.DataSolicitudTitulos.tipoPoliza,
+                tipoVigenciaPago: dataArray.DataSolicitudTitulos.tipoVigenciaPago,
+            }
+
+            const DataRquest = {
+                usuario: dataArray.CotiData.usuario,
+                contraseña: dataArray.CotiData.contraseña,
+                DataSolicitud: DataSolicitud
+            }
+
+            console.log("Datos envio correo", DataRquest);
+            const response = await EnvioCotizacion(DataRquest);
+            if (response.data) {
+                console.log(response.data);
+                Alert.alert('INFO', 'El envío de la cotización se realizo con exito');
+            } else {
+                Alert.alert('Error', 'No se encontraron coberturas');
+            }
+
+        } catch (error) {
+            Alert.alert('Error', 'error al obtener los datos' + error);
+        }
+
+    };
+
+    const handleShowModalEC = (item) => {
+        setEmail(null);
+        setIdCotiSeleccionada(item.id);
+        setModalEnvioCotiVisible(true);
+    };
 
     return (
         <View style={styles.container}>
@@ -196,9 +250,38 @@ const ResultadoCotizacionScreen = () => {
                         <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
                             <Text style={styles.closeButtonText}>Cerrar</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
+            </Modal>
 
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalEnvioCotiVisible}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.description}>Enviar Cotización</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Correo Electrónico"
+                            value={email}
+                            onChangeText={setEmail}
+                        />
+                        <View style={styles.switchContainer}>
+                            <Text>Enviar a Todos</Text>
+                            <Switch
+                                value={sendAll}
+                                onValueChange={value => setSendAll(value)}
+                            />
+                        </View>
+                        <Button title="Enviar" onPress={handleEnviarClick} />
+                        <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
+                            <Text style={styles.closeButtonText}>Cerrar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </Modal>
 
         </View>
@@ -330,6 +413,19 @@ const styles = StyleSheet.create({
     borderLeft: {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+    },
+    input: {
+        width: '100%',
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 10,
+        padding: 5,
+    },
+    switchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
     },
 });
 
