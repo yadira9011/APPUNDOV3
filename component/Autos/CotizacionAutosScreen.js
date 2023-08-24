@@ -266,7 +266,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoDescripciones(data);
         setSelectedOptionDescripcion(data[0].Id);
-        setselectedTextDescripcion(data[0].Value);
+        setselectedTextDescripcion(data[0].Valor);
       } else {
         console.error('La respuesta de la API no contiene descripciones.');
       }
@@ -355,7 +355,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoPaquetes(data);
         setSelectedOptionPaquete(data[0].Id);
-        setselectedTextPaquetes(data[0].Value)
+        setselectedTextPaquetes(data[0].Valor)
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
@@ -377,7 +377,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoTipoPoliza(data);
         setSelectedOptionTipoPoliza(data[0].Id);
-        setselectedTextTipoPoliza(data[0].Value)
+        setselectedTextTipoPoliza(data[0].Valor)
         await fetchAutoVigencias(data[0].Id);
 
       } else {
@@ -402,7 +402,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const data = response.data.Data.Data;
         setAutoVigencias(data);
         setSelectedOptionVigencia(data[0].Id);
-        setselectedTextVigencia(data[0].Value);
+        setselectedTextVigencia(data[0].Valor);
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
@@ -439,19 +439,19 @@ const CotizacionAutosScreen = ({ route }) => {
     }
   };
 
-  const handleOptionChange = (itemValue, itemLabel) => {
+  const handleOptionChange = (itemValue,itemIndex) => {
     console.log(itemValue);
     setSelectedOption(itemValue);
-    setselectedTextEstatusVehiculo(itemLabel);
+    setselectedTextEstatusVehiculo(AutoEstatusVehiculos[itemIndex].Valor);
     fetchAutoModelos(itemValue);
     fetchAutoIndenmizaciones(itemValue);
     fetchAutoTipoVehiculos();
 
   };
 
-  const handleOptionChangeTipoVehiculo = (itemValue, itemLabel) => {
+  const handleOptionChangeTipoVehiculo = (itemValue, itemIndex) => {
     setSelectedOptionTipoVehiculo(itemValue);
-    setselectedTextTipoVehiculo(itemLabel);
+    setselectedTextTipoVehiculo(AutoTipoVehiculos[itemIndex].Valor);
     fetchAutoModelos(selectedOption);
   };
 
@@ -473,47 +473,47 @@ const CotizacionAutosScreen = ({ route }) => {
     fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
   };
 
-  const handleOptionChangeTipo = (itemValue, itemLabel) => {
+  const handleOptionChangeTipo = (itemValue,itemIndex) => {
     setSelectedOptionTipo(itemValue);
-    setselectedTextTipos(itemLabel);
+    setselectedTextTipos(AutoTipos[itemIndex].Valor);
     fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
   };
 
-  const handleOptionChangeDescripcion = (itemValue, itemLabel) => {
+  const handleOptionChangeDescripcion = (itemValue, itemIndex) => {
     setSelectedOptionDescripcion(itemValue);
-    setselectedTextDescripcion(itemLabel);
+    setselectedTextDescripcion(AutoDescripciones[itemIndex].Valor);
     setClaveUnica(itemValue);
     setModalVisibleDescription(true);
-    console.log("REPONSE DESCRIPCION", itemValue);
+    console.log("REPONSE DESCRIPCION",AutoDescripciones[itemIndex].Valor);
   };
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
     setSelectedOptionIndemnizacion(itemValue);
   };
 
-  const handleOptionChangeTiposUso = (itemValue, itemLabel) => {
+  const handleOptionChangeTiposUso = (itemValue, itemIndex) => {
     setSelectedOptionTipoUso(itemValue);
-    setselectedTextTipoUso(itemLabel);
+    setselectedTextTipoUso(AutoTipoUso[itemIndex].Valor);
   };
 
   const handleOptionChangeDeducibles = (itemValue) => {
     setSelectedOptionDeducible(itemValue);
   };
 
-  const handleOptionChangePaquetes = (itemValue, itemLabel) => {
+  const handleOptionChangePaquetes = (itemValue, itemIndex) => {
     setSelectedOptionPaquete(itemValue);
-    setselectedTextPaquetes(itemLabel);
+    setselectedTextPaquetes(AutoPaquetes[itemIndex].Valor);
   };
 
-  const handleOptionChangeTipoPoliza = (itemValue, itemLabel) => {
-    setSelectedOptionTipoPoliza(itemValue); itemLabel
-    setselectedTextTipoPoliza(itemLabel);
+  const handleOptionChangeTipoPoliza = (itemValue, itemIndex) => {
+    setSelectedOptionTipoPoliza(itemValue);
+    setselectedTextTipoPoliza(AutoTipoPoliza[itemIndex].Valor);
     fetchAutoVigencias(itemValue);
   };
 
-  const handleOptionChangeVigencias = (itemValue, itemLabel) => {
+  const handleOptionChangeVigencias = (itemValue, itemIndex) => {
     setSelectedOptionVigencia(itemValue);
-    setselectedTextVigencia(itemLabel);
+    setselectedTextVigencia(AutoVigencias[itemIndex].Valor);
   };
 
   // const handleOpenModal = () => {
@@ -623,7 +623,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const dataArray = {
           DataResul: resultData,
           CotiData: dataCotizacion,
-          DataTitulos: DataSolicitudTitulos
+          DataTitulos: DataTitulos
         }
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
@@ -900,19 +900,13 @@ const CotizacionAutosScreen = ({ route }) => {
             onRequestClose={closeModalDes}>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
-                <Text>Seleccionaste: {selectedTextDescripcion}</Text>
+                <Text>{selectedTextDescripcion}</Text>
                 <TouchableOpacity onPress={closeModalDes} style={styles.closeButton}>
-                  <Text style={styles.closeButtonText}>Cerrar okoko</Text>
+                  <Text style={styles.closeButtonText}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
-
-
-
-
-        
-
 
         </>
       )}

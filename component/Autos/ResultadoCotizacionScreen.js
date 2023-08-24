@@ -3,11 +3,13 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, TextInput, Image, M
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GetCoberturasCotizacion, EnvioCotizacion } from '../api';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ResultadoCotizacionScreen = () => {
 
     const route = useRoute();
+    const navigation = useNavigation();
     const { dataArray } = route.params;
     const [folioCotizacion, setFolioCotizacion] = useState(null);
     const [CotizacionData, setCotizacionData] = useState([]);
@@ -75,7 +77,7 @@ const ResultadoCotizacionScreen = () => {
                     <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
                         <Ionicons name="ios-mail" size={24} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleEmitir(item)}>
                         <Ionicons name="ios-send" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -144,6 +146,7 @@ const ResultadoCotizacionScreen = () => {
         setIdCotiSeleccionada(null);
         setSendAll(false);
         setModalVisible(false);
+        setModalEnvioCotiVisible(false);
     };
 
     const handleItemClick = (item) => {
@@ -165,22 +168,22 @@ const ResultadoCotizacionScreen = () => {
 
     const handleEnviarClick = async () => {
         try {
-
+            console.log(IdCotiSeleccionada);
             const DataSolicitud = {
                 IDCotizacion: IdCotiSeleccionada,
                 CorreoEnvio: email,
                 COTIZACIONESAUTOS_ID: 0,
                 SeleccionaTodas: sendAll,
-                DescripcionVehiculo: dataArray.DataSolicitudTitulos.DescripcionVehiculo,
-                Modelo: dataArray.DataSolicitudTitulos.Modelo,
-                TipoAut: dataArray.DataSolicitudTitulos.TipoAut,
-                Marca: dataArray.DataSolicitudTitulos.Marca,
-                EstatusVehiculo: dataArray.DataSolicitudTitulos.EstatusVehiculo,
-                TipoUso: dataArray.DataSolicitudTitulos.TipoUso,
-                SumaAsegurada: dataArray.dataCotizacion.SumaAsegurada,
-                tipoPaquete: dataArray.DataSolicitudTitulos.tipoPaquete,
-                tipoPoliza: dataArray.DataSolicitudTitulos.tipoPoliza,
-                tipoVigenciaPago: dataArray.DataSolicitudTitulos.tipoVigenciaPago,
+                DescripcionVehiculo: dataArray.DataTitulos.DescripcionVehiculo,
+                Modelo: dataArray.DataTitulos.Modelo,
+                TipoAut: dataArray.DataTitulos.TipoAut,
+                Marca: dataArray.DataTitulos.Marca,
+                EstatusVehiculo: dataArray.DataTitulos.EstatusVehiculo,
+                TipoUso: dataArray.DataTitulos.TipoUso,
+                SumaAsegurada: dataArray.CotiData.SumaAsegurada,
+                tipoPaquete: dataArray.DataTitulos.tipoPaquete,
+                tipoPoliza: dataArray.DataTitulos.tipoPoliza,
+                tipoVigenciaPago: dataArray.DataTitulos.tipoVigenciaPago,
             }
 
             const DataRquest = {
@@ -191,11 +194,11 @@ const ResultadoCotizacionScreen = () => {
 
             console.log("Datos envio correo", DataRquest);
             const response = await EnvioCotizacion(DataRquest);
-            if (response.data) {
-                console.log(response.data);
+            if (response.data.Data.HasError == false) {
+                console.log(response.data.Data);
                 Alert.alert('INFO', 'El envío de la cotización se realizo con exito');
             } else {
-                Alert.alert('Error', 'No se encontraron coberturas');
+                Alert.alert('Error', 'No se envio el correo' + response.data.Data.Message);
             }
 
         } catch (error) {
@@ -208,6 +211,17 @@ const ResultadoCotizacionScreen = () => {
         setEmail(null);
         setIdCotiSeleccionada(item.id);
         setModalEnvioCotiVisible(true);
+    };
+
+    const handleEmitir = (item) => {
+
+        const dataArray = {
+            DataItemSelect: item,
+            DataResul: dataArray.DataResul,
+            CotiData: dataArray.CotiData,
+            DataTitulos: dataArray.DataSolicitudTitulos
+        }
+        navigation.navigate('Emision', { dataArray });
     };
 
     return (
@@ -428,8 +442,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 });
-
-
 
 
 export default ResultadoCotizacionScreen;
