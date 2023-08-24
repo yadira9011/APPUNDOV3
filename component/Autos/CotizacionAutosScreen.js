@@ -902,7 +902,7 @@ const CotizacionAutosScreen = ({ route }) => {
               <View style={styles.modalContent}>
                 <Text>Seleccionaste: {selectedTextDescripcion}</Text>
                 <TouchableOpacity onPress={closeModalDes} style={styles.closeButton}>
-                  <Text style={styles.closeButtonText}>Cerrar</Text>
+                  <Text style={styles.closeButtonText}>Cerrar okoko</Text>
                 </TouchableOpacity>
               </View>
             </View>
