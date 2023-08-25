@@ -89,6 +89,7 @@ const CotizacionAutosScreen = ({ route }) => {
   const [TextClaveUnica, setClaveUnica] = useState('');
 
   useEffect(() => {
+    
     const loadData = async () => {
 
       try {
@@ -439,7 +440,7 @@ const CotizacionAutosScreen = ({ route }) => {
     }
   };
 
-  const handleOptionChange = (itemValue,itemIndex) => {
+  const handleOptionChange = (itemValue, itemIndex) => {
     console.log(itemValue);
     setSelectedOption(itemValue);
     setselectedTextEstatusVehiculo(AutoEstatusVehiculos[itemIndex].Valor);
@@ -473,7 +474,7 @@ const CotizacionAutosScreen = ({ route }) => {
     fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
   };
 
-  const handleOptionChangeTipo = (itemValue,itemIndex) => {
+  const handleOptionChangeTipo = (itemValue, itemIndex) => {
     setSelectedOptionTipo(itemValue);
     setselectedTextTipos(AutoTipos[itemIndex].Valor);
     fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
@@ -484,7 +485,7 @@ const CotizacionAutosScreen = ({ route }) => {
     setselectedTextDescripcion(AutoDescripciones[itemIndex].Valor);
     setClaveUnica(itemValue);
     setModalVisibleDescription(true);
-    console.log("REPONSE DESCRIPCION",AutoDescripciones[itemIndex].Valor);
+    console.log("REPONSE DESCRIPCION", AutoDescripciones[itemIndex].Valor);
   };
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
@@ -623,7 +624,7 @@ const CotizacionAutosScreen = ({ route }) => {
         const dataArray = {
           DataResul: resultData,
           CotiData: dataCotizacion,
-          DataTitulos: DataTitulos
+          DataTitulos: DataSolicitudTitulos
         }
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
@@ -642,7 +643,6 @@ const CotizacionAutosScreen = ({ route }) => {
   const closeModalDes = () => {
     setModalVisibleDescription(false);
   };
-
 
   if (!loadingCombos) {
     return (
@@ -920,6 +920,7 @@ const CotizacionAutosScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+  
   container: {
     padding: 15,
     backgroundColor: '#fff',

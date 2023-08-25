@@ -199,7 +199,6 @@ export const CotDeducibles = (email, password, IdSubCanal) => {
 };
 
 export const CotPaquetes = (email, password, IdSubCanal) => {
-
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -258,3 +257,29 @@ export const GetCoberturasCotizacion = (dataSearch) => {
 export const EnvioCotizacion = (dataCotizacion) => {
   return axios.post(`${BASE_URL}/API/Autos/EnvioCotizacion`, dataCotizacion);
 };
+
+export const GetDias = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetDias`, {
+    params: credential
+  });
+};
+
+export const GetMeses = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetMeses`, {
+    params: credential
+  });
+};
+
+export const GetAnyos = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetAnyos`, {
+    params: credential
+  });
+};
+
+export const GetGeneros = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetGeneros`, {
+    params: credential
+  });
+};
+
+

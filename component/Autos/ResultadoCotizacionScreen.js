@@ -215,13 +215,16 @@ const ResultadoCotizacionScreen = () => {
 
     const handleEmitir = (item) => {
 
-        const dataArray = {
+        console.log(dataArray);
+
+        const dataArrayEmi = {
             DataItemSelect: item,
             DataResul: dataArray.DataResul,
             CotiData: dataArray.CotiData,
-            DataTitulos: dataArray.DataSolicitudTitulos
+            DataTitulos: dataArray.DataTitulos
         }
-        navigation.navigate('Emision', { dataArray });
+
+        navigation.navigate('Emision', { dataArrayEmi });
     };
 
     return (
