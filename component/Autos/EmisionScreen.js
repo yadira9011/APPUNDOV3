@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Text, TextInput, StyleSheet, Image, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Collapsible from 'react-native-collapsible';
 import { useRoute } from '@react-navigation/native';
@@ -13,6 +13,7 @@ const EmisionScreen = () => {
   const navigation = useNavigation();
   const { dataArrayEmi } = route.params;
   const [loadingCombos, setloadingCombos] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [direccionCollapsed, setDireccionCollapsed] = useState(true);
@@ -61,9 +62,12 @@ const EmisionScreen = () => {
   const [numMotor, setNumMotor] = useState('');
   const [placas, setPlacas] = useState('');
 
+  const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
+
   useEffect(() => {
     const loadData = async () => {
       try {
+        setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
         await fetchAutoDias();
         await fetchAutoMeses();
         await fetchAutoAynos();
@@ -191,9 +195,22 @@ const EmisionScreen = () => {
 
     <ScrollView style={styles.container}>
 
+      <View style={styles.imageContainer}>
+        <Image source={TxtUrlconAse} style={styles.imageCober} />
+        <View style={styles.textContainer}>
+          <Text style={styles.description}><Text style={styles.boldText}>MODELO:</Text> {dataArrayEmi.DataTitulos.Modelo}</Text>
+          <Text style={styles.description}><Text style={styles.boldText}>DESCRIPCION:</Text> {dataArrayEmi.DataTitulos.DescripcionVehiculo}</Text>
+          <Text style={styles.description}><Text style={styles.boldText}>TIPO USO :</Text> {dataArrayEmi.DataTitulos.TipoUso}</Text>
+          <Text style={styles.description}><Text style={styles.boldText}>PAQUETE:</Text> {dataArrayEmi.DataTitulos.tipoPaquete}</Text>
+          <Text style={styles.description}><Text style={styles.boldText}>VIGENCIA:</Text> {dataArrayEmi.DataTitulos.tipoVigenciaPago}</Text>
+          <Text style={styles.description}><Text style={styles.boldText}>PRIMA TOTAL:</Text> {dataArrayEmi.DataItemSelect.PrimaTotal}</Text>
+        </View>
+      </View>
+
       <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
         <Text style={styles.buttonText}>Datos Contratante</Text>
       </TouchableOpacity>
+
       <Collapsible collapsed={isCollapsed}>
         <Text>Nombre</Text>
         <TextInput
@@ -231,6 +248,7 @@ const EmisionScreen = () => {
         />
 
         <Text>Fecha de Nacimiento</Text>
+
         <View style={styles.pickerContainer}>
           <Picker
             style={styles.picker}
@@ -252,17 +270,19 @@ const EmisionScreen = () => {
               <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
             ))}
           </Picker>
-          <Picker
-            style={styles.picker}
-            selectedValue={selectedAno}
-            onValueChange={(itemValue) => setSelectedAno(itemValue)}
-          >
-            <Picker.Item label="Selecciona año" value="" />
-            {anos.map((ano) => (
-              <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
-            ))}
-          </Picker>
+
         </View>
+        <Picker
+          style={styles.picker2}
+          selectedValue={selectedAno}
+          onValueChange={(itemValue) => setSelectedAno(itemValue)}
+        >
+          <Picker.Item label="Selecciona año" value="" />
+          {anos.map((ano) => (
+            <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
+          ))}
+        </Picker>
+
 
         <Text>Género</Text>
         <Picker
@@ -272,7 +292,7 @@ const EmisionScreen = () => {
         >
           <Picker.Item label="Selecciona género" value="" />
           {generos.map((genero) => (
-            <Picker.Item key={genero.id} label={genero.Valor} value={genero.id} />
+            <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
           ))}
         </Picker>
 
@@ -412,6 +432,7 @@ const EmisionScreen = () => {
           onChangeText={setPlacas}
         />
       </Collapsible>
+
     </ScrollView>
 
   );
@@ -442,13 +463,45 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
+
   picker: {
     flex: 1,
     borderWidth: 1,
+    width: 15,
     borderColor: '#ccc',
-    marginBottom: 10,
+    marginBottom: 8,
     marginLeft: 5,
     marginRight: 5,
+    fontSize: 10,
+  },
+
+  picker2: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    fontSize: 10,
+  },
+
+  pickerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  imageCober: {
+    width: 150,
+    height: 150,
+  },
+  textContainer: {
+    marginTop: 2,
+  },
+  description: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  boldText: {
+    fontWeight: 'bold',
   },
 });
 
