@@ -85,8 +85,8 @@ const ClientesScreen = ({ route }) => {
                     };
                     navigation.navigate('Subcanales', { DataParameterSubcanales });
                 } else {
-                    const IDSubCanal = CCanales.FirstElement.IDSubCanal;
-                    const SubCanal = CCanales.FirstElement.SubCanal;
+                    const IDSubCanal = CSubCanales.FirstElement.IDSubCanal;
+                    const SubCanal = CSubCanales.FirstElement.SubCanal;
                     const _DataParameter = {
                         IdUsr: DataParameterClientes.IdUsr,
                         password: DataParameterClientes.password,

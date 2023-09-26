@@ -773,7 +773,7 @@ const CotizacionAutosScreen = ({ route }) => {
             ))}
           </Picker>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
+          <View style={{ flexDirection: 'row', marginBottom:20,alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
             <TextInput
               placeholder="Monto"
               value={textMonto}
@@ -782,7 +782,7 @@ const CotizacionAutosScreen = ({ route }) => {
             />
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
+          <View style={{ flexDirection: 'row', marginBottom:20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 5 }}>
             <TextInput
               placeholder="Codigo Postal"
               value={textCP}

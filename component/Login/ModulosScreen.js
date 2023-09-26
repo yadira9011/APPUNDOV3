@@ -10,6 +10,7 @@ const ModulosScreen = ({ route }) => {
     const onPressItem = (item) => {
         switch (item.title) {
             case 'Autos':
+                console.log("paso directo de grupo",DataParameter)
                 navigation.navigate('CotizacionAutos', { DataParameter: DataParameter });
                 break;
             default:

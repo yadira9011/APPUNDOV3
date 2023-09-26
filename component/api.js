@@ -276,6 +276,7 @@ export const GetAnyos = (credential) => {
   });
 };
 
+
 export const GetGeneros = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/GetGeneros`, {
     params: credential
@@ -283,3 +284,41 @@ export const GetGeneros = (credential) => {
 };
 
 
+export const GetTiposPersona = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/TiposPersona`, {
+    params: credential
+  });
+};
+
+
+export const GetTipoSociedad = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/TipoSociedad`, {
+    params: credential
+  });
+};
+
+
+export const GetGiros = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/Giros`, {
+    params: credential
+  });
+};
+
+
+export const GetIdAseguradora = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetIdAseguradora`, {
+    params: credential
+  });
+};
+
+export const GetTipoRegimenFiscal = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/TipoRegimenFiscal`, {
+    params: credential
+  });
+};
+
+export const GetTipoCDFI = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetTipoCDFI`, {
+    params: credential
+  });
+};
