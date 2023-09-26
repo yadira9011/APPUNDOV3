@@ -247,6 +247,23 @@ export const GetCotizacion = (dataCotizacion) => {
   return axios.post(`${BASE_URL}/API/Autos/Cotizaciones`, dataCotizacion);
 };
 
+export const GetCEmision = (data) => {
+  return axios.post(`${BASE_URL}/API/Autos/Emision`, data);
+};
+
+export const GetPagoEnLinea = (data) => {
+  return axios.post(`${BASE_URL}/API/Autos/PagoEnLineaApi`, data);
+};
+
+export const ImpresionPoliza = (data) => {
+  return axios.post(`${BASE_URL}/API/Autos/Impresion`, data);
+};
+
+export const GetPolizaPdfApi = (data) => {
+  return axios.post(`${BASE_URL}/API/Autos/PolizaPDF`, data);
+};
+
+
 export const GetCoberturasCotizacion = (dataSearch) => {
   return axios.get(`${BASE_URL}/API/Autos/ConsultarCoberturas`, {
     params: dataSearch
@@ -282,7 +299,6 @@ export const GetGeneros = (credential) => {
     params: credential
   });
 };
-
 
 export const GetTiposPersona = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/TiposPersona`, {
