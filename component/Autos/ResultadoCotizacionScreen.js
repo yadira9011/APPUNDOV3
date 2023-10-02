@@ -214,14 +214,12 @@ const ResultadoCotizacionScreen = () => {
     };
 
     const handleEmitir = (item) => {
-
-        console.log(dataArray);
-
+        // console.log(dataArray);
         const dataArrayEmi = {
             DataItemSelect: item,
             DataResul: dataArray.DataResul,
             CotiData: dataArray.CotiData,
-            DataTitulos: dataArray.DataTitulos
+            DataTitulos: dataArray.DataTitulos,
         }
 
         navigation.navigate('Emision', { dataArrayEmi });

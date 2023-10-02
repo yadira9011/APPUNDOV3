@@ -5,7 +5,11 @@ import Collapsible from 'react-native-collapsible';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona, GetTipoSociedad } from '../api';
+
+import {
+  GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
+  GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora
+} from '../api';
 
 const EmisionScreen = () => {
 
@@ -71,26 +75,32 @@ const EmisionScreen = () => {
 
   const [TiposPersona, setTiposPersona] = useState([]);
   const [selectedTipoPersona, setselectedTipoPersona] = useState('');
+  const [IdTipoPersona, setIdTipoPersona] = useState('');
 
+  const [IdAseguradora, setIdAseguradora] = useState('');
 
   const [razonSocial, setRazonSocial] = useState('');
   const [nombreComercial, setNombreComercial] = useState('');
-  const [fechaConstitucion, setFechaConstitucion] = useState('');
 
-  const [giro, setGiro] = useState([])
-  const [tipoSociedad, setTipoSociedad] = useState([])
-  const [regimenFiscal, setRegimenFiscal] = useState([])
+  const [giros, setGiros] = useState([]);
+  const [selectedGiro, setselectedGiro] = useState('');
+  const [tiposSociedad, setTiposSociedad] = useState([]);
+  const [selectedTipoSociedad, setselectedTipoSociedad] = useState('');
+  const [regimenesFiscales, setregimenesFiscales] = useState([]);
+  const [selectedRegimenFiscal, setselectedRegimenFiscal] = useState('');
 
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        console.log("IDCOTIZAAAAA",dataArrayEmi.DataItemSelect.id)
         setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
         await fetchAutoDias();
         await fetchAutoMeses();
         await fetchAutoAynos();
         await fetchAutoGeneros();
         await fetchTipoPersona();
+        await fetchAutosGetIdAseguradora();
         setloadingCombos(true);
       } catch (error) {
         setloadingCombos(false);
@@ -173,7 +183,7 @@ const EmisionScreen = () => {
 
       const DataRquest = {
         usuario: dataArrayEmi.CotiData.usuario,
-        contraseña: dataArrayEmi.CotiData.contraseña,
+        contraseña: dataArrayEmi.CotiData.contraseña
       }
       const response = await GetGeneros(DataRquest);
       if (response.data.Data.Data) {
@@ -181,6 +191,103 @@ const EmisionScreen = () => {
         setGeneros(data);
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchAutosGetTipoSociedad = async (idAse) => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idAseguradora: idAse
+      }
+      const response = await GetTipoSociedad(DataRquest);
+      if (response.data.Data.Data) {
+        const data = response.data.Data.Data;
+        setTiposSociedad(data);
+      } else {
+        console.error('La respuesta de la API no contiene tipos sociedad.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchAutosGetGiro = async (idAse) => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idAseguradora: idAse
+      }
+      const response = await GetGiros(DataRquest);
+      if (response.data.Data.Data) {
+        const data = response.data.Data.Data;
+        setGiros(data);
+      } else {
+        console.error('La respuesta de la API no contiene giros.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchAutosRegimenesFiscales = async (idAse) => {
+    try {
+      console.log("Tipo personaaaa ....",IdTipoPersona)
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idAseguradora: idAse,
+        idPersona:IdTipoPersona
+      }
+      
+      const response = await GetTipoRegimenFiscal(DataRquest);
+  
+      if (response.data.Data.Data) {
+        const data = response.data.Data.Data;
+        setregimenesFiscales(data);
+      } else {
+        console.error('La respuesta de la API no contiene regimenes fiscales.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchAutosGetIdAseguradora = async () => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idCotizacion:dataArrayEmi.DataItemSelect.id,
+      }
+      const response = await GetIdAseguradora(DataRquest);
+      console.log(response)
+      if (response.data.Data) {
+        const data = response.data.Data;
+        console.log("IDASEGURADORAAA...", data);
+        const idase = data
+        setIdAseguradora(idase);
+        await fetchAutosGetTipoSociedad(idase);
+        await fetchAutosGetGiro(idase);
+        await fetchAutosRegimenesFiscales(idase);
+      } else {
+        console.error('La respuesta de la API no contiene aseguradora.');
       }
       setLoading(false);
     } catch (error) {
@@ -201,7 +308,7 @@ const EmisionScreen = () => {
       if (response.data.Data.Data) {
 
         const data = response.data.Data.Data;
-
+        
         if (data[0].Id == 2) {
           setIsVisiblePM(true);
           setIsVisiblePF(false);
@@ -212,8 +319,9 @@ const EmisionScreen = () => {
           setTxtFecha("Fecha nacimiento");
         }
 
+        setIdTipoPersona(data[0].Id)
         setTiposPersona(data);
-        
+
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
@@ -354,7 +462,9 @@ const EmisionScreen = () => {
         {/* PERSONA MORAL */}
 
         {isVisiblePM && (
+
           <View>
+
             <Text>Razón Social</Text>
             <TextInput
               style={styles.input}
@@ -368,7 +478,42 @@ const EmisionScreen = () => {
               value={nombreComercial}
               onChangeText={setNombreComercial}
             />
+
+            <Text>Giro</Text>
+            <Picker
+              selectedValue={selectedGiro}
+              onValueChange={(itemValue) => setselectedGiro(itemValue)}
+              style={styles.input}
+              enabled={false} >
+              {giros.map((g) => (
+                <Picker.Item key={g.Id} label={g.Valor} value={g.Id} />
+              ))}
+            </Picker>
+
+            <Text>Tipo sociedad</Text>
+            <Picker
+              selectedValue={selectedTipoSociedad}
+              onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
+              style={styles.input}
+              enabled={false} >
+              {tiposSociedad.map((ts) => (
+                <Picker.Item key={ts.Id} label={ts.Valor} value={ts.Id} />
+              ))}
+            </Picker>
+
+            <Text>Reminen Fiscal</Text>
+            <Picker
+              selectedValue={selectedRegimenFiscal}
+              onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
+              style={styles.input}
+              enabled={false} >
+              {regimenesFiscales.map((rf) => (
+                <Picker.Item key={rf.Id} label={rf.Valor} value={rf.Id} />
+              ))}
+            </Picker>
+
           </View>
+
         )}
 
         <Text>RFC</Text>
