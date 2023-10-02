@@ -5,7 +5,7 @@ import Collapsible from 'react-native-collapsible';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { GetDias, GetMeses, GetAnyos, GetGeneros } from '../api';
+import { GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona, GetTipoSociedad } from '../api';
 
 const EmisionScreen = () => {
 
@@ -64,6 +64,24 @@ const EmisionScreen = () => {
 
   const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
 
+  const [isVisiblePM, setIsVisiblePM] = useState(true);
+  const [isVisiblePF, setIsVisiblePF] = useState(true);
+
+  const [TxtFecha, setTxtFecha] = useState('');
+
+  const [TiposPersona, setTiposPersona] = useState([]);
+  const [selectedTipoPersona, setselectedTipoPersona] = useState('');
+
+
+  const [razonSocial, setRazonSocial] = useState('');
+  const [nombreComercial, setNombreComercial] = useState('');
+  const [fechaConstitucion, setFechaConstitucion] = useState('');
+
+  const [giro, setGiro] = useState([])
+  const [tipoSociedad, setTipoSociedad] = useState([])
+  const [regimenFiscal, setRegimenFiscal] = useState([])
+
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -72,6 +90,7 @@ const EmisionScreen = () => {
         await fetchAutoMeses();
         await fetchAutoAynos();
         await fetchAutoGeneros();
+        await fetchTipoPersona();
         setloadingCombos(true);
       } catch (error) {
         setloadingCombos(false);
@@ -170,6 +189,41 @@ const EmisionScreen = () => {
     }
   };
 
+  const fetchTipoPersona = async () => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idSubcanal: dataArrayEmi.CotiData.IDSubcananal
+      }
+      const response = await GetTiposPersona(DataRquest);
+      if (response.data.Data.Data) {
+
+        const data = response.data.Data.Data;
+
+        if (data[0].Id == 2) {
+          setIsVisiblePM(true);
+          setIsVisiblePF(false);
+          setTxtFecha("Fecha constitución");
+        } else {
+          setIsVisiblePM(false);
+          setIsVisiblePF(true);
+          setTxtFecha("Fecha nacimiento");
+        }
+
+        setTiposPersona(data);
+        
+      } else {
+        console.error('La respuesta de la API no contiene paquetes.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -212,26 +266,110 @@ const EmisionScreen = () => {
       </TouchableOpacity>
 
       <Collapsible collapsed={isCollapsed}>
-        <Text>Nombre</Text>
-        <TextInput
-          style={styles.input}
-          value={nombre}
-          onChangeText={setNombre}
-        />
 
-        <Text>Apellido Paterno</Text>
-        <TextInput
+        <Text>Tipo Persona</Text>
+        <Picker
+          selectedValue={selectedTipoPersona}
+          onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
           style={styles.input}
-          value={apellidoPaterno}
-          onChangeText={setApellidoPaterno}
-        />
+          enabled={false} >
+          {TiposPersona.map((tp) => (
+            <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
+          ))}
+        </Picker>
 
-        <Text>Apellido Materno</Text>
-        <TextInput
-          style={styles.input}
-          value={apellidoMaterno}
-          onChangeText={setApellidoMaterno}
-        />
+
+        {/* PERSONA FISICA */}
+
+        {isVisiblePF && (
+          <View>
+
+            <Text>Nombre</Text>
+            <TextInput
+              style={styles.input}
+              value={nombre}
+              onChangeText={setNombre}
+            />
+
+            <Text>Apellido Paterno</Text>
+            <TextInput
+              style={styles.input}
+              value={apellidoPaterno}
+              onChangeText={setApellidoPaterno}
+            />
+
+            <Text>Apellido Materno</Text>
+            <TextInput
+              style={styles.input}
+              value={apellidoMaterno}
+              onChangeText={setApellidoMaterno}
+            />
+
+            <Text>CURP</Text>
+            <TextInput
+              style={styles.input}
+              value={curp}
+              onChangeText={setCURP}
+            />
+
+            <Text>Género</Text>
+            <Picker
+              selectedValue={selectedGenero}
+              onValueChange={(itemValue) => setSelectedGenero(itemValue)}
+              style={styles.input}
+            >
+              <Picker.Item label="Selecciona género" value="" />
+              {generos.map((genero) => (
+                <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
+              ))}
+            </Picker>
+
+            <Text>Tipo de Identificación</Text>
+            <Picker
+              selectedValue={tipoIdentificacion}
+              onValueChange={setTipoIdentificacion}
+              style={styles.input}
+            >
+              <Picker.Item label="Selecciona" value="" />
+              <Picker.Item label="Credencial IFE" value="1" />
+              <Picker.Item label="Licencia de conducir" value="2" />
+              <Picker.Item label="Pasaporte" value="3" />
+              <Picker.Item label="Cedula Profesional" value="4" />
+              <Picker.Item label="Cartilla Servicio Militar Nacional" value="5" />
+              <Picker.Item label="Tarjeta unica de Identidad Militar" value="7" />
+              <Picker.Item label="Afiliación el IMSS" value="9" />
+              <Picker.Item label="CURP" value="11" />
+            </Picker>
+
+            <Text>Número de Identificación</Text>
+            <TextInput
+              style={styles.input}
+              value={numIdentificacion}
+              onChangeText={setNumIdentificacion}
+            />
+
+          </View>
+        )}
+
+        {/* PERSONA MORAL */}
+
+        {isVisiblePM && (
+          <View>
+            <Text>Razón Social</Text>
+            <TextInput
+              style={styles.input}
+              value={razonSocial}
+              onChangeText={setRazonSocial}
+            />
+
+            <Text>Nombre Comercial</Text>
+            <TextInput
+              style={styles.input}
+              value={nombreComercial}
+              onChangeText={setNombreComercial}
+            />
+          </View>
+        )}
 
         <Text>RFC</Text>
         <TextInput
@@ -240,15 +378,7 @@ const EmisionScreen = () => {
           onChangeText={setRFC}
         />
 
-        <Text>CURP</Text>
-        <TextInput
-          style={styles.input}
-          value={curp}
-          onChangeText={setCURP}
-        />
-
-        <Text>Fecha de Nacimiento</Text>
-
+        <Text>{TxtFecha}</Text>
         <View style={styles.pickerContainer}>
           <Picker
             style={styles.picker}
@@ -283,43 +413,6 @@ const EmisionScreen = () => {
           ))}
         </Picker>
 
-
-        <Text>Género</Text>
-        <Picker
-          selectedValue={selectedGenero}
-          onValueChange={(itemValue) => setSelectedGenero(itemValue)}
-          style={styles.input}
-        >
-          <Picker.Item label="Selecciona género" value="" />
-          {generos.map((genero) => (
-            <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
-          ))}
-        </Picker>
-
-        <Text>Tipo de Identificación</Text>
-        <Picker
-          selectedValue={tipoIdentificacion}
-          onValueChange={setTipoIdentificacion}
-          style={styles.input}
-        >
-          <Picker.Item label="Selecciona" value="" />
-          <Picker.Item label="Credencial IFE" value="1" />
-          <Picker.Item label="Licencia de conducir" value="2" />
-          <Picker.Item label="Pasaporte" value="3" />
-          <Picker.Item label="Cedula Profesional" value="4" />
-          <Picker.Item label="Cartilla Servicio Militar Nacional" value="5" />
-          <Picker.Item label="Tarjeta unica de Identidad Militar" value="7" />
-          <Picker.Item label="Afiliación el IMSS" value="9" />
-          <Picker.Item label="CURP" value="11" />
-        </Picker>
-
-        <Text>Número de Identificación</Text>
-        <TextInput
-          style={styles.input}
-          value={numIdentificacion}
-          onChangeText={setNumIdentificacion}
-        />
-
         <Text>Teléfono</Text>
         <TextInput
           style={styles.input}
@@ -334,6 +427,7 @@ const EmisionScreen = () => {
           onChangeText={setCorreo}
           keyboardType="email-address"
         />
+
       </Collapsible>
 
       <TouchableOpacity onPress={toggleDireccionCollapse} style={styles.button}>

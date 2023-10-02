@@ -306,7 +306,6 @@ export const GetTiposPersona = (credential) => {
   });
 };
 
-
 export const GetTipoSociedad = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/TipoSociedad`, {
     params: credential
@@ -338,3 +337,17 @@ export const GetTipoCDFI = (credential) => {
     params: credential
   });
 };
+
+export const GetPLCodigosBancos = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/PLCodigosBancos`, {
+    params: credential
+  });
+};
+
+
+export const GetPLGetMetodosPago = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/PLGetMetodosPago`, {
+    params: credential
+  });
+};
+
