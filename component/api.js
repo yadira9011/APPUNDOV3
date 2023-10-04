@@ -338,12 +338,17 @@ export const GetTipoCDFI = (credential) => {
   });
 };
 
+export const GetFlags = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetFlags`, {
+    params: credential
+  });
+};
+
 export const GetPLCodigosBancos = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/PLCodigosBancos`, {
     params: credential
   });
 };
-
 
 export const GetPLGetMetodosPago = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/PLGetMetodosPago`, {

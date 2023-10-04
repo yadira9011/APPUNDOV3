@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, Image, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View, ScrollView, Text, TextInput, StyleSheet, Image,
+  Button, TouchableOpacity, ActivityIndicator, Switch
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Collapsible from 'react-native-collapsible';
 import { useRoute } from '@react-navigation/native';
@@ -8,7 +11,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
-  GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora
+  GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
+  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago
 } from '../api';
 
 const EmisionScreen = () => {
@@ -22,6 +26,7 @@ const EmisionScreen = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [direccionCollapsed, setDireccionCollapsed] = useState(true);
   const [vehiculoCollapsed, setVehiculoCollapsed] = useState(true);
+  const [PlCollapsed, setPlCollapsed] = useState(true);
 
   //Datos contratante
   const [nombre, setNombre] = useState('');
@@ -89,15 +94,29 @@ const EmisionScreen = () => {
   const [regimenesFiscales, setregimenesFiscales] = useState([]);
   const [selectedRegimenFiscal, setselectedRegimenFiscal] = useState('');
 
+  const [isEnabledPL, setIsEnabledPL] = useState(false);
+  const [isEnabledPR, setIsEnabledPR] = useState(false);
+
+  const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('');
+  const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('');
+  const [fechaExpiracion, setFechaExpiracion] = useState('');
+  const [cvv, setCVV] = useState('');
+
+  const [BancosEmisores, setBancosEmisores] = useState([]);
+  const [selectedBancoEmisor, setselectedBancoEmisor] = useState('');
+
+  const [MetodosPagos, setMetodosPagos] = useState([]);
+  const [selectedMetodosPagos, setselectedMetodosPagos] = useState('');
+
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log("IDCOTIZAAAAA",dataArrayEmi.DataItemSelect.id)
         setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
         await fetchAutoDias();
         await fetchAutoMeses();
         await fetchAutoAynos();
+        await fetchFlags();
         await fetchAutoGeneros();
         await fetchTipoPersona();
         await fetchAutosGetIdAseguradora();
@@ -245,16 +264,16 @@ const EmisionScreen = () => {
 
   const fetchAutosRegimenesFiscales = async (idAse) => {
     try {
-      console.log("Tipo personaaaa ....",IdTipoPersona)
+
       const DataRquest = {
         usuario: dataArrayEmi.CotiData.usuario,
         contraseña: dataArrayEmi.CotiData.contraseña,
         idAseguradora: idAse,
-        idPersona:IdTipoPersona
+        idPersona: IdTipoPersona
       }
-      
+
       const response = await GetTipoRegimenFiscal(DataRquest);
-  
+
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setregimenesFiscales(data);
@@ -274,7 +293,7 @@ const EmisionScreen = () => {
       const DataRquest = {
         usuario: dataArrayEmi.CotiData.usuario,
         contraseña: dataArrayEmi.CotiData.contraseña,
-        idCotizacion:dataArrayEmi.DataItemSelect.id,
+        idCotizacion: dataArrayEmi.DataItemSelect.id,
       }
       const response = await GetIdAseguradora(DataRquest);
       console.log(response)
@@ -286,6 +305,8 @@ const EmisionScreen = () => {
         await fetchAutosGetTipoSociedad(idase);
         await fetchAutosGetGiro(idase);
         await fetchAutosRegimenesFiscales(idase);
+        await fetchPLCodigosBancos(idase);
+        await fetchPLGetMetodosPago(idase);
       } else {
         console.error('La respuesta de la API no contiene aseguradora.');
       }
@@ -308,7 +329,7 @@ const EmisionScreen = () => {
       if (response.data.Data.Data) {
 
         const data = response.data.Data.Data;
-        
+
         if (data[0].Id == 2) {
           setIsVisiblePM(true);
           setIsVisiblePF(false);
@@ -332,6 +353,75 @@ const EmisionScreen = () => {
     }
   };
 
+  const fetchFlags = async () => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idSubcanal: dataArrayEmi.CotiData.IDSubcananal
+      }
+
+      const response = await GetFlags(DataRquest);
+      console.log(response)
+      if (response.data.Data) {
+        const data = response.data.Data;
+      } else {
+        console.error('La respuesta de la API no contiene aseguradora.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchPLCodigosBancos = async (idAse) => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idAseguradora: idAse
+      }
+      const response = await GetTiposPersona(DataRquest);
+      if (response.data.Data.Data) {
+        const data = response.data.Data.Data;
+        setBancosEmisores(data);
+      } else {
+        console.error('La respuesta de la API no contiene bancos emisores.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchPLGetMetodosPago = async (idAse) => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idAseguradora: idAse
+      }
+      const response = await GetTiposPersona(DataRquest);
+      if (response.data.Data.Data) {
+
+        const data = response.data.Data.Data;
+        setMetodossPagos(data);
+
+      } else {
+        console.error('La respuesta de la API no contiene metodos de pago.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -343,6 +433,24 @@ const EmisionScreen = () => {
   const toggleVehiculoCollapse = () => {
     setVehiculoCollapsed(!vehiculoCollapsed);
   };
+
+  const togglePLCollapse = () => {
+    setPlCollapsed(!PlCollapsed);
+  };
+
+  const toggleSwitchPL = () => setIsEnabledPL(previousState => !previousState);
+  const toggleSwitchPR = () => setIsEnabledPR(previousState => !previousState);
+
+  const formatFechaExpiracion = (input) => {
+    const cleanedInput = input.replace(/[^0-9]/g, '');
+    if (cleanedInput.length > 2) {
+      const formattedInput = cleanedInput.slice(0, 2) + '/' + cleanedInput.slice(2);
+      setFechaExpiracion(formattedInput);
+    } else {
+      setFechaExpiracion(cleanedInput);
+    }
+  };
+
 
   if (!loadingCombos) {
     return (
@@ -671,6 +779,100 @@ const EmisionScreen = () => {
           onChangeText={setPlacas}
         />
       </Collapsible>
+
+      <View>
+
+        <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
+          <Text style={styles.buttonText}>Forma de Pago</Text>
+        </TouchableOpacity>
+
+        <Collapsible collapsed={PlCollapsed}>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitchPL}
+              value={isEnabledPL}
+            />
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitchPR}
+              value={isEnabledPR}
+            />
+          </View>
+
+          <View>
+            <Text>Nombre Tarjetahabiente</Text>
+            <TextInput
+              placeholder="Nombre del Tarjetahabiente"
+              value={nombreTarjetahabiente}
+              onChangeText={text => setNombreTarjetahabiente(text)}
+            />
+
+            <Text>Banco Emisor</Text>
+
+            <Picker
+              selectedValue={selectedBancoEmisor}
+              onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
+              style={styles.input}
+              enabled={false} >
+              {BancosEmisores.map((be) => (
+                <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
+              ))}
+            </Picker>
+
+
+            <Text>Método de Pago</Text>
+
+            <Picker
+              selectedValue={selectedMetodosPagos}
+              onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
+              style={styles.input}
+              enabled={false} >
+              {MetodosPagos.map((mp) => (
+                <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
+              ))}
+            </Picker>
+
+            <Text>Cuenta Clabe/No. Tarjeta</Text>
+            <TextInput
+              placeholder="Cuenta Clabe/No. Tarjeta"
+              value={cuentaClabeNoTarjeta}
+              onChangeText={text => setCuentaClabeNoTarjeta(text)}
+            />
+
+            <Text>Fecha de Expiración (MM/YY)</Text>
+            <TextInput
+              placeholder="MM/YY"
+              value={fechaExpiracion}
+              onChangeText={text => formatFechaExpiracion(text)}
+              keyboardType="numeric"
+              maxLength={5}
+            />
+
+            <Text>CVV Protegido de 3 Dígitos</Text>
+            <TextInput
+              placeholder="CVV"
+              value={cvv}
+              onChangeText={text => setCVV(text)}
+              secureTextEntry={true}
+              maxLength={3}
+            />
+          </View>
+
+        </Collapsible>
+
+
+      </View>
 
     </ScrollView>
 
