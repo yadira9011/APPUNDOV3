@@ -89,7 +89,7 @@ const CotizacionAutosScreen = ({ route }) => {
   const [TextClaveUnica, setClaveUnica] = useState('');
 
   useEffect(() => {
-    
+
     const loadData = async () => {
 
       try {
@@ -773,7 +773,7 @@ const CotizacionAutosScreen = ({ route }) => {
             ))}
           </Picker>
 
-          <View style={{ flexDirection: 'row', marginBottom:20,alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
+          <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
             <TextInput
               placeholder="Monto"
               value={textMonto}
@@ -782,7 +782,7 @@ const CotizacionAutosScreen = ({ route }) => {
             />
           </View>
 
-          <View style={{ flexDirection: 'row', marginBottom:20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 5 }}>
+          <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 5 }}>
             <TextInput
               placeholder="Codigo Postal"
               value={textCP}
@@ -858,9 +858,18 @@ const CotizacionAutosScreen = ({ route }) => {
             onPress={handleCotizar} >
             <Text style={styles.cotizarButtonText}>Cotizar</Text>
           </TouchableOpacity>
-          {loadingCotizacion && <ActivityIndicator style={styles.activityIndicator} />}
 
-          <View style={{ height: 35 }} />
+          {loadingCotizacion && (
+            <View style={styles.activityIndicatorContainer}>
+              <ActivityIndicator
+                style={styles.activityIndicator}
+                size="large"
+                color="#0000ff"
+              />
+            </View>
+          )}
+
+          <View style={{ height: 40 }} />
 
           <Modal
             animationType="slide"
@@ -915,12 +924,9 @@ const CotizacionAutosScreen = ({ route }) => {
 
   );
 
-
-
 };
 
 const styles = StyleSheet.create({
-  
   container: {
     padding: 15,
     backgroundColor: '#fff',
@@ -1005,8 +1011,17 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     backgroundColor: '#f9c2ff',
   },
+  activityIndicatorContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: '100%',
+    height: '100%',
+  },
   activityIndicator: {
     marginTop: 10,
+    transform: [{ scale: 2 }],
   },
 });
 

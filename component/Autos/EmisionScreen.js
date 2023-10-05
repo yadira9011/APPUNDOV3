@@ -97,6 +97,9 @@ const EmisionScreen = () => {
   const [isEnabledPL, setIsEnabledPL] = useState(false);
   const [isEnabledPR, setIsEnabledPR] = useState(false);
 
+  const [isPL, setIsPL] = useState(false);
+  const [isPR, setIsPR] = useState(false);
+
   const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('');
   const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('');
   const [fechaExpiracion, setFechaExpiracion] = useState('');
@@ -296,17 +299,19 @@ const EmisionScreen = () => {
         idCotizacion: dataArrayEmi.DataItemSelect.id,
       }
       const response = await GetIdAseguradora(DataRquest);
-      console.log(response)
+
       if (response.data.Data) {
         const data = response.data.Data;
         console.log("IDASEGURADORAAA...", data);
         const idase = data
         setIdAseguradora(idase);
-        await fetchAutosGetTipoSociedad(idase);
-        await fetchAutosGetGiro(idase);
-        await fetchAutosRegimenesFiscales(idase);
         await fetchPLCodigosBancos(idase);
         await fetchPLGetMetodosPago(idase);
+        if (selectedTipoPersona == 2) {
+          await fetchAutosGetTipoSociedad(idase);
+          await fetchAutosGetGiro(idase);
+          await fetchAutosRegimenesFiscales(idase);
+        }
       } else {
         console.error('La respuesta de la API no contiene aseguradora.');
       }
@@ -361,13 +366,22 @@ const EmisionScreen = () => {
         contraseña: dataArrayEmi.CotiData.contraseña,
         idSubcanal: dataArrayEmi.CotiData.IDSubcananal
       }
-
+      console.log("OBTENIENDO GETS FLAGS ....")
       const response = await GetFlags(DataRquest);
-      console.log(response)
+
       if (response.data.Data) {
-        const data = response.data.Data;
+
+        const pl = response.data.Data.PagoEnLinea;
+        const plBool = pl === 1;
+        const pr = response.data.Data.PagoEnLineaReferenciado;
+        const prBool = pr === 1;
+        console.log("Flags...", plBool, prBool)
+
+        setIsPL(plBool)
+        setIsPL(prBool)
+
       } else {
-        console.error('La respuesta de la API no contiene aseguradora.');
+        console.error('La respuesta de la API no contiene banderas.');
       }
       setLoading(false);
     } catch (error) {
@@ -410,7 +424,7 @@ const EmisionScreen = () => {
       if (response.data.Data.Data) {
 
         const data = response.data.Data.Data;
-        setMetodossPagos(data);
+        setMetodosPagos(data);
 
       } else {
         console.error('La respuesta de la API no contiene metodos de pago.');
@@ -438,8 +452,34 @@ const EmisionScreen = () => {
     setPlCollapsed(!PlCollapsed);
   };
 
-  const toggleSwitchPL = () => setIsEnabledPL(previousState => !previousState);
-  const toggleSwitchPR = () => setIsEnabledPR(previousState => !previousState);
+  const toggleSwitchPL = () => {
+    setIsEnabledPL(previousState => !previousState);
+    setIsEnabledPR(!isEnabledPL);
+  };
+
+  const toggleSwitchPR = () => {
+    setIsEnabledPR(previousState => !previousState);
+    setIsEnabledPL(!isEnabledPR);
+  };
+
+  // const toggleSwitchPL = () => {
+  //   if (plBool) {
+  //     setIsEnabledPL(True);
+  //   } else {
+  //     setIsEnabledPL(False);
+  //   }
+  // };
+
+  // const toggleSwitchPR = () => {
+  //   if (prBool) {
+  //     setIsEnabledPR(True);
+  //   } else {
+  //     setIsEnabledPR(False);
+  //   }
+  // };
+
+  // const toggleSwitchPL = () => setIsEnabledPL(previousState => !previousState); setIsEnabledPR(false);
+  // const toggleSwitchPR = () => setIsEnabledPR(previousState => !previousState); setIsEnabledPL(false);
 
   const formatFechaExpiracion = (input) => {
     const cleanedInput = input.replace(/[^0-9]/g, '');
@@ -451,6 +491,64 @@ const EmisionScreen = () => {
     }
   };
 
+  const handleEmitir = async () => {
+   
+
+    const edadpersona=30
+
+    const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
+    const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
+
+    const dataemi = {
+      "IdCotizacion": dataArrayEmi.DataItemSelect.id,
+      "NombrePersona": nombre,
+      "ApaternoPersona": apellidoPaterno,
+      "AmaternoPersona": apellidoMaterno,
+      "GeneroPersona": selectedGenero,
+      "EdadPersona": edadpersona,
+      "NacimientoPersona": "string",
+      "RFCPersona": rfc,
+      "CURPPersona": curp,
+      "Mail": correo,
+      "Telefono": telefono,
+      "CallePersona": calle,
+      "NumeroExteriorPersona": noExterior,
+      "NumeroInteriorPersona": noInterior,
+      "ColoniaPersona": colonia,
+      "CodigoPostalPersona": codigoPostal,
+      "MunicipioPersona": municipio,
+      "EstadoPersona": estado,
+      "CiudadPersona":ciudad,
+      "NumeroVin": numSerie,
+      "NumeroMotor": numMotor,
+      "PlacasVehiculo":placas,
+      "FInicioVigencia": "2023-10-05T16:56:51.159Z",
+      "BeneficiarioPreferente": false,
+      "NumeroSocio": "",
+      "NumeroCredito": "",
+      "usuario":  dataArrayEmi.CotiData.usuario,
+      "Contraseña":  dataArrayEmi.CotiData.contraseña,
+      "IDSubcananal":  dataArrayEmi.CotiData.IDSubcananal,
+      "NameTarjetabiente": nombreTarjetahabiente,
+      "FormaCobro": LabelFP,
+      "number": cuentaClabeNoTarjeta,
+      "bankcode":LabelBE,
+      "expmonth": "string",
+      "expyear": "string",
+      "cvvcsc": "string",
+      "PagoEnLinea": isPL,
+      "TipoPersona": selectedTipoPersona,
+      "RazonSocial": "string",
+      "NombreComercial": "string",
+      "Giro": "string",
+      "TipoSociedad": "string",
+      "RegimenSimplificado": true,
+      "TipoRegimenFiscal": "string",
+      "TipoCFDI": "string",
+      "strPoliza": ""
+    };
+    
+  };
 
   if (!loadingCombos) {
     return (
@@ -788,91 +886,109 @@ const EmisionScreen = () => {
 
         <Collapsible collapsed={PlCollapsed}>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
-            <Switch
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitchPL}
-              value={isEnabledPL}
-            />
-          </View>
+          {!isPL && !isPR && (
+            <Text style={{ marginRight: 10 }}>No se cuenta con método de pago configurado</Text>
+          )}
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
-            <Switch
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitchPR}
-              value={isEnabledPR}
-            />
-          </View>
+          {isPL && (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitchPL}
+                value={isEnabledPL}
+              />
+            </View>
+          )}
 
-          <View>
-            <Text>Nombre Tarjetahabiente</Text>
-            <TextInput
-              placeholder="Nombre del Tarjetahabiente"
-              value={nombreTarjetahabiente}
-              onChangeText={text => setNombreTarjetahabiente(text)}
-            />
+          {isPR && (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitchPR}
+                value={isEnabledPR}
+              />
+            </View>
+          )}
 
-            <Text>Banco Emisor</Text>
+          {isEnabledPL && (
+            <View>
+              <Text>Nombre Tarjetahabiente</Text>
+              <TextInput
+                placeholder="Nombre del Tarjetahabiente"
+                value={nombreTarjetahabiente}
+                onChangeText={text => setNombreTarjetahabiente(text)}
+              />
 
-            <Picker
-              selectedValue={selectedBancoEmisor}
-              onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
-              style={styles.input}
-              enabled={false} >
-              {BancosEmisores.map((be) => (
-                <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
-              ))}
-            </Picker>
+              <Text>Banco Emisor</Text>
+
+              <Picker
+                selectedValue={selectedBancoEmisor}
+                onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
+                style={styles.input}
+                enabled={false} >
+                {BancosEmisores.map((be) => (
+                  <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
+                ))}
+              </Picker>
 
 
-            <Text>Método de Pago</Text>
+              <Text>Método de Pago</Text>
 
-            <Picker
-              selectedValue={selectedMetodosPagos}
-              onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
-              style={styles.input}
-              enabled={false} >
-              {MetodosPagos.map((mp) => (
-                <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
-              ))}
-            </Picker>
+              <Picker
+                selectedValue={selectedMetodosPagos}
+                onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
+                style={styles.input}
+                enabled={false} >
+                {MetodosPagos.map((mp) => (
+                  <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
+                ))}
+              </Picker>
 
-            <Text>Cuenta Clabe/No. Tarjeta</Text>
-            <TextInput
-              placeholder="Cuenta Clabe/No. Tarjeta"
-              value={cuentaClabeNoTarjeta}
-              onChangeText={text => setCuentaClabeNoTarjeta(text)}
-            />
+              <Text>Cuenta Clabe/No. Tarjeta</Text>
+              <TextInput
+                placeholder="Cuenta Clabe/No. Tarjeta"
+                value={cuentaClabeNoTarjeta}
+                onChangeText={text => setCuentaClabeNoTarjeta(text)}
+              />
 
-            <Text>Fecha de Expiración (MM/YY)</Text>
-            <TextInput
-              placeholder="MM/YY"
-              value={fechaExpiracion}
-              onChangeText={text => formatFechaExpiracion(text)}
-              keyboardType="numeric"
-              maxLength={5}
-            />
+              <Text>Fecha de Expiración (MM/YY)</Text>
+              <TextInput
+                placeholder="MM/YY"
+                value={fechaExpiracion}
+                onChangeText={text => formatFechaExpiracion(text)}
+                keyboardType="numeric"
+                maxLength={5}
+              />
 
-            <Text>CVV Protegido de 3 Dígitos</Text>
-            <TextInput
-              placeholder="CVV"
-              value={cvv}
-              onChangeText={text => setCVV(text)}
-              secureTextEntry={true}
-              maxLength={3}
-            />
-          </View>
+              <Text>CVV Protegido de 3 Dígitos</Text>
+              <TextInput
+                placeholder="CVV"
+                value={cvv}
+                onChangeText={text => setCVV(text)}
+                secureTextEntry={true}
+                maxLength={3}
+              />
+            </View>
+          )}
 
         </Collapsible>
 
-
       </View>
+
+
+      {/* Botón de emitir */}
+      <TouchableOpacity
+        style={styles.cotizarButton}
+        onPress={handleEmitir} >
+        <Text style={styles.cotizarButtonText}>Emitir</Text>
+      </TouchableOpacity>
+
 
     </ScrollView>
 
@@ -942,6 +1058,18 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   boldText: {
+    fontWeight: 'bold',
+  },
+  cotizarButton: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  cotizarButtonText: {
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
