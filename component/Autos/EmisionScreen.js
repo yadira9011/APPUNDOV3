@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
   GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
-  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago
+  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI
 } from '../api';
 
 const EmisionScreen = () => {
@@ -93,6 +93,9 @@ const EmisionScreen = () => {
   const [selectedTipoSociedad, setselectedTipoSociedad] = useState('');
   const [regimenesFiscales, setregimenesFiscales] = useState([]);
   const [selectedRegimenFiscal, setselectedRegimenFiscal] = useState('');
+
+  const [TipoCDFI, setTipoCDFI] = useState([]);
+  const [selectedTipoCDFI, setselectedTipoCDFI] = useState('');
 
   const [isEnabledPL, setIsEnabledPL] = useState(false);
   const [isEnabledPR, setIsEnabledPR] = useState(false);
@@ -290,6 +293,30 @@ const EmisionScreen = () => {
     }
   };
 
+  const fetchAutosTipoCDFI = async (idAse) => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        idAseguradora: idAse,
+        idPersona: IdTipoPersona
+      }
+      const response = await GetTipoCDFI(DataRquest);
+      if (response.data.Data.Data) {
+        const data = response.data.Data.Data;
+        setTipoCDFI(data);
+        
+      } else {
+        console.error('La respuesta de la API no contiene regimenes fiscales.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
   const fetchAutosGetIdAseguradora = async () => {
     try {
 
@@ -311,6 +338,7 @@ const EmisionScreen = () => {
           await fetchAutosGetTipoSociedad(idase);
           await fetchAutosGetGiro(idase);
           await fetchAutosRegimenesFiscales(idase);
+          await fetchAutosTipoCDFI(idase);
         }
       } else {
         console.error('La respuesta de la API no contiene aseguradora.');
@@ -378,7 +406,7 @@ const EmisionScreen = () => {
         console.log("Flags...", plBool, prBool)
 
         setIsPL(plBool)
-        setIsPL(prBool)
+        setIsPR(prBool)
 
       } else {
         console.error('La respuesta de la API no contiene banderas.');
@@ -398,7 +426,7 @@ const EmisionScreen = () => {
         contraseña: dataArrayEmi.CotiData.contraseña,
         idAseguradora: idAse
       }
-      const response = await GetTiposPersona(DataRquest);
+      const response = await GetPLCodigosBancos(DataRquest);
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setBancosEmisores(data);
@@ -420,7 +448,7 @@ const EmisionScreen = () => {
         contraseña: dataArrayEmi.CotiData.contraseña,
         idAseguradora: idAse
       }
-      const response = await GetTiposPersona(DataRquest);
+      const response = await GetPLGetMetodosPago(DataRquest);
       if (response.data.Data.Data) {
 
         const data = response.data.Data.Data;
@@ -492,9 +520,9 @@ const EmisionScreen = () => {
   };
 
   const handleEmitir = async () => {
-   
 
-    const edadpersona=30
+
+    const edadpersona = 30
 
     const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
     const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
@@ -518,36 +546,36 @@ const EmisionScreen = () => {
       "CodigoPostalPersona": codigoPostal,
       "MunicipioPersona": municipio,
       "EstadoPersona": estado,
-      "CiudadPersona":ciudad,
+      "CiudadPersona": ciudad,
       "NumeroVin": numSerie,
       "NumeroMotor": numMotor,
-      "PlacasVehiculo":placas,
+      "PlacasVehiculo": placas,
       "FInicioVigencia": "2023-10-05T16:56:51.159Z",
       "BeneficiarioPreferente": false,
       "NumeroSocio": "",
       "NumeroCredito": "",
-      "usuario":  dataArrayEmi.CotiData.usuario,
-      "Contraseña":  dataArrayEmi.CotiData.contraseña,
-      "IDSubcananal":  dataArrayEmi.CotiData.IDSubcananal,
+      "usuario": dataArrayEmi.CotiData.usuario,
+      "Contraseña": dataArrayEmi.CotiData.contraseña,
+      "IDSubcananal": dataArrayEmi.CotiData.IDSubcananal,
       "NameTarjetabiente": nombreTarjetahabiente,
       "FormaCobro": LabelFP,
       "number": cuentaClabeNoTarjeta,
-      "bankcode":LabelBE,
+      "bankcode": LabelBE,
       "expmonth": "string",
       "expyear": "string",
       "cvvcsc": "string",
       "PagoEnLinea": isPL,
       "TipoPersona": selectedTipoPersona,
-      "RazonSocial": "string",
-      "NombreComercial": "string",
-      "Giro": "string",
-      "TipoSociedad": "string",
-      "RegimenSimplificado": true,
-      "TipoRegimenFiscal": "string",
+      "RazonSocial": razonSocial,
+      "NombreComercial": nombreComercial,
+      "Giro": selectedGiro,
+      "TipoSociedad": selectedTipoSociedad,
+      "RegimenSimplificado": false,
+      "TipoRegimenFiscal": selectedRegimenFiscal,
       "TipoCFDI": "string",
       "strPoliza": ""
     };
-    
+
   };
 
   if (!loadingCombos) {
