@@ -306,7 +306,6 @@ const EmisionScreen = () => {
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setTipoCDFI(data);
-        
       } else {
         console.error('La respuesta de la API no contiene regimenes fiscales.');
       }
@@ -521,11 +520,26 @@ const EmisionScreen = () => {
 
   const handleEmitir = async () => {
 
-
     const edadpersona = 30
+    const vNameTarjetabiente = "";
+    const vFormaCobro = "";
+    const vnumber = "";
+    const vbankcode = "";
+    const vexpmonth = "";
+    const vexpyear = "";
+    const vcvv= "";
 
-    const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
-    const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
+    if (isPL){
+       const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
+       const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
+       vNameTarjetabiente = nombreTarjetahabiente;
+       vFormaCobro = LabelFP;
+       vnumber = cuentaClabeNoTarjeta;
+       vbankcode = LabelBE;
+       vexpmonth = fechaExpiracion.substring(0, 2);
+       vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
+       vcvv= cvv;  
+    }
 
     const dataemi = {
       "IdCotizacion": dataArrayEmi.DataItemSelect.id,
@@ -557,13 +571,13 @@ const EmisionScreen = () => {
       "usuario": dataArrayEmi.CotiData.usuario,
       "Contraseña": dataArrayEmi.CotiData.contraseña,
       "IDSubcananal": dataArrayEmi.CotiData.IDSubcananal,
-      "NameTarjetabiente": nombreTarjetahabiente,
-      "FormaCobro": LabelFP,
-      "number": cuentaClabeNoTarjeta,
-      "bankcode": LabelBE,
-      "expmonth": "string",
-      "expyear": "string",
-      "cvvcsc": "string",
+      "NameTarjetabiente": vNameTarjetabiente,
+      "FormaCobro": vFormaCobro,
+      "number": vnumber,
+      "bankcode": vbankcode,
+      "expmonth": vexpmonth,
+      "expyear": vexpyear,
+      "cvvcsc": vcvv,
       "PagoEnLinea": isPL,
       "TipoPersona": selectedTipoPersona,
       "RazonSocial": razonSocial,
@@ -572,7 +586,7 @@ const EmisionScreen = () => {
       "TipoSociedad": selectedTipoSociedad,
       "RegimenSimplificado": false,
       "TipoRegimenFiscal": selectedRegimenFiscal,
-      "TipoCFDI": "string",
+      "TipoCFDI": TipoCDFI,
       "strPoliza": ""
     };
 
