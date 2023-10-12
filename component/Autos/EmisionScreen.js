@@ -8,6 +8,7 @@ import Collapsible from 'react-native-collapsible';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingComponent from '../Componentes/LoadingComponent';
 
 import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
@@ -405,8 +406,10 @@ const EmisionScreen = () => {
         console.log("Flags...", plBool, prBool)
 
         setIsPL(plBool)
+        setIsEnabledPL(plBool);
         setIsPR(prBool)
-
+        setIsEnabledPR(prBool);
+       
       } else {
         console.error('La respuesta de la API no contiene banderas.');
       }
@@ -941,6 +944,7 @@ const EmisionScreen = () => {
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitchPL}
                 value={isEnabledPL}
+                disabled={!isPR}
               />
             </View>
           )}
@@ -954,6 +958,7 @@ const EmisionScreen = () => {
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitchPR}
                 value={isEnabledPR}
+                disabled={!isPL}
               />
             </View>
           )}
@@ -1022,16 +1027,12 @@ const EmisionScreen = () => {
         </Collapsible>
 
       </View>
-
-
       {/* Botón de emitir */}
       <TouchableOpacity
         style={styles.cotizarButton}
         onPress={handleEmitir} >
         <Text style={styles.cotizarButtonText}>Emitir</Text>
       </TouchableOpacity>
-
-
     </ScrollView>
 
   );
