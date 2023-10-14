@@ -22,10 +22,54 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ema
             }
 
             const response = await GetCotizacionApi(DataRquest);
-            if (response.data.Data.Data) {
-                console.log(response.data.Data.Data)
-            }
 
+            if (response.data.Data.Data) {
+                
+                console.log(response.data.Data.Data);
+
+
+                // const DataSolicitudTitulos = {
+                //     DescripcionVehiculo: selectedTextDescripcion,
+                //     Modelo: selectedTextModelo,
+                //     TipoAut: selectedTextTipoVehiculo,
+                //     Marca: selectedTextMarca,
+                //     EstatusVehiculo: selectedTextEstatusVehiculo,
+                //     TipoUso: selectedTextTipoUso,
+                //     tipoPaquete: selectedTextPaquetes,
+                //     tipoPoliza: selectedTextTipoPoliza,
+                //     tipoVigenciaPago: selectedTextTipoVigencia,
+                // }
+
+                // const dataCotizacion = {
+                //     ClaveVehiculo: selectedOptionDescripcion,
+                //     IDTipoVehiculo: selectedOptionTipoVehiculo,
+                //     IDEstatusVehiculo: selectedOption,
+                //     IDIndenmizacion: selectedOptionIndemnizacion,
+                //     SumaAsegurada: textMonto,
+                //     CodigoPostal: textCP,
+                //     IDTipoUso: selectedOptionTipoUso,
+                //     IDDeducibles: selectedOptionDeducible,
+                //     IDPagoVigencia: selectedOptionVigencia,
+                //     IDUDI: 0,
+                //     IDPaquete: selectedOptionPaquete,
+                //     ColoniaPersona: TextColonia,
+                //     MunicipioPersona: TextMunicipio,
+                //     CiudadPersona: TextCiudad,
+                //     EstadoPersona: TextEstado,
+                //     usuario: DataParameter.email,
+                //     contraseña: DataParameter.password,
+                //     IDSubcananal: DataParameter.IdSubCanal
+                // }
+
+                // const dataArray = {
+                //     DataResul: resultData,
+                //     CotiData: dataCotizacion,
+                //     DataTitulos: DataSolicitudTitulos
+                // }
+                // navigation.navigate('ResultadoCotizacion', { dataArray });
+
+            }
+            
         } catch (error) {
             console.log(error);
         }
