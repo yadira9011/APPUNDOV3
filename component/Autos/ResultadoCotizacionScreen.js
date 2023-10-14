@@ -32,7 +32,6 @@ const ResultadoCotizacionScreen = () => {
         { name: 'LogoSura', path: require('../../assets/Aseguradoras/LogoSura.png') }
     ];
 
-
     useEffect(() => {
         console.log('entre pantalla de resultados...')
         if (dataArray.DataResul.length > 0) {
@@ -443,6 +442,5 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 });
-
 
 export default ResultadoCotizacionScreen;

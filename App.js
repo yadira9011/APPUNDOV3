@@ -41,7 +41,7 @@ export default function App() {
         <Stack.Screen name="Subcanales" component={SubcanalesScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Modulos" component={ModulosScreen} />
-        <Stack.Screen name="DrawerCotizacion" component={DrawerNavigator} />
+        <Stack.Screen name="DrawerCotizacion" component={DrawerNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
         <Stack.Screen name="Emision" component={EmisionScreen} />
         <Stack.Screen name="PDFViewerScreen" component={PDFViewerScreen} />

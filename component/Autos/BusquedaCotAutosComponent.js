@@ -3,32 +3,27 @@ import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'reac
 import { GetPolizaPdfApi } from '../api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, email, password }) {
+export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [numeroPoliza, setNumeroPoliza] = useState('6040035690');
+    const [FolioCotizacion, setFolioCotizacion] = useState('6040035690');
 
-    const handleGuardarPoliza = async () => {
-        onSave(numeroPoliza, idsubcanal, email, password);
+    const handleBuscarCotizacion = async () => {
+        
+        onSave(FolioCotizacion, email, password);
         try {
             const DataRquest = {
-                numeroPoliza: numeroPoliza,
-                IDSubcananal: idsubcanal,
+                numeroPoliza: FolioCotizacion,
                 usuario: email,
                 contraseña: password,
             }
-            const response = await GetPolizaPdfApi(DataRquest);
 
+            const response = await GetPolizaPdfApi(DataRquest);
             if (response.data.Data.Data) {
-                const data = response.data.Data.Data;
-                const pdfUrl = data;
-                navigation.navigate('PDFViewerScreen', { pdfUrl });
-            } else {
-                console.error('La respuesta de la API no contiene pdf de poliza.');
+                console.log(response.data.Data.Data)
             }
 
         } catch (error) {
-            console.error('Error al obtener los datos:', error);
         }
     };
 
@@ -37,17 +32,17 @@ export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, e
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <Text style={{ marginBottom: 10, fontSize: 18 }}>
-                        Ingrese el número de póliza:
+                        Folio de Cotización:
                     </Text>
                     <TextInput
                         value={numeroPoliza}
-                        onChangeText={(text) => setNumeroPoliza(text)}
-                        placeholder="Número de Póliza"
+                        onChangeText={(text) => setFolioCotizacion(text)}
+                        placeholder="Folio de Cotización"
                         style={styles.input}
                     />
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={handleGuardarPoliza} style={styles.saveButton}>
-                            <Text style={styles.buttonText}>Guardar</Text>
+                        <TouchableOpacity onPress={handleBuscarCotizacion} style={styles.saveButton}>
+                            <Text style={styles.buttonText}>Buscar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
                             <Text style={styles.buttonText}>Cancelar</Text>
