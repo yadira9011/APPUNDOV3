@@ -1,12 +1,16 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+// import React from 'react';
+// import { View, StyleSheet } from 'react-native';
+//import Pdf from 'react-native-pdf';
 //import Pdf from 'react-native-pdf';
 
+import React, { Component } from 'react';
+import { View, StyleSheet, WebView } from 'react-native';
+import { Constants } from 'expo';
 
 const PDFViewerScreen = ({ route }) => {
 
     const { pdfUrl } = route.params;
-    console.log("urllll",pdfUrl)
+    console.log("urllll", pdfUrl)
 
     return (
         <View style={styles.container}>
@@ -23,6 +27,19 @@ const PDFViewerScreen = ({ route }) => {
                     console.log(`Error al cargar el PDF: ${error}`);
                 }}
                 style={styles.pdfView}
+            /> */}
+
+            {/* <Pdf
+                source={{ uri: 'http://www.pdf995.com/samples/pdf.pdf', cache: true }}
+                onLoadComplete={(numberOfPages, filePath) => {
+                    console.log(`number of pages: ${numberOfPages}`);
+                }}
+                onPageChanged={(page, numberOfPages) => {
+                    console.log(`current page: ${page}`);
+                }}
+                onError={(error) => {
+                    console.log(error);
+                }}
             /> */}
 
         </View>
