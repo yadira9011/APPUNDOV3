@@ -3,9 +3,9 @@
 //import Pdf from 'react-native-pdf';
 //import Pdf from 'react-native-pdf';
 
-import React, { Component } from 'react';
-import { View, StyleSheet, WebView } from 'react-native';
-import { Constants } from 'expo';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 const PDFViewerScreen = ({ route }) => {
 
@@ -15,6 +15,20 @@ const PDFViewerScreen = ({ route }) => {
     return (
         <View style={styles.container}>
 
+            <WebView
+                source={{ pdfUrl }}
+                scalesPageToFit={true}
+                originWhitelist={['*']}
+                allowsFullscreenVideo={true}
+                javaScriptEnabled={true}
+                injectedJavaScript={'(function() { })()'}
+            />
+
+            {/* <PDFReader
+                source={{
+                    uri: 'http://gahp.net/wp-content/uploads/2017/09/sample.pdf',
+                }}
+            /> */}
             {/* <Pdf
                 source={{ uri: pdfUrl, cache: true }}
                 onLoadComplete={(numberOfPages, filePath) => {
