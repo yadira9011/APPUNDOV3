@@ -10,7 +10,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import MySideMenu from '../Componentes/SideMenu';
+
 
 const Drawer = createDrawerNavigator();
 
@@ -671,10 +671,10 @@ const CotizacionAutosScreen = () => {
         initialRouteName="CotizacionAutos">
         <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
       </Drawer.Navigator> */}
-
+{/* 
       <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ padding: 10 }}>
         <Ionicons name="menu" size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <ScrollView style={styles.container}>
         {!loadingCombos ? (

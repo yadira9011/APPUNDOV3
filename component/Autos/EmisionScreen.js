@@ -179,6 +179,7 @@ const EmisionScreen = () => {
       console.error('Error al obtener los datos:', error);
       setLoading(false);
     }
+    
   };
 
   const fetchAutoAynos = async () => {

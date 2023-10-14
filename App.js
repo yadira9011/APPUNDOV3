@@ -15,48 +15,25 @@ import CotizacionAutosScreen from './component/Autos/CotizacionAutosScreen';
 import ResultadoCotizacionScreen from './component/Autos/ResultadoCotizacionScreen';
 import EmisionScreen from './component/Autos/EmisionScreen';
 import SideMenu from './component/Componentes/SideMenu';
+import PDFViewerScreen from './component/Componentes/PDFViewerScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function MainStack() {
-  return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Grupos" component={GruposScreen} />
-      <Stack.Screen name="Clientes" component={ClientesScreen} />
-      <Stack.Screen name="Canales" component={CanalesScreen} />
-      <Stack.Screen name="Subcanales" component={SubcanalesScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Modulos" component={ModulosScreen} />
-      {/* <Stack.Screen name="CotizacionAutos" component={CotizacionAutosScreen} /> */}
-      <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
-      <Stack.Screen name="Emision" component={EmisionScreen} />
-    </Stack.Navigator>
-  );
-}
-
 const DrawerNavigator = () => (
-  <Drawer.Navigator>
-    <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
+  <Drawer.Navigator drawerContent={(props) => <SideMenu {...props} />}>
+    <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} initialParams={{ DataParameter: '' }} />
   </Drawer.Navigator>
 );
 
+
 export default function App() {
   return (
+
     <NavigationContainer>
-
-      {/*<Drawer.Navigator initialRouteName="Main" drawerContent={(props) => <SideMenu {...props} />}>
-        <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-      </Drawer.Navigator> */}
-
-      {/* <Drawer.Navigator
-        drawerContent={props => <SideMenu {...props} />}
-        initialRouteName="Login">
-        <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-      </Drawer.Navigator> */}
-
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator screenOptions={{
+        headerShown: true,
+      }} initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Grupos" component={GruposScreen} />
         <Stack.Screen name="Clientes" component={ClientesScreen} />
@@ -64,30 +41,12 @@ export default function App() {
         <Stack.Screen name="Subcanales" component={SubcanalesScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Modulos" component={ModulosScreen} />
-        <Stack.Screen name="CotizacionAutos" component={DrawerNavigator} />
+        <Stack.Screen name="DrawerCotizacion" component={DrawerNavigator} />
         <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
         <Stack.Screen name="Emision" component={EmisionScreen} />
+        <Stack.Screen name="PDFViewerScreen" component={PDFViewerScreen} />
       </Stack.Navigator>
-
-      {/* <Drawer.Navigator initialRouteName="Login" drawerContent={(props) => <SideMenu {...props} />}>
-        <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-      </Drawer.Navigator> */}
-
     </NavigationContainer>
-    // <NavigationContainer>
-    //   <Drawer.Navigator initialRouteName="Login" drawerContent={(props) => <SideMenu {...props} />}>
-    //     <Drawer.Screen name="Login" component={LoginScreen} />
-    //     <Drawer.Screen name="Grupos" component={GruposScreen} />
-    //     <Drawer.Screen name="Clientes" component={ClientesScreen} />
-    //     <Drawer.Screen name="Canales" component={CanalesScreen} />
-    //     <Drawer.Screen name="Subcanales" component={SubcanalesScreen} />
-    //     <Drawer.Screen name="Home" component={HomeScreen} />
-    //     <Drawer.Screen name="Modulos" component={ModulosScreen} />
-    //     <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-    //     <Drawer.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
-    //     <Drawer.Screen name="Emision" component={EmisionScreen} />
-    //   </Drawer.Navigator>
-    //</NavigationContainer>
   );
 }
 
