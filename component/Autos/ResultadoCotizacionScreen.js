@@ -64,7 +64,6 @@ const ResultadoCotizacionScreen = () => {
         }
     }, [dataArray]);
 
-
     const renderItem = ({ item, onPress }) => (
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>

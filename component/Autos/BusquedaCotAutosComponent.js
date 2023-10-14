@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'react-native';
-import { GetPolizaPdfApi } from '../api';
+import { GetCotizacionApi } from '../api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
+export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('6040035690');
+    const [FolioCotizacion, setFolioCotizacion] = useState('123');
 
     const handleBuscarCotizacion = async () => {
-        
+
         onSave(FolioCotizacion, email, password);
+
+        console.log(FolioCotizacion, email, password)
+
         try {
             const DataRquest = {
                 numeroPoliza: FolioCotizacion,
@@ -18,12 +21,13 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                 contraseña: password,
             }
 
-            const response = await GetPolizaPdfApi(DataRquest);
+            const response = await GetCotizacionApi(DataRquest);
             if (response.data.Data.Data) {
                 console.log(response.data.Data.Data)
             }
 
         } catch (error) {
+            console.log(error);
         }
     };
 
@@ -35,7 +39,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                         Folio de Cotización:
                     </Text>
                     <TextInput
-                        value={numeroPoliza}
+                        value={FolioCotizacion}
                         onChangeText={(text) => setFolioCotizacion(text)}
                         placeholder="Folio de Cotización"
                         style={styles.input}

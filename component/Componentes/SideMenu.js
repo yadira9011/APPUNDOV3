@@ -34,20 +34,23 @@ const MySideMenu = (props) => {
         navigation.closeDrawer();
     };
 
-
     const handleBuscarCoti = () => {
         console.log('Buscar Cotización');
+        setemail(route.params.params.DataParameter.email);
+        setpassword(route.params.params.DataParameter.password);
+        setModalBCVisible(true);
         navigation.closeDrawer();
     };
 
     const handleBuscarCotizacion = (FolioCotizacion, email, password) => {
         console.log('buscar cotizacion folio :', FolioCotizacion);
-        setModalVisible(true);
+        setModalBCVisible(false);
         navigation.closeDrawer();
     };
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
             <TouchableOpacity onPress={handleImprimirPoliza} style={{ padding: 10 }}>
                 <Text>Imprimir Póliza</Text>
             </TouchableOpacity>
@@ -74,7 +77,6 @@ const MySideMenu = (props) => {
                 email={email}
                 password={password}
             />
-
 
         </View>
     );

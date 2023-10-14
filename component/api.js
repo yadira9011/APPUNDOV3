@@ -263,6 +263,10 @@ export const GetPolizaPdfApi = (data) => {
   return axios.post(`${BASE_URL}/API/Autos/PolizaPDF`, data);
 };
 
+export const GetCotizacionApi = (data) => {
+  return axios.post(`${BASE_URL}/API/Autos/GetBusquedaCotizacion`, data);
+};
+
 
 export const GetCoberturasCotizacion = (dataSearch) => {
   return axios.get(`${BASE_URL}/API/Autos/ConsultarCoberturas`, {
