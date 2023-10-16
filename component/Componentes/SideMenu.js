@@ -38,11 +38,12 @@ const MySideMenu = (props) => {
         console.log('Buscar Cotización');
         setemail(route.params.params.DataParameter.email);
         setpassword(route.params.params.DataParameter.password);
+        setIdSubCanal(route.params.params.DataParameter.IdSubCanal);
         setModalBCVisible(true);
         navigation.closeDrawer();
     };
 
-    const handleBuscarCotizacion = (FolioCotizacion, email, password) => {
+    const handleBuscarCotizacion = (FolioCotizacion, idsubcanal, email, password) => {
         console.log('buscar cotizacion folio :', FolioCotizacion);
         setModalBCVisible(false);
         navigation.closeDrawer();
@@ -75,6 +76,7 @@ const MySideMenu = (props) => {
                 onClose={() => setModalBCVisible(false)}
                 onSave={handleBuscarCotizacion}
                 email={email}
+                idsubcanal={IdSubCanal}
                 password={password}
             />
 

@@ -10,12 +10,14 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ema
 
     const handleBuscarCotizacion = async () => {
 
-        onSave(FolioCotizacion, email, password);
+        onSave(FolioCotizacion, email,password,IdSubcanal);
 
         try {
 
             const DataRquest = {
-                numeroPoliza: FolioCotizacion,
+                Cotizacion: FolioCotizacion,
+                IdSubcanal:IdSubcanal,
+                IdUsuario:1,
                 usuario: email,
                 contraseña: password,
             }
