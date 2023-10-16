@@ -6,15 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('123');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-12102023092450535');
 
     const handleBuscarCotizacion = async () => {
 
         onSave(FolioCotizacion, email, password);
 
-        console.log(FolioCotizacion, email, password)
-
         try {
+
             const DataRquest = {
                 numeroPoliza: FolioCotizacion,
                 usuario: email,
@@ -25,8 +24,10 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ema
 
             if (response.data.Data.Data) {
                 
-                console.log(response.data.Data.Data);
-
+                datos_cot=response.data.Data;
+                // console.log(datos_cot);
+                const parametros = JSON.parse(datos_cot.Parametros);
+                console.log(parametros);
 
                 // const DataSolicitudTitulos = {
                 //     DescripcionVehiculo: selectedTextDescripcion,
@@ -66,6 +67,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ema
                 //     CotiData: dataCotizacion,
                 //     DataTitulos: DataSolicitudTitulos
                 // }
+                
                 // navigation.navigate('ResultadoCotizacion', { dataArray });
 
             }
