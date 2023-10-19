@@ -44,7 +44,7 @@ const MySideMenu = (props) => {
     };
 
     const handleBuscarCotizacion = (FolioCotizacion, idsubcanal, email, password) => {
-        console.log('buscar cotizacion folio :', FolioCotizacion);
+        console.log('buscar cotizacion folio :', FolioCotizacion, idsubcanal);
         setModalBCVisible(false);
         navigation.closeDrawer();
     };

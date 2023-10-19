@@ -3,77 +3,76 @@ import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'reac
 import { GetCotizacionApi } from '../api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, email, password }) {
+export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-12102023092450535');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-12102023082739534');
 
     const handleBuscarCotizacion = async () => {
 
-        onSave(FolioCotizacion, email,password,IdSubcanal);
+        onSave(FolioCotizacion, email, password, idsubcanal);
 
         try {
 
             const DataRquest = {
                 Cotizacion: FolioCotizacion,
-                IdSubcanal:IdSubcanal,
-                IdUsuario:1,
+                IdSubcanal: idsubcanal,
+                IdUsuario: 1,
                 usuario: email,
                 contraseña: password,
             }
-
+            // console.log("aqqqqqq",DataRquest);
             const response = await GetCotizacionApi(DataRquest);
-
-            if (response.data.Data.Data) {
-                
-                datos_cot=response.data.Data;
-                // console.log(datos_cot);
-                const parametros = JSON.parse(datos_cot.Parametros);
-                console.log(parametros);
-
-                // const DataSolicitudTitulos = {
-                //     DescripcionVehiculo: selectedTextDescripcion,
-                //     Modelo: selectedTextModelo,
-                //     TipoAut: selectedTextTipoVehiculo,
-                //     Marca: selectedTextMarca,
-                //     EstatusVehiculo: selectedTextEstatusVehiculo,
-                //     TipoUso: selectedTextTipoUso,
-                //     tipoPaquete: selectedTextPaquetes,
-                //     tipoPoliza: selectedTextTipoPoliza,
-                //     tipoVigenciaPago: selectedTextTipoVigencia,
-                // }
-
-                // const dataCotizacion = {
-                //     ClaveVehiculo: selectedOptionDescripcion,
-                //     IDTipoVehiculo: selectedOptionTipoVehiculo,
-                //     IDEstatusVehiculo: selectedOption,
-                //     IDIndenmizacion: selectedOptionIndemnizacion,
-                //     SumaAsegurada: textMonto,
-                //     CodigoPostal: textCP,
-                //     IDTipoUso: selectedOptionTipoUso,
-                //     IDDeducibles: selectedOptionDeducible,
-                //     IDPagoVigencia: selectedOptionVigencia,
-                //     IDUDI: 0,
-                //     IDPaquete: selectedOptionPaquete,
-                //     ColoniaPersona: TextColonia,
-                //     MunicipioPersona: TextMunicipio,
-                //     CiudadPersona: TextCiudad,
-                //     EstadoPersona: TextEstado,
-                //     usuario: DataParameter.email,
-                //     contraseña: DataParameter.password,
-                //     IDSubcananal: DataParameter.IdSubCanal
-                // }
-
-                // const dataArray = {
-                //     DataResul: resultData,
-                //     CotiData: dataCotizacion,
-                //     DataTitulos: DataSolicitudTitulos
-                // }
-                
-                // navigation.navigate('ResultadoCotizacion', { dataArray });
-
+            if (!response.data.Data.HasError) {
+                const datos_cot = response.data.Data.Data;
+                const parametros_cot = datos_cot.parametros;
+                // console.log(parametros_cot);
+                // const parametros = JSON.parse(datos_cot.Parametros);
+                // console.log(parametros);
+                const DataSolicitudTitulos = {
+                    DescripcionVehiculo: parametros_cot.vehiculo.Descripcion.text,
+                    Modelo: parametros_cot.vehiculo.Modelo,
+                    TipoAut: parametros_cot.vehiculo.Tipo.text,
+                    Marca: parametros_cot.vehiculo.Marca.text,
+                    EstatusVehiculo: parametros_cot.EstatusVehiculo.text,
+                    TipoUso: parametros_cot.TipoUso.text,
+                    tipoPaquete: parametros_cot.Paquetes.text,
+                    tipoPoliza: parametros_cot.TipoPoliza.text,
+                    tipoVigenciaPago: parametros_cot.PagoVigencia.text,
+                }
+                //console.log(DataSolicitudTitulos);
+                const dataCotizacion = {
+                    ClaveVehiculo: parametros_cot.vehiculo.cu,
+                    IDTipoVehiculo: parametros_cot.TipoVehiculo.value,
+                    IDEstatusVehiculo: parametros_cot.EstatusVehiculo.value,
+                    IDIndenmizacion: parametros_cot.Indemnizacion.value,
+                    SumaAsegurada: parametros_cot.SumaAsegurada,
+                    CodigoPostal: parametros_cot.CodigoPostal,
+                    IDTipoUso: parametros_cot.TipoUso.value,
+                    IDDeducibles: parametros_cot.Deducibles.value,
+                    IDPagoVigencia: parametros_cot.PagoVigencia.value,
+                    IDUDI: 0,
+                    IDPaquete: parametros_cot.Paquetes.value,
+                    ColoniaPersona: "",
+                    MunicipioPersona: "",
+                    CiudadPersona: "",
+                    EstadoPersona: "",
+                    usuario: email,
+                    contraseña: password,
+                    IDSubcananal: idsubcanal
+                }
+                console.log(dataCotizacion)
+                const resultData = datos_cot.responses
+                const dataArray = {
+                    DataResul: resultData,
+                    CotiData: dataCotizacion,
+                    DataTitulos: DataSolicitudTitulos
+                }
+                navigation.navigate('ResultadoCotizacion', { dataArray });
+            } else {
+                alert(response.data.Data.Message);
             }
-            
+
         } catch (error) {
             console.log(error);
         }
