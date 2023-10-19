@@ -359,4 +359,10 @@ export const GetPLGetMetodosPago = (credential) => {
     params: credential
   });
 };
+export const GetConfigAgente= (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/ConfigAgente`, {
+    params: credential
+  });
+};
+
 

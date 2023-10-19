@@ -13,7 +13,7 @@ import LoadingComponent from '../Componentes/LoadingComponent';
 import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
   GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
-  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI
+  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI, GetConfigAgente
 } from '../api';
 
 const EmisionScreen = () => {
@@ -119,11 +119,21 @@ const EmisionScreen = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
+
+        // dataArrayEmi.DataItemSelect.IdClaveAgente
+
         setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
+        setColonia(dataArrayEmi.CotiData.ColoniaPersona);
+        setCodigoPostal(dataArrayEmi.CotiData.CodigoPostal);
+        setMunicipio(dataArrayEmi.CotiData.MunicipioPersona);
+        setEstado(dataArrayEmi.CotiData.EstadoPersona);
+        setCiudad(dataArrayEmi.CotiData.CiudadPersona);
+
         await fetchAutoDias();
         await fetchAutoMeses();
         await fetchAutoAynos();
         await fetchFlags();
+        await fetchConfigAgente();
         await fetchAutoGeneros();
         await fetchTipoPersona();
         await fetchAutosGetIdAseguradora();
@@ -179,7 +189,7 @@ const EmisionScreen = () => {
       console.error('Error al obtener los datos:', error);
       setLoading(false);
     }
-    
+
   };
 
   const fetchAutoAynos = async () => {
@@ -410,7 +420,34 @@ const EmisionScreen = () => {
         setIsEnabledPL(plBool);
         setIsPR(prBool)
         setIsEnabledPR(prBool);
-       
+
+      } else {
+        console.error('La respuesta de la API no contiene banderas.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchConfigAgente = async () => {
+    try {
+
+      const DataRquest = {
+        usuario: dataArrayEmi.CotiData.usuario,
+        contraseña: dataArrayEmi.CotiData.contraseña,
+        IdClaveAgente: dataArrayEmi.DataItemSelect.IdClaveAgentel
+      }
+
+      console.log("OBTENIENDO LOS DATOS DE AGENTE ....")
+
+      const response = await GetConfigAgente(DataRquest);
+
+      if (response.data.Data) {
+
+        console.log(response)
+
       } else {
         console.error('La respuesta de la API no contiene banderas.');
       }
@@ -524,25 +561,28 @@ const EmisionScreen = () => {
 
   const handleEmitir = async () => {
 
-    const edadpersona = 30
+    const fecha_nacimiento_persona = selectedAno + "/" + selectedMes + "/" + selectedDia
+    const fecha = new Date();
+    const anyoActual = fecha.getFullYear();
+    const EdadPersona = anyoActual - selectedAno;
     const vNameTarjetabiente = "";
     const vFormaCobro = "";
     const vnumber = "";
     const vbankcode = "";
     const vexpmonth = "";
     const vexpyear = "";
-    const vcvv= "";
+    const vcvv = "";
 
-    if (isPL){
-       const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
-       const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
-       vNameTarjetabiente = nombreTarjetahabiente;
-       vFormaCobro = LabelFP;
-       vnumber = cuentaClabeNoTarjeta;
-       vbankcode = LabelBE;
-       vexpmonth = fechaExpiracion.substring(0, 2);
-       vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
-       vcvv= cvv;  
+    if (isPL) {
+      const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
+      const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
+      vNameTarjetabiente = nombreTarjetahabiente;
+      vFormaCobro = LabelFP;
+      vnumber = cuentaClabeNoTarjeta;
+      vbankcode = LabelBE;
+      vexpmonth = fechaExpiracion.substring(0, 2);
+      vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
+      vcvv = cvv;
     }
 
     const dataemi = {
@@ -551,8 +591,8 @@ const EmisionScreen = () => {
       "ApaternoPersona": apellidoPaterno,
       "AmaternoPersona": apellidoMaterno,
       "GeneroPersona": selectedGenero,
-      "EdadPersona": edadpersona,
-      "NacimientoPersona": "string",
+      "EdadPersona": EdadPersona,
+      "NacimientoPersona": fecha_nacimiento_persona,
       "RFCPersona": rfc,
       "CURPPersona": curp,
       "Mail": correo,
@@ -787,6 +827,7 @@ const EmisionScreen = () => {
               <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
             ))}
           </Picker>
+
           <Picker
             style={styles.picker}
             selectedValue={selectedMes}
@@ -857,6 +898,7 @@ const EmisionScreen = () => {
         <TextInput
           style={styles.input}
           value={colonia}
+          editable={false}
           onChangeText={setColonia}
         />
 
@@ -864,6 +906,7 @@ const EmisionScreen = () => {
         <TextInput
           style={styles.input}
           value={codigoPostal}
+          editable={false}
           onChangeText={setCodigoPostal}
           keyboardType="numeric"
         />
@@ -872,12 +915,14 @@ const EmisionScreen = () => {
         <TextInput
           style={styles.input}
           value={municipio}
+          editable={false}
           onChangeText={setMunicipio}
         />
 
         <Text>Estado</Text>
         <TextInput
           style={styles.input}
+          editable={false}
           value={estado}
           onChangeText={setEstado}
         />
@@ -886,6 +931,7 @@ const EmisionScreen = () => {
         <TextInput
           style={styles.input}
           value={ciudad}
+          editable={false}
           onChangeText={setCiudad}
         />
       </Collapsible>

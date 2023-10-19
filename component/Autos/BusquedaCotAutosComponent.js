@@ -11,7 +11,6 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
     const handleBuscarCotizacion = async () => {
 
         onSave(FolioCotizacion, email, password, idsubcanal);
-
         try {
 
             const DataRquest = {
@@ -68,7 +67,9 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     CotiData: dataCotizacion,
                     DataTitulos: DataSolicitudTitulos
                 }
+                
                 navigation.navigate('ResultadoCotizacion', { dataArray });
+
             } else {
                 alert(response.data.Data.Message);
             }
@@ -76,6 +77,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
         } catch (error) {
             console.log(error);
         }
+
     };
 
     return (

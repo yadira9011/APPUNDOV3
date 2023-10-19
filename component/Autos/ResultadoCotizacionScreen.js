@@ -57,6 +57,7 @@ const ResultadoCotizacionScreen = () => {
                     HasError: item.HasError,
                     Message: item.Message,
                     imageUrl: ImagePath.path,
+                    IdClaveAgente:item.IdClaveAgente
                 };
                 return data;
             });
@@ -97,8 +98,6 @@ const ResultadoCotizacionScreen = () => {
                     </>
                 )}
             </View>
-
-
         </View>
     );
 
