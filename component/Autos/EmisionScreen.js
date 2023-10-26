@@ -129,6 +129,11 @@ const EmisionScreen = () => {
   const [isDatePickerEnabled, setisDatePickerEnabled] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
 
+  const [fechaMax, setFechaMax] = useState(null);
+  const [fechaMin, setFechaMin] = useState(null);
+  const [fechaActual, setFechaActual] = useState(null);
+
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -471,7 +476,19 @@ const EmisionScreen = () => {
       console.log("OBTENIENDO LOS DATOS DE AGENTE ....", dataArrayEmi.DataItemSelect.IdClaveAgente)
       const response = await GetConfigAgente(DataRquest);
       if (response.data.Data !== null) {
+
         console.log("CONFIG AGENTE RESPONSE", response.data.Data)
+
+        let vfechaMax = response.data.Data.FECHA_MAXIMA;
+        let vfechaMin = response.data.Data.FECHA_MINIMA;
+        let vfechaActual = response.data.Data.FECHA_ACTUAL;
+
+        setFechaMax(vfechaMax);
+        setFechaMin(vfechaMin);
+        setFechaActual(vfechaActual);
+
+        console.log("FECHAS EMI ANTICIPADA", fechaMax,fechaMin, fechaActual)
+
       } else {
         console.error('La respuesta de la API no contiene información de clave de agente..');
       }
@@ -1044,56 +1061,50 @@ const EmisionScreen = () => {
         </TouchableOpacity>
         <Collapsible collapsed={DPCollapsed}>
 
-          <Text>Vigencia Desde:</Text>
+          <View style={{ marginBottom: 10 }}>
+            <Text>Vigencia Desde:</Text>
 
-          {/* <DatePicker
-            style={{ width: 200 }}
-            date={selectedDate}
-            mode="date"
-            placeholder="Selecciona una fecha"
-            format="DD-MM-YYYY"
-            confirmBtnText="Confirmar"
-            cancelBtnText="Cancelar"
-            onDateChange={handleDateChange}
-            disabled={!isDatePickerEnabled}
-          /> */}
-          <Text>Fecha seleccionada: {date.toLocaleString()}</Text>
+            <Text>Fecha: {date.toLocaleDateString()}</Text>
 
-          {showPicker && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-              style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+            {showPicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+                style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+              />
+            )}
+
+            <Text style={{ marginRight: 10, marginTop: 15 }}>Cambiar Fecha</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitchCV}
+              value={IsChangeVigencia}
             />
-          )}
 
-          <Text style={{ marginRight: 10 }}>Cambiar Fecha</Text>
+          </View>
 
-          <Switch
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitchCV}
-            value={IsChangeVigencia}
-          />
-         
-          <Text style={{ marginRight: 10 }}>Beneficiario Preferente</Text>
-          <Switch
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={IsBP ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            value={IsBP}
-            disabled={true}
-          />
+          <View style={{ marginBottom: 10 }}>
+            <Text style={{ marginRight: 10 }}>Beneficiario Preferente</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={IsBP ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              value={IsBP}
+              disabled={true}
+            />
+          </View>
+
         </Collapsible>
-      </View>
+      </View >
 
       {/* Forma pago */}
-      <View>
+      < View >
 
         <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
           <Text style={styles.buttonText}>Forma de Pago</Text>
@@ -1196,16 +1207,16 @@ const EmisionScreen = () => {
 
         </Collapsible>
 
-      </View>
+      </View >
 
       {/* Botón de emitir */}
-      <TouchableOpacity
+      < TouchableOpacity
         style={styles.cotizarButton}
         onPress={handleEmitir} >
         <Text style={styles.cotizarButtonText}>Emitir</Text>
-      </TouchableOpacity>
+      </TouchableOpacity >
 
-    </ScrollView>
+    </ScrollView >
 
   );
 
