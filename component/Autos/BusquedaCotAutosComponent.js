@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-12102023082739534');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-951-26102023124053207');
+    // AUT-1-12102023082739534 
 
     const handleBuscarCotizacion = async () => {
 
@@ -40,8 +41,9 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     tipoVigenciaPago: parametros_cot.PagoVigencia.text,
                 }
                 //console.log(DataSolicitudTitulos);
+                //console.log( parametros_cot.vehiculo);
                 const dataCotizacion = {
-                    ClaveVehiculo: parametros_cot.vehiculo.cu,
+                    ClaveVehiculo: parametros_cot.vehiculo.Descripcion.cu,
                     IDTipoVehiculo: parametros_cot.TipoVehiculo.value,
                     IDEstatusVehiculo: parametros_cot.EstatusVehiculo.value,
                     IDIndenmizacion: parametros_cot.Indemnizacion.value,
@@ -52,15 +54,15 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     IDPagoVigencia: parametros_cot.PagoVigencia.value,
                     IDUDI: 0,
                     IDPaquete: parametros_cot.Paquetes.value,
-                    ColoniaPersona: "",
-                    MunicipioPersona: "",
-                    CiudadPersona: "",
-                    EstadoPersona: "",
+                    ColoniaPersona:parametros_cot.ColoniaPersona,
+                    MunicipioPersona: parametros_cot.MunicipioPersona,
+                    CiudadPersona: parametros_cot.CiudadPersona,
+                    EstadoPersona: parametros_cot.EstadoPersona,
                     usuario: email,
                     contraseña: password,
                     IDSubcananal: idsubcanal
                 }
-                console.log(dataCotizacion)
+                //console.log("cottttt",dataCotizacion)
                 const resultData = datos_cot.responses
                 const dataArray = {
                     DataResul: resultData,

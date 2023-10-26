@@ -433,23 +433,17 @@ const EmisionScreen = () => {
 
   const fetchConfigAgente = async () => {
     try {
-
       const DataRquest = {
+        idAgente: dataArrayEmi.DataItemSelect.IdClaveAgente,
         usuario: dataArrayEmi.CotiData.usuario,
         contraseña: dataArrayEmi.CotiData.contraseña,
-        IdClaveAgente: dataArrayEmi.DataItemSelect.IdClaveAgentel
       }
-
-      console.log("OBTENIENDO LOS DATOS DE AGENTE ....")
-
+      console.log("OBTENIENDO LOS DATOS DE AGENTE ....", dataArrayEmi.DataItemSelect.IdClaveAgente)
       const response = await GetConfigAgente(DataRquest);
-
-      if (response.data.Data) {
-
-        console.log(response)
-
+      if (response.data.Data!== null) {
+        console.log("CONFIG AGENTE RESPONSE",response.data.Data)
       } else {
-        console.error('La respuesta de la API no contiene banderas.');
+        console.error('La respuesta de la API no contiene información de clave de agente..');
       }
       setLoading(false);
     } catch (error) {
