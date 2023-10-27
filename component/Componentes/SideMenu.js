@@ -18,8 +18,8 @@ const MySideMenu = (props) => {
     const [FolioCotizacion, setFolioCotizacion] = useState('');
 
     const handleImprimirPoliza = () => {
-        console.log('Imprimir Póliza');
-        console.log('Parámetros recibidos:', route.params.params.DataParameter);
+        // console.log('Imprimir Póliza');
+        // console.log('Parámetros recibidos:', route.params.params.DataParameter);
         navigation.closeDrawer();
         setIdSubCanal(route.params.params.DataParameter.IdSubCanal);
         setemail(route.params.params.DataParameter.email);
@@ -28,14 +28,13 @@ const MySideMenu = (props) => {
     };
 
     const handleGuardarPoliza = (numeroPoliza, idsubcanal, email, password) => {
-        console.log('Imprimir Póliza con número:', numeroPoliza);
-        console.log('ID del subcanal:', idsubcanal);
+        // console.log('Imprimir Póliza con número:', numeroPoliza);
+        // console.log('ID del subcanal:', idsubcanal);
         setModalVisible(false);
         navigation.closeDrawer();
     };
 
     const handleBuscarCoti = () => {
-        console.log('Buscar Cotización');
         setemail(route.params.params.DataParameter.email);
         setpassword(route.params.params.DataParameter.password);
         setIdSubCanal(route.params.params.DataParameter.IdSubCanal);
@@ -44,7 +43,7 @@ const MySideMenu = (props) => {
     };
 
     const handleBuscarCotizacion = (FolioCotizacion, idsubcanal, email, password) => {
-        console.log('buscar cotizacion folio :', FolioCotizacion, idsubcanal);
+        // console.log('buscar cotizacion folio :', FolioCotizacion, idsubcanal);
         setModalBCVisible(false);
         navigation.closeDrawer();
     };

@@ -99,10 +99,10 @@ const GrupoScreen = ({ route }) => {
                         };
                         navigation.navigate('Subcanales', { DataParameterSubcanales });
                     } else {
-                        
+
                         const IDSubCanal = CSubCanales.FirstElement.IDSubCanal;
                         const SubCanal = CSubCanales.FirstElement.SubCanal;
-                        console.log("entro directo subcanal desde grupos...",IDSubCanal)
+                        console.log("entro directo subcanal desde grupos...", IDSubCanal)
 
                         const _DataParameter = {
                             IdUsr: userDataParameter.IdUsr,

@@ -85,6 +85,7 @@ const EmisionScreen = () => {
   const [TiposPersona, setTiposPersona] = useState([]);
   const [selectedTipoPersona, setselectedTipoPersona] = useState('');
   const [IdTipoPersona, setIdTipoPersona] = useState('');
+  const [TextTipoPersona, setTextTipoPersona] = useState('');
 
   const [IdAseguradora, setIdAseguradora] = useState('');
 
@@ -148,9 +149,7 @@ const EmisionScreen = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-
         // dataArrayEmi.DataItemSelect.IdClaveAgente
-
         setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
         setColonia(dataArrayEmi.CotiData.ColoniaPersona);
         setCodigoPostal(dataArrayEmi.CotiData.CodigoPostal);
@@ -415,6 +414,7 @@ const EmisionScreen = () => {
         }
 
         setIdTipoPersona(data[0].Id)
+        setTextTipoPersona(data[0].Valor)
         setTiposPersona(data);
 
       } else {
@@ -598,10 +598,10 @@ const EmisionScreen = () => {
     setIsChangeVigencia(previousState => !previousState);
     setShowPicker(!IsChangeVigencia);
   };
+
   const toggleSwitchRembolso = () => {
     setisRenovacion(previousState => !previousState);
   };
-
 
   // const toggleSwitchPL = () => {
   //   if (plBool) {
@@ -644,10 +644,10 @@ const EmisionScreen = () => {
     }
   };
 
-  const showDatepicker = () => {
-    setMode('date');
-    setShowPicker(true);
-  };
+  // const showDatepicker = () => {
+  //   setMode('date');
+  //   setShowPicker(true);
+  // };
 
   const handleEmitir = async () => {
 
@@ -698,38 +698,42 @@ const EmisionScreen = () => {
       "NumeroVin": numSerie,
       "NumeroMotor": numMotor,
       "PlacasVehiculo": placas,
-      "FInicioVigencia": "2023-10-05T16:56:51.159Z",
-      "BeneficiarioPreferente": false,
-      "NumeroSocio": "",
-      "NumeroCredito": "",
+      //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
+      "FInicioVigencia": TextDateVP,
+      "BeneficiarioPreferente": IsBP,
+      "NumeroSocio": numerosocio,
+      "NumeroCredito":numCredito,
       "usuario": dataArrayEmi.CotiData.usuario,
       "Contraseña": dataArrayEmi.CotiData.contraseña,
       "IDSubcananal": dataArrayEmi.CotiData.IDSubcananal,
-      "NameTarjetabiente": vNameTarjetabiente,
-      "FormaCobro": vFormaCobro,
-      "number": vnumber,
-      "bankcode": vbankcode,
-      "expmonth": vexpmonth,
-      "expyear": vexpyear,
-      "cvvcsc": vcvv,
-      "PagoEnLinea": isPL,
-      "TipoPersona": selectedTipoPersona,
-      "RazonSocial": razonSocial,
-      "NombreComercial": nombreComercial,
-      "Giro": selectedGiro,
-      "TipoSociedad": selectedTipoSociedad,
-      "RegimenSimplificado": false,
-      "TipoRegimenFiscal": selectedRegimenFiscal,
-      "TipoCFDI": TipoCDFI,
-      "strPoliza": ""
+      // "NameTarjetabiente": vNameTarjetabiente,
+      // "FormaCobro": vFormaCobro,
+      // "number": vnumber,
+      // "bankcode": vbankcode,
+      // "expmonth": vexpmonth,
+      // "expyear": vexpyear,
+      // "cvvcsc": vcvv,
+      // "PagoEnLinea": false,
+      // "TipoPersona": selectedTipoPersona,
+      // "RazonSocial": razonSocial,
+      // "NombreComercial": nombreComercial,
+      // "Giro": selectedGiro,
+      // "TipoSociedad": selectedTipoSociedad,
+      // "RegimenSimplificado": false,
+      // "TipoRegimenFiscal": selectedRegimenFiscal,
+      // "TipoCFDI": TipoCDFI,
+      // "strPoliza": ""
     };
 
   };
 
-  const getLabelForTipoPersona = (value) => {
-    const selectedData = TiposPersona.find((item) => item.value === value);
-    return selectedData ? selectedData.label : '';
-  };
+  // const getLabelForTipoPersona = (value) => {
+  //   console.log("xx",value)
+  //   selectedTipoPersona();
+  //   const selectedData = TiposPersona.find((item) => item.Id === value);
+  //   console.log("tupo persona..",selectedData)
+  //   return selectedData ? selectedData.Valor : '';
+  // };
 
   if (!loadingCombos) {
     return (
@@ -765,7 +769,7 @@ const EmisionScreen = () => {
         </TouchableOpacity>
         <Collapsible collapsed={isCollapsed}>
 
-          <Text>Tipo Persona: {getLabelForTipoPersona(selectedTipoPersona)} </Text>
+          <Text style={{ marginTop: 15, marginBottom: 15 }}>Tipo Persona: {TextTipoPersona}</Text>
 
           {showPicker && (
             <Picker
