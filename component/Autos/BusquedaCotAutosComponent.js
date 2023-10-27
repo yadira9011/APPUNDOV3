@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-951-26102023124053207');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-12102023082739534');
     // AUT-1-12102023082739534 
 
     const handleBuscarCotizacion = async () => {

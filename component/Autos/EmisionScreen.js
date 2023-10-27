@@ -101,6 +101,8 @@ const EmisionScreen = () => {
   const [TipoCDFI, setTipoCDFI] = useState([]);
   const [selectedTipoCDFI, setselectedTipoCDFI] = useState('');
 
+  const [showPickerPMPF, setshowPickerPMPF] = useState(false);
+
   const [isEnabledPL, setIsEnabledPL] = useState(false);
   const [isEnabledPR, setIsEnabledPR] = useState(false);
 
@@ -125,6 +127,10 @@ const EmisionScreen = () => {
   const [IsChangeVigencia, setIsChangeVigencia] = useState(false);
   const [selectedDate, setSelectedDate] = useState('01-01-2023');
   const [date, setDate] = useState(new Date());
+  const [TextDateVP, setTextDateVP] = useState('');
+  const [minDate, setMinDate] = useState(new Date());
+  const [maxDate, setMaxDate] = useState(new Date());
+
   const [mode, setMode] = useState('date');
   const [isDatePickerEnabled, setisDatePickerEnabled] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -133,6 +139,10 @@ const EmisionScreen = () => {
   const [fechaMin, setFechaMin] = useState(null);
   const [fechaActual, setFechaActual] = useState(null);
 
+  const [showPickerFDesembolso, setShowPickerFDesembolso] = useState(true);
+  const [dateFDesembolso, setDateFDesembolso] = useState(new Date());
+  const [isRenovacion, setisRenovacion] = useState(false);
+  const [ShowisRenovacion, setShowisRenovacion] = useState(true);
 
 
   useEffect(() => {
@@ -149,7 +159,6 @@ const EmisionScreen = () => {
         setCiudad(dataArrayEmi.CotiData.CiudadPersona);
         setMode('date');
         setShowPicker(false);
-
         await fetchAutoDias();
         await fetchAutoMeses();
         await fetchAutoAynos();
@@ -473,22 +482,32 @@ const EmisionScreen = () => {
         usuario: dataArrayEmi.CotiData.usuario,
         contraseña: dataArrayEmi.CotiData.contraseña,
       }
-      console.log("OBTENIENDO LOS DATOS DE AGENTE ....", dataArrayEmi.DataItemSelect.IdClaveAgente)
+      //console.log("OBTENIENDO LOS DATOS DE AGENTE ....", dataArrayEmi.DataItemSelect.IdClaveAgente)
       const response = await GetConfigAgente(DataRquest);
       if (response.data.Data !== null) {
-
-        console.log("CONFIG AGENTE RESPONSE", response.data.Data)
-
-        let vfechaMax = response.data.Data.FECHA_MAXIMA;
-        let vfechaMin = response.data.Data.FECHA_MINIMA;
-        let vfechaActual = response.data.Data.FECHA_ACTUAL;
-
+        //console.log("CONFIG AGENTE RESPONSE", response.data.Data)
+        let vfechaMax = response.data.Data[0].FECHA_MAXIMA;
+        let vfechaMin = response.data.Data[0].FECHA_MINIMA;
+        let vfechaActual = response.data.Data[0].FECHA_ACTUAL;
         setFechaMax(vfechaMax);
         setFechaMin(vfechaMin);
         setFechaActual(vfechaActual);
-
-        console.log("FECHAS EMI ANTICIPADA", fechaMax,fechaMin, fechaActual)
-
+        let fMax = vfechaMax.substr(6, 4) + "-" + vfechaMax.substr(3, 2) + "-" + vfechaMax.substr(0, 2);
+        let fMin = vfechaMin.substr(6, 4) + "-" + vfechaMin.substr(3, 2) + "-" + vfechaMin.substr(0, 2);
+        let fValor = vfechaActual.substr(6, 4) + "-" + vfechaActual.substr(3, 2) + "-" + vfechaActual.substr(0, 2);
+        setDate(new Date(fValor));
+        //console.log("ccccc",date.toLocaleDateString())
+        setTextDateVP(date.toLocaleDateString());
+        if (response.data.Data[0].FIEMISION_ANTICIPADA != 0) {
+          setisDatePickerEnabled(true);
+          setMaxDate(new Date(fMax));
+          setMinDate(new Date(fMin));
+        } else {
+          setisDatePickerEnabled(false);
+          setMaxDate(new Date(fValor));
+          setMinDate(new Date(fValor));
+        }
+        console.log("FECHAS EMI ANTICIPADA 2222 ", fMax, fMin, fValor)
       } else {
         console.error('La respuesta de la API no contiene información de clave de agente..');
       }
@@ -579,6 +598,10 @@ const EmisionScreen = () => {
     setIsChangeVigencia(previousState => !previousState);
     setShowPicker(!IsChangeVigencia);
   };
+  const toggleSwitchRembolso = () => {
+    setisRenovacion(previousState => !previousState);
+  };
+
 
   // const toggleSwitchPL = () => {
   //   if (plBool) {
@@ -617,6 +640,7 @@ const EmisionScreen = () => {
     setShowPicker(Platform.OS === 'ios');
     if (selectedDate) {
       setDate(selectedDate);
+      setTextDateVP(date.toLocaleDateString());
     }
   };
 
@@ -702,6 +726,11 @@ const EmisionScreen = () => {
 
   };
 
+  const getLabelForTipoPersona = (value) => {
+    const selectedData = TiposPersona.find((item) => item.value === value);
+    return selectedData ? selectedData.label : '';
+  };
+
   if (!loadingCombos) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -736,16 +765,18 @@ const EmisionScreen = () => {
         </TouchableOpacity>
         <Collapsible collapsed={isCollapsed}>
 
-          <Text>Tipo Persona</Text>
-          <Picker
-            selectedValue={selectedTipoPersona}
-            onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
-            style={styles.input}
-            enabled={false} >
-            {TiposPersona.map((tp) => (
-              <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
-            ))}
-          </Picker>
+          <Text>Tipo Persona: {getLabelForTipoPersona(selectedTipoPersona)} </Text>
+
+          {showPicker && (
+            <Picker
+              selectedValue={selectedTipoPersona}
+              onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
+              style={styles.input}
+              enabled={false} >
+              {TiposPersona.map((tp) => (
+                <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
+              ))}
+            </Picker>)}
 
           <Text>Número de socio</Text>
           <TextInput
@@ -973,7 +1004,7 @@ const EmisionScreen = () => {
 
           <Text>Colonia</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: '#EEEDED' }]}
             value={colonia}
             editable={false}
             onChangeText={setColonia}
@@ -981,7 +1012,7 @@ const EmisionScreen = () => {
 
           <Text>Código Postal</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: '#EEEDED' }]}
             value={codigoPostal}
             editable={false}
             onChangeText={setCodigoPostal}
@@ -990,7 +1021,7 @@ const EmisionScreen = () => {
 
           <Text>Municipio</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: '#EEEDED' }]}
             value={municipio}
             editable={false}
             onChangeText={setMunicipio}
@@ -998,7 +1029,7 @@ const EmisionScreen = () => {
 
           <Text>Estado</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: '#EEEDED' }]}
             editable={false}
             value={estado}
             onChangeText={setEstado}
@@ -1006,7 +1037,7 @@ const EmisionScreen = () => {
 
           <Text>Ciudad</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: '#EEEDED' }]}
             value={ciudad}
             editable={false}
             onChangeText={setCiudad}
@@ -1062,9 +1093,10 @@ const EmisionScreen = () => {
         <Collapsible collapsed={DPCollapsed}>
 
           <View style={{ marginBottom: 10 }}>
+
             <Text>Vigencia Desde:</Text>
 
-            <Text>Fecha: {date.toLocaleDateString()}</Text>
+            <Text>Fecha: {TextDateVP}</Text>
 
             {showPicker && (
               <DateTimePicker
@@ -1074,6 +1106,8 @@ const EmisionScreen = () => {
                 is24Hour={true}
                 display="default"
                 onChange={onChange}
+                minimumDate={minDate}
+                maximumDate={maxDate}
                 style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
               />
             )}
@@ -1085,8 +1119,8 @@ const EmisionScreen = () => {
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitchCV}
               value={IsChangeVigencia}
+              disabled={isDatePickerEnabled}
             />
-
           </View>
 
           <View style={{ marginBottom: 10 }}>
@@ -1100,22 +1134,50 @@ const EmisionScreen = () => {
             />
           </View>
 
+          <View style={{ marginBottom: 10 }}>
+
+            {ShowisRenovacion && (
+              <View>
+                <Text style={{ marginRight: 10 }}>Renovación:</Text>
+                <Switch
+                  trackColor={{ false: '#767577', true: '#81b0ff' }}
+                  thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitchRembolso}
+                  value={isRenovacion}
+                />
+              </View>
+            )}
+
+            {showPickerFDesembolso && (
+              <View>
+                <Text style={{ marginRight: 10 }}>Fecha de desembolso:</Text>
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={dateFDesembolso}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                  style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                />
+              </View>
+            )}
+
+          </View>
+
         </Collapsible>
       </View >
 
       {/* Forma pago */}
-      < View >
-
+      < View style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10, display: 'none' }}>
         <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
           <Text style={styles.buttonText}>Forma de Pago</Text>
         </TouchableOpacity>
-
         <Collapsible collapsed={PlCollapsed}>
-
           {!isPL && !isPR && (
             <Text style={{ marginRight: 10 }}>No se cuenta con método de pago configurado</Text>
           )}
-
           {isPL && (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
@@ -1129,7 +1191,6 @@ const EmisionScreen = () => {
               />
             </View>
           )}
-
           {isPR && (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
@@ -1143,7 +1204,6 @@ const EmisionScreen = () => {
               />
             </View>
           )}
-
           {isEnabledPL && (
             <View>
               <Text>Nombre Tarjetahabiente</Text>
@@ -1164,10 +1224,7 @@ const EmisionScreen = () => {
                   <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
                 ))}
               </Picker>
-
-
               <Text>Método de Pago</Text>
-
               <Picker
                 selectedValue={selectedMetodosPagos}
                 onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
@@ -1177,14 +1234,12 @@ const EmisionScreen = () => {
                   <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
                 ))}
               </Picker>
-
               <Text>Cuenta Clabe/No. Tarjeta</Text>
               <TextInput
                 placeholder="Cuenta Clabe/No. Tarjeta"
                 value={cuentaClabeNoTarjeta}
                 onChangeText={text => setCuentaClabeNoTarjeta(text)}
               />
-
               <Text>Fecha de Expiración (MM/YY)</Text>
               <TextInput
                 placeholder="MM/YY"
@@ -1193,7 +1248,6 @@ const EmisionScreen = () => {
                 keyboardType="numeric"
                 maxLength={5}
               />
-
               <Text>CVV Protegido de 3 Dígitos</Text>
               <TextInput
                 placeholder="CVV"
@@ -1291,6 +1345,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
+    marginBottom: 60,
     alignItems: 'center',
   },
   cotizarButtonText: {
