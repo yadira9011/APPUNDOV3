@@ -145,6 +145,17 @@ const EmisionScreen = () => {
   const [isRenovacion, setisRenovacion] = useState(false);
   const [ShowisRenovacion, setShowisRenovacion] = useState(true);
 
+  const opcionesIdentificacion = [
+    { label: "Selecciona", value: "" },
+    { label: "Credencial IFE", value: "1" },
+    { label: "Licencia de conducir", value: "2" },
+    { label: "Pasaporte", value: "3" },
+    { label: "Cedula Profesional", value: "4" },
+    { label: "Cartilla Servicio Militar Nacional", value: "5" },
+    { label: "Tarjeta unica de Identidad Militar", value: "7" },
+    { label: "Afiliación el IMSS", value: "9" },
+    { label: "CURP", value: "11" },
+  ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -663,6 +674,8 @@ const EmisionScreen = () => {
     const vexpyear = "";
     const vcvv = "";
 
+    const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
+    
     if (isPL) {
       const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
       const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
@@ -702,7 +715,9 @@ const EmisionScreen = () => {
       "FInicioVigencia": TextDateVP,
       "BeneficiarioPreferente": IsBP,
       "NumeroSocio": numerosocio,
-      "NumeroCredito":numCredito,
+      "NumeroCredito": numCredito,
+      "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
+      "NumIdentificacionPersona": numIdentificacion,
       "usuario": dataArrayEmi.CotiData.usuario,
       "Contraseña": dataArrayEmi.CotiData.contraseña,
       "IDSubcananal": dataArrayEmi.CotiData.IDSubcananal,
@@ -724,6 +739,8 @@ const EmisionScreen = () => {
       // "TipoCFDI": TipoCDFI,
       // "strPoliza": ""
     };
+
+    console.log(dataemi);
 
   };
 
@@ -837,6 +854,16 @@ const EmisionScreen = () => {
               <Text>Tipo de Identificación</Text>
               <Picker
                 selectedValue={tipoIdentificacion}
+                onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
+                style={{ width: 200 }}
+              >
+                {opcionesIdentificacion.map((opcion) => (
+                  <Picker.Item key={opcion.value} label={opcion.label} value={opcion.value} />
+                ))}
+              </Picker>
+
+              {/* <Picker
+                selectedValue={tipoIdentificacion}
                 onValueChange={setTipoIdentificacion}
                 style={styles.input}
               >
@@ -849,7 +876,7 @@ const EmisionScreen = () => {
                 <Picker.Item label="Tarjeta unica de Identidad Militar" value="7" />
                 <Picker.Item label="Afiliación el IMSS" value="9" />
                 <Picker.Item label="CURP" value="11" />
-              </Picker>
+              </Picker> */}
 
               <Text>Número de Identificación</Text>
               <TextInput
