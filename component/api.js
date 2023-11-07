@@ -267,7 +267,6 @@ export const GetCotizacionApi = (data) => {
   return axios.post(`${BASE_URL}/API/Autos/GetBusquedaCotizacion`, data);
 };
 
-
 export const GetCoberturasCotizacion = (dataSearch) => {
   return axios.get(`${BASE_URL}/API/Autos/ConsultarCoberturas`, {
     params: dataSearch
@@ -297,7 +296,6 @@ export const GetAnyos = (credential) => {
   });
 };
 
-
 export const GetGeneros = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/GetGeneros`, {
     params: credential
@@ -316,13 +314,11 @@ export const GetTipoSociedad = (credential) => {
   });
 };
 
-
 export const GetGiros = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/Giros`, {
     params: credential
   });
 };
-
 
 export const GetIdAseguradora = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/GetIdAseguradora`, {
