@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   View, ScrollView, Text, TextInput, StyleSheet, Image,
-  Button, TouchableOpacity, ActivityIndicator, Switch
+  Button, TouchableOpacity, ActivityIndicator, Switch,Alert
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Collapsible from 'react-native-collapsible';
@@ -33,12 +33,12 @@ const EmisionScreen = () => {
   const [PlCollapsed, setPlCollapsed] = useState(true);
 
   //Datos contratante
-  const [numerosocio, setnumerosocio] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [apellidoPaterno, setApellidoPaterno] = useState('');
-  const [apellidoMaterno, setApellidoMaterno] = useState('');
-  const [rfc, setRFC] = useState('');
-  const [curp, setCURP] = useState('');
+  const [numerosocio, setnumerosocio] = useState('XXX');
+  const [nombre, setNombre] = useState('YADIRA');
+  const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
+  const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
+  const [rfc, setRFC] = useState('PECY901120');
+  const [curp, setCURP] = useState('PECY901109MVZRSD06');
 
   const [diaNacimiento, setDiaNacimiento] = useState('');
   const [mesNacimiento, setMesNacimiento] = useState('');
@@ -56,14 +56,14 @@ const EmisionScreen = () => {
 
   const [genero, setGenero] = useState('');
   const [tipoIdentificacion, setTipoIdentificacion] = useState('');
-  const [numIdentificacion, setNumIdentificacion] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [correo, setCorreo] = useState('');
+  const [numIdentificacion, setNumIdentificacion] = useState('123567892');
+  const [telefono, setTelefono] = useState('2781152721');
+  const [correo, setCorreo] = useState('pruebas@gmail.com');
 
   //Datos Direccion
-  const [calle, setCalle] = useState('');
-  const [noExterior, setNoExterior] = useState('');
-  const [noInterior, setNoInterior] = useState('');
+  const [calle, setCalle] = useState('SALVATIERRA');
+  const [noExterior, setNoExterior] = useState('75');
+  const [noInterior, setNoInterior] = useState('0');
   const [colonia, setColonia] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
   const [municipio, setMunicipio] = useState('');
@@ -71,10 +71,10 @@ const EmisionScreen = () => {
   const [ciudad, setCiudad] = useState('');
 
   //Datos DatosVehiculo
-  const [numCredito, setNumCredito] = useState('');
-  const [numSerie, setNumSerie] = useState('');
-  const [numMotor, setNumMotor] = useState('');
-  const [placas, setPlacas] = useState('');
+  const [numCredito, setNumCredito] = useState('00000');
+  const [numSerie, setNumSerie] = useState('JH4DC4470YS801968');
+  const [numMotor, setNumMotor] = useState('HECHOMX');
+  const [placas, setPlacas] = useState('YJPC');
 
   const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
 
@@ -740,13 +740,17 @@ const EmisionScreen = () => {
       // "TipoCFDI": TipoCDFI,
       // "strPoliza": ""
     };
+
     console.log(dataemi);
     const response = await GetCEmision(dataemi);
-    if (response.data.Data.Data) {
+    console.log(response.data.Data)
+    if (!response.data.Data.HasError) {
+      console.log('procesando emision..')
       const data = response.data.Data.Data;
       console.log(data)
     } else {
-      console.error('Ocurrio un error al procesar la emisión.');
+      Alert.alert('Error', response.data.Data.Message);
+      console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
     }
   };
 
