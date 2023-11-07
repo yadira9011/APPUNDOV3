@@ -14,7 +14,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
   GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
-  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI, GetConfigAgente
+  GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI,
+  GetConfigAgente, GetCEmision
 } from '../api';
 
 const EmisionScreen = () => {
@@ -675,7 +676,7 @@ const EmisionScreen = () => {
     const vcvv = "";
 
     const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
-    
+
     if (isPL) {
       const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
       const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
@@ -739,9 +740,14 @@ const EmisionScreen = () => {
       // "TipoCFDI": TipoCDFI,
       // "strPoliza": ""
     };
-
     console.log(dataemi);
-
+    const response = await GetCEmision(dataemi);
+    if (response.data.Data.Data) {
+      const data = response.data.Data.Data;
+      console.log(data)
+    } else {
+      console.error('Ocurrio un error al procesar la emisión.');
+    }
   };
 
   // const getLabelForTipoPersona = (value) => {
