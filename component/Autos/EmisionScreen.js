@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   View, ScrollView, Text, TextInput, StyleSheet, Image,
-  Button, TouchableOpacity, ActivityIndicator, Switch,Alert
+  Button, TouchableOpacity, ActivityIndicator, Switch, Alert
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Collapsible from 'react-native-collapsible';
@@ -15,7 +15,7 @@ import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
   GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
   GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI,
-  GetConfigAgente, GetCEmision
+  GetConfigAgente, GetCEmision, ImpresionPoliza, GetPagoEnLinea
 } from '../api';
 
 const EmisionScreen = () => {
@@ -111,10 +111,10 @@ const EmisionScreen = () => {
   const [isPL, setIsPL] = useState(false);
   const [isPR, setIsPR] = useState(false);
 
-  const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('');
-  const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('');
-  const [fechaExpiracion, setFechaExpiracion] = useState('');
-  const [cvv, setCVV] = useState('');
+  const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('PRUEBA RODAC');
+  const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('5454545454545454');
+  const [fechaExpiracion, setFechaExpiracion] = useState('11/26');
+  const [cvv, setCVV] = useState('123');
 
   const [BancosEmisores, setBancosEmisores] = useState([]);
   const [selectedBancoEmisor, setselectedBancoEmisor] = useState('');
@@ -157,6 +157,9 @@ const EmisionScreen = () => {
     { label: "Afiliación el IMSS", value: "9" },
     { label: "CURP", value: "11" },
   ];
+
+  const [CountPL, setCountPL] = useState(0);
+  const [EmisionOK, setEmisionOK] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -453,10 +456,25 @@ const EmisionScreen = () => {
       if (response.data.Data) {
 
         const pl = response.data.Data.PagoEnLinea;
-        const plBool = pl === 1;
+        let plBool = pl === 1;
 
         const pr = response.data.Data.PagoEnLineaReferenciado;
-        const prBool = pr === 1;
+        let prBool = pr === 1;
+
+        let plpanel = true;
+        let prpanel = true;
+
+        if (plBool && prBool) {
+          //prBool = false;
+          prpanel = false;
+        }
+
+        
+
+        // if (prBool) {
+        //   plpanel = true;
+        //   plBool = false;
+        // }
 
         const bf = response.data.Data.BPreferente;
         const bfBool = bf === 1;
@@ -470,9 +488,12 @@ const EmisionScreen = () => {
         console.log("Flags...", plBool, prBool, bfBool, ncBool, nsBool)
 
         setIsPL(plBool)
-        setIsEnabledPL(plBool);
+        setIsEnabledPL(plpanel);
+
         setIsPR(prBool)
-        setIsEnabledPR(prBool);
+        setIsEnabledPR(prpanel);
+
+
         setIsIsBP(bfBool);
         setIsNumCredito(ncBool);
         setIsNumSocio(nsBool);
@@ -598,12 +619,12 @@ const EmisionScreen = () => {
 
   const toggleSwitchPL = () => {
     setIsEnabledPL(previousState => !previousState);
-    setIsEnabledPR(!isEnabledPL);
+    setIsEnabledPR(false);
   };
 
   const toggleSwitchPR = () => {
     setIsEnabledPR(previousState => !previousState);
-    setIsEnabledPL(!isEnabledPR);
+    setIsEnabledPL(false);
   };
 
   const toggleSwitchCV = () => {
@@ -663,7 +684,12 @@ const EmisionScreen = () => {
 
   const handleEmitir = async () => {
 
-    const fecha_nacimiento_persona = selectedAno + "/" + selectedMes + "/" + selectedDia
+    var monthfn = ('0' + selectedMes).slice(-2);
+    var dayfn = ('0' + selectedDia).slice(-2);
+    const fecha_nacimiento_persona = selectedAno + "/" + monthfn + "/" + dayfn
+
+    console.log(fecha_nacimiento_persona)
+
     const fecha = new Date();
     const anyoActual = fecha.getFullYear();
     const EdadPersona = anyoActual - selectedAno;
@@ -689,6 +715,13 @@ const EmisionScreen = () => {
       vcvv = cvv;
     }
 
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    console.log(date.toLocaleDateString())
+    var yearfv = date.getFullYear();
+    var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
+    var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
+    var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+
     const dataemi = {
       "IdCotizacion": dataArrayEmi.DataItemSelect.id,
       "NombrePersona": nombre,
@@ -713,7 +746,7 @@ const EmisionScreen = () => {
       "NumeroMotor": numMotor,
       "PlacasVehiculo": placas,
       //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
-      "FInicioVigencia": TextDateVP,
+      "FInicioVigencia": formattedDatefv,
       "BeneficiarioPreferente": IsBP,
       "NumeroSocio": numerosocio,
       "NumeroCredito": numCredito,
@@ -721,16 +754,17 @@ const EmisionScreen = () => {
       "NumIdentificacionPersona": numIdentificacion,
       "usuario": dataArrayEmi.CotiData.usuario,
       "Contraseña": dataArrayEmi.CotiData.contraseña,
-      "IDSubcananal": dataArrayEmi.CotiData.IDSubcananal,
-      // "NameTarjetabiente": vNameTarjetabiente,
-      // "FormaCobro": vFormaCobro,
-      // "number": vnumber,
-      // "bankcode": vbankcode,
-      // "expmonth": vexpmonth,
-      // "expyear": vexpyear,
-      // "cvvcsc": vcvv,
-      // "PagoEnLinea": false,
-      // "TipoPersona": selectedTipoPersona,
+      "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
+      "TipoPersona": 1,
+      "NameTarjetabiente": vNameTarjetabiente,
+      "FormaCobro": vFormaCobro,
+      "number": vnumber,
+      "bankcode": vbankcode,
+      "expmonth": vexpmonth,
+      "expyear": vexpyear,
+      "cvvcsc": vcvv,
+      "PagoEnLinea": false,
+      //para persona moral
       // "RazonSocial": razonSocial,
       // "NombreComercial": nombreComercial,
       // "Giro": selectedGiro,
@@ -738,19 +772,124 @@ const EmisionScreen = () => {
       // "RegimenSimplificado": false,
       // "TipoRegimenFiscal": selectedRegimenFiscal,
       // "TipoCFDI": TipoCDFI,
-      // "strPoliza": ""
-    };
+      "strPoliza": ""
+    }
 
     console.log(dataemi);
-    const response = await GetCEmision(dataemi);
+
+    if (EmisionOK == false) {
+      const response = await GetCEmision(dataemi);
+      console.log(response.data.Data)
+      if (!response.data.Data.HasError) {
+
+        const data = response.data.Data.Data;
+
+        const NumeroPoliza = data.Poliza;
+
+        dataemi.strPoliza = NumeroPoliza;
+        //const PagoLinea = data.pl;
+        console.log(data)
+        setEmisionOK(true);
+        Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
+        // Alert.alert(
+        //   'Información',
+        //   'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza,
+        //   [
+        //     {
+        //       text: 'OK',
+        //       onPress: () => handleOkGoImpresionPress(NumeroPoliza),
+        //       style: 'default',
+        //     },
+        //   ],
+        //   { cancelable: false }
+        // );
+      } else {
+        Alert.alert('Error', response.data.Data.Message);
+        setEmisionOK(false);
+        console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
+      }
+    }
+
+    if (EmisionOK) {
+      await PagoLineaProcess(dataemi, dataemi.strPoliza);
+    }
+
+  };
+
+  const PagoLineaProcess = async (emi, NumeroPoliza) => {
+    const ProcessPL = false;
+    if (isEnabledPL) {
+      const res_pl = await CallPL(emi);
+      if (res_pl.pls == false) {
+        setCountPL(CountPL + 1);
+        Alert.alert("Error", "Error en pago linea: " + res_pl.MessajeErrorPl);
+        if (CountPL >= 3) {
+          // //Deshabilita boton de emision
+          // document.getElementById("ENVIAR_BTN").disabled = true;
+          ProcessPL = false;
+          alert("Número de intentos de pago superados,favor de contactar a un ejecutivo")
+        } else {
+          return
+        }
+      } else {
+        // //Deshabilita boton de emision
+        // document.getElementById("ENVIAR_BTN").disabled = true;
+        ProcessPL = true;
+        alert("El pago en linea fue exitoso, referencia de pago " + res_pl.ReferencfiaPago + ", presione aceptar para continuar")
+      }
+    } else {
+      ProcessPL = true;
+    }
+
+    if (ProcessPL) {
+      await GetImpresionPoliza(NumeroPoliza)
+    }
+
+  };
+
+  const CallPL = async (emi) => {
+    const pls = false;
+    const MessajeErrorPl = "";
+    const ReferencfiaPago = "";
+    const response = await GetPagoEnLinea(emi);
+    console.log(response.data.Data)
+    if (!response.data.Data.hasError) {
+      pls = false;
+      MessajeErrorPl = result_pl.data.Data.Data.MessajeError;
+    } else {
+      const data = result_pl.data.Data.Data.Plok
+      if (data) {
+        ReferencfiaPago = result_pl.data.Data.Data.Folio_pago
+        pls = true;
+      } else {
+        pls = false;
+        MessajeErrorPl = result_pl.data.Data.Data.MessajeError;
+      }
+    }
+    const DataResponse = {
+      pls: pls,
+      ReferencfiaPago: ReferencfiaPago,
+      MessajeErrorPl: MessajeErrorPl
+    }
+    return DataResponse;
+  };
+
+  const GetImpresionPoliza = async (NumeroPoliza) => {
+    console.log('Impresión poliza...', NumeroPoliza);
+    const DataRquest = {
+      IDCotizacion: dataArrayEmi.DataItemSelect.id,
+      IDSubcananal: dataArrayEmi.CotiData.IDSubcananal,
+      usuario: dataArrayEmi.CotiData.usuario,
+      Contraseña: dataArrayEmi.CotiData.contraseña
+    }
+    const response = await ImpresionPoliza(DataRquest);
     console.log(response.data.Data)
     if (!response.data.Data.HasError) {
-      console.log('procesando emision..')
-      const data = response.data.Data.Data;
-      console.log(data)
+      const pdfUrl = response.data.Data.Data;
+      navigation.navigate('PDFViewerScreen', { pdfUrl });
     } else {
       Alert.alert('Error', response.data.Data.Message);
-      console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
+      console.error('Ocurrio un error al procesar la impresión.', response.data.Data.Message);
     }
   };
 
@@ -1211,7 +1350,8 @@ const EmisionScreen = () => {
       </View >
 
       {/* Forma pago */}
-      < View style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10, display: 'none' }}>
+      {/* display: 'none'  */}
+      < View style={{ marginBottom: 10, marginTop: 5 }}>
         <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
           <Text style={styles.buttonText}>Forma de Pago</Text>
         </TouchableOpacity>
@@ -1228,7 +1368,7 @@ const EmisionScreen = () => {
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitchPL}
                 value={isEnabledPL}
-                disabled={!isPR}
+                disabled={!isPL}
               />
             </View>
           )}
@@ -1241,10 +1381,11 @@ const EmisionScreen = () => {
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitchPR}
                 value={isEnabledPR}
-                disabled={!isPL}
+                disabled={!isPR}
               />
             </View>
           )}
+
           {isEnabledPL && (
             <View>
               <Text>Nombre Tarjetahabiente</Text>

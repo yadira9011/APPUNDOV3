@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
   CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
@@ -15,7 +15,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 const Drawer = createDrawerNavigator();
 
 const CotizacionAutosScreen = () => {
-  
+
   const route = useRoute();
   const navigation = useNavigation();
   const { DataParameter } = route.params;
@@ -94,11 +94,19 @@ const CotizacionAutosScreen = () => {
 
   const [TextClaveUnica, setClaveUnica] = useState('');
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   useEffect(() => {
 
     const loadData = async () => {
 
       try {
+
+        console.log("ENTRE COTIZACION kk...")
+
+        console.log(DataParameter.email,
+          DataParameter.password,
+          DataParameter.IdSubCanal)
 
         await fetchAutoEstatusVehiculos();
         await fetchAutoTipoVehiculos();
@@ -111,9 +119,7 @@ const CotizacionAutosScreen = () => {
 
       } catch (error) {
         console.error('Error al obtener los datos:', error);
-
         setloadingCombos(false);
-
       }
     };
     loadData();
@@ -122,12 +128,17 @@ const CotizacionAutosScreen = () => {
 
   const fetchAutoEstatusVehiculos = async () => {
 
+    console.log("entree....here")
+
     try {
+      console.log("entree....here ggggg")
       const response = await CotEstatusVehiculos(
         DataParameter.email,
         DataParameter.password,
         DataParameter.IdSubCanal
       );
+
+      console.log(response)
 
       if (response.data.Data.Data) {
 
@@ -649,6 +660,28 @@ const CotizacionAutosScreen = () => {
     setModalVisibleDescription(false);
   };
 
+  const RefresData = () => {
+    //window.location.reload();  setIsRefreshing(true);
+    setTimeout(async () => {
+
+      console.log("ENTRE COTIZACION lololo...")
+
+      console.log(DataParameter.email,
+        DataParameter.password,
+        DataParameter.IdSubCanal)
+
+       await fetchAutoEstatusVehiculos();
+      // await fetchAutoTipoVehiculos();
+      // await fetchAutoTiposDeUso();
+      // await fetchAutoDeducibles();
+      // await fetchAutoPaquetes();
+      // await fetchAutoTiposPoliza();
+
+      setIsRefreshing(false);
+    }, 1000);
+
+  };
+
   if (!loadingCombos) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
@@ -665,18 +698,26 @@ const CotizacionAutosScreen = () => {
       {/* <Drawer.Navigator drawerContent={props => <MySideMenu {...props} />}>
         <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
       </Drawer.Navigator> */}
-{/* 
+      {/* 
       <Drawer.Navigator
         drawerContent={props => <MySideMenu {...props} />}
         initialRouteName="CotizacionAutos">
         <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
       </Drawer.Navigator> */}
-{/* 
+      {/* 
       <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ padding: 10 }}>
         <Ionicons name="menu" size={24} color="black" />
       </TouchableOpacity> */}
 
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={RefresData}
+            colors={['#ff0000']} // Colores del indicador de carga
+          />
+        }
+      >
         {!loadingCombos ? (
           <Text>Cargando datos...</Text>
         ) : (

@@ -48,6 +48,19 @@ const MySideMenu = (props) => {
         navigation.closeDrawer();
     };
 
+    const handleIrInicio = () => {
+        // console.log(route.params.params.DataParameter)
+        const _DataParameter = {
+            IdUsr: route.params.params.DataParameter.IdUsr,
+            password: route.params.params.DataParameter.email,
+            email: route.params.params.DataParameter.password,
+            IdSubCanal: route.params.params.DataParameter.IdSubCanal,
+            NomSubCanal: route.params.params.DataParameter.NomSubCanal
+        };
+        //console.log(_DataParameter)
+        navigation.navigate('Modulos', { DataParameter: _DataParameter });
+    };
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
@@ -56,6 +69,9 @@ const MySideMenu = (props) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={handleBuscarCoti} style={{ padding: 10 }}>
                 <Text>Buscar Cotización</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleIrInicio} style={{ padding: 10 }}>
+                <Text>Inicio</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
                 <Text>Cerrar menú</Text>

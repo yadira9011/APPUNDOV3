@@ -6,8 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-12102023082739534');
-    // AUT-1-12102023082739534 
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-11112023124847111');
+    // AUT-1-12102023082739534
+    //AUT-1-11112023124847111
 
     const handleBuscarCotizacion = async () => {
 
@@ -21,7 +22,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                 usuario: email,
                 contraseña: password,
             }
-            // console.log("aqqqqqq",DataRquest);
+            console.log("aqqqqqq",DataRquest);
             const response = await GetCotizacionApi(DataRquest);
             if (!response.data.Data.HasError) {
                 const datos_cot = response.data.Data.Data;

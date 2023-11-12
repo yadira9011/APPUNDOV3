@@ -80,16 +80,44 @@ export const UserSubcanales = (email, password, _IdUsuario, _IdCanal) => {
   return axios.post(`${BASE_URL}/API/Login/Subcanales`, credential);
 };
 
-export const CotEstatusVehiculos = (email, password, IdSubCanal) => {
+// export const CotEstatusVehiculos = (email, password, IdSubCanal) => {
+//   const credential = {
+//     Usuario: email,
+//     Contraseña: password,
+//     IdSubcanal: IdSubCanal
+//   };
+//   // console.log(credential);
+//   return axios.get(`${BASE_URL}/API/Autos/ConsultaEstatusVehiculos`, {
+//     params: credential
+//   });
+// };
+
+export const CotEstatusVehiculos = async(email, password, IdSubCanal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
     IdSubcanal: IdSubCanal
   };
-  // console.log(credential);
-  return axios.get(`${BASE_URL}/API/Autos/ConsultaEstatusVehiculos`, {
-    params: credential
-  });
+
+  try {
+    return await axios.get(`${BASE_URL}/API/Autos/ConsultaEstatusVehiculos`, {
+      params: credential
+    });
+  } catch (error) {
+    if (error.response) {
+      // La solicitud fue realizada, pero el servidor respondió con un código de estado que no está en el rango de 2xx.
+      console.log('Respuesta del servidor con error:', error.response.data);
+      console.log('Código de estado:', error.response.status);
+    } else if (error.request) {
+      // La solicitud fue realizada, pero no se recibió ninguna respuesta.
+      console.log('No se recibió respuesta del servidor:', error.request);
+    } else {
+      // Algo sucedió en la configuración de la solicitud que provocó que se lanzara un error.
+      console.log('Error al configurar la solicitud:', error.message);
+    }
+    console.log('Error completo:', error.config);
+    throw error; // Re-lanza el error para que pueda ser manejado en el código que llama a la función.
+  }
 };
 
 export const CotTiposDeVehiculos = (email, password, IdSubCanal) => {
