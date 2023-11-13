@@ -640,7 +640,8 @@ const CotizacionAutosScreen = () => {
         const dataArray = {
           DataResul: resultData,
           CotiData: dataCotizacion,
-          DataTitulos: DataSolicitudTitulos
+          DataTitulos: DataSolicitudTitulos,
+          DataParameter:DataParameter
         }
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }

@@ -15,7 +15,7 @@ import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
   GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
   GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI,
-  GetConfigAgente, GetCEmision, ImpresionPoliza, GetPagoEnLinea
+  GetConfigAgente, GetCEmision, ImpresionPoliza, GetPagoEnLinea, GetPrivilegios
 } from '../api';
 
 const EmisionScreen = () => {
@@ -25,6 +25,7 @@ const EmisionScreen = () => {
   const { dataArrayEmi } = route.params;
   const [loadingCombos, setloadingCombos] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingEmision, setloadingEmision] = useState(false);
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [direccionCollapsed, setDireccionCollapsed] = useState(true);
@@ -173,6 +174,7 @@ const EmisionScreen = () => {
         setCiudad(dataArrayEmi.CotiData.CiudadPersona);
         setMode('date');
         setShowPicker(false);
+        await fetchPrivilegios();
         await fetchAutoDias();
         await fetchAutoMeses();
         await fetchAutoAynos();
@@ -213,21 +215,17 @@ const EmisionScreen = () => {
 
   const fetchAutoMeses = async () => {
     try {
-
       const DataRquest = {
         usuario: dataArrayEmi.CotiData.usuario,
         contraseña: dataArrayEmi.CotiData.contraseña,
       }
-
       const response = await GetMeses(DataRquest);
-
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setMeses(data);
       } else {
         console.error('La respuesta de la API no contiene paquetes.');
       }
-
       setLoading(false);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
@@ -469,7 +467,7 @@ const EmisionScreen = () => {
           prpanel = false;
         }
 
-        
+
 
         // if (prBool) {
         //   plpanel = true;
@@ -597,6 +595,31 @@ const EmisionScreen = () => {
     }
   };
 
+  const fetchPrivilegios = async () => {
+    try {
+
+      const DataRquest = {
+        IdUsuario: dataArrayEmi.DataParameter.IdUsr,
+        RutaControlador:'/Autos/CotizadorAutos',
+        Usuario: dataArrayEmi.CotiData.usuario,
+        Contraseña: dataArrayEmi.CotiData.contraseña,
+      }
+
+      console.log("OBTENIENDO PRIVILEGIOS ....")
+      const response = await GetPrivilegios(DataRquest);
+      console.log(response);
+      if (!response.data.Data.hasError) {
+        console.log(response.data.Data);
+      } else {
+        console.error('La respuesta de la API no contiene metodo privilegios.');
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+      setLoading(false);
+    }
+  };
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -683,6 +706,8 @@ const EmisionScreen = () => {
   // };
 
   const handleEmitir = async () => {
+
+    setloadingEmision(true);
 
     var monthfn = ('0' + selectedMes).slice(-2);
     var dayfn = ('0' + selectedDia).slice(-2);
@@ -781,16 +806,14 @@ const EmisionScreen = () => {
       const response = await GetCEmision(dataemi);
       console.log(response.data.Data)
       if (!response.data.Data.HasError) {
-
         const data = response.data.Data.Data;
-
         const NumeroPoliza = data.Poliza;
-
         dataemi.strPoliza = NumeroPoliza;
         //const PagoLinea = data.pl;
         console.log(data)
         setEmisionOK(true);
         Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
+        setloadingEmision(false);
         // Alert.alert(
         //   'Información',
         //   'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza,
@@ -807,11 +830,15 @@ const EmisionScreen = () => {
         Alert.alert('Error', response.data.Data.Message);
         setEmisionOK(false);
         console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
+        setloadingEmision(false);
       }
     }
 
+
     if (EmisionOK) {
+      setloadingEmision(true);
       await PagoLineaProcess(dataemi, dataemi.strPoliza);
+      setloadingEmision(false);
     }
 
   };
@@ -911,107 +938,107 @@ const EmisionScreen = () => {
   }
 
   return (
+    <View>
+      <ScrollView style={styles.container}>
 
-    <ScrollView style={styles.container}>
-
-      {/* dATOS emisión */}
-      <View style={styles.imageContainer}>
-        <Image source={TxtUrlconAse} style={styles.imageCober} />
-        <View style={styles.textContainer}>
-          <Text style={styles.description}><Text style={styles.boldText}>MODELO:</Text> {dataArrayEmi.DataTitulos.Modelo}</Text>
-          <Text style={styles.description}><Text style={styles.boldText}>DESCRIPCION:</Text> {dataArrayEmi.DataTitulos.DescripcionVehiculo}</Text>
-          <Text style={styles.description}><Text style={styles.boldText}>TIPO USO :</Text> {dataArrayEmi.DataTitulos.TipoUso}</Text>
-          <Text style={styles.description}><Text style={styles.boldText}>PAQUETE:</Text> {dataArrayEmi.DataTitulos.tipoPaquete}</Text>
-          <Text style={styles.description}><Text style={styles.boldText}>VIGENCIA:</Text> {dataArrayEmi.DataTitulos.tipoVigenciaPago}</Text>
-          <Text style={styles.description}><Text style={styles.boldText}>PRIMA TOTAL:</Text> {dataArrayEmi.DataItemSelect.PrimaTotal}</Text>
+        {/* dATOS emisión */}
+        <View style={styles.imageContainer}>
+          <Image source={TxtUrlconAse} style={styles.imageCober} />
+          <View style={styles.textContainer}>
+            <Text style={styles.description}><Text style={styles.boldText}>MODELO:</Text> {dataArrayEmi.DataTitulos.Modelo}</Text>
+            <Text style={styles.description}><Text style={styles.boldText}>DESCRIPCION:</Text> {dataArrayEmi.DataTitulos.DescripcionVehiculo}</Text>
+            <Text style={styles.description}><Text style={styles.boldText}>TIPO USO :</Text> {dataArrayEmi.DataTitulos.TipoUso}</Text>
+            <Text style={styles.description}><Text style={styles.boldText}>PAQUETE:</Text> {dataArrayEmi.DataTitulos.tipoPaquete}</Text>
+            <Text style={styles.description}><Text style={styles.boldText}>VIGENCIA:</Text> {dataArrayEmi.DataTitulos.tipoVigenciaPago}</Text>
+            <Text style={styles.description}><Text style={styles.boldText}>PRIMA TOTAL:</Text> {dataArrayEmi.DataItemSelect.PrimaTotal}</Text>
+          </View>
         </View>
-      </View>
 
-      {/* dATOS CONTRATANTE */}
+        {/* dATOS CONTRATANTE */}
 
-      <View>
-        <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
-          <Text style={styles.buttonText}>Datos Contratante</Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={isCollapsed}>
+        <View>
+          <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
+            <Text style={styles.buttonText}>Datos Contratante</Text>
+          </TouchableOpacity>
+          <Collapsible collapsed={isCollapsed}>
 
-          <Text style={{ marginTop: 15, marginBottom: 15 }}>Tipo Persona: {TextTipoPersona}</Text>
+            <Text style={{ marginTop: 15, marginBottom: 15 }}>Tipo Persona: {TextTipoPersona}</Text>
 
-          {showPicker && (
-            <Picker
-              selectedValue={selectedTipoPersona}
-              onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
-              style={styles.input}
-              enabled={false} >
-              {TiposPersona.map((tp) => (
-                <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
-              ))}
-            </Picker>)}
-
-          <Text>Número de socio</Text>
-          <TextInput
-            style={[styles.input, !IsNumSocio && styles.hiddenInput]}
-            value={numerosocio}
-            onChangeText={setnumerosocio}
-          />
-
-          {/* PERSONA FISICA */}
-
-          {isVisiblePF && (
-            <View>
-
-              <Text>Nombre</Text>
-              <TextInput
-                style={styles.input}
-                value={nombre}
-                onChangeText={setNombre}
-              />
-
-              <Text>Apellido Paterno</Text>
-              <TextInput
-                style={styles.input}
-                value={apellidoPaterno}
-                onChangeText={setApellidoPaterno}
-              />
-
-              <Text>Apellido Materno</Text>
-              <TextInput
-                style={styles.input}
-                value={apellidoMaterno}
-                onChangeText={setApellidoMaterno}
-              />
-
-              <Text>CURP</Text>
-              <TextInput
-                style={styles.input}
-                value={curp}
-                onChangeText={setCURP}
-              />
-
-              <Text>Género</Text>
+            {showPicker && (
               <Picker
-                selectedValue={selectedGenero}
-                onValueChange={(itemValue) => setSelectedGenero(itemValue)}
+                selectedValue={selectedTipoPersona}
+                onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
                 style={styles.input}
-              >
-                <Picker.Item label="Selecciona género" value="" />
-                {generos.map((genero) => (
-                  <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
+                enabled={false} >
+                {TiposPersona.map((tp) => (
+                  <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
                 ))}
-              </Picker>
+              </Picker>)}
 
-              <Text>Tipo de Identificación</Text>
-              <Picker
-                selectedValue={tipoIdentificacion}
-                onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
-                style={{ width: 200 }}
-              >
-                {opcionesIdentificacion.map((opcion) => (
-                  <Picker.Item key={opcion.value} label={opcion.label} value={opcion.value} />
-                ))}
-              </Picker>
+            <Text>Número de socio</Text>
+            <TextInput
+              style={[styles.input, !IsNumSocio && styles.hiddenInput]}
+              value={numerosocio}
+              onChangeText={setnumerosocio}
+            />
 
-              {/* <Picker
+            {/* PERSONA FISICA */}
+
+            {isVisiblePF && (
+              <View>
+
+                <Text>Nombre</Text>
+                <TextInput
+                  style={styles.input}
+                  value={nombre}
+                  onChangeText={setNombre}
+                />
+
+                <Text>Apellido Paterno</Text>
+                <TextInput
+                  style={styles.input}
+                  value={apellidoPaterno}
+                  onChangeText={setApellidoPaterno}
+                />
+
+                <Text>Apellido Materno</Text>
+                <TextInput
+                  style={styles.input}
+                  value={apellidoMaterno}
+                  onChangeText={setApellidoMaterno}
+                />
+
+                <Text>CURP</Text>
+                <TextInput
+                  style={styles.input}
+                  value={curp}
+                  onChangeText={setCURP}
+                />
+
+                <Text>Género</Text>
+                <Picker
+                  selectedValue={selectedGenero}
+                  onValueChange={(itemValue) => setSelectedGenero(itemValue)}
+                  style={styles.input}
+                >
+                  <Picker.Item label="Selecciona género" value="" />
+                  {generos.map((genero) => (
+                    <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
+                  ))}
+                </Picker>
+
+                <Text>Tipo de Identificación</Text>
+                <Picker
+                  selectedValue={tipoIdentificacion}
+                  onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
+                  style={{ width: 200 }}
+                >
+                  {opcionesIdentificacion.map((opcion) => (
+                    <Picker.Item key={opcion.value} label={opcion.label} value={opcion.value} />
+                  ))}
+                </Picker>
+
+                {/* <Picker
                 selectedValue={tipoIdentificacion}
                 onValueChange={setTipoIdentificacion}
                 style={styles.input}
@@ -1027,433 +1054,436 @@ const EmisionScreen = () => {
                 <Picker.Item label="CURP" value="11" />
               </Picker> */}
 
-              <Text>Número de Identificación</Text>
-              <TextInput
-                style={styles.input}
-                value={numIdentificacion}
-                onChangeText={setNumIdentificacion}
-              />
-
-            </View>
-          )}
-
-          {/* PERSONA MORAL */}
-
-          {isVisiblePM && (
-
-            <View>
-
-              <Text>Razón Social</Text>
-              <TextInput
-                style={styles.input}
-                value={razonSocial}
-                onChangeText={setRazonSocial}
-              />
-
-              <Text>Nombre Comercial</Text>
-              <TextInput
-                style={styles.input}
-                value={nombreComercial}
-                onChangeText={setNombreComercial}
-              />
-
-              <Text>Giro</Text>
-              <Picker
-                selectedValue={selectedGiro}
-                onValueChange={(itemValue) => setselectedGiro(itemValue)}
-                style={styles.input}
-                enabled={false} >
-                {giros.map((g) => (
-                  <Picker.Item key={g.Id} label={g.Valor} value={g.Id} />
-                ))}
-              </Picker>
-
-              <Text>Tipo sociedad</Text>
-              <Picker
-                selectedValue={selectedTipoSociedad}
-                onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
-                style={styles.input}
-                enabled={false} >
-                {tiposSociedad.map((ts) => (
-                  <Picker.Item key={ts.Id} label={ts.Valor} value={ts.Id} />
-                ))}
-              </Picker>
-
-              <Text>Reminen Fiscal</Text>
-              <Picker
-                selectedValue={selectedRegimenFiscal}
-                onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
-                style={styles.input}
-                enabled={false} >
-                {regimenesFiscales.map((rf) => (
-                  <Picker.Item key={rf.Id} label={rf.Valor} value={rf.Id} />
-                ))}
-              </Picker>
-
-            </View>
-
-          )}
-
-          <Text>RFC</Text>
-          <TextInput
-            style={styles.input}
-            value={rfc}
-            onChangeText={setRFC}
-          />
-
-          <Text>{TxtFecha}</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              style={styles.picker}
-              selectedValue={selectedDia}
-              onValueChange={(itemValue) => setSelectedDia(itemValue)}
-            >
-              <Picker.Item label="Selecciona día" value="" />
-              {dias.map((dia) => (
-                <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
-              ))}
-            </Picker>
-
-            <Picker
-              style={styles.picker}
-              selectedValue={selectedMes}
-              onValueChange={(itemValue) => setSelectedMes(itemValue)}
-            >
-              <Picker.Item label="Selecciona mes" value="" />
-              {meses.map((mes) => (
-                <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
-              ))}
-            </Picker>
-
-          </View>
-          <Picker
-            style={styles.picker2}
-            selectedValue={selectedAno}
-            onValueChange={(itemValue) => setSelectedAno(itemValue)}
-          >
-            <Picker.Item label="Selecciona año" value="" />
-            {anos.map((ano) => (
-              <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
-            ))}
-          </Picker>
-
-          <Text>Teléfono</Text>
-          <TextInput
-            style={styles.input}
-            value={telefono}
-            onChangeText={setTelefono}
-          />
-
-          <Text>Correo Electrónico</Text>
-          <TextInput
-            style={styles.input}
-            value={correo}
-            onChangeText={setCorreo}
-            keyboardType="email-address"
-          />
-
-        </Collapsible>
-      </View>
-
-      {/* dATOS Dirección */}
-      <View>
-        <TouchableOpacity onPress={toggleDireccionCollapse} style={styles.button}>
-          <Text style={styles.buttonText}> Datos Dirección </Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={direccionCollapsed}>
-          <Text>Calle</Text>
-          <TextInput
-            style={styles.input}
-            value={calle}
-            onChangeText={setCalle}
-          />
-
-          <Text>No. Exterior</Text>
-          <TextInput
-            style={styles.input}
-            value={noExterior}
-            onChangeText={setNoExterior}
-          />
-
-          <Text>No. Interior</Text>
-          <TextInput
-            style={styles.input}
-            value={noInterior}
-            onChangeText={setNoInterior}
-          />
-
-          <Text>Colonia</Text>
-          <TextInput
-            style={[styles.input, { backgroundColor: '#EEEDED' }]}
-            value={colonia}
-            editable={false}
-            onChangeText={setColonia}
-          />
-
-          <Text>Código Postal</Text>
-          <TextInput
-            style={[styles.input, { backgroundColor: '#EEEDED' }]}
-            value={codigoPostal}
-            editable={false}
-            onChangeText={setCodigoPostal}
-            keyboardType="numeric"
-          />
-
-          <Text>Municipio</Text>
-          <TextInput
-            style={[styles.input, { backgroundColor: '#EEEDED' }]}
-            value={municipio}
-            editable={false}
-            onChangeText={setMunicipio}
-          />
-
-          <Text>Estado</Text>
-          <TextInput
-            style={[styles.input, { backgroundColor: '#EEEDED' }]}
-            editable={false}
-            value={estado}
-            onChangeText={setEstado}
-          />
-
-          <Text>Ciudad</Text>
-          <TextInput
-            style={[styles.input, { backgroundColor: '#EEEDED' }]}
-            value={ciudad}
-            editable={false}
-            onChangeText={setCiudad}
-          />
-        </Collapsible>
-      </View>
-
-      {/* dATOS vehiculo */}
-      <View>
-        <TouchableOpacity onPress={toggleVehiculoCollapse} style={styles.button}>
-          <Text style={styles.buttonText}>Datos de Vehículo</Text>
-        </TouchableOpacity>
-
-        <Collapsible collapsed={vehiculoCollapsed}>
-
-          <Text>Número de Crédito</Text>
-          <TextInput
-            value={numCredito}
-            onChangeText={setNumCredito}
-            // disabled={!IsNumCredito}
-            style={[styles.input, !IsNumCredito && styles.hiddenInput]}
-          />
-
-          <Text>Número de Serie</Text>
-          <TextInput
-            style={styles.input}
-            value={numSerie}
-            onChangeText={setNumSerie}
-          />
-
-          <Text>Número de Motor</Text>
-          <TextInput
-            style={styles.input}
-            value={numMotor}
-            onChangeText={setNumMotor}
-          />
-
-          <Text>Placas</Text>
-          <TextInput
-            style={styles.input}
-            value={placas}
-            onChangeText={setPlacas}
-          />
-        </Collapsible>
-
-      </View>
-
-      {/* dATOS POLIZA */}
-      <View>
-        <TouchableOpacity onPress={toggleDPCollapse} style={styles.button}>
-          <Text style={styles.buttonText}>Datos de Póliza</Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={DPCollapsed}>
-
-          <View style={{ marginBottom: 10 }}>
-
-            <Text>Vigencia Desde:</Text>
-
-            <Text>Fecha: {TextDateVP}</Text>
-
-            {showPicker && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                minimumDate={minDate}
-                maximumDate={maxDate}
-                style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
-              />
-            )}
-
-            <Text style={{ marginRight: 10, marginTop: 15 }}>Cambiar Fecha</Text>
-            <Switch
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitchCV}
-              value={IsChangeVigencia}
-              disabled={isDatePickerEnabled}
-            />
-          </View>
-
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ marginRight: 10 }}>Beneficiario Preferente</Text>
-            <Switch
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={IsBP ? '#f5dd4b' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              value={IsBP}
-              disabled={true}
-            />
-          </View>
-
-          <View style={{ marginBottom: 10 }}>
-
-            {ShowisRenovacion && (
-              <View>
-                <Text style={{ marginRight: 10 }}>Renovación:</Text>
-                <Switch
-                  trackColor={{ false: '#767577', true: '#81b0ff' }}
-                  thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitchRembolso}
-                  value={isRenovacion}
+                <Text>Número de Identificación</Text>
+                <TextInput
+                  style={styles.input}
+                  value={numIdentificacion}
+                  onChangeText={setNumIdentificacion}
                 />
+
               </View>
             )}
 
-            {showPickerFDesembolso && (
+            {/* PERSONA MORAL */}
+
+            {isVisiblePM && (
+
               <View>
-                <Text style={{ marginRight: 10 }}>Fecha de desembolso:</Text>
+
+                <Text>Razón Social</Text>
+                <TextInput
+                  style={styles.input}
+                  value={razonSocial}
+                  onChangeText={setRazonSocial}
+                />
+
+                <Text>Nombre Comercial</Text>
+                <TextInput
+                  style={styles.input}
+                  value={nombreComercial}
+                  onChangeText={setNombreComercial}
+                />
+
+                <Text>Giro</Text>
+                <Picker
+                  selectedValue={selectedGiro}
+                  onValueChange={(itemValue) => setselectedGiro(itemValue)}
+                  style={styles.input}
+                  enabled={false} >
+                  {giros.map((g) => (
+                    <Picker.Item key={g.Id} label={g.Valor} value={g.Id} />
+                  ))}
+                </Picker>
+
+                <Text>Tipo sociedad</Text>
+                <Picker
+                  selectedValue={selectedTipoSociedad}
+                  onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
+                  style={styles.input}
+                  enabled={false} >
+                  {tiposSociedad.map((ts) => (
+                    <Picker.Item key={ts.Id} label={ts.Valor} value={ts.Id} />
+                  ))}
+                </Picker>
+
+                <Text>Reminen Fiscal</Text>
+                <Picker
+                  selectedValue={selectedRegimenFiscal}
+                  onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
+                  style={styles.input}
+                  enabled={false} >
+                  {regimenesFiscales.map((rf) => (
+                    <Picker.Item key={rf.Id} label={rf.Valor} value={rf.Id} />
+                  ))}
+                </Picker>
+
+              </View>
+
+            )}
+
+            <Text>RFC</Text>
+            <TextInput
+              style={styles.input}
+              value={rfc}
+              onChangeText={setRFC}
+            />
+
+            <Text>{TxtFecha}</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                style={styles.picker}
+                selectedValue={selectedDia}
+                onValueChange={(itemValue) => setSelectedDia(itemValue)}
+              >
+                <Picker.Item label="Selecciona día" value="" />
+                {dias.map((dia) => (
+                  <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
+                ))}
+              </Picker>
+
+              <Picker
+                style={styles.picker}
+                selectedValue={selectedMes}
+                onValueChange={(itemValue) => setSelectedMes(itemValue)}
+              >
+                <Picker.Item label="Selecciona mes" value="" />
+                {meses.map((mes) => (
+                  <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
+                ))}
+              </Picker>
+
+            </View>
+            <Picker
+              style={styles.picker2}
+              selectedValue={selectedAno}
+              onValueChange={(itemValue) => setSelectedAno(itemValue)}
+            >
+              <Picker.Item label="Selecciona año" value="" />
+              {anos.map((ano) => (
+                <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
+              ))}
+            </Picker>
+
+            <Text>Teléfono</Text>
+            <TextInput
+              style={styles.input}
+              value={telefono}
+              onChangeText={setTelefono}
+            />
+
+            <Text>Correo Electrónico</Text>
+            <TextInput
+              style={styles.input}
+              value={correo}
+              onChangeText={setCorreo}
+              keyboardType="email-address"
+            />
+
+          </Collapsible>
+        </View>
+
+        {/* dATOS Dirección */}
+        <View>
+          <TouchableOpacity onPress={toggleDireccionCollapse} style={styles.button}>
+            <Text style={styles.buttonText}> Datos Dirección </Text>
+          </TouchableOpacity>
+          <Collapsible collapsed={direccionCollapsed}>
+            <Text>Calle</Text>
+            <TextInput
+              style={styles.input}
+              value={calle}
+              onChangeText={setCalle}
+            />
+
+            <Text>No. Exterior</Text>
+            <TextInput
+              style={styles.input}
+              value={noExterior}
+              onChangeText={setNoExterior}
+            />
+
+            <Text>No. Interior</Text>
+            <TextInput
+              style={styles.input}
+              value={noInterior}
+              onChangeText={setNoInterior}
+            />
+
+            <Text>Colonia</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: '#EEEDED' }]}
+              value={colonia}
+              editable={false}
+              onChangeText={setColonia}
+            />
+
+            <Text>Código Postal</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: '#EEEDED' }]}
+              value={codigoPostal}
+              editable={false}
+              onChangeText={setCodigoPostal}
+              keyboardType="numeric"
+            />
+
+            <Text>Municipio</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: '#EEEDED' }]}
+              value={municipio}
+              editable={false}
+              onChangeText={setMunicipio}
+            />
+
+            <Text>Estado</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: '#EEEDED' }]}
+              editable={false}
+              value={estado}
+              onChangeText={setEstado}
+            />
+
+            <Text>Ciudad</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: '#EEEDED' }]}
+              value={ciudad}
+              editable={false}
+              onChangeText={setCiudad}
+            />
+          </Collapsible>
+        </View>
+
+        {/* dATOS vehiculo */}
+        <View>
+          <TouchableOpacity onPress={toggleVehiculoCollapse} style={styles.button}>
+            <Text style={styles.buttonText}>Datos de Vehículo</Text>
+          </TouchableOpacity>
+
+          <Collapsible collapsed={vehiculoCollapsed}>
+
+            <Text>Número de Crédito</Text>
+            <TextInput
+              value={numCredito}
+              onChangeText={setNumCredito}
+              // disabled={!IsNumCredito}
+              style={[styles.input, !IsNumCredito && styles.hiddenInput]}
+            />
+
+            <Text>Número de Serie</Text>
+            <TextInput
+              style={styles.input}
+              value={numSerie}
+              onChangeText={setNumSerie}
+            />
+
+            <Text>Número de Motor</Text>
+            <TextInput
+              style={styles.input}
+              value={numMotor}
+              onChangeText={setNumMotor}
+            />
+
+            <Text>Placas</Text>
+            <TextInput
+              style={styles.input}
+              value={placas}
+              onChangeText={setPlacas}
+            />
+          </Collapsible>
+
+        </View>
+
+        {/* dATOS POLIZA */}
+        <View>
+          <TouchableOpacity onPress={toggleDPCollapse} style={styles.button}>
+            <Text style={styles.buttonText}>Datos de Póliza</Text>
+          </TouchableOpacity>
+          <Collapsible collapsed={DPCollapsed}>
+
+            <View style={{ marginBottom: 10 }}>
+
+              <Text>Vigencia Desde:</Text>
+
+              <Text>Fecha: {TextDateVP}</Text>
+
+              {showPicker && (
                 <DateTimePicker
                   testID="dateTimePicker"
-                  value={dateFDesembolso}
+                  value={date}
                   mode={mode}
                   is24Hour={true}
                   display="default"
                   onChange={onChange}
+                  minimumDate={minDate}
+                  maximumDate={maxDate}
                   style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                />
+              )}
+
+              <Text style={{ marginRight: 10, marginTop: 15 }}>Cambiar Fecha</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitchCV}
+                value={IsChangeVigencia}
+                disabled={isDatePickerEnabled}
+              />
+            </View>
+
+            <View style={{ marginBottom: 10 }}>
+              <Text style={{ marginRight: 10 }}>Beneficiario Preferente</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                thumbColor={IsBP ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                value={IsBP}
+                disabled={true}
+              />
+            </View>
+
+            <View style={{ marginBottom: 10 }}>
+
+              {ShowisRenovacion && (
+                <View>
+                  <Text style={{ marginRight: 10 }}>Renovación:</Text>
+                  <Switch
+                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitchRembolso}
+                    value={isRenovacion}
+                  />
+                </View>
+              )}
+
+              {showPickerFDesembolso && (
+                <View>
+                  <Text style={{ marginRight: 10 }}>Fecha de desembolso:</Text>
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={dateFDesembolso}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                    style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                  />
+                </View>
+              )}
+
+            </View>
+
+          </Collapsible>
+        </View >
+
+        {/* Forma pago */}
+        {/* display: 'none'  */}
+        < View style={{ marginBottom: 10, marginTop: 5 }}>
+          <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
+            <Text style={styles.buttonText}>Forma de Pago</Text>
+          </TouchableOpacity>
+          <Collapsible collapsed={PlCollapsed}>
+            {!isPL && !isPR && (
+              <Text style={{ marginRight: 10 }}>No se cuenta con método de pago configurado</Text>
+            )}
+            {isPL && (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
+                <Switch
+                  trackColor={{ false: '#767577', true: '#81b0ff' }}
+                  thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitchPL}
+                  value={isEnabledPL}
+                  disabled={!isPL}
+                />
+              </View>
+            )}
+            {isPR && (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
+                <Switch
+                  trackColor={{ false: '#767577', true: '#81b0ff' }}
+                  thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitchPR}
+                  value={isEnabledPR}
+                  disabled={!isPR}
                 />
               </View>
             )}
 
-          </View>
+            {isEnabledPL && (
+              <View>
+                <Text>Nombre Tarjetahabiente</Text>
+                <TextInput
+                  placeholder="Nombre del Tarjetahabiente"
+                  value={nombreTarjetahabiente}
+                  onChangeText={text => setNombreTarjetahabiente(text)}
+                />
 
-        </Collapsible>
-      </View >
+                <Text>Banco Emisor</Text>
 
-      {/* Forma pago */}
-      {/* display: 'none'  */}
-      < View style={{ marginBottom: 10, marginTop: 5 }}>
-        <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
-          <Text style={styles.buttonText}>Forma de Pago</Text>
-        </TouchableOpacity>
-        <Collapsible collapsed={PlCollapsed}>
-          {!isPL && !isPR && (
-            <Text style={{ marginRight: 10 }}>No se cuenta con método de pago configurado</Text>
-          )}
-          {isPL && (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
-              <Switch
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitchPL}
-                value={isEnabledPL}
-                disabled={!isPL}
-              />
-            </View>
-          )}
-          {isPR && (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
-              <Switch
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitchPR}
-                value={isEnabledPR}
-                disabled={!isPR}
-              />
-            </View>
-          )}
+                <Picker
+                  selectedValue={selectedBancoEmisor}
+                  onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
+                  style={styles.input}
+                  enabled={false} >
+                  {BancosEmisores.map((be) => (
+                    <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
+                  ))}
+                </Picker>
+                <Text>Método de Pago</Text>
+                <Picker
+                  selectedValue={selectedMetodosPagos}
+                  onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
+                  style={styles.input}
+                  enabled={false} >
+                  {MetodosPagos.map((mp) => (
+                    <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
+                  ))}
+                </Picker>
+                <Text>Cuenta Clabe/No. Tarjeta</Text>
+                <TextInput
+                  placeholder="Cuenta Clabe/No. Tarjeta"
+                  value={cuentaClabeNoTarjeta}
+                  onChangeText={text => setCuentaClabeNoTarjeta(text)}
+                />
+                <Text>Fecha de Expiración (MM/YY)</Text>
+                <TextInput
+                  placeholder="MM/YY"
+                  value={fechaExpiracion}
+                  onChangeText={text => formatFechaExpiracion(text)}
+                  keyboardType="numeric"
+                  maxLength={5}
+                />
+                <Text>CVV Protegido de 3 Dígitos</Text>
+                <TextInput
+                  placeholder="CVV"
+                  value={cvv}
+                  onChangeText={text => setCVV(text)}
+                  secureTextEntry={true}
+                  maxLength={3}
+                />
+              </View>
+            )}
 
-          {isEnabledPL && (
-            <View>
-              <Text>Nombre Tarjetahabiente</Text>
-              <TextInput
-                placeholder="Nombre del Tarjetahabiente"
-                value={nombreTarjetahabiente}
-                onChangeText={text => setNombreTarjetahabiente(text)}
-              />
+          </Collapsible>
 
-              <Text>Banco Emisor</Text>
+        </View >
 
-              <Picker
-                selectedValue={selectedBancoEmisor}
-                onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
-                style={styles.input}
-                enabled={false} >
-                {BancosEmisores.map((be) => (
-                  <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
-                ))}
-              </Picker>
-              <Text>Método de Pago</Text>
-              <Picker
-                selectedValue={selectedMetodosPagos}
-                onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
-                style={styles.input}
-                enabled={false} >
-                {MetodosPagos.map((mp) => (
-                  <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
-                ))}
-              </Picker>
-              <Text>Cuenta Clabe/No. Tarjeta</Text>
-              <TextInput
-                placeholder="Cuenta Clabe/No. Tarjeta"
-                value={cuentaClabeNoTarjeta}
-                onChangeText={text => setCuentaClabeNoTarjeta(text)}
-              />
-              <Text>Fecha de Expiración (MM/YY)</Text>
-              <TextInput
-                placeholder="MM/YY"
-                value={fechaExpiracion}
-                onChangeText={text => formatFechaExpiracion(text)}
-                keyboardType="numeric"
-                maxLength={5}
-              />
-              <Text>CVV Protegido de 3 Dígitos</Text>
-              <TextInput
-                placeholder="CVV"
-                value={cvv}
-                onChangeText={text => setCVV(text)}
-                secureTextEntry={true}
-                maxLength={3}
-              />
-            </View>
-          )}
+        {/* Botón de emitir */}
+        < TouchableOpacity
+          style={styles.cotizarButton}
+          onPress={handleEmitir} >
+          <Text style={styles.cotizarButtonText}>Emitir</Text>
+        </TouchableOpacity >
 
-        </Collapsible>
-
-      </View >
-
-      {/* Botón de emitir */}
-      < TouchableOpacity
-        style={styles.cotizarButton}
-        onPress={handleEmitir} >
-        <Text style={styles.cotizarButtonText}>Emitir</Text>
-      </TouchableOpacity >
-
-    </ScrollView >
-
+      </ScrollView >
+      {loadingEmision && (
+        <LoadingComponent />
+      )}
+    </View>
   );
 
 };

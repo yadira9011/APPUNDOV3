@@ -217,6 +217,7 @@ const ResultadoCotizacionScreen = () => {
             DataResul: dataArray.DataResul,
             CotiData: dataArray.CotiData,
             DataTitulos: dataArray.DataTitulos,
+            DataParameter:dataArray.DataParameter,
         }
 
         navigation.navigate('Emision', { dataArrayEmi });
