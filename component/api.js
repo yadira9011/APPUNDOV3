@@ -92,7 +92,7 @@ export const UserSubcanales = (email, password, _IdUsuario, _IdCanal) => {
 //   });
 // };
 
-export const CotEstatusVehiculos = async(email, password, IdSubCanal) => {
+export const CotEstatusVehiculos = async (email, password, IdSubCanal) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
@@ -383,8 +383,15 @@ export const GetPLGetMetodosPago = (credential) => {
     params: credential
   });
 };
-export const GetConfigAgente= (credential) => {
+
+export const GetConfigAgente = (credential) => {
   return axios.get(`${BASE_URL}/API/Autos/ConfigAgente`, {
+    params: credential
+  });
+};
+
+export const GetPrivilegios = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/GetPrivilegiosRolApi`, {
     params: credential
   });
 };
