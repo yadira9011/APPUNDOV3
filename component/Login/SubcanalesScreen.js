@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
-import { UserClientes, UserGrupos, UserSubcanales } from '../api';
+import { UserClientes, UserGrupos, UserSubcanales } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 

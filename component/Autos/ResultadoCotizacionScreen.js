@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, TextInput, Image, Modal, Alert, Switch, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { GetCoberturasCotizacion, EnvioCotizacion } from '../api';
+import { GetCoberturasCotizacion, EnvioCotizacion } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 
 

@@ -1,6 +1,6 @@
 
 import config from '../Config';
-import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from './api';
+import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from './Api/api';
 
 export const CountGrupos = async (email, password, idUsuario) => {
 

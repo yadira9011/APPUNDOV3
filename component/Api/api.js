@@ -1,5 +1,5 @@
 import axios from 'axios';
-import config from '../Config';
+import config from '../../Config';
 
 const BASE_URL = config.EXPO_PUBLIC_API_URL;
 
