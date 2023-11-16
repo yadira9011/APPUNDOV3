@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
-import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from '../api';
+import { UserGrupos, UserClientes, UserCanales, UserSubcanales } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = ({ route }) => {

@@ -21,7 +21,7 @@ const SubcanalesScreen = ({ route }) => {
                 DataParameterSubcanales.email,
                 DataParameterSubcanales.password,
                 DataParameterSubcanales.IdUsr,
-                DataParameterSubcanales.IdCanal
+                DataParameterSubcanales.IdCanal,
             );
             
             if (response.data.Subcanales) {
@@ -50,7 +50,9 @@ const SubcanalesScreen = ({ route }) => {
             password: DataParameterSubcanales.password,
             email: DataParameterSubcanales.email,
             IdSubCanal: item.IDSubCanal,
-            NomSubCanal: item.SubCanal
+            NomSubCanal: item.SubCanal,
+            IdPersona: DataParameterSubcanales.IdPersona,
+            IdRol: DataParameterSubcanales.IdRol
           };
 
           navigation.navigate('Modulos', { DataParameter: _DataParameter });

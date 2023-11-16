@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
-import { UserClientes, UserGrupos } from '../api';
+import { UserClientes, UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 
@@ -67,7 +67,9 @@ const ClientesScreen = ({ route }) => {
                     IdUsr: DataParameterClientes.IdUsr,
                     password: DataParameterClientes.password,
                     email: DataParameterClientes.email,
-                    IdCliente: IdCliente
+                    IdCliente: IdCliente,
+                    IdPersona: DataParameterClientes.IdPersona,
+                    IdRol: DataParameterClientes.IdRol
                 };
                 navigation.navigate('Canales', { DataParameterCanales });
             } else {
@@ -81,7 +83,9 @@ const ClientesScreen = ({ route }) => {
                         IdUsr: DataParameterClientes.IdUsr,
                         password: DataParameterClientes.password,
                         email: DataParameterClientes.email,
-                        IdCanal: IdCanal
+                        IdCanal: IdCanal,
+                        IdPersona: DataParameterClientes.IdPersona,
+                        IdRol: DataParameterClientes.IdRol
                     };
                     navigation.navigate('Subcanales', { DataParameterSubcanales });
                 } else {
@@ -92,7 +96,9 @@ const ClientesScreen = ({ route }) => {
                         password: DataParameterClientes.password,
                         email: DataParameterClientes.email,
                         IdSubCanal: IDSubCanal,
-                        NomSubCanal: SubCanal
+                        NomSubCanal: SubCanal,
+                        IdPersona: DataParameterClientes.IdPersona,
+                        IdRol: DataParameterClientes.IdRol
                     };
                     navigation.navigate('Modulos', { DataParameter: _DataParameter });
                 }

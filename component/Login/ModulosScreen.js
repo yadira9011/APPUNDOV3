@@ -17,6 +17,10 @@ const ModulosScreen = ({ route }) => {
                     params:{ DataParameter: DataParameter },
                 });
                 break;
+            case 'Polizas':
+                    console.log(DataParameter)
+                    navigation.navigate('ConsultaPolizas', { DataParameter });
+                    break;
             default:
                 Alert.alert('Item presionado:', item.title);
                 break;
@@ -31,7 +35,7 @@ const ModulosScreen = ({ route }) => {
 
     const imagenTitles = [
         'Autos',
-        'Casa Habitacion',
+        'Polizas',
         'Agropecuario',
     ];
 

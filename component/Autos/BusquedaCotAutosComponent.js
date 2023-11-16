@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'react-native';
-import { GetCotizacionApi } from '../api';
+import { GetCotizacionApi } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {

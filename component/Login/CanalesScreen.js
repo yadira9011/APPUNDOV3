@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
-import { UserCanales, UserClientes, UserGrupos } from '../api';
+import { UserCanales, UserClientes, UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 
@@ -67,7 +67,9 @@ const CanalesScreen = ({ route }) => {
                     IdUsr: DataParameterCanales.IdUsr,
                     password: DataParameterCanales.password,
                     email: DataParameterCanales.email,
-                    IdCanal: IdCanal
+                    IdCanal: IdCanal,
+                    IdPersona: DataParameterCanales.IdPersona,
+                    IdRol: DataParameterCanales.IdRol,
                 };
                 navigation.navigate('Subcanales', { DataParameterSubcanales });
             } else {
@@ -78,7 +80,9 @@ const CanalesScreen = ({ route }) => {
                     password: DataParameterCanales.password,
                     email: DataParameterCanales.email,
                     IdSubCanal: IDSubCanal,
-                    NomSubCanal: SubCanal
+                    NomSubCanal: SubCanal,
+                    IdPersona: DataParameterCanales.IdPersona,
+                    IdRol: DataParameterCanales.IdRol,
                 };
                 navigation.navigate('Modulos', { DataParameter: _DataParameter });
             }

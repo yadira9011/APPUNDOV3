@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, Image, StyleSheet } from 'react-native';
-import { loginUser } from '../api';
+import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 
 
@@ -14,6 +14,9 @@ const LoginScreen = ({ navigation }) => {
 
       const response = await loginUser(email, password);
       const res = parseInt(response.data.FIIDUSUARIO, 10);
+      const IdPersona = parseInt(response.data.FIIDPERSONA, 10);
+      const IdRol = parseInt(response.data.FSIDROL, 10);
+      
 
       if (res >= 0) {
 
@@ -21,6 +24,8 @@ const LoginScreen = ({ navigation }) => {
           IdUsr: res,
           password: password,
           email: email,
+          IdPersona:IdPersona,
+          IdRol:IdRol
         };
 
         //navigation.navigate('Home', { userDataParameter });
@@ -53,7 +58,9 @@ const LoginScreen = ({ navigation }) => {
             IdUsr: userDataParameter.IdUsr,
             password: userDataParameter.password,
             email: userDataParameter.email,
-            IdGrupo: IdGrupoEmpresa
+            IdGrupo: IdGrupoEmpresa,
+            IdPersona: userDataParameter.IdPersona,
+            IdRol: userDataParameter.IdRol,
           };
           navigation.navigate('Clientes', { DataParameterClientes });
         } else {
@@ -67,7 +74,9 @@ const LoginScreen = ({ navigation }) => {
               IdUsr: userDataParameter.IdUsr,
               password: userDataParameter.password,
               email: userDataParameter.email,
-              IdCliente: IdCliente
+              IdCliente: IdCliente,
+              IdPersona: userDataParameter.IdPersona,
+              IdRol: userDataParameter.IdRol,
             };
             navigation.navigate('Canales', { DataParameterCanales });
           } else {
@@ -81,7 +90,9 @@ const LoginScreen = ({ navigation }) => {
                 IdUsr: userDataParameter.IdUsr,
                 password: userDataParameter.password,
                 email: userDataParameter.email,
-                IdCanal: IdCanal
+                IdCanal: IdCanal,
+                IdPersona: userDataParameter.IdPersona,
+                IdRol: userDataParameter.IdRol,
               };
               navigation.navigate('Subcanales', { DataParameterSubcanales });
             } else {
@@ -92,7 +103,9 @@ const LoginScreen = ({ navigation }) => {
                 password: userDataParameter.password,
                 email: userDataParameter.email,
                 IdSubCanal: IDSubCanal,
-                NomSubCanal: SubCanal
+                NomSubCanal: SubCanal,
+                IdPersona: userDataParameter.IdPersona,
+                IdRol: userDataParameter.IdRol,
               };
               navigation.navigate('Modulos', { DataParameter: _DataParameter });
             }

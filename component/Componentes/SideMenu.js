@@ -55,7 +55,9 @@ const MySideMenu = (props) => {
             password: route.params.params.DataParameter.email,
             email: route.params.params.DataParameter.password,
             IdSubCanal: route.params.params.DataParameter.IdSubCanal,
-            NomSubCanal: route.params.params.DataParameter.NomSubCanal
+            NomSubCanal: route.params.params.DataParameter.NomSubCanal,
+            IdPersona: route.params.params.DataParameter.IdPersona,
+            IdRol: route.params.params.DataParameter.IdRol
         };
         //console.log(_DataParameter)
         navigation.navigate('Modulos', { DataParameter: _DataParameter });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
-import { UserGrupos } from '../api';
+import { UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 
@@ -67,7 +67,9 @@ const GrupoScreen = ({ route }) => {
                     IdUsr: userDataParameter.IdUsr,
                     password: userDataParameter.password,
                     email: userDataParameter.email,
-                    IdGrupo: IdGrupo
+                    IdGrupo: IdGrupo,
+                    IdPersona: userDataParameter.IdPersona,
+                    IdRol: userDataParameter.IdRol,
                 };
                 navigation.navigate('Clientes', { DataParameterClientes });
             } else {
@@ -81,7 +83,9 @@ const GrupoScreen = ({ route }) => {
                         IdUsr: userDataParameter.IdUsr,
                         password: userDataParameter.password,
                         email: userDataParameter.email,
-                        IdCliente: IdCliente
+                        IdCliente: IdCliente,
+                        IdPersona: userDataParameter.IdPersona,
+                        IdRol: userDataParameter.IdRol,
                     };
                     navigation.navigate('Canales', { DataParameterCanales });
                 } else {
@@ -95,7 +99,9 @@ const GrupoScreen = ({ route }) => {
                             IdUsr: userDataParameter.IdUsr,
                             password: userDataParameter.password,
                             email: userDataParameter.email,
-                            IdCanal: IdCanal
+                            IdCanal: IdCanal,
+                            IdPersona: userDataParameter.IdPersona,
+                            IdRol: userDataParameter.IdRol
                         };
                         navigation.navigate('Subcanales', { DataParameterSubcanales });
                     } else {
@@ -109,7 +115,9 @@ const GrupoScreen = ({ route }) => {
                             password: userDataParameter.password,
                             email: userDataParameter.email,
                             IdSubCanal: IDSubCanal,
-                            NomSubCanal: SubCanal
+                            NomSubCanal: SubCanal,
+                            IdPersona: userDataParameter.IdPersona,
+                            IdRol: userDataParameter.IdRol,
                         };
                         navigation.navigate('Modulos', { DataParameter: _DataParameter });
                     }

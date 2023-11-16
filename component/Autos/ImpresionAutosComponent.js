@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'react-native';
-import { GetPolizaPdfApi } from '../api';
+import { GetPolizaPdfApi } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 
 export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, email, password }) {

@@ -16,7 +16,7 @@ import {
   GetTipoSociedad, GetGiros, GetTipoRegimenFiscal, GetIdAseguradora,
   GetFlags, GetPLCodigosBancos, GetPLGetMetodosPago, GetTipoCDFI,
   GetConfigAgente, GetCEmision, ImpresionPoliza, GetPagoEnLinea, GetPrivilegios
-} from '../api';
+} from '../Api/api';
 
 const EmisionScreen = () => {
 
