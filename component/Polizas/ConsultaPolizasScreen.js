@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import {
     View,
     Text, SectionList,
@@ -10,10 +9,12 @@ import {
     ScrollView,
     FlatList
 } from 'react-native';
-
 import {
-    GetPolizasGpoTitular, GetCertificadosDepTitular,
-    GetPolizasIdividualesTitular, GetPolizasXContratanteTitular, GetBotonesServPoliza
+    GetPolizasGpoTitular,
+    GetCertificadosDepTitular,
+    GetPolizasIdividualesTitular,
+    GetPolizasXContratanteTitular,
+    GetBotonesServPoliza
 } from '../Api/api_polizas';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
@@ -30,6 +31,16 @@ const ConsultaPolizasScreen = ({ route }) => {
     const [IsCollapsedPolizasGpoTitular, setIsCollapsedPolizasGpoTitular] = useState(true);
     const [PolizasGpo, setPolizasGpo] = useState([]);
 
+    const [IsCollapsedCertificadosDepTitular, setIsCollapsedCertificadosDepTitular] = useState(true);
+    const [CertificadosDepTitular, setCertificadosDepTitular] = useState([]);
+
+    const [IsCollapsedPolizasIdividualesTitular, setIsCollapsedPolizasIdividualesTitular] = useState(true);
+    const [PolizasIdividualesTitular, setPolizasIdividualesTitular] = useState([]);
+
+    const [IsCollapsedPolizasXContratanteTitular, setIsCollapsedPolizasXContratanteTitular] = useState(true);
+    const [PolizasXContratanteTitular, setPolizasXContratanteTitular] = useState([]);
+
+    
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -83,7 +94,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             if (response.data.Data) {
                 const data = response.data.Data;
                 console.log(data)
-                setPolizasGpo(data);
+                setCertificadosDepTitular(data);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -106,7 +117,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             if (response.data.Data) {
                 const data = response.data.Data;
                 console.log(data)
-                setPolizasGpo(data);
+                setPolizasIdividualesTitular(data);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -129,7 +140,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             if (response.data.Data) {
                 const data = response.data.Data;
                 console.log(data)
-                setPolizasGpo(data);
+                setPolizasXContratanteTitular(data);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -140,11 +151,11 @@ const ConsultaPolizasScreen = ({ route }) => {
         }
     };
 
-    const fetchBotonesServPoliza = async () => {
+    const fetchBotonesServPoliza = async (idPoliza) => {
         try {
 
             const DataRquest = {
-                idPersona: DataParameter.IdPersona,
+                idPoliza: idPoliza,
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password,
             }
@@ -163,38 +174,87 @@ const ConsultaPolizasScreen = ({ route }) => {
         }
     };
 
+  
     const toggleCollapsePolizasGpo = () => {
         setIsCollapsedPolizasGpoTitular(!IsCollapsedPolizasGpoTitular);
     };
 
-    const renderItemPolizasGpo = ({ item, onPress }) => (
-        <View style={styles.itemContainer} >
-            <View style={styles.itemDetailsUnO}>
-                <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
-                <Text style={styles.description}>{item.FSALIAS}</Text>
-                <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
-                <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
-                <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
-                <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
+    const toggleCollapseCertificadosDepTitular = () => {
+        setIsCollapsedCertificadosDepTitular(!IsCollapsedCertificadosDepTitular);
+    };
+
+    const toggleCollapsePolizasIdividualesTitular = () => {
+        setIsCollapsedPolizasIdividualesTitular(!IsCollapsedPolizasIdividualesTitular);
+    };
+
+    const toggleCollapsePolizasXContratanteTitular = () => {
+        setIsCollapsedPolizasXContratanteTitular(!IsCollapsedPolizasXContratanteTitular);
+    };
+
+    // const renderItemPolizasGpo = ({ item, onPress }) => (
+    //     <View style={styles.itemContainer} >
+    //         <View style={styles.itemDetailsUnO}>
+    //             <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
+    //             <Text style={styles.description}>{item.FSALIAS}</Text>
+    //             <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
+    //             <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
+    //             <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
+    //             <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
+    //         </View>
+    //     </View >
+    // );
+
+    const renderItemPolizasGpo = ({ item, onPress }) => {
+
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    await fetchBotonesServPoliza(item.FIIDPOLIZA);
+                } catch (error) {
+                    console.error('Error al obtener los datos:', error);
+                }
+            };
+            fetchData();
+        }, [item.FIIDPOLIZA]);
+
+        return (
+            <View style={styles.itemContainer}>
+                <View style={styles.itemDetailsUnO}>
+                    <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
+                    <Text style={styles.description}>{item.FSALIAS}</Text>
+                    <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
+                    <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
+                    <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
+                    <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
+                </View>
             </View>
-        </View >
-    );
+        );
+    };
 
     return (
+
         <View style={styles.container}>
+
             {/* POLIZAS GRUPO */}
-            <View>
-                <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.button}>
-                    <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
-                </TouchableOpacity>
-                <Collapsible collapsed={IsCollapsedPolizasGpoTitular}>
-                    <FlatList
-                        data={PolizasGpo}
-                        keyExtractor={item => item.FIIDPOLIZA}
-                        renderItem={({ item }) => renderItemPolizasGpo({ item })}
-                    />
-                </Collapsible>
-            </View>
+
+            {PolizasGpo.length > 0 ? (
+                <View>
+                    <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.button}>
+                        <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
+                    </TouchableOpacity>
+                    <Collapsible collapsed={IsCollapsedPolizasGpoTitular}>
+                        <FlatList
+                            data={PolizasGpo}
+                            keyExtractor={item => item.FIIDPOLIZA}
+                            renderItem={({ item }) => renderItemPolizasGpo({ item })}
+                        />
+                    </Collapsible>
+                </View>) : (
+                <View>
+                    <Text>No hay registros disponibles</Text>
+                </View>
+            )}
+
             {loading && (
                 <LoadingComponent />
             )}
