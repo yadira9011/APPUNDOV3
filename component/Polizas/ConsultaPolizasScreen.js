@@ -199,12 +199,11 @@ const ConsultaPolizasScreen = ({ route }) => {
 
     const fetchPolizasCertificado = async (idpoliza, idasegurado) => {
         try {
-
             const DataRquest = {
-                idpoliza: idpoliza,
-                idpoliza: idasegurado,
+                IdPoliza: idpoliza,
+                IdAsegurado: idasegurado,
                 usuario: DataParameter.email,
-                contraseña: DataParameter.password,
+                Contraseña: DataParameter.password,
             }
             const response = await GetCertificadoPoliza(DataRquest);
             if (response.data.Data) {
@@ -213,16 +212,13 @@ const ConsultaPolizasScreen = ({ route }) => {
             } else {
                 console.error('no se encontraron grupos');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            setLoading(false);
         }
     };
 
     const fetchPolizasCoberturas = async (IdPoliza) => {
         try {
-
             const DataRquest = {
                 IdPoliza: IdPoliza,
                 usuario: DataParameter.email,
@@ -235,10 +231,8 @@ const ConsultaPolizasScreen = ({ route }) => {
             } else {
                 console.error('no se encontraron grupos');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            setLoading(false);
         }
     };
 
@@ -259,7 +253,6 @@ const ConsultaPolizasScreen = ({ route }) => {
     };
 
     const renderItemPolizasGpo = ({ item, onPress }) => (
-
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>
                 <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
