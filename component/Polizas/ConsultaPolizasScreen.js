@@ -9,13 +9,17 @@ import {
     ScrollView,
     FlatList
 } from 'react-native';
+
 import {
     GetPolizasGpoTitular,
     GetCertificadosDepTitular,
     GetPolizasIdividualesTitular,
     GetPolizasXContratanteTitular,
-    GetBotonesServPoliza
+    GetBotonesServPoliza,
+    GetCertificadoPoliza,
+    GetCoberturasPoliza
 } from '../Api/api_polizas';
+
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import Collapsible from 'react-native-collapsible';
@@ -40,7 +44,9 @@ const ConsultaPolizasScreen = ({ route }) => {
     const [IsCollapsedPolizasXContratanteTitular, setIsCollapsedPolizasXContratanteTitular] = useState(true);
     const [PolizasXContratanteTitular, setPolizasXContratanteTitular] = useState([]);
 
-    
+    const [botonesPorPoliza, setBotonesPorPoliza] = useState([]);
+
+
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -58,6 +64,38 @@ const ConsultaPolizasScreen = ({ route }) => {
         loadData();
     }, []);
 
+    const fetchBotonesServPoliza = async (idPoliza) => {
+        try {
+            const DataRquest = {
+                idPoliza: idPoliza,
+                usuario: DataParameter.email,
+                contraseña: DataParameter.password,
+            }
+            const response = await GetBotonesServPoliza(DataRquest);
+            if (response.data.Data) {
+                const data = response.data.Data;
+                const tiposBoton = data.map(item => item.FSTIPOBOTON);
+                console.log(data);
+                return tiposBoton;
+            } else {
+                return [];
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error('Error al obtener los datos:', error);
+            return [];
+        }
+    };
+
+    const handleFetchBotonesServPoliza = async (idPoliza) => {
+        try {
+            const tiposBoton = await fetchBotonesServPoliza(idPoliza);
+            return tiposBoton;
+        } catch (error) {
+            return [];
+            console.error('Error al obtener datos:', error);
+        }
+    };
 
     const fetchPolizasGpo = async () => {
         try {
@@ -72,10 +110,18 @@ const ConsultaPolizasScreen = ({ route }) => {
                 const data = response.data.Data;
                 console.log(data)
                 setPolizasGpo(data);
+                const botonesPorIdPoliza = {};
+                for (const poliza of data) {
+                    const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                    botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                }
+                console.log("BOTONEESSSSS", botonesPorIdPoliza)
+                setBotonesPorPoliza(botonesPorIdPoliza);
+                setLoading(false);
             } else {
                 console.error('no se encontraron grupos');
+                setLoading(false);
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
             setLoading(false);
@@ -151,19 +197,19 @@ const ConsultaPolizasScreen = ({ route }) => {
         }
     };
 
-    const fetchBotonesServPoliza = async (idPoliza) => {
+    const fetchPolizasCertificado = async (idpoliza, idasegurado) => {
         try {
 
             const DataRquest = {
-                idPoliza: idPoliza,
+                idpoliza: idpoliza,
+                idpoliza: idasegurado,
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password,
             }
-            const response = await GetBotonesServPoliza(DataRquest);
+            const response = await GetCertificadoPoliza(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
                 console.log(data)
-                setPolizasGpo(data);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -174,7 +220,28 @@ const ConsultaPolizasScreen = ({ route }) => {
         }
     };
 
-  
+    const fetchPolizasCoberturas = async (IdPoliza) => {
+        try {
+
+            const DataRquest = {
+                IdPoliza: IdPoliza,
+                usuario: DataParameter.email,
+                contraseña: DataParameter.password,
+            }
+            const response = await GetCoberturasPoliza(DataRquest);
+            if (response.data.Data) {
+                const data = response.data.Data;
+                console.log(data)
+            } else {
+                console.error('no se encontraron grupos');
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error('Error al obtener los datos:', error);
+            setLoading(false);
+        }
+    };
+
     const toggleCollapsePolizasGpo = () => {
         setIsCollapsedPolizasGpoTitular(!IsCollapsedPolizasGpoTitular);
     };
@@ -191,44 +258,137 @@ const ConsultaPolizasScreen = ({ route }) => {
         setIsCollapsedPolizasXContratanteTitular(!IsCollapsedPolizasXContratanteTitular);
     };
 
-    // const renderItemPolizasGpo = ({ item, onPress }) => (
-    //     <View style={styles.itemContainer} >
-    //         <View style={styles.itemDetailsUnO}>
-    //             <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
-    //             <Text style={styles.description}>{item.FSALIAS}</Text>
-    //             <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
-    //             <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
-    //             <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
-    //             <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
-    //         </View>
-    //     </View >
-    // );
+    const renderItemPolizasGpo = ({ item, onPress }) => (
 
-    const renderItemPolizasGpo = ({ item, onPress }) => {
-
-        useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    await fetchBotonesServPoliza(item.FIIDPOLIZA);
-                } catch (error) {
-                    console.error('Error al obtener los datos:', error);
+        <View style={styles.itemContainer} >
+            <View style={styles.itemDetailsUnO}>
+                <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
+                <Text style={styles.description}>{item.FSALIAS}</Text>
+                <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
+                <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
+                <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
+                <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
+                {botonesPorPoliza[item.FIIDPOLIZA] !== undefined &&
+                    botonesPorPoliza[item.FIIDPOLIZA].map((boton, index) => (
+                        <TouchableOpacity key={index} onPress={() => handleBotonPress(boton, item.FIIDPOLIZA, item.FIIDASEGURADO)}>
+                            <Ionicons
+                                name={boton === 'Cer' ? 'ios-document' : 'ios-information-circle'}
+                                size={24}
+                                color="black"
+                            />
+                        </TouchableOpacity>
+                    ))
                 }
-            };
-            fetchData();
-        }, [item.FIIDPOLIZA]);
-
-        return (
-            <View style={styles.itemContainer}>
-                <View style={styles.itemDetailsUnO}>
-                    <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
-                    <Text style={styles.description}>{item.FSALIAS}</Text>
-                    <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
-                    <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
-                    <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
-                    <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
-                </View>
             </View>
-        );
+        </View >
+    );
+
+    // const renderBotones = async () => {
+    //     const tiposBoton = await handleFetchBotonesServPoliza(item.FIIDPOLIZA);
+    //     // tiposBoton.forEach(tipoBoton => {
+    //     //     console.log(tipoBoton);
+    //     // });
+    //     const botones = tiposBoton.map((boton, index) => (
+    //         <TouchableOpacity key={index} onPress={() => handlePress(boton)}>
+    //             <Text>{boton}</Text>
+    //         </TouchableOpacity>
+    //     ));
+    //     return botones;
+    // };
+
+    // const renderItemPolizasGpo = ({ item, onPress }) => {
+
+    //     console.log(item)
+
+    //     const tiposBoton = await handleFetchBotonesServPoliza(item.FIIDPOLIZA);
+    //     const renderTiposBoton = () => {
+    //       if (tiposBoton.length === 0) {
+    //         return <Text>No hay botones disponibles</Text>;
+    //       } else {
+    //         return tiposBoton.map((tipoBoton, index) => (
+    //           <TouchableOpacity key={index} onPress={() => handlePress(tipoBoton)}>
+    //             <Text>{tipoBoton}</Text>
+    //           </TouchableOpacity>
+    //         ));
+    //       }
+    //     };
+
+    //     const itemmPolizasGpo = ({ item, onPress }) => (
+    //         <View style={styles.itemContainer} >
+    //             <View style={styles.itemDetailsUnO}>
+    //                 <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
+    //                 <Text style={styles.description}>{item.FSALIAS}</Text>
+    //                 <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
+    //                 <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
+    //                 <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
+    //                 <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
+    //             </View>
+    //         </View >
+    //     );
+    //     return itemmPolizasGpo
+    // };
+
+    // const renderItemPolizasGpo = ({ item, onPress }) => {
+
+    //     let botones = [];
+
+    //     const fetchBotones = async (idPoliza) => {
+    //         try {
+    //             const result = await handleFetchBotonesServPoliza(idPoliza);
+    //             return result;
+    //         } catch (error) {
+    //             return [];
+    //         }
+    //     };
+
+    //     botones = fetchBotones(item.FIIDPOLIZA)
+
+    //     console.log("bybbbbb", botones)
+
+    //     useEffect(() => {
+    //         const fetchData = async () => {
+    //             try {
+    //                 const tiposBoton = await handleFetchBotonesServPoliza(item.FIIDPOLIZA);
+    //                 tiposBoton.forEach(tipoBoton => {
+    //                     console.log(tipoBoton);
+    //                 });
+    //             } catch (error) {
+    //                 console.error('Error al obtener los datos:', error);
+    //             }
+    //         };
+    //         fetchData();
+    //     }, [item.FIIDPOLIZA]);
+
+    //     const tiposBoton = handleFetchBotonesServPoliza(item.FIIDPOLIZA);
+    //     tiposBoton.forEach(tipoBoton => {
+    //         console.log(tipoBoton);
+    //     });
+
+    //     return (
+    //         <View style={styles.itemContainer}>
+    //             <View style={styles.itemDetailsUnO}>
+    //                 <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
+    //                 <Text style={styles.description}>{item.FSALIAS}</Text>
+    //                 <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
+    //                 <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
+    //                 <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
+    //                 <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
+    //                 {botones.map((boton, index) => (
+    //                     <TouchableOpacity key={index} onPress={handleBotonPress}>
+    //                         <Text>{boton}</Text>
+    //                     </TouchableOpacity>
+    //                 ))}
+    //             </View>
+    //         </View>
+    //     );
+    // };
+
+    const handleBotonPress = async (tipoBoton, idpoliza, idasegurado) => {
+        if (tipoBoton === 'Cer') {
+            // await fetchPolizasCertificado(idpoliza, idasegurado)
+        } else {
+            // await fetchPolizasCoberturas(idpoliza)
+        }
     };
 
     return (
@@ -246,7 +406,8 @@ const ConsultaPolizasScreen = ({ route }) => {
                         <FlatList
                             data={PolizasGpo}
                             keyExtractor={item => item.FIIDPOLIZA}
-                            renderItem={({ item }) => renderItemPolizasGpo({ item })}
+                            // renderItem={({ item }) => renderItemPolizasGpo({ item })}
+                            renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
                         />
                     </Collapsible>
                 </View>) : (

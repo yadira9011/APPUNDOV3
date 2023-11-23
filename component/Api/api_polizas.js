@@ -33,5 +33,16 @@ export const GetBotonesServPoliza = (credential) => {
   });
 };
 
+export const GetCertificadoPoliza = (credential) => {
+  return axios.get(`${BASE_URL}/API/Polizas/GetCertificadoPoliza`, {
+    params: credential
+  });
+};
+
+export const GetCoberturasPoliza = (credential) => {
+  return axios.get(`${BASE_URL}/API/Polizas/GetCoberturasPoliza`, {
+    params: credential
+  });
+};
 
 
