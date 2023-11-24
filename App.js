@@ -16,6 +16,7 @@ import ResultadoCotizacionScreen from './component/Autos/ResultadoCotizacionScre
 import EmisionScreen from './component/Autos/EmisionScreen';
 import SideMenu from './component/Componentes/SideMenu';
 import PDFViewerScreen from './component/Componentes/PDFViewerScreen';
+import ViewerBase64Screen from './component/Componentes/ViewerBase64Screen';
 import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
 
 const Stack = createStackNavigator();
@@ -46,6 +47,7 @@ export default function App() {
         <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
         <Stack.Screen name="Emision" component={EmisionScreen} />
         <Stack.Screen name="PDFViewerScreen" component={PDFViewerScreen} />
+        <Stack.Screen name="ViewerBase64Screen" component={ViewerBase64Screen} />
         <Stack.Screen name="ConsultaPolizas" component={ConsultaPolizasScreen} />
       </Stack.Navigator>
     </NavigationContainer>

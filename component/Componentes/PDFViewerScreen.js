@@ -10,6 +10,9 @@ const PDFViewerScreen = ({ route }) => {
     const { pdfUrl } = route.params;
     const [loading, setLoading] = useState(false);
 
+    // const htmlContent = `<html><body><embed src="data:application/pdf;base64,${pdfUrl}"
+    //  type="application/pdf" width="100%" height="100%"></embed></body></html>`;
+
     const sharePDF = () => {
         Linking.openURL(pdfUrl)
             .then((supported) => {
@@ -62,11 +65,21 @@ const PDFViewerScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
+
             <WebView
                 style={{ height: 200, width: 350 }}
                 nestedScrollEnabled={true}
                 javaScriptEnabled={true}
                 source={{ uri: 'https://drive.google.com/viewerng/viewer?embedded=true&url=' + pdfUrl + '' }} />
+
+
+            {/* <WebView
+                style={{ height: 200, width: 350 }}
+                nestedScrollEnabled={true}
+                javaScriptEnabled={true}
+                source={{ html: htmlContent }}
+            /> */}
+
             <Button title="Compartir PDF" onPress={downloadAndSharePDF} />
             {loading && (
                 <LoadingComponent />
