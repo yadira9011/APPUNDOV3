@@ -10,7 +10,6 @@ const CanalesScreen = ({ route }) => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
-
     useEffect(() => {
         fetchData();
     }, []);

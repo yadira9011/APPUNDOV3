@@ -58,7 +58,7 @@ const InicioAPScreen = ({ route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <VirtualizedList
-                initialNumToRender={3}
+                initialNumToRender={2}
                 // renderItem={({ item }) => <Item title={item.title} image={item.image} />}
                 renderItem={({ item }) => <Item title={item.title} image={item.image} onPress={() => onPressItem(item)} />}
                 keyExtractor={item => item.id}
