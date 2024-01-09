@@ -1,40 +1,26 @@
 import React from 'react';
-import {
-    SafeAreaView,
-    View,
-    VirtualizedList,
-    StyleSheet,
-    Text,
-    StatusBar,
-    Image,
-    Alert,
-    TouchableOpacity
-} from 'react-native';
-
+import { SafeAreaView, View, VirtualizedList, StyleSheet, Text, StatusBar, Image, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const ModulosScreen = ({ route }) => {
+const InicioAPScreen = ({ route }) => {
 
     const navigation = useNavigation();
     const { DataParameter } = route.params;
 
     const onPressItem = (item) => {
         switch (item.title) {
-            case 'Autos':
-                console.log("paso directo de grupo", DataParameter)
-                // navigation.navigate('CotizacionAutos', { DataParameter: DataParameter });
-                navigation.navigate('DrawerCotizacion', {
-                    screen: 'CotizacionAutos',
-                    params: { DataParameter: DataParameter },
-                });
+            case 'Agricola':
+                Alert.alert('Item presionado:', item.title);
+                // // navigation.navigate('CotizacionAutos', { DataParameter: DataParameter });
+                // navigation.navigate('DrawerCotizacion', {
+                //     screen: 'CotizacionAutos',
+                //     params:{ DataParameter: DataParameter },
+                // });
                 break;
-            case 'Polizas':
-                console.log(DataParameter)
-                navigation.navigate('ConsultaPolizas', { DataParameter });
-                break;
-            case 'Agropecuario':
-                console.log(DataParameter)
-                navigation.navigate('InicioAPScreen', { DataParameter });
+            case 'Pecuario':
+                Alert.alert('Item presionado:', item.title);
+                // console.log(DataParameter)
+                // navigation.navigate('ConsultaPolizas', { DataParameter });
                 break;
             default:
                 Alert.alert('Item presionado:', item.title);
@@ -44,14 +30,12 @@ const ModulosScreen = ({ route }) => {
 
     const imagePaths = [
         require('../../assets/Icon1.png'),
-        require('../../assets/Icon2.png'),
         require('../../assets/Icon3.png'),
     ];
 
     const imagenTitles = [
-        'Autos',
-        'Polizas',
-        'Agropecuario',
+        'Agricola',
+        'Pecuario',
     ];
 
     const getItem = (_data, index) => ({
@@ -109,5 +93,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModulosScreen;
+export default InicioAPScreen;
 
