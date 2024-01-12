@@ -19,6 +19,7 @@ import PDFViewerScreen from './component/Componentes/PDFViewerScreen';
 import ViewerBase64Screen from './component/Componentes/ViewerBase64Screen';
 import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
 import InicioAPScreen from './component/Agropecuario/InicioAPScreen';
+import PushNotification from './component/Componentes/PushNotification';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -51,6 +52,7 @@ export default function App() {
         <Stack.Screen name="ViewerBase64Screen" component={ViewerBase64Screen} />
         <Stack.Screen name="ConsultaPolizas" component={ConsultaPolizasScreen} />
         <Stack.Screen name="InicioAPScreen" component={InicioAPScreen} />
+        <Stack.Screen name="PushNotification" component={PushNotification} />
       </Stack.Navigator>
     </NavigationContainer>
   );
