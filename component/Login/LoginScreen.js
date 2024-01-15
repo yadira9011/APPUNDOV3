@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation,route }) => {
     // Accede al valor de expoPushToken desde las props
     const tokenFromProps = route.params?.expoPushToken || '';
     setExpoPushToken(tokenFromProps);
-    console.log("token fromm login .... ",route.params)
+    console.log("token fromm login .... ",tokenFromProps)
   }, [route.params]);
 
   // useEffect(() => {

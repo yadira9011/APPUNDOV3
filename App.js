@@ -96,7 +96,6 @@ export default function App() {
         const token = await registerForPushNotificationsAsync();
         setExpoPushToken(token);
         //console.log("TOKENNNNNN",token)
-
         //registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
         //console.log("TOKENNNNNN",expoPushToken)
        
