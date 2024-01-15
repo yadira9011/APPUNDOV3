@@ -4,10 +4,18 @@ import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 //import * as Notifications from 'expo-notifications';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation,route }) => {
 
   const [email, setEmail] = useState('mail@mail.com');
   const [password, setPassword] = useState('Ven99234');
+  const [expoPushToken, setExpoPushToken] = useState('');
+
+  useEffect(() => {
+    // Accede al valor de expoPushToken desde las props
+    const tokenFromProps = route.params?.expoPushToken || '';
+    setExpoPushToken(tokenFromProps);
+    console.log("token fromm login .... ",route.params)
+  }, [route.params]);
 
   // useEffect(() => {
   //   registerForPushNotificationsAsync();
