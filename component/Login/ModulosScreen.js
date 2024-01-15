@@ -35,7 +35,7 @@ const ModulosScreen = ({ route }) => {
             case 'Agropecuario':
                 console.log(DataParameter)
                 //navigation.navigate('InicioAPScreen', { DataParameter });
-                navigation.navigate('PushNotification', { DataParameter });
+                //navigation.navigate('PushNotification', { DataParameter });
                 break;
             default:
                 Alert.alert('Item presionado:', item.title);

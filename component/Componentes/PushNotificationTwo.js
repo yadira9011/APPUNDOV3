@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { Notifications } from 'expo';
 
 const PushNotificationHandler = () => {
+  
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -42,7 +43,9 @@ const PushNotificationHandler = () => {
   }
 
   useEffect(() => {
+    
     const setupPushNotifications = async () => {
+
       const token = await registerForPushNotificationsAsync();
 
       notificationListener.current = Notifications.addNotificationReceivedListener(notification => {

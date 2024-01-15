@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { View, TextInput, Button, Alert, Image, StyleSheet } from 'react-native';
 import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
-
+//import * as Notifications from 'expo-notifications';
 
 const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState('mail@mail.com');
   const [password, setPassword] = useState('Ven99234');
+
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync();
+  // }, []);
 
   const handleLogin = async () => {
     try {
@@ -16,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
       const res = parseInt(response.data.FIIDUSUARIO, 10);
       const IdPersona = parseInt(response.data.FIIDPERSONA, 10);
       const IdRol = parseInt(response.data.FSIDROL, 10);
-      
+
 
       if (res >= 0) {
 
@@ -24,8 +28,8 @@ const LoginScreen = ({ navigation }) => {
           IdUsr: res,
           password: password,
           email: email,
-          IdPersona:IdPersona,
-          IdRol:IdRol
+          IdPersona: IdPersona,
+          IdRol: IdRol
         };
 
         //navigation.navigate('Home', { userDataParameter });
@@ -116,6 +120,33 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert('Error', 'Inicio de sesión fallido');
     }
   };
+
+  // const registerForPushNotificationsAsync = async () => {
+  //   const { status } = await Notifications.getPermissionsAsync();
+
+  //   if (status !== 'granted') {
+  //     const { status: askStatus } = await Notifications.requestPermissionsAsync();
+
+  //     if (askStatus !== 'granted') {
+  //       console.error('Permission to receive push notifications denied.');
+  //       return;
+  //     }
+  //   }
+  //   const { data: token } = await Notifications.getExpoPushTokenAsync();
+  //   console.log('Expo Push Token:', token);
+
+  //   Notifications.addNotificationReceivedListener(handleNotification);
+
+  //   console.log('Expo recibida notificacion');
+
+
+  // };
+
+  // const handleNotification = (notification) => {
+  //   console.log('Notificación recibida:', notification);
+  //   // Manejar la notificación según tus necesidades...
+  //   // Puedes navegar a la pantalla correspondiente o realizar otras acciones.
+  // };
 
   return (
     <View style={styles.container}>

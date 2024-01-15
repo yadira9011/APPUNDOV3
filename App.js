@@ -19,8 +19,8 @@ import PDFViewerScreen from './component/Componentes/PDFViewerScreen';
 import ViewerBase64Screen from './component/Componentes/ViewerBase64Screen';
 import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
 import InicioAPScreen from './component/Agropecuario/InicioAPScreen';
-import PushNotification from './component/Componentes/PushNotification';
-
+//import PushNotification from './component/Componentes/PushNotification';
+//import * as Notifications from 'expo-notifications';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -30,8 +30,17 @@ const DrawerNavigator = () => (
   </Drawer.Navigator>
 );
 
-
 export default function App() {
+
+  // useEffect(() => {
+  //   //registerForPushNotificationsAsync();
+  //   Notifications.addNotificationReceivedListener(handleNotification);
+  // }, []);
+
+  // const handleNotification = (notification) => {
+  //   console.log('Notificación recibida:', notification);
+  // };
+
   return (
 
     <NavigationContainer>
@@ -52,7 +61,6 @@ export default function App() {
         <Stack.Screen name="ViewerBase64Screen" component={ViewerBase64Screen} />
         <Stack.Screen name="ConsultaPolizas" component={ConsultaPolizasScreen} />
         <Stack.Screen name="InicioAPScreen" component={InicioAPScreen} />
-        <Stack.Screen name="PushNotification" component={PushNotification} />
       </Stack.Navigator>
     </NavigationContainer>
   );
