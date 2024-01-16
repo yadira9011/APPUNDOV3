@@ -46,6 +46,7 @@ export default function App() {
   });
 
   async function registerForPushNotificationsAsync() {
+    
     let token;
 
     if (Platform.OS === 'android') {
@@ -64,8 +65,10 @@ export default function App() {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
+
       if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+        console.log('Permission not granted:', finalStatus);
+        alert('Failed to get push token for push notification!',finalStatus);
         return;
       }
       token = await Notifications.getExpoPushTokenAsync({
@@ -75,7 +78,6 @@ export default function App() {
     } else {
       alert('Must use physical device for Push Notifications');
     }
-
     return token.data;
   }
 
