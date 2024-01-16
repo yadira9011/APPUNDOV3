@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "298208441213",
+    "project_id": "appundov3",
+    "storage_bucket": "appundov3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298208441213:android:12c914cf8bb187b491d214",
+        "android_client_info": {
+          "package_name": "com.yadira.perez.AppUndoV3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRu-ef_A_hmlvyDIS_9kty_vGNzxoHT1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
