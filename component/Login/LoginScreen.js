@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import { View, TextInput, Button, Alert, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert, Image, StyleSheet } from 'react-native';
 import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 //import * as Notifications from 'expo-notifications';
@@ -173,6 +173,9 @@ const LoginScreen = ({ navigation,route }) => {
         onChangeText={setPassword}
         style={styles.textInput}
       />
+
+      <Text>TOKEN: {expoPushToken} </Text>
+      
       <Button title="Iniciar sesión" onPress={handleLogin} />
     </View>
   );
