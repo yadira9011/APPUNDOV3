@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation,route }) => {
   const handleLogin = async () => {
     try {
 
-      const response = await loginUser(email, password);
+      const response = await loginUser(email, password,expoPushToken);
       const res = parseInt(response.data.FIIDUSUARIO, 10);
       const IdPersona = parseInt(response.data.FIIDPERSONA, 10);
       const IdRol = parseInt(response.data.FSIDROL, 10);

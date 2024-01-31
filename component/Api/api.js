@@ -3,13 +3,14 @@ import config from '../../Config';
 
 const BASE_URL = config.EXPO_PUBLIC_API_URL;
 
-export const loginUser = (email, password) => {
+export const loginUser = (email, password, TokenDevice) => {
 
   // console.log(BASE_URL)
 
   const credential = {
     Usuario: email,
     Contraseña: password,
+    TokenDevice:TokenDevice
   };
 
   // console.log(credential);
