@@ -600,7 +600,7 @@ const EmisionScreen = () => {
 
       const DataRquest = {
         IdUsuario: dataArrayEmi.DataParameter.IdUsr,
-        RutaControlador:'/Autos/CotizadorAutos',
+        RutaControlador: '/Autos/CotizadorAutos',
         Usuario: dataArrayEmi.CotiData.usuario,
         Contraseña: dataArrayEmi.CotiData.contraseña,
       }

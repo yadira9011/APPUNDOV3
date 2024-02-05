@@ -20,11 +20,13 @@ import PDFViewerScreen from './component/Componentes/PDFViewerScreen';
 import ViewerBase64Screen from './component/Componentes/ViewerBase64Screen';
 import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
 import InicioAPScreen from './component/Agropecuario/InicioAPScreen';
+import MiPerfilScreen from './component/Polizas/MiPerfilScreen';
 //import PushNotification from './component/Componentes/PushNotification';
 //import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -161,6 +163,7 @@ export default function App() {
         <Stack.Screen name="ViewerBase64Screen" component={ViewerBase64Screen} />
         <Stack.Screen name="ConsultaPolizas" component={ConsultaPolizasScreen} />
         <Stack.Screen name="InicioAPScreen" component={InicioAPScreen} />
+        <Stack.Screen name="MiPerfilScreen" component={MiPerfilScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

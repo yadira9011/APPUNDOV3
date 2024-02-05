@@ -10,7 +10,6 @@ import {
     FlatList,
     Modal
 } from 'react-native';
-
 import {
     GetPolizasGpoTitular,
     GetCertificadosDepTitular,
@@ -26,7 +25,6 @@ import { useRoute } from '@react-navigation/native';
 import Collapsible from 'react-native-collapsible';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
-
 
 const ConsultaPolizasScreen = ({ route }) => {
 
@@ -262,6 +260,11 @@ const ConsultaPolizasScreen = ({ route }) => {
         setIsCollapsedPolizasXContratanteTitular(!IsCollapsedPolizasXContratanteTitular);
     };
 
+    const GotoMyPerfil = () => {
+        console.log("dii aquiiiii")
+        navigation.navigate('MiPerfilScreen', { DataParameter });
+    };
+
     const renderItemPolizasGpo = ({ item, onPress }) => (
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>
@@ -303,10 +306,18 @@ const ConsultaPolizasScreen = ({ route }) => {
 
         <View style={styles.container}>
 
+
+            <TouchableOpacity onPress={GotoMyPerfil} style={styles.purpleButton}>
+                <Text style={styles.buttonText}>Mi Perfil</Text>
+            </TouchableOpacity>
+
             {/* POLIZAS GRUPO */}
 
             {PolizasGpo.length > 0 ? (
                 <View>
+
+
+
                     <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.button}>
                         <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
                     </TouchableOpacity>
@@ -411,7 +422,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-
+    purpleButton: {
+        backgroundColor: 'purple',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+    },
     imageCober: {
         width: 120,
         height: 120,

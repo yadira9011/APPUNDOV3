@@ -45,4 +45,21 @@ export const GetCoberturasPoliza = (credential) => {
   });
 };
 
+export const GetDetallePersona = (credential) => {
+  return axios.get(`${BASE_URL}/API/Polizas/GetDetallePersona`, {
+    params: credential
+  });
+};
+
+export const UpdateMantenimientoPersona = (credential) => {
+  return axios.get(`${BASE_URL}/API/Polizas/UpdateMantenimientoPersona`, {
+    params: credential
+  });
+};
+
+export const ActualizaUsuarioPerfil = (credential) => {
+  return axios.post(`${BASE_URL}/API/Polizas/ActualizaUsuarioPerfil`, {
+    params: credential
+  });
+};
 

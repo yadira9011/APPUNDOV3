@@ -33,7 +33,7 @@ const ModulosScreen = ({ route }) => {
                 navigation.navigate('ConsultaPolizas', { DataParameter });
                 break;
             case 'Agropecuario':
-                console.log(DataParameter)
+                //console.log(DataParameter)
                 //navigation.navigate('InicioAPScreen', { DataParameter });
                 //navigation.navigate('PushNotification', { DataParameter });
                 break;
@@ -61,7 +61,7 @@ const ModulosScreen = ({ route }) => {
         image: imagePaths[index % imagePaths.length],
     });
 
-    const getItemCount = _data => 50;
+    const getItemCount = _data => 3;
 
     const Item = ({ title, image, onPress }) => (
         <TouchableOpacity onPress={onPress}>
