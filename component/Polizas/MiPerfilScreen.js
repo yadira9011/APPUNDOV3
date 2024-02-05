@@ -83,7 +83,6 @@ const MiPerfilScreen = ({ route }) => {
 
     }, []);
 
-
     const fetchAutoGeneros = async () => {
         try {
 
@@ -227,7 +226,7 @@ const MiPerfilScreen = ({ route }) => {
         const IdPersona = DataParameter.IdPersona;
         const Nombre = nombre;
         const Paterno = apellidoPaterno;
-        const Materno = apellidoPaterno;
+        const Materno = apellidoMaterno;
         const Rfc = rfc;
         const Correo = correoElectronico;
         const NumeroEmpleado = numeroEmpleado;
@@ -238,8 +237,10 @@ const MiPerfilScreen = ({ route }) => {
         const Movil = movil;
         const Telefono = fijo;
         const IdTipoAsegurado = 1;
+        const IdSubcanal= DataParameter.IdSubCanal;
+        const TipoPersona = 1
 
-        const personaModel = {
+        const PersonaModel = {
             IdPersona,
             Nombre,
             Paterno,
@@ -252,26 +253,37 @@ const MiPerfilScreen = ({ route }) => {
             Movil,
             Telefono,
             IdGenero,
-            IdTipoAsegurado
+            IdTipoAsegurado,
+            IdSubcanal,
+            TipoPersona
         }
 
         const DataRquest = {
             idPersona: DataParameter.IdPersona,
             usuario: DataParameter.email,
             contraseña: DataParameter.password,
-            personaModel: personaModel
+            PersonaModel: PersonaModel
         }
 
-        // const response = await UpdateMantenimientoPersona(DataRquest);
+        console.log(DataRquest)
+        const response = await UpdateMantenimientoPersona(DataRquest);
+        console.log(response)
 
-        const DataRquestPerfil = {
-            usuario: DataParameter.email,
-            contraseña: DataParameter.password,
-            usuarioNew: usuario,
-            ContraseñaNew: contrasena,
-            IDUsuario: DataParameter.IdUsr,
-        }
+        // if (response.data.Data.Data) {
+        //     const data = response.data.Data.Data;
+        //     setMeses(data);
+        // } else {
+        //     console.error('La respuesta de la API no contiene paquetes.');
+        // }
 
+        // const DataRquestPerfil = {
+        //     usuario: DataParameter.email,
+        //     contraseña: DataParameter.password,
+        //     usuarioNew: usuario,
+        //     ContraseñaNew: contrasena,
+        //     IDUsuario: DataParameter.IdUsr,
+        // }
+        // console.log(DataRquestPerfil)
         //  const responseperfil = await ActualizaUsuarioPerfil(DataRquestPerfil);
 
     };
@@ -407,7 +419,7 @@ const MiPerfilScreen = ({ route }) => {
                     />
 
                     {/* Botón de envío del formulario */}
-                    <Button title="Enviar" onPress={handleFormSubmit} style={styles.submitButton} />
+                    <Button title="Actualizar" onPress={handleFormSubmit} style={styles.submitButton} />
                     {/* Espacio después del botón */}
                     <View style={styles.spaceAfterButton} />
 
@@ -420,7 +432,6 @@ const MiPerfilScreen = ({ route }) => {
     );
 
 };
-
 
 const styles = StyleSheet.create({
     container: {

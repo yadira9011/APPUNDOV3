@@ -51,10 +51,11 @@ export const GetDetallePersona = (credential) => {
   });
 };
 
-export const UpdateMantenimientoPersona = (credential) => {
-  return axios.get(`${BASE_URL}/API/Polizas/UpdateMantenimientoPersona`, {
-    params: credential
-  });
+export const UpdateMantenimientoPersona = (datarequest) => {
+  // return axios.get(`${BASE_URL}/API/Polizas/UpdateMantenimientoPersona`, {
+  //   params: credential
+  // });
+  return axios.post(`${BASE_URL}/API/Polizas/UpdateMantenimientoPersona`,datarequest);
 };
 
 export const ActualizaUsuarioPerfil = (credential) => {
