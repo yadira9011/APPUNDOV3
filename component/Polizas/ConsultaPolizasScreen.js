@@ -274,17 +274,20 @@ const ConsultaPolizasScreen = ({ route }) => {
                 <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
                 <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
                 <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
-                {botonesPorPoliza[item.FIIDPOLIZA] !== undefined &&
-                    botonesPorPoliza[item.FIIDPOLIZA].map((boton, index) => (
-                        <TouchableOpacity key={index} onPress={() => handleBotonPress(boton, item.FIIDPOLIZA, item.FIIDASEGURADO)}>
-                            <Ionicons
-                                name={boton === 'Cer' ? 'ios-document' : 'ios-information-circle'}
-                                size={24}
-                                color="black"
-                            />
-                        </TouchableOpacity>
-                    ))
-                }
+                <View style={styles.buttonContainer}>
+                    {botonesPorPoliza[item.FIIDPOLIZA] !== undefined &&
+                        botonesPorPoliza[item.FIIDPOLIZA].map((boton, index) => (
+                            <TouchableOpacity key={index} onPress={() => handleBotonPress(boton, item.FIIDPOLIZA, item.FIIDASEGURADO)}>
+                                <Ionicons
+                                    name={boton === 'Cer' ? 'ios-document' : 'ios-information-circle'}
+                                    size={30}
+                                    color="black"
+                                />
+                            </TouchableOpacity>
+
+                        ))
+                    }
+                </View>
             </View>
         </View >
     );
@@ -306,35 +309,33 @@ const ConsultaPolizasScreen = ({ route }) => {
 
         <View style={styles.container}>
 
-
             <TouchableOpacity onPress={GotoMyPerfil} style={styles.purpleButton}>
                 <Text style={styles.buttonText}>Mi Perfil</Text>
             </TouchableOpacity>
 
+
+            <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.purpleButton}>
+                <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
+            </TouchableOpacity>
+
+            {IsCollapsedPolizasGpoTitular && (
+                <FlatList
+                    data={PolizasGpo}
+                    contentContainerStyle={styles.flatListContent}
+                    keyExtractor={item => item.FIIDPOLIZA}
+                    renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
+                />
+            )}
+
             {/* POLIZAS GRUPO */}
 
-            {PolizasGpo.length > 0 ? (
-                <View>
+            {/* <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.button}>
+                <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
+            </TouchableOpacity>
 
+            <Collapsible collapsed={IsCollapsedPolizasGpoTitular}>
 
-
-                    <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.button}>
-                        <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
-                    </TouchableOpacity>
-                    <Collapsible collapsed={IsCollapsedPolizasGpoTitular}>
-                        <FlatList
-                            data={PolizasGpo}
-                            contentContainerStyle={styles.flatListContent}
-                            keyExtractor={item => item.FIIDPOLIZA}
-                            // renderItem={({ item }) => renderItemPolizasGpo({ item })}
-                            renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
-                        />
-                    </Collapsible>
-                </View>) : (
-                <View>
-                    <Text>No hay registros disponibles</Text>
-                </View>
-            )}
+            </Collapsible> */}
 
             {loading && (
                 <LoadingComponent />
@@ -370,6 +371,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             </Modal>
 
         </View>
+
     );
 
 };
@@ -377,13 +379,18 @@ const ConsultaPolizasScreen = ({ route }) => {
 const styles = StyleSheet.create({
 
     container: {
-        paddingTop: 20,
+        paddingTop: 5,
         paddingHorizontal: 20,
-        marginBottom: 50
+        flex: 1,
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        marginTop: 10,
+        marginBottom: 10
     },
 
     itemContainer: {
-        flexDirection: 'row',
         marginBottom: 16,
     },
 
@@ -395,7 +402,7 @@ const styles = StyleSheet.create({
 
     itemDetailsUnO: {
         flexDirection: 'column',
-        marginRight: 15,
+        marginRight: 0,
         backgroundColor: '#D9D9F3'
     },
 
@@ -448,7 +455,6 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
     },
-
     row: {
         flexDirection: 'row',
         fontSize: 12,
