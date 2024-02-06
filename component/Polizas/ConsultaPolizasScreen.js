@@ -32,16 +32,16 @@ const ConsultaPolizasScreen = ({ route }) => {
     const { DataParameter } = route.params;
     const [loading, setLoading] = useState(false);
 
-    const [IsCollapsedPolizasGpoTitular, setIsCollapsedPolizasGpoTitular] = useState(true);
+    const [IsCollapsedPolizasGpoTitular, setIsCollapsedPolizasGpoTitular] = useState(false);
     const [PolizasGpo, setPolizasGpo] = useState([]);
 
-    const [IsCollapsedCertificadosDepTitular, setIsCollapsedCertificadosDepTitular] = useState(true);
+    const [IsCollapsedCertificadosDepTitular, setIsCollapsedCertificadosDepTitular] = useState(false);
     const [CertificadosDepTitular, setCertificadosDepTitular] = useState([]);
 
-    const [IsCollapsedPolizasIdividualesTitular, setIsCollapsedPolizasIdividualesTitular] = useState(true);
+    const [IsCollapsedPolizasIdividualesTitular, setIsCollapsedPolizasIdividualesTitular] = useState(false);
     const [PolizasIdividualesTitular, setPolizasIdividualesTitular] = useState([]);
 
-    const [IsCollapsedPolizasXContratanteTitular, setIsCollapsedPolizasXContratanteTitular] = useState(true);
+    const [IsCollapsedPolizasXContratanteTitular, setIsCollapsedPolizasXContratanteTitular] = useState(false);
     const [PolizasXContratanteTitular, setPolizasXContratanteTitular] = useState([]);
 
     const [botonesPorPoliza, setBotonesPorPoliza] = useState([]);
@@ -54,7 +54,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             try {
                 setLoading(true);
                 await fetchPolizasGpo();
-                // await fetchCertificadosDepTitular();
+                await fetchCertificadosDepTitular();
                 // await fetchPolizasIdividualesTitular();
                 // await fetchPolizasXContratanteTitular();
                 setLoading(false);
@@ -107,17 +107,16 @@ const ConsultaPolizasScreen = ({ route }) => {
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password,
             }
+
             const response = await GetPolizasGpoTitular(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
-                console.log(data)
                 setPolizasGpo(data);
                 const botonesPorIdPoliza = {};
                 for (const poliza of data) {
                     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
                     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
                 }
-                console.log("BOTONEESSSSS", botonesPorIdPoliza)
                 setBotonesPorPoliza(botonesPorIdPoliza);
                 setLoading(false);
             } else {
@@ -141,7 +140,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             const response = await GetCertificadosDepTitular(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
-                console.log(data)
+                console.log("CERTIFICADOS DEPENDIENTES ... ", data)
                 setCertificadosDepTitular(data);
             } else {
                 console.error('no se encontraron grupos');
@@ -246,10 +245,12 @@ const ConsultaPolizasScreen = ({ route }) => {
 
     const toggleCollapsePolizasGpo = () => {
         setIsCollapsedPolizasGpoTitular(!IsCollapsedPolizasGpoTitular);
+        setIsCollapsedCertificadosDepTitular(false);
     };
 
     const toggleCollapseCertificadosDepTitular = () => {
         setIsCollapsedCertificadosDepTitular(!IsCollapsedCertificadosDepTitular);
+        setIsCollapsedPolizasGpoTitular(false);
     };
 
     const toggleCollapsePolizasIdividualesTitular = () => {
@@ -284,7 +285,6 @@ const ConsultaPolizasScreen = ({ route }) => {
                                     color="black"
                                 />
                             </TouchableOpacity>
-
                         ))
                     }
                 </View>
@@ -313,29 +313,46 @@ const ConsultaPolizasScreen = ({ route }) => {
                 <Text style={styles.buttonText}>Mi Perfil</Text>
             </TouchableOpacity>
 
-
             <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.purpleButton}>
                 <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
             </TouchableOpacity>
 
-            {IsCollapsedPolizasGpoTitular && (
-                <FlatList
-                    data={PolizasGpo}
-                    contentContainerStyle={styles.flatListContent}
-                    keyExtractor={item => item.FIIDPOLIZA}
-                    renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
-                />
-            )}
+            <TouchableOpacity onPress={toggleCollapseCertificadosDepTitular} style={styles.purpleButton}>
+                <Text style={styles.buttonText}>CERTIFICADOS DEPENDIENTES</Text>
+            </TouchableOpacity>
+
 
             {/* POLIZAS GRUPO */}
 
-            {/* <TouchableOpacity onPress={toggleCollapsePolizasGpo} style={styles.button}>
-                <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
-            </TouchableOpacity>
+            {IsCollapsedPolizasGpoTitular ? (
+                PolizasGpo.length > 0 ? (
+                    <FlatList
+                        data={PolizasGpo}
+                        contentContainerStyle={styles.flatListContent}
+                        keyExtractor={item => item.FIIDPOLIZA}
+                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
+                    />
+                ) : (
+                    <Text style={styles.noRecordsText}>No hay registros disponibles</Text>
+                )
+            ) : null}
 
-            <Collapsible collapsed={IsCollapsedPolizasGpoTitular}>
 
-            </Collapsible> */}
+            {/* CERTIFICADOS DEPENDIENTES */}
+
+            {IsCollapsedCertificadosDepTitular ? (
+                CertificadosDepTitular.length > 0 ? (
+                    <FlatList
+                        data={CertificadosDepTitular}
+                        contentContainerStyle={styles.flatListContent}
+                        keyExtractor={item => item.FIIDPOLIZA}
+                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
+                    />
+                ) : (
+                    <Text style={styles.noRecordsText}>No hay registros disponibles</Text>
+                )
+            ) : null}
+
 
             {loading && (
                 <LoadingComponent />
@@ -437,6 +454,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 10,
     },
+
     imageCober: {
         width: 120,
         height: 120,
@@ -455,11 +473,13 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
     },
+
     row: {
         flexDirection: 'row',
         fontSize: 12,
         marginVertical: 0,
     },
+
     column: {
         flex: 1,
         alignItems: 'center',
@@ -536,10 +556,12 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc',
         borderRightColor: '#ccc',
     },
+
     borderLeft: {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
     },
+
     input: {
         width: '100%',
         height: 40,
@@ -548,10 +570,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 5,
     },
+
     switchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 10,
+    },
+    noRecordsText: {
+        fontSize: 16,
+        color: 'gray',
+        textAlign: 'center',
+        marginTop: 10,
     },
 
 });
