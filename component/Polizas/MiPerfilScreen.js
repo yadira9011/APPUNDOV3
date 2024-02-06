@@ -237,7 +237,7 @@ const MiPerfilScreen = ({ route }) => {
         const Movil = movil;
         const Telefono = fijo;
         const IdTipoAsegurado = 1;
-        const IdSubcanal= DataParameter.IdSubCanal;
+        const IdSubcanal = DataParameter.IdSubCanal;
         const TipoPersona = 1
 
         const PersonaModel = {
@@ -257,7 +257,7 @@ const MiPerfilScreen = ({ route }) => {
             IdSubcanal,
             TipoPersona
         }
-
+        
         const DataRquest = {
             idPersona: DataParameter.IdPersona,
             usuario: DataParameter.email,
@@ -265,26 +265,25 @@ const MiPerfilScreen = ({ route }) => {
             PersonaModel: PersonaModel
         }
 
-        console.log(DataRquest)
         const response = await UpdateMantenimientoPersona(DataRquest);
-        console.log(response)
-
-        // if (response.data.Data.Data) {
-        //     const data = response.data.Data.Data;
-        //     setMeses(data);
-        // } else {
-        //     console.error('La respuesta de la API no contiene paquetes.');
-        // }
-
-        // const DataRquestPerfil = {
-        //     usuario: DataParameter.email,
-        //     contraseña: DataParameter.password,
-        //     usuarioNew: usuario,
-        //     ContraseñaNew: contrasena,
-        //     IDUsuario: DataParameter.IdUsr,
-        // }
-        // console.log(DataRquestPerfil)
-        //  const responseperfil = await ActualizaUsuarioPerfil(DataRquestPerfil);
+        if (response.data != 0) {
+            let msg = "Se actualizo el perfil exitosamente.";
+            const DataRquestPerfil = {
+                usuario: DataParameter.email,
+                contraseña: DataParameter.password,
+                usuarioNew: usuario,
+                ContraseñaNew: contrasena,
+                IDUsuario: DataParameter.IdUsr,
+            }
+            console.log(DataRquestPerfil)
+            const responseperfil = await ActualizaUsuarioPerfil(DataRquestPerfil);
+            if (result.hasError) {
+                msg = "Se actualizaron los datos personales, Sin embargo la cuenta no se actualizó derivado a:  " + result.message;
+            }
+            Alert.alert(msg)
+        } else {
+            Alert.alert("Los datos no se actualizaron, intente mas tarde.");
+        }
 
     };
 
