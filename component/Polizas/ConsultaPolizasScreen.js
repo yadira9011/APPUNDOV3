@@ -241,6 +241,7 @@ const ConsultaPolizasScreen = ({ route }) => {
                 //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
                 // }
                 // setBotonesPorPoliza(botonesPorIdPoliza);
+                
             } else {
                 console.error('no se encontraron grupos');
             }

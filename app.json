@@ -34,6 +34,13 @@
         "WRITE_EXTERNAL_STORAGE",
         "READ_EXTERNAL_STORAGE"
       ],
+      "config": {
+        "cleartext": {
+          "config": {
+            "penaltyDeathOnCleartext": false
+          }
+        }
+      },
       "package": "com.yadira.perez.AppUndoV3"
     },
     "web": {
