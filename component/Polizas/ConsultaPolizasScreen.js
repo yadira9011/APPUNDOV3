@@ -55,8 +55,8 @@ const ConsultaPolizasScreen = ({ route }) => {
                 setLoading(true);
                 await fetchPolizasGpo();
                 await fetchCertificadosDepTitular();
-                // await fetchPolizasIdividualesTitular();
-                // await fetchPolizasXContratanteTitular();
+                await fetchPolizasIdividualesTitular();
+                await fetchPolizasXContratanteTitular();
                 setLoading(false);
             } catch (error) {
                 setLoading(false);
@@ -77,7 +77,7 @@ const ConsultaPolizasScreen = ({ route }) => {
             if (response.data.Data) {
                 const data = response.data.Data;
                 const tiposBoton = data.map(item => item.FSTIPOBOTON);
-                console.log(data);
+                // console.log(data);
                 return tiposBoton;
             } else {
                 return [];
@@ -112,13 +112,23 @@ const ConsultaPolizasScreen = ({ route }) => {
             if (response.data.Data) {
                 const data = response.data.Data;
                 setPolizasGpo(data);
-                const botonesPorIdPoliza = {};
+
+                const botonesPorIdPoliza = { ...botonesPorPoliza };
                 for (const poliza of data) {
                     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
                     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
                 }
-                setBotonesPorPoliza(botonesPorIdPoliza);
-                setLoading(false);
+                setBotonesPorPoliza(prevBotones => ({ ...prevBotones, ...botonesPorIdPoliza }));
+
+                // const botonesPorIdPoliza = {};
+                // for (const poliza of data) {
+                //     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                // }
+                // setBotonesPorPoliza(botonesPorIdPoliza);
+                // setLoading(false);
+
+
             } else {
                 console.error('no se encontraron grupos');
                 setLoading(false);
@@ -140,8 +150,23 @@ const ConsultaPolizasScreen = ({ route }) => {
             const response = await GetCertificadosDepTitular(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
-                console.log("CERTIFICADOS DEPENDIENTES ... ", data)
+                //console.log("CERTIFICADOS DEPENDIENTES ... ", data)
                 setCertificadosDepTitular(data);
+
+                const botonesPorIdPoliza = { ...botonesPorPoliza };
+                for (const poliza of data) {
+                    const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                    botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                }
+                setBotonesPorPoliza(prevBotones => ({ ...prevBotones, ...botonesPorIdPoliza }));
+
+
+                // const botonesPorIdPoliza = {};
+                // for (const poliza of data) {
+                //     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                // }
+                // setBotonesPorPoliza(botonesPorIdPoliza);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -163,8 +188,23 @@ const ConsultaPolizasScreen = ({ route }) => {
             const response = await GetPolizasIdividualesTitular(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
-                console.log(data)
+                console.log("INDIVIDUALES ....", data)
                 setPolizasIdividualesTitular(data);
+
+                const botonesPorIdPoliza = { ...botonesPorPoliza };
+                for (const poliza of data) {
+                    const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                    botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                }
+                setBotonesPorPoliza(prevBotones => ({ ...prevBotones, ...botonesPorIdPoliza }));
+
+
+                // const botonesPorIdPoliza = {};
+                // for (const poliza of data) {
+                //     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                // }
+                // setBotonesPorPoliza(botonesPorIdPoliza);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -177,7 +217,6 @@ const ConsultaPolizasScreen = ({ route }) => {
 
     const fetchPolizasXContratanteTitular = async () => {
         try {
-
             const DataRquest = {
                 idPersona: DataParameter.IdPersona,
                 usuario: DataParameter.email,
@@ -186,8 +225,22 @@ const ConsultaPolizasScreen = ({ route }) => {
             const response = await GetPolizasXContratanteTitular(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
-                console.log(data)
+                console.log("CONTRATANTES ....", data)
                 setPolizasXContratanteTitular(data);
+
+                const botonesPorIdPoliza = { ...botonesPorPoliza };
+                for (const poliza of data) {
+                    const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                    botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                }
+                setBotonesPorPoliza(prevBotones => ({ ...prevBotones, ...botonesPorIdPoliza }));
+
+                // const botonesPorIdPoliza = {};
+                // for (const poliza of data) {
+                //     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
+                //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
+                // }
+                // setBotonesPorPoliza(botonesPorIdPoliza);
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -206,6 +259,7 @@ const ConsultaPolizasScreen = ({ route }) => {
                 usuario: DataParameter.email,
                 Contraseña: DataParameter.password,
             }
+            
             const response = await GetCertificadoPoliza(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
@@ -246,19 +300,29 @@ const ConsultaPolizasScreen = ({ route }) => {
     const toggleCollapsePolizasGpo = () => {
         setIsCollapsedPolizasGpoTitular(!IsCollapsedPolizasGpoTitular);
         setIsCollapsedCertificadosDepTitular(false);
+        setIsCollapsedPolizasIdividualesTitular(false);
+        setIsCollapsedPolizasXContratanteTitular(false);
     };
 
     const toggleCollapseCertificadosDepTitular = () => {
         setIsCollapsedCertificadosDepTitular(!IsCollapsedCertificadosDepTitular);
         setIsCollapsedPolizasGpoTitular(false);
+        setIsCollapsedPolizasXContratanteTitular(false);
+        setIsCollapsedPolizasIdividualesTitular(false);
     };
 
     const toggleCollapsePolizasIdividualesTitular = () => {
         setIsCollapsedPolizasIdividualesTitular(!IsCollapsedPolizasIdividualesTitular);
+        setIsCollapsedPolizasGpoTitular(false);
+        setIsCollapsedCertificadosDepTitular(false);
+        setIsCollapsedPolizasXContratanteTitular(false);
     };
 
     const toggleCollapsePolizasXContratanteTitular = () => {
         setIsCollapsedPolizasXContratanteTitular(!IsCollapsedPolizasXContratanteTitular);
+        setIsCollapsedPolizasIdividualesTitular(false);
+        setIsCollapsedPolizasGpoTitular(false);
+        setIsCollapsedCertificadosDepTitular(false);
     };
 
     const GotoMyPerfil = () => {
@@ -266,11 +330,13 @@ const ConsultaPolizasScreen = ({ route }) => {
         navigation.navigate('MiPerfilScreen', { DataParameter });
     };
 
-    const renderItemPolizasGpo = ({ item, onPress }) => (
+    const renderItemPolizasGpo = ({ item, onPress, tipo_poliza = 0 }) => (
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>
                 <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
-                <Text style={styles.description}>{item.FSALIAS}</Text>
+                <Text style={styles.description}>
+                    {tipo_poliza === 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+                </Text>
                 <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
                 <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
                 <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
@@ -317,10 +383,6 @@ const ConsultaPolizasScreen = ({ route }) => {
                 <Text style={styles.buttonText}>POLIZAS GRUPO</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={toggleCollapseCertificadosDepTitular} style={styles.purpleButton}>
-                <Text style={styles.buttonText}>CERTIFICADOS DEPENDIENTES</Text>
-            </TouchableOpacity>
-
 
             {/* POLIZAS GRUPO */}
 
@@ -340,13 +402,55 @@ const ConsultaPolizasScreen = ({ route }) => {
 
             {/* CERTIFICADOS DEPENDIENTES */}
 
+            <TouchableOpacity onPress={toggleCollapseCertificadosDepTitular} style={styles.purpleButton}>
+                <Text style={styles.buttonText}>CERTIFICADOS DEPENDIENTES</Text>
+            </TouchableOpacity>
+
             {IsCollapsedCertificadosDepTitular ? (
                 CertificadosDepTitular.length > 0 ? (
                     <FlatList
                         data={CertificadosDepTitular}
                         contentContainerStyle={styles.flatListContent}
+                        keyExtractor={item => item.FSCERTIFICADO}
+                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { }, tipo_poliza: 1 })}
+                    />
+                ) : (
+                    <Text style={styles.noRecordsText}>No hay registros disponibles</Text>
+                )
+            ) : null}
+
+            {/*POLIZAS INDIVIDUALES */}
+
+            <TouchableOpacity onPress={toggleCollapsePolizasIdividualesTitular} style={styles.purpleButton}>
+                <Text style={styles.buttonText}>POLIZAS INDIVIDUALES</Text>
+            </TouchableOpacity>
+
+            {IsCollapsedPolizasIdividualesTitular ? (
+                PolizasIdividualesTitular.length > 0 ? (
+                    <FlatList
+                        data={PolizasIdividualesTitular}
+                        contentContainerStyle={styles.flatListContent}
                         keyExtractor={item => item.FIIDPOLIZA}
-                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { } })}
+                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { }, tipo_poliza: 0 })}
+                    />
+                ) : (
+                    <Text style={styles.noRecordsText}>No hay registros disponibles</Text>
+                )
+            ) : null}
+
+            {/* POLIZAS CONTRATANTES */}
+
+            <TouchableOpacity onPress={toggleCollapsePolizasXContratanteTitular} style={styles.purpleButton}>
+                <Text style={styles.buttonText}>POLIZAS CONTRATANTES</Text>
+            </TouchableOpacity>
+
+            {IsCollapsedPolizasXContratanteTitular ? (
+                PolizasXContratanteTitular.length > 0 ? (
+                    <FlatList
+                        data={PolizasXContratanteTitular}
+                        contentContainerStyle={styles.flatListContent}
+                        keyExtractor={item => item.FIIDPOLIZA}
+                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { }, tipo_poliza: 0 })}
                     />
                 ) : (
                     <Text style={styles.noRecordsText}>No hay registros disponibles</Text>

@@ -6,40 +6,14 @@ import * as FileSystem from 'expo-file-system';
 import LoadingComponent from './LoadingComponent';
 
 const ViewerBase64Screen = ({ route }) => {
-
     const { base64arc } = route.params;
     const [loading, setLoading] = useState(false);
-
-    const htmlContentv1 = `<html><body><embed src="data:application/pdf;base64,${base64arc}"
-     type="application/pdf" width="100%" height="100%"></embed></body></html>`;
-
-    const htmlContent222 = `
-    <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0;">
-            <object data="data:application/pdf;base64,${base64arc}" type="application/pdf" width="100%" height="100%">
-                <embed src="data:application/pdf;base64,${base64arc}" type="application/pdf" />
-            </object>
-        </body>
-    </html>`;
-
-    const htmlContent = `
-    <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body>
-            <object data="data:application/pdf;base64,${base64arc}" type="application/pdf" width="100%" height="100%"></object>
-        </body>
-    </html>`;
 
     const downloadAndSharePDF = async () => {
         try {
             setLoading(true);
 
-            // Descargar el archivo PDF
+            // Crear un archivo temporal
             const uri = FileSystem.cacheDirectory + 'archivo.pdf';
             await FileSystem.writeAsStringAsync(uri, base64arc, { encoding: FileSystem.EncodingType.Base64 });
 
@@ -53,20 +27,26 @@ const ViewerBase64Screen = ({ route }) => {
         }
     };
 
+    const htmlContent = `
+        <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            </head>
+            <body>
+                <iframe src="data:application/pdf;base64,${base64arc}" width="100%" height="100%" style="border: none;"></iframe>
+            </body>
+        </html>`;
+
     return (
         <View style={styles.container}>
             <WebView
-                style={{ height: 200, width: 350 }}
-                nestedScrollEnabled={true}
+                style={{ flex: 1 }}
                 javaScriptEnabled={true}
                 source={{ html: htmlContent }}
             />
 
             <Button title="Compartir PDF" onPress={downloadAndSharePDF} />
-            {loading && (
-                <LoadingComponent />
-            )}
-
+            {loading && <LoadingComponent />}
         </View>
     );
 };
@@ -76,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 });
 
 export default ViewerBase64Screen;

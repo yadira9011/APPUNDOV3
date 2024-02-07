@@ -30,7 +30,9 @@
       },
       "permissions": [
         "INTERNET",
-        "NOTIFICATIONS"
+        "NOTIFICATIONS",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
       ],
       "package": "com.yadira.perez.AppUndoV3"
     },

@@ -6,8 +6,12 @@ import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Ut
 
 const LoginScreen = ({ navigation,route }) => {
 
-  const [email, setEmail] = useState('mail@mail.com');
-  const [password, setPassword] = useState('Ven99234');
+  // const [email, setEmail] = useState('mail@mail.com');
+  // const [password, setPassword] = useState('Ven99234');
+
+  const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
+  const [password, setPassword] = useState('marcosSL');
+
   const [expoPushToken, setExpoPushToken] = useState('');
 
   useEffect(() => {
