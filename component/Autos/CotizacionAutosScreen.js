@@ -10,6 +10,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import MenuComponentNew from '../Componentes/MenuComponentNew';
 
 
 const Drawer = createDrawerNavigator();
@@ -641,7 +642,7 @@ const CotizacionAutosScreen = () => {
           DataResul: resultData,
           CotiData: dataCotizacion,
           DataTitulos: DataSolicitudTitulos,
-          DataParameter:DataParameter
+          DataParameter: DataParameter
         }
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
@@ -671,7 +672,7 @@ const CotizacionAutosScreen = () => {
         DataParameter.password,
         DataParameter.IdSubCanal)
 
-       await fetchAutoEstatusVehiculos();
+      await fetchAutoEstatusVehiculos();
       // await fetchAutoTipoVehiculos();
       // await fetchAutoTiposDeUso();
       // await fetchAutoDeducibles();
@@ -694,291 +695,277 @@ const CotizacionAutosScreen = () => {
   }
 
   return (
-    <View>
+    <View style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={RefresData}
+          colors={['#ff0000']}
+        />
+      }>
 
-      {/* <Drawer.Navigator drawerContent={props => <MySideMenu {...props} />}>
-        <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-      </Drawer.Navigator> */}
-      {/* 
-      <Drawer.Navigator
-        drawerContent={props => <MySideMenu {...props} />}
-        initialRouteName="CotizacionAutos">
-        <Drawer.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-      </Drawer.Navigator> */}
-      {/* 
-      <TouchableOpacity onPress={() => navigation.openDrawer()} style={{ padding: 10 }}>
-        <Ionicons name="menu" size={24} color="black" />
-      </TouchableOpacity> */}
+      <View style={styles.menustyle} >
+        <MenuComponentNew DataParameter={DataParameter} />
+      </View >
 
-      <ScrollView style={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={RefresData}
-            colors={['#ff0000']} // Colores del indicador de carga
+      <ScrollView style={styles.scrollstyle} >
+
+        <Text style={styles.label}>Tipo Uso:</Text>
+        <Picker
+          selectedValue={selectedOptionTipoUso}
+          onValueChange={handleOptionChangeTiposUso}
+          keyExtractor={(item) => item.Id.toString()}
+        >
+          {AutoTipoUso.map((AutoTU) => (
+            <Picker.Item
+              key={AutoTU.Id}
+              label={AutoTU.Valor}
+              value={AutoTU.Id} />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Estatus vehículo:</Text>
+        <Picker
+          selectedValue={selectedOption}
+          onValueChange={handleOptionChange}
+          keyExtractor={(item) => item.Id.toString()} >
+          {AutoEstatusVehiculos.map((AutoEstatusVehiculo) => (
+            <Picker.Item
+              key={AutoEstatusVehiculo.Id}
+              label={AutoEstatusVehiculo.Valor}
+              value={AutoEstatusVehiculo.Id} />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Tipo vehículo:</Text>
+        <Picker
+          selectedValue={selectedOptionTipoVehiculo}
+          onValueChange={handleOptionChangeTipoVehiculo}
+          keyExtractor={(item) => item.Id.toString()} >
+          {AutoTipoVehiculos.map((AutoTipoVehiculo) => (
+            <Picker.Item
+              key={AutoTipoVehiculo.Id}
+              label={AutoTipoVehiculo.Valor}
+              value={AutoTipoVehiculo.Id} />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Modelo:</Text>
+        <Picker
+          selectedValue={selectedOptionModelo}
+          onValueChange={handleOptionChangeModelo}
+          keyExtractor={(item) => item.Id.toString()} >
+          {AutoModelos.map((AutoModelo) => (
+            <Picker.Item
+              key={AutoModelo.Id}
+              label={AutoModelo.Valor}
+              value={AutoModelo.Valor} />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Marca:</Text>
+        <Picker
+          selectedValue={selectedOptionMarca}
+          onValueChange={handleOptionChangeMarca}
+          keyExtractor={(item) => item.Valor.toString()}
+        >
+          {AutoMarcas.map((AutoMarca) => (
+            <Picker.Item
+              key={AutoMarca.Valor}
+              label={AutoMarca.Valor}
+              value={AutoMarca.Valor} />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Tipo:</Text>
+        <Picker
+          selectedValue={selectedOptionTipo}
+          onValueChange={handleOptionChangeTipo}
+          keyExtractor={(item) => item.Valor.toString()}
+        >
+          {AutoTipos.map((AutoTipo) => (
+            <Picker.Item
+              key={AutoTipo.Valor}
+              label={AutoTipo.Valor}
+              value={AutoTipo.Valor} />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Descripción:</Text>
+        <Picker
+          selectedValue={selectedOptionDescripcion}
+          onValueChange={handleOptionChangeDescripcion}
+          keyExtractor={(item) => item.Id.toString()}
+          itemStyle={{ fontSize: 12 }}
+        >
+          {AutoDescripciones.map((AutoDescripcion) => (
+            <Picker.Item
+              key={AutoDescripcion.Id}
+              label={AutoDescripcion.Valor}
+              value={AutoDescripcion.Id}
+            />
+          ))}
+        </Picker>
+
+        <Text style={styles.label}>Indemnización:</Text>
+        <Picker
+          selectedValue={selectedOptionIndemnizacion}
+          onValueChange={handleOptionChangeIndenmizaciones}
+          keyExtractor={(item) => item.Id.toString()}
+        >
+          {AutoIndemnizaciones.map((AutoIndemnizacion) => (
+            <Picker.Item
+              key={AutoIndemnizacion.Id}
+              label={AutoIndemnizacion.Valor}
+              value={AutoIndemnizacion.Id} />
+          ))}
+        </Picker>
+
+        <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
+          <TextInput
+            placeholder="Monto"
+            value={textMonto}
+            onChangeText={setTextMonto}
+            style={styles.input}
           />
-        }
-      >
-        {!loadingCombos ? (
-          <Text>Cargando datos...</Text>
-        ) : (
-          <>
+        </View>
 
-            <Text style={styles.label}>Tipo Uso:</Text>
-            <Picker
-              selectedValue={selectedOptionTipoUso}
-              onValueChange={handleOptionChangeTiposUso}
-              keyExtractor={(item) => item.Id.toString()}
-            >
-              {AutoTipoUso.map((AutoTU) => (
-                <Picker.Item
-                  key={AutoTU.Id}
-                  label={AutoTU.Valor}
-                  value={AutoTU.Id} />
-              ))}
-            </Picker>
+        <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 5 }}>
+          <TextInput
+            placeholder="Codigo Postal"
+            value={textCP}
+            onChangeText={setTextCP}
+            style={{ fontSize: 18, flex: 1 }}
+          />
+          <TouchableOpacity onPress={handleSearch} style={{ padding: 8 }}>
+            <Ionicons name="ios-search" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
 
-            <Text style={styles.label}>Estatus vehículo:</Text>
-            <Picker
-              selectedValue={selectedOption}
-              onValueChange={handleOptionChange}
-              keyExtractor={(item) => item.Id.toString()} >
-              {AutoEstatusVehiculos.map((AutoEstatusVehiculo) => (
-                <Picker.Item
-                  key={AutoEstatusVehiculo.Id}
-                  label={AutoEstatusVehiculo.Valor}
-                  value={AutoEstatusVehiculo.Id} />
-              ))}
-            </Picker>
+        <Text style={styles.label}>{TextDireccionElegida}</Text>
 
-            <Text style={styles.label}>Tipo vehículo:</Text>
-            <Picker
-              selectedValue={selectedOptionTipoVehiculo}
-              onValueChange={handleOptionChangeTipoVehiculo}
-              keyExtractor={(item) => item.Id.toString()} >
-              {AutoTipoVehiculos.map((AutoTipoVehiculo) => (
-                <Picker.Item
-                  key={AutoTipoVehiculo.Id}
-                  label={AutoTipoVehiculo.Valor}
-                  value={AutoTipoVehiculo.Id} />
-              ))}
-            </Picker>
+        <Text style={styles.label}>Deducibles :</Text>
+        <Picker
+          selectedValue={selectedOptionDeducible}
+          onValueChange={handleOptionChangeDeducibles}
+          keyExtractor={(item) => item.Id.toString()}
+        >
+          {AutoDeducibles.map((AutoDeducible) => (
+            <Picker.Item
+              key={AutoDeducible.Id}
+              label={AutoDeducible.Valor}
+              value={AutoDeducible.Id} />
+          ))}
+        </Picker>
 
-            <Text style={styles.label}>Modelo:</Text>
-            <Picker
-              selectedValue={selectedOptionModelo}
-              onValueChange={handleOptionChangeModelo}
-              keyExtractor={(item) => item.Id.toString()} >
-              {AutoModelos.map((AutoModelo) => (
-                <Picker.Item
-                  key={AutoModelo.Id}
-                  label={AutoModelo.Valor}
-                  value={AutoModelo.Valor} />
-              ))}
-            </Picker>
+        <Text style={styles.label}>Paquetes :</Text>
+        <Picker
+          selectedValue={selectedOptionPaquete}
+          onValueChange={handleOptionChangePaquetes}
+          keyExtractor={(item) => item.Id.toString()}
+        >
+          {AutoPaquetes.map((AutoPaquete) => (
+            <Picker.Item
+              key={AutoPaquete.Id}
+              label={AutoPaquete.Valor}
+              value={AutoPaquete.Id} />
+          ))}
+        </Picker>
 
-            <Text style={styles.label}>Marca:</Text>
-            <Picker
-              selectedValue={selectedOptionMarca}
-              onValueChange={handleOptionChangeMarca}
-              keyExtractor={(item) => item.Valor.toString()}
-            >
-              {AutoMarcas.map((AutoMarca) => (
-                <Picker.Item
-                  key={AutoMarca.Valor}
-                  label={AutoMarca.Valor}
-                  value={AutoMarca.Valor} />
-              ))}
-            </Picker>
+        <Text style={styles.label}>Tipo Poliza :</Text>
+        <Picker
+          selectedValue={selectedOptionTipoPoliza}
+          onValueChange={handleOptionChangeTipoPoliza}
+          keyExtractor={(item) => item.Id.toString()}
+        >
+          {AutoTipoPoliza.map((AutoTP) => (
+            <Picker.Item
+              key={AutoTP.Id}
+              label={AutoTP.Valor}
+              value={AutoTP.Id} />
+          ))}
+        </Picker>
 
-            <Text style={styles.label}>Tipo:</Text>
-            <Picker
-              selectedValue={selectedOptionTipo}
-              onValueChange={handleOptionChangeTipo}
-              keyExtractor={(item) => item.Valor.toString()}
-            >
-              {AutoTipos.map((AutoTipo) => (
-                <Picker.Item
-                  key={AutoTipo.Valor}
-                  label={AutoTipo.Valor}
-                  value={AutoTipo.Valor} />
-              ))}
-            </Picker>
+        <Text style={styles.label}>Vigencias:</Text>
+        <Picker
+          selectedValue={selectedOptionVigencia}
+          onValueChange={handleOptionChangeVigencias}
+          keyExtractor={(item) => item.Id.toString()}
+        >
+          {AutoVigencias.map((AutoVigencia) => (
+            <Picker.Item
+              key={AutoVigencia.Id}
+              label={AutoVigencia.Valor}
+              value={AutoVigencia.Id} />
+          ))}
+        </Picker>
 
-            <Text style={styles.label}>Descripción:</Text>
-            <Picker
-              selectedValue={selectedOptionDescripcion}
-              onValueChange={handleOptionChangeDescripcion}
-              keyExtractor={(item) => item.Id.toString()}
-              itemStyle={{ fontSize: 12 }}
-            >
-              {AutoDescripciones.map((AutoDescripcion) => (
-                <Picker.Item
-                  key={AutoDescripcion.Id}
-                  label={AutoDescripcion.Valor}
-                  value={AutoDescripcion.Id}
-                />
-              ))}
-            </Picker>
-
-            <Text style={styles.label}>Indemnización:</Text>
-            <Picker
-              selectedValue={selectedOptionIndemnizacion}
-              onValueChange={handleOptionChangeIndenmizaciones}
-              keyExtractor={(item) => item.Id.toString()}
-            >
-              {AutoIndemnizaciones.map((AutoIndemnizacion) => (
-                <Picker.Item
-                  key={AutoIndemnizacion.Id}
-                  label={AutoIndemnizacion.Valor}
-                  value={AutoIndemnizacion.Id} />
-              ))}
-            </Picker>
-
-            <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
-              <TextInput
-                placeholder="Monto"
-                value={textMonto}
-                onChangeText={setTextMonto}
-                style={styles.input}
-              />
-            </View>
-
-            <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 5 }}>
-              <TextInput
-                placeholder="Codigo Postal"
-                value={textCP}
-                onChangeText={setTextCP}
-                style={{ fontSize: 18, flex: 1 }}
-              />
-              <TouchableOpacity onPress={handleSearch} style={{ padding: 8 }}>
-                <Ionicons name="ios-search" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-
-            <Text style={styles.label}>{TextDireccionElegida}</Text>
-
-            <Text style={styles.label}>Deducibles :</Text>
-            <Picker
-              selectedValue={selectedOptionDeducible}
-              onValueChange={handleOptionChangeDeducibles}
-              keyExtractor={(item) => item.Id.toString()}
-            >
-              {AutoDeducibles.map((AutoDeducible) => (
-                <Picker.Item
-                  key={AutoDeducible.Id}
-                  label={AutoDeducible.Valor}
-                  value={AutoDeducible.Id} />
-              ))}
-            </Picker>
-
-            <Text style={styles.label}>Paquetes :</Text>
-            <Picker
-              selectedValue={selectedOptionPaquete}
-              onValueChange={handleOptionChangePaquetes}
-              keyExtractor={(item) => item.Id.toString()}
-            >
-              {AutoPaquetes.map((AutoPaquete) => (
-                <Picker.Item
-                  key={AutoPaquete.Id}
-                  label={AutoPaquete.Valor}
-                  value={AutoPaquete.Id} />
-              ))}
-            </Picker>
-
-            <Text style={styles.label}>Tipo Poliza :</Text>
-            <Picker
-              selectedValue={selectedOptionTipoPoliza}
-              onValueChange={handleOptionChangeTipoPoliza}
-              keyExtractor={(item) => item.Id.toString()}
-            >
-              {AutoTipoPoliza.map((AutoTP) => (
-                <Picker.Item
-                  key={AutoTP.Id}
-                  label={AutoTP.Valor}
-                  value={AutoTP.Id} />
-              ))}
-            </Picker>
-
-            <Text style={styles.label}>Vigencias:</Text>
-            <Picker
-              selectedValue={selectedOptionVigencia}
-              onValueChange={handleOptionChangeVigencias}
-              keyExtractor={(item) => item.Id.toString()}
-            >
-              {AutoVigencias.map((AutoVigencia) => (
-                <Picker.Item
-                  key={AutoVigencia.Id}
-                  label={AutoVigencia.Valor}
-                  value={AutoVigencia.Id} />
-              ))}
-            </Picker>
-
-            {/* Botón de cotizar */}
-            <TouchableOpacity
-              style={styles.cotizarButton}
-              onPress={handleCotizar} >
-              <Text style={styles.cotizarButtonText}>Cotizar</Text>
-            </TouchableOpacity>
+        {/* Botón de cotizar */}
+        <TouchableOpacity
+          style={styles.cotizarButton}
+          onPress={handleCotizar} >
+          <Text style={styles.cotizarButtonText}>Cotizar</Text>
+        </TouchableOpacity>
 
 
-            <View style={{ height: 40 }} />
+        <View style={{ height: 40 }} />
 
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={handleCloseModal}
-            >
-              <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                  {AutoInfoPostal.length > 0 ? (
-                    <>
-                      <Text style={styles.modalText}>Dirección:</Text>
-                      <FlatList
-                        data={AutoInfoPostal}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        style={styles.list}
-                        contentContainerStyle={styles.flatListContent}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Text style={styles.emptyText}>No se encontró información para el código postal ingresado.</Text>
-                      <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
-                        <Text style={styles.closeButtonText}>Cerrar</Text>
-                      </TouchableOpacity>
-                    </>
-                  )}
-                </View>
-              </View>
-            </Modal>
-
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisibleDescription}
-              onRequestClose={closeModalDes}>
-              <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                  <Text>{selectedTextDescripcion}</Text>
-                  <TouchableOpacity onPress={closeModalDes} style={styles.closeButton}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={handleCloseModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              {AutoInfoPostal.length > 0 ? (
+                <>
+                  <Text style={styles.modalText}>Dirección:</Text>
+                  <FlatList
+                    data={AutoInfoPostal}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    style={styles.list}
+                    contentContainerStyle={styles.flatListContent}
+                  />
+                </>
+              ) : (
+                <>
+                  <Text style={styles.emptyText}>No se encontró información para el código postal ingresado.</Text>
+                  <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
                     <Text style={styles.closeButtonText}>Cerrar</Text>
                   </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
+                </>
+              )}
+            </View>
+          </View>
+        </Modal>
 
-          </>
-        )}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisibleDescription}
+          onRequestClose={closeModalDes}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text>{selectedTextDescripcion}</Text>
+              <TouchableOpacity onPress={closeModalDes} style={styles.closeButton}>
+                <Text style={styles.closeButtonText}>Cerrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+
       </ScrollView>
 
-      {loadingCotizacion && (
-        <LoadingComponent />
-      )}
+      {
+        loadingCotizacion && (
+          <LoadingComponent />
+        )
+      }
 
-    </View>
+    </View >
   );
 
 };
@@ -986,15 +973,24 @@ const CotizacionAutosScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    backgroundColor: '#fff',
   },
   cotizarButton: {
     backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 40,
     alignItems: 'center',
   },
+
+  scrollstyle: {
+    marginTop: 5,
+  },
+
+  menustyle: {
+    backgroundColor: '#92c5fc',
+  },
+
   cotizarButtonText: {
     color: '#fff',
     fontSize: 18,

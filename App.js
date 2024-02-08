@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator  } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -16,6 +16,7 @@ import CotizacionAutosScreen from './component/Autos/CotizacionAutosScreen';
 import ResultadoCotizacionScreen from './component/Autos/ResultadoCotizacionScreen';
 import EmisionScreen from './component/Autos/EmisionScreen';
 import SideMenu from './component/Componentes/SideMenu';
+import MenuComponentNew from './component/Componentes/MenuComponentNew';
 import PDFViewerScreen from './component/Componentes/PDFViewerScreen';
 import ViewerBase64Screen from './component/Componentes/ViewerBase64Screen';
 import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
@@ -48,7 +49,7 @@ export default function App() {
   });
 
   async function registerForPushNotificationsAsync() {
-    
+
     let token;
 
     if (Platform.OS === 'android') {
@@ -70,7 +71,7 @@ export default function App() {
 
       if (finalStatus !== 'granted') {
         console.log('Permission not granted:', finalStatus);
-        alert('Failed to get push token for push notification!',finalStatus);
+        alert('Failed to get push token for push notification!', finalStatus);
         return;
       }
       token = await Notifications.getExpoPushTokenAsync({
@@ -102,7 +103,7 @@ export default function App() {
         //console.log("TOKENNNNNN",token)
         //registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
         //console.log("TOKENNNNNN",expoPushToken)
-       
+
       } catch (error) {
         console.error('Error obtaining Expo Push token:', error);
       } finally {
@@ -117,7 +118,7 @@ export default function App() {
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log("resss",response);
+      console.log("resss", response);
     });
 
     return () => {
@@ -142,21 +143,22 @@ export default function App() {
       <Stack.Navigator screenOptions={{
         headerShown: true,
       }} initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} 
-         initialParams={{ expoPushToken: expoPushToken }}
-         listeners={({ navigation }) => ({
-          focus: () => {
-            navigation.setParams({ expoPushToken: expoPushToken });
-          },
-        })}
-         />
+        <Stack.Screen name="Login" component={LoginScreen}
+          initialParams={{ expoPushToken: expoPushToken }}
+          listeners={({ navigation }) => ({
+            focus: () => {
+              navigation.setParams({ expoPushToken: expoPushToken });
+            },
+          })}
+        />
         <Stack.Screen name="Grupos" component={GruposScreen} />
         <Stack.Screen name="Clientes" component={ClientesScreen} />
         <Stack.Screen name="Canales" component={CanalesScreen} />
         <Stack.Screen name="Subcanales" component={SubcanalesScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Modulos" component={ModulosScreen} />
-        <Stack.Screen name="DrawerCotizacion" component={DrawerNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
+        {/* //<Stack.Screen name="DrawerCotizacion" component={DrawerNavigator} options={{ headerShown: false }} /> */}
         <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
         <Stack.Screen name="Emision" component={EmisionScreen} />
         <Stack.Screen name="PDFViewerScreen" component={PDFViewerScreen} />

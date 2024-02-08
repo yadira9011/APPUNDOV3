@@ -23,10 +23,11 @@ const ModulosScreen = ({ route }) => {
             case 'Autos':
                 console.log("paso directo de grupo", DataParameter)
                 // navigation.navigate('CotizacionAutos', { DataParameter: DataParameter });
-                navigation.navigate('DrawerCotizacion', {
-                    screen: 'CotizacionAutos',
-                    params: { DataParameter: DataParameter },
-                });
+                // navigation.navigate('DrawerCotizacion', {
+                //     screen: 'CotizacionAutos',
+                //     params: { DataParameter: DataParameter },
+                // });
+                navigation.navigate('CotizacionAutos', { DataParameter });
                 break;
             case 'Polizas':
                 console.log(DataParameter)

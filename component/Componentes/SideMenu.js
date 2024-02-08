@@ -6,6 +6,7 @@ import ModalContent from '../Autos/ImpresionAutosComponent';
 import ModalBusquedaCotAutosComponent from '../Autos/BusquedaCotAutosComponent';
 
 const MySideMenu = (props) => {
+
     const route = useRoute();
     const { navigation } = props;
     const { DataParameter } = route.params.params;
@@ -99,5 +100,6 @@ const MySideMenu = (props) => {
 
         </View>
     );
+
 };
 export default MySideMenu;
