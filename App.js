@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -27,6 +27,8 @@ import MiPerfilScreen from './component/Polizas/MiPerfilScreen';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 const Stack = createStackNavigator();
@@ -39,6 +41,7 @@ const DrawerNavigator = () => (
 );
 
 export default function App() {
+
 
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -137,13 +140,66 @@ export default function App() {
     );
   }
 
+
+  const screenOptions = {
+    headerShown: false,
+  };
+
+  const defaultHeaderOptions = {
+    headerShown: true,
+    headerBackTitleVisible: false,
+    headerStyle: {
+      backgroundColor: '#001F3F',
+    },
+    headerTitleStyle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: 'white',
+    },
+  };
+
+  const exitButton = (navigation) => (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Login');
+      }}
+      style={{ marginRight: 10 }}
+    >
+      <Ionicons name="exit" size={24} color="white" />
+    </TouchableOpacity>
+  );
+
+  const headerBackImageFuntion = () => (
+    <View style={{ marginLeft: 15 }}><Ionicons name="arrow-back" size={24} color="white" /></View>
+  );
+
+  const homeAndExitButtons = (navigation, route) => (
+    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+      <TouchableOpacity
+        onPress={() => {
+          let params = { DataParameter: route.params?.DataParameter };
+          if (route.name === 'ResultadoCotizacion') {
+            params = { DataParameter: route.params?.dataArray?.DataParameter };
+          } else if (route.name === 'Emision') {
+            params = { DataParameter: route.params?.dataArrayEmi?.DataParameter };
+          }
+          navigation.navigate('Modulos', params);
+        }}
+        style={{ marginBottom: 10, marginRight: 10 }}
+      >
+        <Ionicons name="home" size={24} color="white" />
+      </TouchableOpacity>
+      {exitButton(navigation)}
+    </View>
+  );
+
   return (
 
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{
-        headerShown: true,
-      }} initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen}
+      <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
           initialParams={{ expoPushToken: expoPushToken }}
           listeners={({ navigation }) => ({
             focus: () => {
@@ -151,21 +207,121 @@ export default function App() {
             },
           })}
         />
-        <Stack.Screen name="Grupos" component={GruposScreen} />
-        <Stack.Screen name="Clientes" component={ClientesScreen} />
-        <Stack.Screen name="Canales" component={CanalesScreen} />
-        <Stack.Screen name="Subcanales" component={SubcanalesScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Modulos" component={ModulosScreen} />
-        <Stack.Screen name="CotizacionAutos" component={CotizacionAutosScreen} />
-        {/* //<Stack.Screen name="DrawerCotizacion" component={DrawerNavigator} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="ResultadoCotizacion" component={ResultadoCotizacionScreen} />
-        <Stack.Screen name="Emision" component={EmisionScreen} />
-        <Stack.Screen name="PDFViewerScreen" component={PDFViewerScreen} />
-        <Stack.Screen name="ViewerBase64Screen" component={ViewerBase64Screen} />
-        <Stack.Screen name="ConsultaPolizas" component={ConsultaPolizasScreen} />
-        <Stack.Screen name="InicioAPScreen" component={InicioAPScreen} />
-        <Stack.Screen name="MiPerfilScreen" component={MiPerfilScreen} />
+        <Stack.Screen
+          name="Grupos"
+          component={GruposScreen}
+          options={({ navigation }) => ({
+            ...defaultHeaderOptions,
+            headerLeft: null,
+            headerRight: () => exitButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="Clientes"
+          component={ClientesScreen}
+          options={{
+            ...defaultHeaderOptions,
+            title: 'Clientes',
+            headerBackImage: () => headerBackImageFuntion(),
+          }}
+        />
+        <Stack.Screen
+          name="Canales"
+          component={CanalesScreen}
+          options={{
+            ...defaultHeaderOptions,
+            title: 'Canales',
+            headerBackImage: () => headerBackImageFuntion(),
+          }}
+        />
+        <Stack.Screen
+          name="Subcanales"
+          component={SubcanalesScreen}
+          options={{
+            ...defaultHeaderOptions,
+            title: 'Subcanales',
+            headerBackImage: () => headerBackImageFuntion(),
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          name="Modulos"
+          component={ModulosScreen}
+          options={({ navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Modulos',
+            headerBackImage: () => headerBackImageFuntion(),
+            headerRight: () => exitButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="CotizacionAutos"
+          component={CotizacionAutosScreen}
+          options={({ navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Cotizar Autos',
+            headerBackImage: () => headerBackImageFuntion(),
+            headerRight: () => exitButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="ResultadoCotizacion"
+          component={ResultadoCotizacionScreen}
+          options={({ route, navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Cotización',
+            headerRight: () => homeAndExitButtons(navigation, route),
+          })}
+        />
+        <Stack.Screen
+          name="Emision"
+          component={EmisionScreen}
+          options={({ route, navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Emisión',
+            headerRight: () => homeAndExitButtons(navigation, route),
+          })}
+        />
+        <Stack.Screen
+          name="PDFViewerScreen"
+          component={PDFViewerScreen}
+          options={({ route, navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Documento',
+            headerRight: () => homeAndExitButtons(navigation, route),
+          })}
+        />
+        <Stack.Screen
+          name="ViewerBase64Screen"
+          component={ViewerBase64Screen}
+        />
+        <Stack.Screen
+          name="ConsultaPolizas"
+          component={ConsultaPolizasScreen}
+          options={({ navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Mis Pólizas',
+            headerBackImage: () => headerBackImageFuntion(),
+            headerRight: () => exitButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="InicioAPScreen"
+          component={InicioAPScreen}
+        />
+        <Stack.Screen
+          name="MiPerfilScreen"
+          component={MiPerfilScreen}
+          options={({ route, navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Mi Perfil',
+            headerBackImage: () => headerBackImageFuntion(),
+            headerRight: () => homeAndExitButtons(navigation, route),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

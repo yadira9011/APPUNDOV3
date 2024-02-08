@@ -13,6 +13,7 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 
+
 const ModulosScreen = ({ route }) => {
 
     const navigation = useNavigation();
@@ -109,6 +110,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
     },
+    menustyle: {
+        backgroundColor: '#92c5fc',
+      },
+    
 });
 
 export default ModulosScreen;

@@ -11,7 +11,7 @@ const MenuComponentNew = ({ DataParameter }) => {
     const route = useRoute();
     const Navigation = useNavigation();
 
-   // const { navigation } = props;
+    // const { navigation } = props;
     // const { DataParameter } = route.params.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalBCVisible, setModalBCVisible] = useState(false);
@@ -20,6 +20,7 @@ const MenuComponentNew = ({ DataParameter }) => {
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
     const [FolioCotizacion, setFolioCotizacion] = useState('');
+    const currentScreen = route.name;
 
     const handleImprimirPoliza = () => {
         console.log('Imprimir Póliza');
@@ -50,18 +51,29 @@ const MenuComponentNew = ({ DataParameter }) => {
 
     };
 
-    return (
+    const handleSalir = () => {
+        Navigation.navigate('Login');
+    }
 
+    return (
         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-            <TouchableOpacity onPress={handleImprimirPoliza} style={{ padding: 10 }}>
-                <Ionicons name="print" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleBuscarCoti} style={{ padding: 10 }}>
-                <Ionicons name="search" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleIrInicio} style={{ padding: 10 }}>
-                <Ionicons name="home" size={24} color="black" />
-            </TouchableOpacity>
+            {currentScreen === 'CotizacionAutos' && (
+                <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={handleImprimirPoliza} style={{ padding: 10 }}>
+                        <Ionicons name="print" size={24} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleBuscarCoti} style={{ padding: 10 }}>
+                        <Ionicons name="search" size={24} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleIrInicio} style={{ padding: 10 }}>
+                        <Ionicons name="home" size={24} color="black" />
+                    </TouchableOpacity>
+                </View>
+            )}
+
+            {/* <TouchableOpacity onPress={handleSalir} style={{ padding: 10 }}>
+                <Ionicons name="exit" size={24} color="black" />
+            </TouchableOpacity> */}
 
             <ModalContent
                 isVisible={isModalVisible}
