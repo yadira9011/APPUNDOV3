@@ -35,6 +35,7 @@ const ModulosScreen = ({ route }) => {
                 navigation.navigate('ConsultaPolizas', { DataParameter });
                 break;
             case 'Agropecuario':
+                navigation.navigate('NewPolizas', { DataParameter });
                 //console.log(DataParameter)
                 //navigation.navigate('InicioAPScreen', { DataParameter });
                 //navigation.navigate('PushNotification', { DataParameter });

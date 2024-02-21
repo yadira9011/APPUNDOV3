@@ -22,13 +22,13 @@ import ViewerBase64Screen from './component/Componentes/ViewerBase64Screen';
 import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
 import InicioAPScreen from './component/Agropecuario/InicioAPScreen';
 import MiPerfilScreen from './component/Polizas/MiPerfilScreen';
+import NewPolizas from './component/Polizas/NewPolizas';
 //import PushNotification from './component/Componentes/PushNotification';
 //import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
-
 
 
 const Stack = createStackNavigator();
@@ -301,6 +301,16 @@ export default function App() {
         <Stack.Screen
           name="ConsultaPolizas"
           component={ConsultaPolizasScreen}
+          options={({ navigation }) => ({
+            ...defaultHeaderOptions,
+            title: 'Mis Pólizas',
+            headerBackImage: () => headerBackImageFuntion(),
+            headerRight: () => exitButton(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="NewPolizas"
+          component={NewPolizas}
           options={({ navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Mis Pólizas',
