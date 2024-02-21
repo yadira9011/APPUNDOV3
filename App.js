@@ -273,6 +273,7 @@ export default function App() {
           options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Cotización',
+            headerBackImage: () => headerBackImageFuntion(),
             headerRight: () => homeAndExitButtons(navigation, route),
           })}
         />

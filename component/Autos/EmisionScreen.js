@@ -144,8 +144,11 @@ const EmisionScreen = () => {
 
   const [showPickerFDesembolso, setShowPickerFDesembolso] = useState(true);
   const [dateFDesembolso, setDateFDesembolso] = useState(new Date());
+  const [TextDateFD, setTextDateFD] = useState('');
   const [isRenovacion, setisRenovacion] = useState(false);
   const [ShowisRenovacion, setShowisRenovacion] = useState(true);
+
+  const [showChangeFD, setShowChangeFD] = useState(false)
 
   const opcionesIdentificacion = [
     { label: "Selecciona", value: "" },
@@ -529,6 +532,7 @@ const EmisionScreen = () => {
         setDate(new Date(fValor));
         //console.log("ccccc",date.toLocaleDateString())
         setTextDateVP(date.toLocaleDateString());
+        setTextDateFD(dateFDesembolso.toLocaleDateString());
         if (response.data.Data[0].FIEMISION_ANTICIPADA != 0) {
           setisDatePickerEnabled(true);
           setMaxDate(new Date(fMax));
@@ -697,6 +701,7 @@ const EmisionScreen = () => {
     if (selectedDate) {
       setDate(selectedDate);
       setTextDateVP(date.toLocaleDateString());
+      setShowChangeFD(false);
     }
   };
 
@@ -1358,16 +1363,29 @@ const EmisionScreen = () => {
 
               {showPickerFDesembolso && (
                 <View>
-                  <Text style={{ marginRight: 10 }}>Fecha de desembolso:</Text>
-                  <DateTimePicker
-                    testID="dateTimePicker"
-                    value={dateFDesembolso}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-                    style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                  <Text style={{ marginRight: 10 }}>Fecha de desembolso: {TextDateFD} </Text>
+
+                  <Switch
+                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={() => setShowChangeFD(true)}
+                    value={showChangeFD}
                   />
+
+                  {showChangeFD && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={dateFDesembolso}
+                      mode="date"
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChange}
+                      style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                      // Utiliza pickerStyle para personalizar el estilo
+                      pickerStyle={{ backgroundColor: 'white' }}
+                    />
+                  )}
                 </View>
               )}
 
