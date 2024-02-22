@@ -1,41 +1,37 @@
-import React, { useState, useEffect  } from 'react';
-import { View, Text, TextInput, Button, Alert, Image, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 //import * as Notifications from 'expo-notifications';
+import CustomAlert from '../Componentes/CustomAlert';
 
-const LoginScreen = ({ navigation,route }) => {
+const LoginScreen = ({ navigation, route }) => {
 
   // const [email, setEmail] = useState('mail@mail.com');
   // const [password, setPassword] = useState('Ven99234');
 
   const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
   const [password, setPassword] = useState('marcosSL');
-
   const [expoPushToken, setExpoPushToken] = useState('');
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     // Accede al valor de expoPushToken desde las props
     const tokenFromProps = route.params?.expoPushToken || '';
     setExpoPushToken(tokenFromProps);
-    console.log("token fromm login .... ",tokenFromProps)
+    console.log("token fromm login .... ", tokenFromProps)
   }, [route.params]);
-
   // useEffect(() => {
   //   registerForPushNotificationsAsync();
   // }, []);
-
   const handleLogin = async () => {
     try {
-
-      const response = await loginUser(email, password,expoPushToken);
+      const response = await loginUser(email, password, expoPushToken);
       const res = parseInt(response.data.FIIDUSUARIO, 10);
       const IdPersona = parseInt(response.data.FIIDPERSONA, 10);
       const IdRol = parseInt(response.data.FSIDROL, 10);
-
-
       if (res >= 0) {
-
         const userDataParameter = {
           IdUsr: res,
           password: password,
@@ -43,16 +39,19 @@ const LoginScreen = ({ navigation,route }) => {
           IdPersona: IdPersona,
           IdRol: IdRol
         };
-
         //navigation.navigate('Home', { userDataParameter });
         //navigation.navigate('Grupos', { userDataParameter });
         GetFlujoLogin(userDataParameter);
 
       } else {
-        Alert.alert('Error', 'No se encontro el usuario');
+       // Alert.alert('Error', 'No se encontro el usuario');
+       setAlertMessage('No se encontro el usuario');
+       setAlertVisible(true);
       }
     } catch (error) {
-      Alert.alert('Error', 'Inicio de sesión fallido');
+      //Alert.alert('Error', 'Inicio de sesión fallido');
+      setAlertMessage('Inicio de sesión fallido');
+      setAlertVisible(true);
     }
   };
 
@@ -129,7 +128,10 @@ const LoginScreen = ({ navigation,route }) => {
         }
       }
     } catch (error) {
-      Alert.alert('Error', 'Inicio de sesión fallido');
+      // Alert.alert('Error', 'Inicio de sesión fallido');
+      setAlertMessage('Inicio de sesión fallido');
+      setAlertVisible(true);
+
     }
   };
 
@@ -160,6 +162,10 @@ const LoginScreen = ({ navigation,route }) => {
   //   // Puedes navegar a la pantalla correspondiente o realizar otras acciones.
   // };
 
+  const hideAlert = () => {
+    setAlertVisible(false);
+  };
+
   return (
     <View style={styles.container}>
       <Image source={require('../../assets/UndoLogo.png')} style={styles.image} resizeMode="contain" />
@@ -177,10 +183,23 @@ const LoginScreen = ({ navigation,route }) => {
         onChangeText={setPassword}
         style={styles.textInput}
       />
-
-      <Text>TOKEN: {expoPushToken} </Text>
       
-      <Button title="Iniciar sesión" onPress={handleLogin} />
+      {/* <Text>TOKEN: {expoPushToken} </Text> */}
+
+      {/* <Button title="Iniciar sesión" onPress={handleLogin}  style={styles.button} /> */}
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.ButtonText}>Iniciar sesión</Text>
+      </TouchableOpacity>
+
+      {isAlertVisible && (
+        <CustomAlert
+          visible={isAlertVisible}
+          message={alertMessage}
+          onClose={hideAlert}
+        />
+      )}
+
     </View>
   );
 
@@ -206,6 +225,16 @@ const styles = StyleSheet.create({
   button: {
     width: 300,
     height: 40,
+    alignSelf: 'center',
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#0066cc',
+    borderRadius: 5,
+  },
+  ButtonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
