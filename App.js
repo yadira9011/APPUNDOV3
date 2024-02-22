@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, Modal } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -92,6 +92,7 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
   const [loading, setLoading] = useState(true);
+  const [isModalMenuVisible, setModalMenuVisible] = useState(false);
 
   useEffect(() => {
 
@@ -158,6 +159,10 @@ export default function App() {
     },
   };
 
+  const toggleModalMenu = () => {
+    setModalMenuVisible(!isModalMenuVisible);
+  };
+
   const exitButton = (navigation) => (
     <TouchableOpacity
       onPress={() => {
@@ -167,6 +172,28 @@ export default function App() {
     >
       <Ionicons name="exit" size={24} color="white" />
     </TouchableOpacity>
+  );
+
+  const ButtonMenu = (navigation) => (
+    <View>
+      <TouchableOpacity onPress={toggleModal} style={{ marginRight: 10 }}>
+        <Ionicons name="exit" size={24} color="white" />
+      </TouchableOpacity>
+      <Modal
+        isVisible={isModalMenuVisible}
+        onBackdropPress={toggleModal}
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+        backdropOpacity={0.5}
+        style={styles.modal}
+      >
+        <View style={styles.modalContent}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    </View>
   );
 
   const headerBackImageFuntion = () => (
@@ -254,7 +281,7 @@ export default function App() {
             ...defaultHeaderOptions,
             title: 'Modulos',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => exitButton(navigation),
+            headerRight: () => ButtonMenu(navigation),
           })}
         />
         <Stack.Screen
@@ -344,5 +371,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });
