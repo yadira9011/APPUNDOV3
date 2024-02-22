@@ -176,16 +176,16 @@ export default function App() {
 
   const ButtonMenu = (navigation) => (
     <View>
-      <TouchableOpacity onPress={toggleModal} style={{ marginRight: 10 }}>
+      <TouchableOpacity onPress={toggleModalMenu} style={{ marginRight: 10 }}>
         <Ionicons name="exit" size={24} color="white" />
       </TouchableOpacity>
       <Modal
         isVisible={isModalMenuVisible}
-        onBackdropPress={toggleModal}
+        onBackdropPress={toggleModalMenu}
         animationIn="slideInRight"
         animationOut="slideOutRight"
         backdropOpacity={0.5}
-        style={styles.modal}
+        style={styles.modalContainer}
       >
         <View style={styles.modalContent}>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -281,7 +281,7 @@ export default function App() {
             ...defaultHeaderOptions,
             title: 'Modulos',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => ButtonMenu(navigation),
+            headerRight: () => exitButton(navigation),
           })}
         />
         <Stack.Screen
