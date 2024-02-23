@@ -23,13 +23,11 @@ import ConsultaPolizasScreen from './component/Polizas/ConsultaPolizasScreen';
 import InicioAPScreen from './component/Agropecuario/InicioAPScreen';
 import MiPerfilScreen from './component/Polizas/MiPerfilScreen';
 import NewPolizas from './component/Polizas/NewPolizas';
-//import PushNotification from './component/Componentes/PushNotification';
-//import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
-
+import MenuButtonAndModal from './component/Componentes/YourModal';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -87,18 +85,16 @@ export default function App() {
     return token.data;
   }
 
-  const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
+  const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
   const [loading, setLoading] = useState(true);
   const [isModalMenuVisible, setModalMenuVisible] = useState(false);
 
   useEffect(() => {
-
     // registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
     // console.log("TOKENNNNNN",expoPushToken)
-
     const fetchExpoPushToken = async () => {
       try {
 
@@ -114,9 +110,7 @@ export default function App() {
         setLoading(false);
       }
     };
-
     fetchExpoPushToken();
-
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });
@@ -141,7 +135,6 @@ export default function App() {
     );
   }
 
-
   const screenOptions = {
     headerShown: false,
   };
@@ -159,8 +152,6 @@ export default function App() {
     },
   };
 
-
-
   const exitButton = (navigation) => (
     <TouchableOpacity
       onPress={() => {
@@ -171,38 +162,89 @@ export default function App() {
       <Ionicons name="exit" size={24} color="white" />
     </TouchableOpacity>
   );
-  
-  const toggleModalMenu = () => {
-    setModalMenuVisible(!isModalMenuVisible);
-  };
 
-  const viewMenu = (navigation) => (
-    <View style={styles.modalContent}>
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text>Login</Text>
-      </TouchableOpacity>
-    </View>
-    //     {/* <Modal
-    // isVisible={isModalMenuVisible}
-    // onBackdropPress={toggleModalMenu}
-    // animationIn="slideInRight"
-    // animationOut="slideOutRight"
-    // backdropOpacity={0.5}
-    // style={styles.modalContainer}
-    // >
-    // <View style={styles.modalContent}>
-    //   <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-    //     <Text>Login</Text>
-    //   </TouchableOpacity>
-    // </View>
-    // </Modal>  */}
-  );
+  // const toggleModalMenu = () => {
+  //   setModalMenuVisible(!isModalMenuVisible);
+  // };
 
-  const ButtonMenu = (navigation) => (
-    <TouchableOpacity onPress={viewMenu} style={{ marginRight: 10 }}>
-      <Ionicons name="exit" size={24} color="white" />
-    </TouchableOpacity>
-  );
+  // const closeModal = () => {
+  //   setModalMenuVisible(false);
+  // };
+
+  // const viewMenu = ({ navigation }) => {
+  //   setModalMenuVisible(true);
+  //   console.log("presioneee....", isModalMenuVisible)
+  //   if (!isModalMenuVisible) {
+  //     console.log("presioneee....hyittt")
+  //     return null;
+  //   }
+  //   return (
+  //     <View >
+  //       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+  //         <Text>Login</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
+
+  // const ViewMenuSS = ({ navigation }) => {
+  //   setModalMenuVisible(true);
+  //   useEffect(() => {
+  //     console.log("presioneee....", isModalMenuVisible);
+  //   }, [isModalMenuVisible]);
+  //   if (!isModalMenuVisible) {
+  //     console.log("presioneee....hyittt");
+  //     return null;
+  //   }
+  //   return (
+  //     <View>
+  //       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+  //         <Text>Login</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
+
+  // const ViewMenu = ({ navigation }) => {
+  //   // const [isModalMenuVisible, setModalMenuVisible] = useState(true);
+
+  //   // useEffect(() => {
+  //   //   console.log("presioneee....", isModalMenuVisible);
+  //   // }, [isModalMenuVisible]);
+
+  //   // const closeModal = () => {
+  //   //   setModalMenuVisible(false);
+  //   // };
+  //   setModalMenuVisible(true);
+  //   if (!isModalMenuVisible) {
+  //     console.log("presioneee....hyittt");
+  //     return null;
+  //   }
+  //   console.log("presioneee....hyittt", isModalMenuVisible);
+  //   return (
+  //     <Modal
+  //       animationType="slide"
+  //       transparent={true}
+  //       visible={isModalMenuVisible}
+  //       onRequestClose={closeModal}
+  //     >
+  //       <View>
+  //         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+  //           <Text>Login</Text>
+  //         </TouchableOpacity>
+  //         <TouchableOpacity onPress={closeModal}>
+  //           <Text>Close Modal</Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //     </Modal>
+  //   );
+  // };
+
+  // const ButtonMenu = (navigation) => (
+  //   <TouchableOpacity onPress={toggleModalMenu} style={{ marginRight: 10 }}>
+  //     <Ionicons name="menu-outline" size={24} color="white" />
+  //   </TouchableOpacity>
+  // );
 
   const headerBackImageFuntion = () => (
     <View style={{ marginLeft: 15 }}><Ionicons name="arrow-back" size={24} color="white" /></View>
@@ -229,7 +271,6 @@ export default function App() {
   );
 
   return (
-
 
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
@@ -290,7 +331,8 @@ export default function App() {
             ...defaultHeaderOptions,
             title: 'Modulos',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => ButtonMenu(navigation),
+            //headerRight: () => ButtonMenu(navigation),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} />,
           })}
         />
         <Stack.Screen
@@ -370,6 +412,7 @@ export default function App() {
           })}
         />
       </Stack.Navigator>
+
     </NavigationContainer>
 
   );
@@ -386,13 +429,21 @@ const styles = StyleSheet.create({
   modalContainer: {
     // justifyContent: 'flex-end',
     // alignItems: 'flex-end',
-    backgroundColor: 'red',
+    // justifyContent: 'flex-end',
+    // margin: 0,
+    // backgroundColor: 'red',
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   modalContent: {
-    width: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#001F3F',
     padding: 16,
+    height: '100%',
+    width: '50%',
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    position: 'absolute',
+    right: 0,
   },
 });
