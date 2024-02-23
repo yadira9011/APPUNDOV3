@@ -6,14 +6,14 @@ import {
   CotVigencias, CotInfoPostal, GetCotizacion
 } from '../Api/api';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import MenuComponentNew from '../Componentes/MenuComponentNew';
 
+import { Picker } from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 
-const Drawer = createDrawerNavigator();
+
 
 const CotizacionAutosScreen = () => {
 
@@ -271,7 +271,7 @@ const CotizacionAutosScreen = () => {
 
   const fetchAutoDescripciones = async (TipoVehiculoId, Modelo, submarca, tipo) => {
     try {
-      console.log("PARA DES", TipoVehiculoId, Modelo, submarca, tipo);
+      // console.log("PARA DES", TipoVehiculoId, Modelo, submarca, tipo);
       const response = await CotDescripciones(
         DataParameter.email,
         DataParameter.password,
@@ -283,15 +283,26 @@ const CotizacionAutosScreen = () => {
 
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
-        setAutoDescripciones(data);
-        setSelectedOptionDescripcion(data[0].Id);
-        setselectedTextDescripcion(data[0].Valor);
+        console.log("DATOSSSS DESSS", data);
+        const autoDes = data.map(item => ({
+          label: item.Valor,
+          value: item.Id,
+        }));
+        console.log("DATOSSSS DESSS formatttt ", autoDes);
+        console.log("aqeeiieieieie 234411");
+        setAutoDescripciones(autoDes);
+        console.log("aqeeiieieieie 2222");
+        //console.log(autoDes[0].label);
+        //setSelectedOptionDescripcion(autoDes[0].value);
+        //setselectedTextDescripcion(autoDes[0].label);
+        console.log("DESCRICIONESSSSSS ARR ", AutoDescripciones);
+
       } else {
         console.error('La respuesta de la API no contiene descripciones.');
       }
       setLoading(false);
     } catch (error) {
-      console.error('Error al obtener los datos:', error);
+      console.error('Error al obtener los datos: heueueue', error);
       setLoading(false);
     }
   };
@@ -498,12 +509,20 @@ const CotizacionAutosScreen = () => {
     fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
   };
 
+
   const handleOptionChangeDescripcion = (itemValue, itemIndex) => {
-    setSelectedOptionDescripcion(itemValue);
-    setselectedTextDescripcion(AutoDescripciones[itemIndex].Valor);
-    setClaveUnica(itemValue);
-    setModalVisibleDescription(true);
-    console.log("REPONSE DESCRIPCION", AutoDescripciones[itemIndex].Valor);
+
+    if (itemValue !== null) {
+      console.log("values", itemValue, itemIndex)
+      const selectedOption = AutoDescripciones.find(item => item.value === itemValue);
+      console.log("optiones dess", selectedOption);
+      const selectedLabel = selectedOption.label;
+      setSelectedOptionDescripcion(itemValue);
+      setselectedTextDescripcion(selectedLabel);
+      setClaveUnica(itemValue);
+    }
+    //setModalVisibleDescription(true);
+    //console.log("REPONSE DESCRIPCION", AutoDescripciones[itemIndex].Valor);
   };
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
@@ -684,6 +703,11 @@ const CotizacionAutosScreen = () => {
 
   };
 
+  // const pickerItems = AutoDescripciones.map((AutoDescripcion) => ({
+  //   label: AutoDescripcion.Valor,
+  //   value: AutoDescripcion.Id,
+  // }));
+
   if (!loadingCombos) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
@@ -792,7 +816,52 @@ const CotizacionAutosScreen = () => {
         </Picker>
 
         <Text style={styles.label}>Descripción:</Text>
-        <Picker
+
+        <RNPickerSelect
+          textInputProps={{ multiline: true }}
+          pickerProps={{ numberOfLines: 3 }}
+          onValueChange={handleOptionChangeDescripcion}
+          items={AutoDescripciones}
+          value={selectedOptionDescripcion}
+          style={{
+            viewContainer: {
+              borderWidth: 1,
+              borderColor: 'gray',
+              borderRadius: 4,
+              padding: 10,
+              margin: 10,
+              color: 'blue',
+              backgroundColor: 'white',
+            },
+            inputAndroid: {
+              fontSize: 16,
+              color: 'black',
+            },
+            inputIOS: {
+              fontSize: 16,
+              color: 'blue',
+            },
+          }}
+        />
+
+        {/* <Picker
+          selectedValue={selectedOptionDescripcion}
+          onValueChange={handleOptionChangeDescripcion}
+          keyExtractor={(item) => item.Id.toString()}
+          itemStyle={{ fontSize: 12, flex: 1 }}
+        >
+          {AutoDescripciones.map((AutoDescripcion) => (
+            <Picker.Item
+              key={AutoDescripcion.Id}
+              label={() => (
+                <Text style={{ color: 'black' }}>{AutoDescripcion.Valor}</Text>
+              )}
+              value={AutoDescripcion.Id}
+            />
+          ))}
+        </Picker> */}
+
+        {/* <Picker
           selectedValue={selectedOptionDescripcion}
           onValueChange={handleOptionChangeDescripcion}
           keyExtractor={(item) => item.Id.toString()}
@@ -805,7 +874,8 @@ const CotizacionAutosScreen = () => {
               value={AutoDescripcion.Id}
             />
           ))}
-        </Picker>
+        </Picker> */}
+
 
         <Text style={styles.label}>Indemnización:</Text>
         <Picker

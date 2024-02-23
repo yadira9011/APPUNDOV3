@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-11112023124847111');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3164-23022024133225346');
+
     // AUT-1-12102023082739534
     //AUT-1-11112023124847111
 
@@ -22,14 +23,10 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                 usuario: email,
                 contraseña: password,
             }
-            console.log("aqqqqqq",DataRquest);
             const response = await GetCotizacionApi(DataRquest);
             if (!response.data.Data.HasError) {
                 const datos_cot = response.data.Data.Data;
                 const parametros_cot = datos_cot.parametros;
-                // console.log(parametros_cot);
-                // const parametros = JSON.parse(datos_cot.Parametros);
-                // console.log(parametros);
                 const DataSolicitudTitulos = {
                     DescripcionVehiculo: parametros_cot.vehiculo.Descripcion.text,
                     Modelo: parametros_cot.vehiculo.Modelo,
@@ -55,7 +52,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     IDPagoVigencia: parametros_cot.PagoVigencia.value,
                     IDUDI: 0,
                     IDPaquete: parametros_cot.Paquetes.value,
-                    ColoniaPersona:parametros_cot.ColoniaPersona,
+                    ColoniaPersona: parametros_cot.ColoniaPersona,
                     MunicipioPersona: parametros_cot.MunicipioPersona,
                     CiudadPersona: parametros_cot.CiudadPersona,
                     EstadoPersona: parametros_cot.EstadoPersona,
@@ -70,7 +67,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     CotiData: dataCotizacion,
                     DataTitulos: DataSolicitudTitulos
                 }
-                
+
                 navigation.navigate('ResultadoCotizacion', { dataArray });
 
             } else {
