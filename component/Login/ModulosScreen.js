@@ -19,6 +19,8 @@ const ModulosScreen = ({ route }) => {
     const navigation = useNavigation();
     const { DataParameter } = route.params;
 
+    console.log("desdeee", DataParameter)
+
     const onPressItem = (item) => {
         switch (item.title) {
             case 'Autos':
@@ -32,10 +34,11 @@ const ModulosScreen = ({ route }) => {
                 break;
             case 'Polizas':
                 console.log(DataParameter)
-                navigation.navigate('ConsultaPolizas', { DataParameter });
+                //navigation.navigate('ConsultaPolizas', { DataParameter });
+                navigation.navigate('NewPolizas', { DataParameter });
                 break;
             case 'Agropecuario':
-                navigation.navigate('NewPolizas', { DataParameter });
+                //navigation.navigate('NewPolizas', { DataParameter });
                 //console.log(DataParameter)
                 //navigation.navigate('InicioAPScreen', { DataParameter });
                 //navigation.navigate('PushNotification', { DataParameter });
@@ -113,8 +116,8 @@ const styles = StyleSheet.create({
     },
     menustyle: {
         backgroundColor: '#92c5fc',
-      },
-    
+    },
+
 });
 
 export default ModulosScreen;

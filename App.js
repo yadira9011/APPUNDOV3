@@ -152,97 +152,14 @@ export default function App() {
     },
   };
 
-  const exitButton = (navigation) => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('Login');
-      }}
-      style={{ marginRight: 10 }}
-    >
-      <Ionicons name="exit" size={24} color="white" />
-    </TouchableOpacity>
-  );
-
-  // const toggleModalMenu = () => {
-  //   setModalMenuVisible(!isModalMenuVisible);
-  // };
-
-  // const closeModal = () => {
-  //   setModalMenuVisible(false);
-  // };
-
-  // const viewMenu = ({ navigation }) => {
-  //   setModalMenuVisible(true);
-  //   console.log("presioneee....", isModalMenuVisible)
-  //   if (!isModalMenuVisible) {
-  //     console.log("presioneee....hyittt")
-  //     return null;
-  //   }
-  //   return (
-  //     <View >
-  //       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-  //         <Text>Login</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
-
-  // const ViewMenuSS = ({ navigation }) => {
-  //   setModalMenuVisible(true);
-  //   useEffect(() => {
-  //     console.log("presioneee....", isModalMenuVisible);
-  //   }, [isModalMenuVisible]);
-  //   if (!isModalMenuVisible) {
-  //     console.log("presioneee....hyittt");
-  //     return null;
-  //   }
-  //   return (
-  //     <View>
-  //       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-  //         <Text>Login</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
-
-  // const ViewMenu = ({ navigation }) => {
-  //   // const [isModalMenuVisible, setModalMenuVisible] = useState(true);
-
-  //   // useEffect(() => {
-  //   //   console.log("presioneee....", isModalMenuVisible);
-  //   // }, [isModalMenuVisible]);
-
-  //   // const closeModal = () => {
-  //   //   setModalMenuVisible(false);
-  //   // };
-  //   setModalMenuVisible(true);
-  //   if (!isModalMenuVisible) {
-  //     console.log("presioneee....hyittt");
-  //     return null;
-  //   }
-  //   console.log("presioneee....hyittt", isModalMenuVisible);
-  //   return (
-  //     <Modal
-  //       animationType="slide"
-  //       transparent={true}
-  //       visible={isModalMenuVisible}
-  //       onRequestClose={closeModal}
-  //     >
-  //       <View>
-  //         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-  //           <Text>Login</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity onPress={closeModal}>
-  //           <Text>Close Modal</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </Modal>
-  //   );
-  // };
-
-  // const ButtonMenu = (navigation) => (
-  //   <TouchableOpacity onPress={toggleModalMenu} style={{ marginRight: 10 }}>
-  //     <Ionicons name="menu-outline" size={24} color="white" />
+  // const exitButton = (navigation) => (
+  //   <TouchableOpacity
+  //     onPress={() => {
+  //       navigation.navigate('Login');
+  //     }}
+  //     style={{ marginRight: 10 }}
+  //   >
+  //     <Ionicons name="exit" size={24} color="white" />
   //   </TouchableOpacity>
   // );
 
@@ -250,30 +167,30 @@ export default function App() {
     <View style={{ marginLeft: 15 }}><Ionicons name="arrow-back" size={24} color="white" /></View>
   );
 
-  const homeAndExitButtons = (navigation, route) => (
-    <View style={{ flexDirection: 'row', marginRight: 20 }}>
-      <TouchableOpacity
-        onPress={() => {
-          let params = { DataParameter: route.params?.DataParameter };
-          if (route.name === 'ResultadoCotizacion') {
-            params = { DataParameter: route.params?.dataArray?.DataParameter };
-          } else if (route.name === 'Emision') {
-            params = { DataParameter: route.params?.dataArrayEmi?.DataParameter };
-          }
-          navigation.navigate('Modulos', params);
-        }}
-        style={{ marginBottom: 10, marginRight: 10 }}
-      >
-        <Ionicons name="home" size={24} color="white" />
-      </TouchableOpacity>
-      {exitButton(navigation)}
-    </View>
-  );
+  // const homeAndExitButtons = (navigation, route) => (
+  //   <View style={{ flexDirection: 'row', marginRight: 20 }}>
+  //     <TouchableOpacity
+  //       onPress={() => {
+  //         let params = { DataParameter: route.params?.DataParameter };
+  //         if (route.name === 'ResultadoCotizacion') {
+  //           params = { DataParameter: route.params?.dataArray?.DataParameter };
+  //         } else if (route.name === 'Emision') {
+  //           params = { DataParameter: route.params?.dataArrayEmi?.DataParameter };
+  //         }
+  //         navigation.navigate('Modulos', params);
+  //       }}
+  //       style={{ marginBottom: 10, marginRight: 10 }}>
+  //       <Ionicons name="home" size={24} color="white" />
+  //     </TouchableOpacity>
+  //     {exitButton(navigation)}
+  //   </View>
+  // );
 
   return (
 
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
+
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -284,67 +201,75 @@ export default function App() {
             },
           })}
         />
+
         <Stack.Screen
           name="Grupos"
           component={GruposScreen}
-          options={({ navigation }) => ({
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             headerLeft: null,
-            headerRight: () => exitButton(navigation),
+            //headerRight: () => exitButton(navigation),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="Clientes"
           component={ClientesScreen}
-          options={{
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Clientes',
             headerBackImage: () => headerBackImageFuntion(),
-          }}
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+          })}
         />
+
         <Stack.Screen
           name="Canales"
           component={CanalesScreen}
-          options={{
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Canales',
             headerBackImage: () => headerBackImageFuntion(),
-          }}
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+          })}
         />
+
         <Stack.Screen
           name="Subcanales"
           component={SubcanalesScreen}
-          options={{
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Subcanales',
             headerBackImage: () => headerBackImageFuntion(),
-          }}
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+          })}
         />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+
         <Stack.Screen
           name="Modulos"
           component={ModulosScreen}
-          options={({ navigation }) => ({
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Modulos',
             headerBackImage: () => headerBackImageFuntion(),
             //headerRight: () => ButtonMenu(navigation),
-            headerRight: () => <MenuButtonAndModal navigation={navigation} />,
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="CotizacionAutos"
           component={CotizacionAutosScreen}
-          options={({ navigation }) => ({
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Cotizar Autos',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => exitButton(navigation),
+            //headerRight: () => exitButton(navigation),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="ResultadoCotizacion"
           component={ResultadoCotizacionScreen}
@@ -352,55 +277,55 @@ export default function App() {
             ...defaultHeaderOptions,
             title: 'Cotización',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => homeAndExitButtons(navigation, route),
+            // headerRight: () => homeAndExitButtons(navigation, route),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="Emision"
           component={EmisionScreen}
           options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Emisión',
-            headerRight: () => homeAndExitButtons(navigation, route),
+            //headerRight: () => homeAndExitButtons(navigation, route),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="PDFViewerScreen"
           component={PDFViewerScreen}
           options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Documento',
-            headerRight: () => homeAndExitButtons(navigation, route),
+            //headerRight: () => homeAndExitButtons(navigation, route),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="ViewerBase64Screen"
           component={ViewerBase64Screen}
         />
-        <Stack.Screen
-          name="ConsultaPolizas"
-          component={ConsultaPolizasScreen}
-          options={({ navigation }) => ({
-            ...defaultHeaderOptions,
-            title: 'Mis Pólizas',
-            headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => exitButton(navigation),
-          })}
-        />
+
         <Stack.Screen
           name="NewPolizas"
           component={NewPolizas}
-          options={({ navigation }) => ({
+          options={({ route, navigation }) => ({
             ...defaultHeaderOptions,
             title: 'Mis Pólizas',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => exitButton(navigation),
+            // headerRight: () => exitButton(navigation),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
         <Stack.Screen
           name="InicioAPScreen"
           component={InicioAPScreen}
         />
+
         <Stack.Screen
           name="MiPerfilScreen"
           component={MiPerfilScreen}
@@ -408,9 +333,11 @@ export default function App() {
             ...defaultHeaderOptions,
             title: 'Mi Perfil',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => homeAndExitButtons(navigation, route),
+            //headerRight: () => homeAndExitButtons(navigation,route),
+            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
           })}
         />
+
       </Stack.Navigator>
 
     </NavigationContainer>

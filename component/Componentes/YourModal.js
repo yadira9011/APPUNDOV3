@@ -1,12 +1,13 @@
-// YourModal.js
-
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const YourModal = ({ navigation }) => {
+const YourModal = ({ navigation, route }) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const routename = route.name;
+
 
     const openModal = () => {
         setModalVisible(!isModalVisible);
@@ -16,41 +17,66 @@ const YourModal = ({ navigation }) => {
         setModalVisible(false);
     };
 
+    const GetParams = () => {
+        let params = { DataParameter: route.params?.DataParameter };
+        if (routename === 'ResultadoCotizacion') {
+            params = { DataParameter: route.params?.dataArray?.DataParameter };
+        } else if (routename === 'Emision') {
+            params = { DataParameter: route.params?.dataArrayEmi?.DataParameter };
+        }
+        return params
+    };
+
     return (
         <>
             <TouchableOpacity onPress={openModal} style={styles.menuButton}>
                 <Ionicons name="menu-outline" size={24} color="white" />
             </TouchableOpacity>
             <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isModalVisible}
-                onRequestClose={closeModal}
+                isVisible={isModalVisible}
+                animationIn="slideInRight"
+                animationOut="slideOutRight"
+                onBackdropPress={closeModal}
                 style={styles.modalContainer}>
                 <View style={styles.modalContent}>
+
                     <TouchableOpacity
-                        onPress={() => {
-                            setModalVisible(false);
-                        }}
-                        style={{ marginLeft: 0, marginRight: 10 }} >
+                        onPress={closeModal}
+                        style={{ marginRight: 10 }}>
                         <Ionicons name="menu-outline" size={30} color="white" />
                     </TouchableOpacity>
+
+                    {(!(routename === 'MiPerfilScreen' || routename === 'Grupos' || routename === 'Clientes' || routename === 'Canales' || routename === 'Subcanales')) && (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setModalVisible(false);
+                                navigation.navigate('MiPerfilScreen', GetParams());
+                            }}
+                            style={{ marginTop: 20, marginBottom: 10 }}>
+                            <Ionicons name="person-outline" size={30} color="white" />
+                        </TouchableOpacity>
+                    )}
+
+                    {(!(routename === 'Modulos' || routename === 'Grupos' || routename === 'Clientes' || routename === 'Canales' || routename === 'Subcanales')) && (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setModalVisible(false);
+                                navigation.navigate('Modulos', GetParams());
+                            }}
+                            style={{ marginTop: 10, marginBottom: 20 }}>
+                            <Ionicons name="home" size={30} color="white" />
+                        </TouchableOpacity>
+                    )}
+
                     <TouchableOpacity
                         onPress={() => {
                             setModalVisible(false);
                             navigation.navigate('Login');
                         }}
-                        style={{ marginLeft: 10, marginTop: 20, marginBottom: 10 }} >
-                        <Ionicons name="person-outline" size={30} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setModalVisible(false);
-                            navigation.navigate('Login');
-                        }}
-                        style={{ marginLeft: 10, marginBottom: 10 }} >
+                        style={{ marginBottom: 10 }}>
                         <Ionicons name="exit" size={30} color="white" />
                     </TouchableOpacity>
+                    
                 </View>
             </Modal>
         </>
@@ -62,7 +88,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     modalContainer: {
-        flex: 1,
+        margin: 0,
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
     },
@@ -70,11 +96,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#001F3F',
         padding: 16,
         height: '100%',
-        width: '50%',
+        width: '25%',
         borderTopLeftRadius: 20,
         borderBottomLeftRadius: 20,
-        position: 'absolute',
-        right: 0,
     },
 });
 
