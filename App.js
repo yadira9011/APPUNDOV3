@@ -159,9 +159,7 @@ export default function App() {
     },
   };
 
-  const toggleModalMenu = () => {
-    setModalMenuVisible(!isModalMenuVisible);
-  };
+
 
   const exitButton = (navigation) => (
     <TouchableOpacity
@@ -173,27 +171,37 @@ export default function App() {
       <Ionicons name="exit" size={24} color="white" />
     </TouchableOpacity>
   );
+  
+  const toggleModalMenu = () => {
+    setModalMenuVisible(!isModalMenuVisible);
+  };
+
+  const viewMenu = (navigation) => (
+    <View style={styles.modalContent}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text>Login</Text>
+      </TouchableOpacity>
+    </View>
+    //     {/* <Modal
+    // isVisible={isModalMenuVisible}
+    // onBackdropPress={toggleModalMenu}
+    // animationIn="slideInRight"
+    // animationOut="slideOutRight"
+    // backdropOpacity={0.5}
+    // style={styles.modalContainer}
+    // >
+    // <View style={styles.modalContent}>
+    //   <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+    //     <Text>Login</Text>
+    //   </TouchableOpacity>
+    // </View>
+    // </Modal>  */}
+  );
 
   const ButtonMenu = (navigation) => (
-    <View>
-      <TouchableOpacity onPress={toggleModalMenu} style={{ marginRight: 10 }}>
-        <Ionicons name="exit" size={24} color="white" />
-      </TouchableOpacity>
-      <Modal
-        isVisible={isModalMenuVisible}
-        onBackdropPress={toggleModalMenu}
-        animationIn="slideInRight"
-        animationOut="slideOutRight"
-        backdropOpacity={0.5}
-        style={styles.modalContainer}
-      >
-        <View style={styles.modalContent}>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-    </View>
+    <TouchableOpacity onPress={viewMenu} style={{ marginRight: 10 }}>
+      <Ionicons name="exit" size={24} color="white" />
+    </TouchableOpacity>
   );
 
   const headerBackImageFuntion = () => (
@@ -221,6 +229,7 @@ export default function App() {
   );
 
   return (
+
 
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
@@ -281,7 +290,7 @@ export default function App() {
             ...defaultHeaderOptions,
             title: 'Modulos',
             headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => exitButton(navigation),
+            headerRight: () => ButtonMenu(navigation),
           })}
         />
         <Stack.Screen
@@ -362,7 +371,9 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -373,12 +384,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    // justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
+    backgroundColor: 'red',
   },
   modalContent: {
-    backgroundColor: 'white',
+    width: 50,
+    backgroundColor: 'red',
     padding: 16,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
