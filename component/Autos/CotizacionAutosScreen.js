@@ -511,18 +511,13 @@ const CotizacionAutosScreen = () => {
 
 
   const handleOptionChangeDescripcion = (itemValue, itemIndex) => {
-
     if (itemValue !== null) {
-      console.log("values", itemValue, itemIndex)
       const selectedOption = AutoDescripciones.find(item => item.value === itemValue);
-      console.log("optiones dess", selectedOption);
       const selectedLabel = selectedOption.label;
       setSelectedOptionDescripcion(itemValue);
       setselectedTextDescripcion(selectedLabel);
       setClaveUnica(itemValue);
     }
-    //setModalVisibleDescription(true);
-    //console.log("REPONSE DESCRIPCION", AutoDescripciones[itemIndex].Valor);
   };
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
@@ -530,8 +525,11 @@ const CotizacionAutosScreen = () => {
   };
 
   const handleOptionChangeTiposUso = (itemValue, itemIndex) => {
-    setSelectedOptionTipoUso(itemValue);
-    setselectedTextTipoUso(AutoTipoUso[itemIndex].Valor);
+    if (itemValue !== null) {
+      const selectedOption = AutoTipoUso.find(item => item.Id === itemValue);
+      setSelectedOptionTipoUso(itemValue);
+      setselectedTextTipoUso(selectedOption.Valor);
+    }
   };
 
   const handleOptionChangeDeducibles = (itemValue) => {
@@ -554,18 +552,9 @@ const CotizacionAutosScreen = () => {
     setselectedTextVigencia(AutoVigencias[itemIndex].Valor);
   };
 
-  // const handleOpenModal = () => {
-  //   fetchAutoInfoPostal();
-  //   setModalVisible(true);
-  // };
-
   const handleCloseModal = () => {
     setModalVisible(false);
   };
-
-  // const renderColorItem = ({ item }) => (
-  //   <Text style={styles.colorText}>{item.d_asenta}</Text>
-  // );
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -703,11 +692,6 @@ const CotizacionAutosScreen = () => {
 
   };
 
-  // const pickerItems = AutoDescripciones.map((AutoDescripcion) => ({
-  //   label: AutoDescripcion.Valor,
-  //   value: AutoDescripcion.Id,
-  // }));
-
   if (!loadingCombos) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
@@ -735,7 +719,8 @@ const CotizacionAutosScreen = () => {
       <ScrollView style={styles.scrollstyle} >
 
         <Text style={styles.label}>Tipo Uso:</Text>
-        <Picker
+
+        {/* <Picker
           selectedValue={selectedOptionTipoUso}
           onValueChange={handleOptionChangeTiposUso}
           keyExtractor={(item) => item.Id.toString()}
@@ -746,7 +731,16 @@ const CotizacionAutosScreen = () => {
               label={AutoTU.Valor}
               value={AutoTU.Id} />
           ))}
-        </Picker>
+        </Picker> */}
+
+        <RNPickerSelect
+          onValueChange={handleOptionChangeTiposUso}
+          items={AutoTipoUso.map((AutoTU) => ({
+            label: AutoTU.Valor,
+            value: AutoTU.Id,
+          }))}
+          value={selectedOptionTipoUso}
+        />
 
         <Text style={styles.label}>Estatus vehículo:</Text>
         <Picker
@@ -791,8 +785,7 @@ const CotizacionAutosScreen = () => {
         <Picker
           selectedValue={selectedOptionMarca}
           onValueChange={handleOptionChangeMarca}
-          keyExtractor={(item) => item.Valor.toString()}
-        >
+          keyExtractor={(item) => item.Valor.toString()}>
           {AutoMarcas.map((AutoMarca) => (
             <Picker.Item
               key={AutoMarca.Valor}
@@ -805,8 +798,7 @@ const CotizacionAutosScreen = () => {
         <Picker
           selectedValue={selectedOptionTipo}
           onValueChange={handleOptionChangeTipo}
-          keyExtractor={(item) => item.Valor.toString()}
-        >
+          keyExtractor={(item) => item.Valor.toString()}>
           {AutoTipos.map((AutoTipo) => (
             <Picker.Item
               key={AutoTipo.Valor}
@@ -875,7 +867,6 @@ const CotizacionAutosScreen = () => {
             />
           ))}
         </Picker> */}
-
 
         <Text style={styles.label}>Indemnización:</Text>
         <Picker
