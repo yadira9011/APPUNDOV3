@@ -128,28 +128,19 @@ const CotizacionAutosScreen = () => {
 
 
   const fetchAutoEstatusVehiculos = async () => {
-
-    console.log("entree....here")
-
     try {
-      console.log("entree....here ggggg")
       const response = await CotEstatusVehiculos(
         DataParameter.email,
         DataParameter.password,
         DataParameter.IdSubCanal
       );
-
-      console.log(response)
-
       if (response.data.Data.Data) {
-
         const data = response.data.Data.Data;
         setAutoEstatusVehiculos(data);
         setSelectedOption(data[0].Id);
         setselectedTextEstatusVehiculo(data[0].Valor);
         await fetchAutoModelos(data[0].Id);
         await fetchAutoIndenmizaciones(data[0].Id);
-
       } else {
         console.error('La respuesta de la API no contiene Estaus vehiculos.');
       }
@@ -169,11 +160,9 @@ const CotizacionAutosScreen = () => {
       );
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
-
         setAutoTipoVehiculos(data);
         setSelectedOptionTipoVehiculo(data[0].Id);
         setselectedTextTipoVehiculo(data[0].Valor);
-
       } else {
         console.error('La respuesta de la API no contiene Estaus vehiculos.');
       }
@@ -271,7 +260,6 @@ const CotizacionAutosScreen = () => {
 
   const fetchAutoDescripciones = async (TipoVehiculoId, Modelo, submarca, tipo) => {
     try {
-      // console.log("PARA DES", TipoVehiculoId, Modelo, submarca, tipo);
       const response = await CotDescripciones(
         DataParameter.email,
         DataParameter.password,
@@ -280,23 +268,13 @@ const CotizacionAutosScreen = () => {
         submarca,
         tipo
       );
-
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
-        console.log("DATOSSSS DESSS", data);
         const autoDes = data.map(item => ({
           label: item.Valor,
           value: item.Id,
         }));
-        console.log("DATOSSSS DESSS formatttt ", autoDes);
-        console.log("aqeeiieieieie 234411");
         setAutoDescripciones(autoDes);
-        console.log("aqeeiieieieie 2222");
-        //console.log(autoDes[0].label);
-        //setSelectedOptionDescripcion(autoDes[0].value);
-        //setselectedTextDescripcion(autoDes[0].label);
-        console.log("DESCRICIONESSSSSS ARR ", AutoDescripciones);
-
       } else {
         console.error('La respuesta de la API no contiene descripciones.');
       }
@@ -509,7 +487,6 @@ const CotizacionAutosScreen = () => {
     fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
   };
 
-
   const handleOptionChangeDescripcion = (itemValue, itemIndex) => {
     if (itemValue !== null) {
       const selectedOption = AutoDescripciones.find(item => item.value === itemValue);
@@ -719,20 +696,6 @@ const CotizacionAutosScreen = () => {
       <ScrollView style={styles.scrollstyle} >
 
         <Text style={styles.label}>Tipo Uso:</Text>
-
-        {/* <Picker
-          selectedValue={selectedOptionTipoUso}
-          onValueChange={handleOptionChangeTiposUso}
-          keyExtractor={(item) => item.Id.toString()}
-        >
-          {AutoTipoUso.map((AutoTU) => (
-            <Picker.Item
-              key={AutoTU.Id}
-              label={AutoTU.Valor}
-              value={AutoTU.Id} />
-          ))}
-        </Picker> */}
-
         <RNPickerSelect
           onValueChange={handleOptionChangeTiposUso}
           items={AutoTipoUso.map((AutoTU) => ({
@@ -835,38 +798,6 @@ const CotizacionAutosScreen = () => {
             },
           }}
         />
-
-        {/* <Picker
-          selectedValue={selectedOptionDescripcion}
-          onValueChange={handleOptionChangeDescripcion}
-          keyExtractor={(item) => item.Id.toString()}
-          itemStyle={{ fontSize: 12, flex: 1 }}
-        >
-          {AutoDescripciones.map((AutoDescripcion) => (
-            <Picker.Item
-              key={AutoDescripcion.Id}
-              label={() => (
-                <Text style={{ color: 'black' }}>{AutoDescripcion.Valor}</Text>
-              )}
-              value={AutoDescripcion.Id}
-            />
-          ))}
-        </Picker> */}
-
-        {/* <Picker
-          selectedValue={selectedOptionDescripcion}
-          onValueChange={handleOptionChangeDescripcion}
-          keyExtractor={(item) => item.Id.toString()}
-          itemStyle={{ fontSize: 12 }}
-        >
-          {AutoDescripciones.map((AutoDescripcion) => (
-            <Picker.Item
-              key={AutoDescripcion.Id}
-              label={AutoDescripcion.Valor}
-              value={AutoDescripcion.Id}
-            />
-          ))}
-        </Picker> */}
 
         <Text style={styles.label}>Indemnización:</Text>
         <Picker
