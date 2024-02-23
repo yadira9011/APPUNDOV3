@@ -448,43 +448,50 @@ const CotizacionAutosScreen = () => {
   };
 
   const handleOptionChange = (itemValue, itemIndex) => {
-    console.log(itemValue);
-    setSelectedOption(itemValue);
-    setselectedTextEstatusVehiculo(AutoEstatusVehiculos[itemIndex].Valor);
-    fetchAutoModelos(itemValue);
-    fetchAutoIndenmizaciones(itemValue);
-    fetchAutoTipoVehiculos();
-
+    if (itemValue !== null) {
+      const selectedOption = AutoEstatusVehiculos.find(item => item.Id === itemValue);
+      setSelectedOption(itemValue);
+      setselectedTextEstatusVehiculo(selectedOption.Valor);
+      fetchAutoModelos(itemValue);
+      fetchAutoIndenmizaciones(itemValue);
+      fetchAutoTipoVehiculos();
+    }
   };
 
   const handleOptionChangeTipoVehiculo = (itemValue, itemIndex) => {
-    setSelectedOptionTipoVehiculo(itemValue);
-    setselectedTextTipoVehiculo(AutoTipoVehiculos[itemIndex].Valor);
-    fetchAutoModelos(selectedOption);
+    if (itemValue !== null) {
+      const selectedOption = AutoTipoVehiculos.find(item => item.Id === itemValue);
+      setSelectedOptionTipoVehiculo(itemValue);
+      setselectedTextTipoVehiculo(selectedOption.Valor);
+      fetchAutoModelos(selectedOption);
+    }
+
   };
 
   const handleOptionChangeModelo = (itemValue) => {
-    setSelectedOptionModelo(itemValue);
-    setselectedTextModelo(itemValue);
-    fetchAutoCotMarcas(selectedOptionTipoVehiculo, itemValue);
-    console.log("Actualice marcaaaaaaaa");
-    console.log("TipoVehiculo", selectedOptionTipoVehiculo);
+    if (itemValue !== null) {
+      setSelectedOptionModelo(itemValue);
+      setselectedTextModelo(itemValue);
+      fetchAutoCotMarcas(selectedOptionTipoVehiculo, itemValue);
+    }
   };
 
   const handleOptionChangeMarca = (itemValue, itemIndex) => {
-    setSelectedOptionMarca(itemValue);
-    setselectedLabel(AutoMarcas[itemIndex].Valor);
-    setselectedTextMarca(AutoMarcas[itemIndex].Valor);
-    // console.log("MARCAAA NUEVA", selectedLabel);
-    // console.log("MARCAAA NUEVA 2222", AutoMarcas[itemIndex].Valor);
-    const str_marca = AutoMarcas[itemIndex].Valor
-    fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
+    if (itemValue !== null) {
+      setSelectedOptionMarca(itemValue);
+      setselectedLabel(AutoMarcas[itemIndex].Valor);
+      setselectedTextMarca(AutoMarcas[itemIndex].Valor);
+      const str_marca = AutoMarcas[itemIndex].Valor
+      fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
+    }
   };
 
   const handleOptionChangeTipo = (itemValue, itemIndex) => {
-    setSelectedOptionTipo(itemValue);
-    setselectedTextTipos(AutoTipos[itemIndex].Valor);
-    fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
+    if (itemValue !== null) {
+      setSelectedOptionTipo(itemValue);
+      setselectedTextTipos(AutoTipos[itemIndex].Valor);
+      fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
+    }
   };
 
   const handleOptionChangeDescripcion = (itemValue, itemIndex) => {
@@ -498,7 +505,9 @@ const CotizacionAutosScreen = () => {
   };
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
-    setSelectedOptionIndemnizacion(itemValue);
+    if (itemValue !== null) {
+      setSelectedOptionIndemnizacion(itemValue);
+    }
   };
 
   const handleOptionChangeTiposUso = (itemValue, itemIndex) => {
@@ -510,23 +519,31 @@ const CotizacionAutosScreen = () => {
   };
 
   const handleOptionChangeDeducibles = (itemValue) => {
-    setSelectedOptionDeducible(itemValue);
+    if (itemValue !== null) {
+      setSelectedOptionDeducible(itemValue);
+    }
   };
 
   const handleOptionChangePaquetes = (itemValue, itemIndex) => {
-    setSelectedOptionPaquete(itemValue);
-    setselectedTextPaquetes(AutoPaquetes[itemIndex].Valor);
+    if (itemValue !== null) {
+      setSelectedOptionPaquete(itemValue);
+      setselectedTextPaquetes(AutoPaquetes[itemIndex].Valor);
+    }
   };
 
   const handleOptionChangeTipoPoliza = (itemValue, itemIndex) => {
-    setSelectedOptionTipoPoliza(itemValue);
-    setselectedTextTipoPoliza(AutoTipoPoliza[itemIndex].Valor);
-    fetchAutoVigencias(itemValue);
+    if (itemValue !== null) {
+      setSelectedOptionTipoPoliza(itemValue);
+      setselectedTextTipoPoliza(AutoTipoPoliza[itemIndex].Valor);
+      fetchAutoVigencias(itemValue);
+    }
   };
 
   const handleOptionChangeVigencias = (itemValue, itemIndex) => {
-    setSelectedOptionVigencia(itemValue);
-    setselectedTextVigencia(AutoVigencias[itemIndex].Valor);
+    if (itemValue !== null) {
+      setSelectedOptionVigencia(itemValue);
+      setselectedTextVigencia(AutoVigencias[itemIndex].Valor);
+    }
   };
 
   const handleCloseModal = () => {
@@ -706,7 +723,17 @@ const CotizacionAutosScreen = () => {
         />
 
         <Text style={styles.label}>Estatus vehículo:</Text>
-        <Picker
+
+        <RNPickerSelect
+          onValueChange={handleOptionChange}
+          items={AutoEstatusVehiculos.map((AutoEstatusVehiculo) => ({
+            label: AutoEstatusVehiculo.Valor,
+            value: AutoEstatusVehiculo.Id,
+          }))}
+          value={selectedOption}
+        />
+
+        {/* <Picker
           selectedValue={selectedOption}
           onValueChange={handleOptionChange}
           keyExtractor={(item) => item.Id.toString()} >
@@ -716,10 +743,20 @@ const CotizacionAutosScreen = () => {
               label={AutoEstatusVehiculo.Valor}
               value={AutoEstatusVehiculo.Id} />
           ))}
-        </Picker>
+        </Picker> */}
 
         <Text style={styles.label}>Tipo vehículo:</Text>
-        <Picker
+
+        <RNPickerSelect
+          onValueChange={handleOptionChangeTipoVehiculo}
+          items={AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
+            label: AutoTipoVehiculo.Valor,
+            value: AutoTipoVehiculo.Id,
+          }))}
+          value={selectedOptionTipoVehiculo}
+        />
+
+        {/* <Picker
           selectedValue={selectedOptionTipoVehiculo}
           onValueChange={handleOptionChangeTipoVehiculo}
           keyExtractor={(item) => item.Id.toString()} >
@@ -729,10 +766,20 @@ const CotizacionAutosScreen = () => {
               label={AutoTipoVehiculo.Valor}
               value={AutoTipoVehiculo.Id} />
           ))}
-        </Picker>
+        </Picker> */}
 
         <Text style={styles.label}>Modelo:</Text>
-        <Picker
+
+        <RNPickerSelect
+          onValueChange={handleOptionChangeModelo}
+          items={AutoModelos.map((AutoModelo) => ({
+            label: AutoModelo.Valor,
+            value: AutoModelo.Id,
+          }))}
+          value={selectedOptionModelo}
+        />
+
+        {/* <Picker
           selectedValue={selectedOptionModelo}
           onValueChange={handleOptionChangeModelo}
           keyExtractor={(item) => item.Id.toString()} >
@@ -742,7 +789,7 @@ const CotizacionAutosScreen = () => {
               label={AutoModelo.Valor}
               value={AutoModelo.Valor} />
           ))}
-        </Picker>
+        </Picker> */}
 
         <Text style={styles.label}>Marca:</Text>
         <Picker
@@ -771,7 +818,6 @@ const CotizacionAutosScreen = () => {
         </Picker>
 
         <Text style={styles.label}>Descripción:</Text>
-
         <RNPickerSelect
           textInputProps={{ multiline: true }}
           pickerProps={{ numberOfLines: 3 }}
@@ -800,7 +846,16 @@ const CotizacionAutosScreen = () => {
         />
 
         <Text style={styles.label}>Indemnización:</Text>
-        <Picker
+        <RNPickerSelect
+          onValueChange={handleOptionChangeIndenmizaciones}
+          items={AutoIndemnizaciones.map((AutoIndemnizacion) => ({
+            label: AutoIndemnizacion.Valor,
+            value: AutoIndemnizacion.Id,
+          }))}
+          value={selectedOptionIndemnizacion}
+        />
+
+        {/* <Picker
           selectedValue={selectedOptionIndemnizacion}
           onValueChange={handleOptionChangeIndenmizaciones}
           keyExtractor={(item) => item.Id.toString()}
@@ -811,7 +866,8 @@ const CotizacionAutosScreen = () => {
               label={AutoIndemnizacion.Valor}
               value={AutoIndemnizacion.Id} />
           ))}
-        </Picker>
+        </Picker> */}
+
 
         <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
           <TextInput
@@ -837,7 +893,17 @@ const CotizacionAutosScreen = () => {
         <Text style={styles.label}>{TextDireccionElegida}</Text>
 
         <Text style={styles.label}>Deducibles :</Text>
-        <Picker
+
+        <RNPickerSelect
+          onValueChange={handleOptionChangeDeducibles}
+          items={AutoDeducibles.map((AutoDeducible) => ({
+            label: AutoDeducible.Valor,
+            value: AutoDeducible.Id,
+          }))}
+          value={selectedOptionDeducible}
+        />
+
+        {/* <Picker
           selectedValue={selectedOptionDeducible}
           onValueChange={handleOptionChangeDeducibles}
           keyExtractor={(item) => item.Id.toString()}
@@ -848,7 +914,7 @@ const CotizacionAutosScreen = () => {
               label={AutoDeducible.Valor}
               value={AutoDeducible.Id} />
           ))}
-        </Picker>
+        </Picker> */}
 
         <Text style={styles.label}>Paquetes :</Text>
         <Picker
