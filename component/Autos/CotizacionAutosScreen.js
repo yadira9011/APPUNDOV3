@@ -479,8 +479,9 @@ const CotizacionAutosScreen = () => {
   const handleOptionChangeMarca = (itemValue, itemIndex) => {
     if (itemValue !== null) {
       setSelectedOptionMarca(itemValue);
-      setselectedLabel(AutoMarcas[itemIndex].Valor);
-      setselectedTextMarca(AutoMarcas[itemIndex].Valor);
+      const selectedOption = AutoMarcas.find(item => item.Id === itemValue);
+      setselectedLabel(selectedOption.Valor);
+      setselectedTextMarca(selectedOption.Valor);
       const str_marca = AutoMarcas[itemIndex].Valor
       fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
     }
@@ -489,7 +490,8 @@ const CotizacionAutosScreen = () => {
   const handleOptionChangeTipo = (itemValue, itemIndex) => {
     if (itemValue !== null) {
       setSelectedOptionTipo(itemValue);
-      setselectedTextTipos(AutoTipos[itemIndex].Valor);
+      const selectedOption = AutoTipos.find(item => item.Id === itemValue);
+      setselectedTextTipos(selectedOption.Valor);
       fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
     }
   };
@@ -762,6 +764,17 @@ const CotizacionAutosScreen = () => {
         />
 
         <Text style={styles.label}>Marca:</Text>
+
+        <RNPickerSelect
+          onValueChange={handleOptionChangeMarca}
+          items={AutoMarcas.map((AutoMarca) => ({
+            label: AutoMarca.Valor,
+            value: AutoMarca.Id,
+          }))}
+          value={selectedOptionMarca}
+        />
+
+        {/* 
         <Picker
           selectedValue={selectedOptionMarca}
           onValueChange={handleOptionChangeMarca}
@@ -772,10 +785,21 @@ const CotizacionAutosScreen = () => {
               label={AutoMarca.Valor}
               value={AutoMarca.Valor} />
           ))}
-        </Picker>
+        </Picker> */}
+
 
         <Text style={styles.label}>Tipo:</Text>
-        <Picker
+
+        <RNPickerSelect
+          onValueChange={handleOptionChangeTipo}
+          items={AutoTipos.map((AutoTipo) => ({
+            label: AutoTipo.Valor,
+            value: AutoTipo.Id,
+          }))}
+          value={selectedOptionTipo}
+        />
+
+        {/* <Picker
           selectedValue={selectedOptionTipo}
           onValueChange={handleOptionChangeTipo}
           keyExtractor={(item) => item.Valor.toString()}>
@@ -785,9 +809,11 @@ const CotizacionAutosScreen = () => {
               label={AutoTipo.Valor}
               value={AutoTipo.Valor} />
           ))}
-        </Picker>
+        </Picker> */}
+
 
         <Text style={styles.label}>Descripción:</Text>
+
         <RNPickerSelect
           textInputProps={{ multiline: true }}
           pickerProps={{ numberOfLines: 3 }}
@@ -826,7 +852,15 @@ const CotizacionAutosScreen = () => {
         />
 
 
-        <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
+        <View style={{
+          flexDirection: 'row',
+          marginBottom: 20,
+          alignItems: 'center',
+          borderColor: '#ccc',
+          borderWidth: 1,
+          borderRadius: 20,
+          padding: 8
+        }}>
           <TextInput
             placeholder="Monto"
             value={textMonto}
@@ -835,7 +869,15 @@ const CotizacionAutosScreen = () => {
           />
         </View>
 
-        <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 5 }}>
+        <View style={{
+          flexDirection: 'row',
+          marginBottom: 20,
+          alignItems: 'center',
+          borderColor: '#ccc',
+          borderWidth: 1,
+          borderRadius: 20,
+          padding: 5
+        }}>
           <TextInput
             placeholder="Codigo Postal"
             value={textCP}
@@ -862,7 +904,6 @@ const CotizacionAutosScreen = () => {
 
 
         <Text style={styles.label}>Paquetes :</Text>
-
         <RNPickerSelect
           onValueChange={handleOptionChangePaquetes}
           items={AutoPaquetes.map((AutoPaquete) => ({
@@ -874,7 +915,6 @@ const CotizacionAutosScreen = () => {
 
 
         <Text style={styles.label}>Tipo Poliza :</Text>
-
         <RNPickerSelect
           onValueChange={handleOptionChangeTipoPoliza}
           items={AutoTipoPoliza.map((AutoTP) => ({
@@ -886,7 +926,6 @@ const CotizacionAutosScreen = () => {
 
 
         <Text style={styles.label}>Vigencias:</Text>
-
         <RNPickerSelect
           onValueChange={handleOptionChangeVigencias}
           items={AutoVigencias.map((AutoVigencia) => ({
@@ -895,6 +934,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionVigencia}
         />
+
 
         {/* Botón de cotizar */}
         <TouchableOpacity
