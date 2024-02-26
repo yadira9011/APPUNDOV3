@@ -654,7 +654,6 @@ const CotizacionAutosScreen = () => {
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
 
-
     } catch (error) {
       setLoadingCotizacion(false);
       console.error('Error al obtener los datos:', error);

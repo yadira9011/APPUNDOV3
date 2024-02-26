@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'reac
 import { GetCotizacionApi } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password }) {
+export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password, DataParameter }) {
 
     const navigation = useNavigation();
     const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3164-23022024133225346');
@@ -12,7 +12,6 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
     //AUT-1-11112023124847111
 
     const handleBuscarCotizacion = async () => {
-
         onSave(FolioCotizacion, email, password, idsubcanal);
         try {
 
@@ -65,7 +64,8 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                 const dataArray = {
                     DataResul: resultData,
                     CotiData: dataCotizacion,
-                    DataTitulos: DataSolicitudTitulos
+                    DataTitulos: DataSolicitudTitulos,
+                    DataParameter: DataParameter
                 }
 
                 navigation.navigate('ResultadoCotizacion', { dataArray });

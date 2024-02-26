@@ -21,6 +21,7 @@ const YourModal = ({ navigation, route }) => {
         let params = { DataParameter: route.params?.DataParameter };
         if (routename === 'ResultadoCotizacion') {
             params = { DataParameter: route.params?.dataArray?.DataParameter };
+            console.log("Parametros RC ", route.params);
         } else if (routename === 'Emision') {
             params = { DataParameter: route.params?.dataArrayEmi?.DataParameter };
         }
@@ -76,7 +77,7 @@ const YourModal = ({ navigation, route }) => {
                         style={{ marginBottom: 10 }}>
                         <Ionicons name="exit" size={30} color="white" />
                     </TouchableOpacity>
-                    
+
                 </View>
             </Modal>
         </>

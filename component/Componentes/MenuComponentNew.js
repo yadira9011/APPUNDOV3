@@ -7,10 +7,8 @@ import ModalBusquedaCotAutosComponent from '../Autos/BusquedaCotAutosComponent';
 import { Ionicons } from '@expo/vector-icons';
 
 const MenuComponentNew = ({ DataParameter }) => {
-
     const route = useRoute();
     const Navigation = useNavigation();
-
     // const { navigation } = props;
     // const { DataParameter } = route.params.params;
     const [isModalVisible, setModalVisible] = useState(false);
@@ -19,6 +17,7 @@ const MenuComponentNew = ({ DataParameter }) => {
     const [IdSubCanal, setIdSubCanal] = useState('');
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
+    const [Parametros, setParametros] = useState('');
     const [FolioCotizacion, setFolioCotizacion] = useState('');
     const currentScreen = route.name;
 
@@ -35,6 +34,7 @@ const MenuComponentNew = ({ DataParameter }) => {
         setemail(DataParameter.email);
         setpassword(DataParameter.password);
         setIdSubCanal(DataParameter.IdSubCanal);
+        setParametros(DataParameter);
         setModalBCVisible(true);
     };
 
@@ -91,6 +91,7 @@ const MenuComponentNew = ({ DataParameter }) => {
                 email={email}
                 idsubcanal={IdSubCanal}
                 password={password}
+                DataParameter={Parametros}
             />
 
         </View>
