@@ -736,17 +736,7 @@ const CotizacionAutosScreen = () => {
           value={selectedOption}
         />
 
-        {/* <Picker
-          selectedValue={selectedOption}
-          onValueChange={handleOptionChange}
-          keyExtractor={(item) => item.Id.toString()} >
-          {AutoEstatusVehiculos.map((AutoEstatusVehiculo) => (
-            <Picker.Item
-              key={AutoEstatusVehiculo.Id}
-              label={AutoEstatusVehiculo.Valor}
-              value={AutoEstatusVehiculo.Id} />
-          ))}
-        </Picker> */}
+
 
         <Text style={styles.label}>Tipo vehículo:</Text>
 
@@ -759,17 +749,6 @@ const CotizacionAutosScreen = () => {
           value={selectedOptionTipoVehiculo}
         />
 
-        {/* <Picker
-          selectedValue={selectedOptionTipoVehiculo}
-          onValueChange={handleOptionChangeTipoVehiculo}
-          keyExtractor={(item) => item.Id.toString()} >
-          {AutoTipoVehiculos.map((AutoTipoVehiculo) => (
-            <Picker.Item
-              key={AutoTipoVehiculo.Id}
-              label={AutoTipoVehiculo.Valor}
-              value={AutoTipoVehiculo.Id} />
-          ))}
-        </Picker> */}
 
         <Text style={styles.label}>Modelo:</Text>
 
@@ -781,18 +760,6 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionModelo}
         />
-
-        {/* <Picker
-          selectedValue={selectedOptionModelo}
-          onValueChange={handleOptionChangeModelo}
-          keyExtractor={(item) => item.Id.toString()} >
-          {AutoModelos.map((AutoModelo) => (
-            <Picker.Item
-              key={AutoModelo.Id}
-              label={AutoModelo.Valor}
-              value={AutoModelo.Valor} />
-          ))}
-        </Picker> */}
 
         <Text style={styles.label}>Marca:</Text>
         <Picker
@@ -858,19 +825,6 @@ const CotizacionAutosScreen = () => {
           value={selectedOptionIndemnizacion}
         />
 
-        {/* <Picker
-          selectedValue={selectedOptionIndemnizacion}
-          onValueChange={handleOptionChangeIndenmizaciones}
-          keyExtractor={(item) => item.Id.toString()}
-        >
-          {AutoIndemnizaciones.map((AutoIndemnizacion) => (
-            <Picker.Item
-              key={AutoIndemnizacion.Id}
-              label={AutoIndemnizacion.Valor}
-              value={AutoIndemnizacion.Id} />
-          ))}
-        </Picker> */}
-
 
         <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center', borderColor: '#ccc', borderWidth: 1, borderRadius: 20, padding: 8 }}>
           <TextInput
@@ -906,18 +860,6 @@ const CotizacionAutosScreen = () => {
           value={selectedOptionDeducible}
         />
 
-        {/* <Picker
-          selectedValue={selectedOptionDeducible}
-          onValueChange={handleOptionChangeDeducibles}
-          keyExtractor={(item) => item.Id.toString()}
-        >
-          {AutoDeducibles.map((AutoDeducible) => (
-            <Picker.Item
-              key={AutoDeducible.Id}
-              label={AutoDeducible.Valor}
-              value={AutoDeducible.Id} />
-          ))}
-        </Picker> */}
 
         <Text style={styles.label}>Paquetes :</Text>
 
@@ -929,19 +871,6 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionPaquete}
         />
-
-        {/* <Picker
-          selectedValue={selectedOptionPaquete}
-          onValueChange={handleOptionChangePaquetes}
-          keyExtractor={(item) => item.Id.toString()}
-        >
-          {AutoPaquetes.map((AutoPaquete) => (
-            <Picker.Item
-              key={AutoPaquete.Id}
-              label={AutoPaquete.Valor}
-              value={AutoPaquete.Id} />
-          ))}
-        </Picker> */}
 
 
         <Text style={styles.label}>Tipo Poliza :</Text>
@@ -955,18 +884,6 @@ const CotizacionAutosScreen = () => {
           value={selectedOptionTipoPoliza}
         />
 
-        {/* <Picker
-          selectedValue={selectedOptionTipoPoliza}
-          onValueChange={handleOptionChangeTipoPoliza}
-          keyExtractor={(item) => item.Id.toString()}
-        >
-          {AutoTipoPoliza.map((AutoTP) => (
-            <Picker.Item
-              key={AutoTP.Id}
-              label={AutoTP.Valor}
-              value={AutoTP.Id} />
-          ))}
-        </Picker> */}
 
         <Text style={styles.label}>Vigencias:</Text>
 
@@ -978,19 +895,6 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionVigencia}
         />
-
-        {/* <Picker
-          selectedValue={selectedOptionVigencia}
-          onValueChange={handleOptionChangeVigencias}
-          keyExtractor={(item) => item.Id.toString()}
-        >
-          {AutoVigencias.map((AutoVigencia) => (
-            <Picker.Item
-              key={AutoVigencia.Id}
-              label={AutoVigencia.Valor}
-              value={AutoVigencia.Id} />
-          ))}
-        </Picker> */}
 
         {/* Botón de cotizar */}
         <TouchableOpacity
