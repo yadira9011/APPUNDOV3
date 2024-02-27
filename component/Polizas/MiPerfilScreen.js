@@ -85,7 +85,6 @@ const MiPerfilScreen = ({ route }) => {
 
     const fetchAutoGeneros = async () => {
         try {
-
             const DataRquest = {
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password
@@ -429,7 +428,6 @@ const MiPerfilScreen = ({ route }) => {
             )}
         </View>
     );
-
 };
 
 const styles = StyleSheet.create({

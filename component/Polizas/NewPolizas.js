@@ -79,7 +79,7 @@ const NewPolizas = ({ route }) => {
   }, []);
 
   const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff4081' }} >
+    <View style={{ flex: 1, backgroundColor: '#030365' }} >
       {PolizasIdividualesTitular.length > 0 ? (
         <FlatList
           data={PolizasIdividualesTitular}
@@ -94,7 +94,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#673ab7' }}>
+    <View style={{ flex: 1, backgroundColor: '#4040fb' }}>
       {PolizasGpo.length > 0 ? (
         <FlatList
           data={PolizasGpo}
@@ -109,7 +109,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const TercerRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#00bcd4' }} >
+    <View style={{ flex: 1, backgroundColor: '#6565ff' }} >
       {CertificadosDepTitular.length > 0 ? (
         <FlatList
           data={CertificadosDepTitular}
@@ -124,7 +124,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const CuartaRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff9800' }} >
+    <View style={{ flex: 1, backgroundColor: '#8787fb' }} >
       {PolizasXContratanteTitular.length > 0 ? (
         <FlatList
           data={PolizasXContratanteTitular}
