@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, ScrollView, Text, TextInput, StyleSheet, Image,
-  Button, TouchableOpacity, ActivityIndicator, Switch, Alert
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  Button,
+  TouchableOpacity,
+  ActivityIndicator,
+  Switch,
+  Alert
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Collapsible from 'react-native-collapsible';
@@ -10,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import {
   GetDias, GetMeses, GetAnyos, GetGeneros, GetTiposPersona,
@@ -1441,7 +1451,6 @@ const EmisionScreen = () => {
                 />
 
                 <Text>Banco Emisor</Text>
-
                 <Picker
                   selectedValue={selectedBancoEmisor}
                   onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}

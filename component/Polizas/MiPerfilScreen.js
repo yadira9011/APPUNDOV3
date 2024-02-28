@@ -29,6 +29,7 @@ import { useRoute } from '@react-navigation/native';
 import Collapsible from 'react-native-collapsible';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
+import RNPickerSelect from 'react-native-picker-select';
 
 const MiPerfilScreen = ({ route }) => {
 
@@ -256,7 +257,7 @@ const MiPerfilScreen = ({ route }) => {
             IdSubcanal,
             TipoPersona
         }
-        
+
         const DataRquest = {
             idPersona: DataParameter.IdPersona,
             usuario: DataParameter.email,
@@ -316,16 +317,26 @@ const MiPerfilScreen = ({ route }) => {
                     />
 
                     <Text>Género</Text>
-                    <Picker
+
+                    <RNPickerSelect
+                        // onValueChange={handleOptionChangeTiposUso}
+                        onValueChange={(itemValue) => setSelectedGenero(itemValue)}
+                        items={generos.map((genero) => ({
+                            label: genero.Valor,
+                            value: genero.Id,
+                        }))}
+                        value={selectedGenero}
+                    />
+
+                    {/* <Picker
                         selectedValue={selectedGenero}
                         onValueChange={(itemValue) => setSelectedGenero(itemValue)}
-                        style={styles.input}
-                    >
+                        style={styles.input}>
                         <Picker.Item label="Selecciona género" value="" />
                         {generos.map((genero) => (
                             <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
                         ))}
-                    </Picker>
+                    </Picker> */}
 
                     <Text>Correo Electrónico:</Text>
                     <TextInput
@@ -357,39 +368,66 @@ const MiPerfilScreen = ({ route }) => {
 
                     <Text>Fecha de Nacimiento:</Text>
 
+                    <RNPickerSelect
+                        onValueChange={(itemValue) => setSelectedDia(itemValue)}
+                        items={dias.map((dia) => ({
+                            label: dia.Valor,
+                            value: dia.Id,
+                        }))}
+                        value={selectedDia}
+                    />
 
-                    <Picker
+                    {/* <Picker
                         style={styles.picker}
                         selectedValue={selectedDia}
-                        onValueChange={(itemValue) => setSelectedDia(itemValue)}
-                    >
+                        onValueChange={(itemValue) => setSelectedDia(itemValue)}>
                         <Picker.Item label="Selecciona día" value="" />
                         {dias.map((dia) => (
                             <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
                         ))}
-                    </Picker>
+                    </Picker> */}
 
-                    <Picker
+
+                    <RNPickerSelect
+                        onValueChange={(itemValue) => setSelectedMes(itemValue)}
+                        items={meses.map((mes) => ({
+                            label: mes.Valor,
+                            value: mes.Id,
+                        }))}
+                        value={selectedMes}
+                    />
+
+
+                    {/* <Picker
                         style={styles.picker}
                         selectedValue={selectedMes}
-                        onValueChange={(itemValue) => setSelectedMes(itemValue)}
-                    >
+                        onValueChange={(itemValue) => setSelectedMes(itemValue)}>
                         <Picker.Item label="Selecciona mes" value="" />
                         {meses.map((mes) => (
                             <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
                         ))}
-                    </Picker>
+                    </Picker> */}
 
-                    <Picker
+
+
+                    <RNPickerSelect
+                        onValueChange={(itemValue) => setSelectedAno(itemValue)}
+                        items={anos.map((ano) => ({
+                            label: ano.Valor,
+                            value: ano.Id,
+                        }))}
+                        value={selectedAno} />
+
+
+                    {/* <Picker
                         style={styles.picker2}
                         selectedValue={selectedAno}
-                        onValueChange={(itemValue) => setSelectedAno(itemValue)}
-                    >
+                        onValueChange={(itemValue) => setSelectedAno(itemValue)} >
                         <Picker.Item label="Selecciona año" value="" />
                         {anos.map((ano) => (
                             <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
                         ))}
-                    </Picker>
+                    </Picker> */}
 
 
                     <Text>Edad:</Text>

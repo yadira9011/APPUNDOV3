@@ -482,7 +482,7 @@ const CotizacionAutosScreen = () => {
       const selectedOption = AutoMarcas.find(item => item.Id === itemValue);
       setselectedLabel(selectedOption.Valor);
       setselectedTextMarca(selectedOption.Valor);
-      const str_marca = AutoMarcas[itemIndex].Valor
+      const str_marca = selectedOption.Valor
       fetchAutoTipos(selectedOptionTipoVehiculo, selectedOptionModelo, str_marca);
     }
   };
@@ -738,7 +738,6 @@ const CotizacionAutosScreen = () => {
         />
 
 
-
         <Text style={styles.label}>Tipo vehículo:</Text>
 
         <RNPickerSelect
@@ -812,7 +811,6 @@ const CotizacionAutosScreen = () => {
 
 
         <Text style={styles.label}>Descripción:</Text>
-
         <RNPickerSelect
           textInputProps={{ multiline: true }}
           pickerProps={{ numberOfLines: 3 }}
@@ -839,6 +837,7 @@ const CotizacionAutosScreen = () => {
             },
           }}
         />
+
 
         <Text style={styles.label}>Indemnización:</Text>
         <RNPickerSelect
@@ -1005,7 +1004,7 @@ const CotizacionAutosScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    padding: 0,
   },
   cotizarButton: {
     backgroundColor: '#007bff',
