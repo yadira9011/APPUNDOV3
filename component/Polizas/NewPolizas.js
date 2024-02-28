@@ -79,7 +79,7 @@ const NewPolizas = ({ route }) => {
   }, []);
 
   const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#030365' }} >
+    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
       {PolizasIdividualesTitular.length > 0 ? (
         <FlatList
           data={PolizasIdividualesTitular}
@@ -94,7 +94,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#4040fb' }}>
+    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }}>
       {PolizasGpo.length > 0 ? (
         <FlatList
           data={PolizasGpo}
@@ -109,7 +109,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const TercerRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#6565ff' }} >
+    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
       {CertificadosDepTitular.length > 0 ? (
         <FlatList
           data={CertificadosDepTitular}
@@ -124,7 +124,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const CuartaRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#8787fb' }} >
+    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
       {PolizasXContratanteTitular.length > 0 ? (
         <FlatList
           data={PolizasXContratanteTitular}
@@ -141,6 +141,7 @@ const NewPolizas = ({ route }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
+      style={{ backgroundColor: '#001F3F' }}
       renderIcon={({ route, focused, color }) => {
         let iconName;
 
@@ -522,7 +523,7 @@ const NewPolizas = ({ route }) => {
         renderTabBar={renderTabBar}
       />
     </View>
-    
+
   );
 
 }

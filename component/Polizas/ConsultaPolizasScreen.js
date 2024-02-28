@@ -241,7 +241,7 @@ const ConsultaPolizasScreen = ({ route }) => {
                 //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
                 // }
                 // setBotonesPorPoliza(botonesPorIdPoliza);
-                
+
             } else {
                 console.error('no se encontraron grupos');
             }
@@ -260,7 +260,7 @@ const ConsultaPolizasScreen = ({ route }) => {
                 usuario: DataParameter.email,
                 Contraseña: DataParameter.password,
             }
-            
+
             const response = await GetCertificadoPoliza(DataRquest);
             if (response.data.Data) {
                 const data = response.data.Data;
