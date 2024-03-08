@@ -975,20 +975,35 @@ const EmisionScreen = () => {
           <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
             <Text style={styles.buttonText}>Datos Contratante</Text>
           </TouchableOpacity>
+
           <Collapsible collapsed={isCollapsed}>
 
             <Text style={{ marginTop: 15, marginBottom: 15 }}>Tipo Persona: {TextTipoPersona}</Text>
 
             {showPicker && (
-              <Picker
-                selectedValue={selectedTipoPersona}
+
+              <RNPickerSelect
+                // onValueChange={handleOptionChangeTipo}
                 onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
-                style={styles.input}
-                enabled={false} >
-                {TiposPersona.map((tp) => (
-                  <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
-                ))}
-              </Picker>)}
+                items={TiposPersona.map((tp) => ({
+                  label: tp.Valor,
+                  value: tp.Id,
+                }))}
+                value={selectedTipoPersona}
+              />
+
+              // <Picker
+              //   selectedValue={selectedTipoPersona}
+              //   onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
+              //   style={styles.input}
+              //   enabled={false} >
+              //   {TiposPersona.map((tp) => (
+              //     <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
+              //   ))}
+              // </Picker>
+
+
+            )}
 
             <Text>Número de socio</Text>
             <TextInput
@@ -1031,7 +1046,18 @@ const EmisionScreen = () => {
                 />
 
                 <Text>Género</Text>
-                <Picker
+
+                <RNPickerSelect
+                  // onValueChange={handleOptionChangeTipo}
+                  onValueChange={(itemValue) => setSelectedGenero(itemValue)}
+                  items={generos.map((genero) => ({
+                    label: genero.Valor,
+                    value: genero.Id,
+                  }))}
+                  value={selectedGenero}
+                />
+
+                {/* <Picker
                   selectedValue={selectedGenero}
                   onValueChange={(itemValue) => setSelectedGenero(itemValue)}
                   style={styles.input}
@@ -1040,10 +1066,21 @@ const EmisionScreen = () => {
                   {generos.map((genero) => (
                     <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
                   ))}
-                </Picker>
+                </Picker> */}
 
                 <Text>Tipo de Identificación</Text>
-                <Picker
+
+                <RNPickerSelect
+                  // onValueChange={handleOptionChangeTipo}
+                  onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
+                  items={opcionesIdentificacion.map((opcion) => ({
+                    label: opcion.Valor,
+                    value: opcion.Id,
+                  }))}
+                  value={tipoIdentificacion}
+                />
+
+                {/* <Picker
                   selectedValue={tipoIdentificacion}
                   onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
                   style={{ width: 200 }}
@@ -1051,7 +1088,7 @@ const EmisionScreen = () => {
                   {opcionesIdentificacion.map((opcion) => (
                     <Picker.Item key={opcion.value} label={opcion.label} value={opcion.value} />
                   ))}
-                </Picker>
+                </Picker> */}
 
                 {/* <Picker
                 selectedValue={tipoIdentificacion}
@@ -1100,7 +1137,18 @@ const EmisionScreen = () => {
                 />
 
                 <Text>Giro</Text>
-                <Picker
+
+                <RNPickerSelect
+                  // onValueChange={handleOptionChangeTipo}
+                  onValueChange={(itemValue) => setselectedGiro(itemValue)}
+                  items={giros.map((g) => ({
+                    label: g.Valor,
+                    value: g.Id,
+                  }))}
+                  value={selectedGiro}
+                />
+
+                {/* <Picker
                   selectedValue={selectedGiro}
                   onValueChange={(itemValue) => setselectedGiro(itemValue)}
                   style={styles.input}
@@ -1108,9 +1156,20 @@ const EmisionScreen = () => {
                   {giros.map((g) => (
                     <Picker.Item key={g.Id} label={g.Valor} value={g.Id} />
                   ))}
-                </Picker>
+                </Picker> */}
 
                 <Text>Tipo sociedad</Text>
+
+                <RNPickerSelect
+                  onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
+                  items={tiposSociedad.map((ts) => ({
+                    label: ts.Valor,
+                    value: ts.Id,
+                  }))}
+                  value={selectedTipoSociedad}
+                />
+
+                {/* 
                 <Picker
                   selectedValue={selectedTipoSociedad}
                   onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
@@ -1119,9 +1178,21 @@ const EmisionScreen = () => {
                   {tiposSociedad.map((ts) => (
                     <Picker.Item key={ts.Id} label={ts.Valor} value={ts.Id} />
                   ))}
-                </Picker>
+                </Picker> */}
 
                 <Text>Reminen Fiscal</Text>
+
+
+                <RNPickerSelect
+                  onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
+                  items={regimenesFiscales.map((rf) => ({
+                    label: rf.Valor,
+                    value: rf.Id,
+                  }))}
+                  value={selectedRegimenFiscal}
+                />
+
+                {/* 
                 <Picker
                   selectedValue={selectedRegimenFiscal}
                   onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
@@ -1130,7 +1201,8 @@ const EmisionScreen = () => {
                   {regimenesFiscales.map((rf) => (
                     <Picker.Item key={rf.Id} label={rf.Valor} value={rf.Id} />
                   ))}
-                </Picker>
+                </Picker> */}
+
 
               </View>
 
@@ -1145,6 +1217,17 @@ const EmisionScreen = () => {
 
             <Text>{TxtFecha}</Text>
             <View style={styles.pickerContainer}>
+
+              <RNPickerSelect
+                onValueChange={(itemValue) => setSelectedDia(itemValue)}
+                items={dias.map((dia) => ({
+                  label: dia.Valor,
+                  value: dia.Id,
+                }))}
+                value={selectedDia}
+              />
+
+              {/* 
               <Picker
                 style={styles.picker}
                 selectedValue={selectedDia}
@@ -1154,8 +1237,18 @@ const EmisionScreen = () => {
                 {dias.map((dia) => (
                   <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
                 ))}
-              </Picker>
+              </Picker> */}
 
+              <RNPickerSelect
+                onValueChange={(itemValue) => setSelectedMes(itemValue)}
+                items={meses.map((mes) => ({
+                  label: mes.Valor,
+                  value: mes.Id,
+                }))}
+                value={selectedMes}
+              />
+
+              {/* 
               <Picker
                 style={styles.picker}
                 selectedValue={selectedMes}
@@ -1165,10 +1258,20 @@ const EmisionScreen = () => {
                 {meses.map((mes) => (
                   <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
                 ))}
-              </Picker>
+              </Picker> */}
 
             </View>
-            <Picker
+
+            <RNPickerSelect
+              onValueChange={(itemValue) => setSelectedAno(itemValue)}
+              items={anos.map((ano) => ({
+                label: ano.Valor,
+                value: ano.Id,
+              }))}
+              value={selectedAno}
+            />
+
+            {/* <Picker
               style={styles.picker2}
               selectedValue={selectedAno}
               onValueChange={(itemValue) => setSelectedAno(itemValue)}
@@ -1177,7 +1280,7 @@ const EmisionScreen = () => {
               {anos.map((ano) => (
                 <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
               ))}
-            </Picker>
+            </Picker> */}
 
             <Text>Teléfono</Text>
             <TextInput
@@ -1193,7 +1296,6 @@ const EmisionScreen = () => {
               onChangeText={setCorreo}
               keyboardType="email-address"
             />
-
           </Collapsible>
         </View>
 
@@ -1451,6 +1553,18 @@ const EmisionScreen = () => {
                 />
 
                 <Text>Banco Emisor</Text>
+
+
+                <RNPickerSelect
+                  onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
+                  items={BancosEmisores.map((be) => ({
+                    label: be.Valor,
+                    value: be.Id,
+                  }))}
+                  value={selectedBancoEmisor}
+                />
+
+                {/* 
                 <Picker
                   selectedValue={selectedBancoEmisor}
                   onValueChange={(itemValue) => setselectedBancoEmisor(itemValue)}
@@ -1459,9 +1573,20 @@ const EmisionScreen = () => {
                   {BancosEmisores.map((be) => (
                     <Picker.Item key={be.Id} label={be.Valor} value={be.Id} />
                   ))}
-                </Picker>
+                </Picker> */}
+
                 <Text>Método de Pago</Text>
-                <Picker
+
+                <RNPickerSelect
+                  onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
+                  items={MetodosPagos.map((mp) => ({
+                    label: mp.Valor,
+                    value: mp.Id,
+                  }))}
+                  value={selectedMetodosPagos}
+                />
+
+                {/* <Picker
                   selectedValue={selectedMetodosPagos}
                   onValueChange={(itemValue) => setselectedMetodosPagos(itemValue)}
                   style={styles.input}
@@ -1469,7 +1594,8 @@ const EmisionScreen = () => {
                   {MetodosPagos.map((mp) => (
                     <Picker.Item key={mp.Id} label={mp.Valor} value={mp.Id} />
                   ))}
-                </Picker>
+                </Picker> */}
+
                 <Text>Cuenta Clabe/No. Tarjeta</Text>
                 <TextInput
                   placeholder="Cuenta Clabe/No. Tarjeta"
