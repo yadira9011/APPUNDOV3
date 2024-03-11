@@ -89,3 +89,48 @@ export const CountSubCanales = async (email, password, idUsuario, IdCanal) => {
   }
 
 };
+
+// export const colors = [
+//   '#1077FF',
+//   '#1689FF',
+//   '#1D9BFF',
+//   '#21A9FF',
+//   '#49B7FF',
+//   '#6EC6FF',
+//   '#9BDAFF',
+//   '#C4ECFF',
+//   '#D9FDFF',
+//   '#E9FEFF',
+// ];
+
+// export const colors = [
+//   '#E9FEFF',
+//   '#D9FDFF',
+//   '#C4ECFF',
+//   '#9BDAFF',
+//   '#6EC6FF',
+//   '#49B7FF',
+//   '#21A9FF',
+//   '#1D9BFF',
+//   '#1689FF',
+//   '#1077FF',
+// ];
+
+export const colors = [
+  '#1077FF',
+  '#1689FF',
+  '#1D9BFF',
+  '#21A9FF',
+  '#49B7FF',
+  '#6EC6FF',
+  '#9BDAFF',
+  '#C4ECFF',
+  '#D9FDFF',
+  '#E9FEFF',
+  // Colores claros
+  '#E9FEFF',
+  '#D9FDFF',
+  '#C4ECFF',
+  '#9BDAFF',
+  '#6EC6FF',
+];

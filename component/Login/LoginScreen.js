@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, Alert, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 //import * as Notifications from 'expo-notifications';
 import CustomAlert from '../Componentes/CustomAlert';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const LoginScreen = ({ navigation, route }) => {
 
@@ -44,9 +47,9 @@ const LoginScreen = ({ navigation, route }) => {
         GetFlujoLogin(userDataParameter);
 
       } else {
-       // Alert.alert('Error', 'No se encontro el usuario');
-       setAlertMessage('No se encontro el usuario');
-       setAlertVisible(true);
+        // Alert.alert('Error', 'No se encontro el usuario');
+        setAlertMessage('No se encontro el usuario');
+        setAlertVisible(true);
       }
     } catch (error) {
       //Alert.alert('Error', 'Inicio de sesión fallido');
@@ -131,7 +134,6 @@ const LoginScreen = ({ navigation, route }) => {
       // Alert.alert('Error', 'Inicio de sesión fallido');
       setAlertMessage('Inicio de sesión fallido');
       setAlertVisible(true);
-
     }
   };
 
@@ -168,7 +170,7 @@ const LoginScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/UndoLogo.png')} style={styles.image} resizeMode="contain" />
+      <Image source={require('../../assets/LoginApp.png')} style={styles.image} resizeMode="contain" />
       <TextInput
         placeholder="Correo electrónico"
         value={email}
@@ -183,7 +185,7 @@ const LoginScreen = ({ navigation, route }) => {
         onChangeText={setPassword}
         style={styles.textInput}
       />
-      
+
       {/* <Text>TOKEN: {expoPushToken} </Text> */}
 
       {/* <Button title="Iniciar sesión" onPress={handleLogin}  style={styles.button} /> */}
@@ -191,6 +193,9 @@ const LoginScreen = ({ navigation, route }) => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.ButtonText}>Iniciar sesión</Text>
       </TouchableOpacity>
+
+      <Image source={require('../../assets/IconoU.png')} style={styles.imageU} resizeMode="contain" />
+      <Text style={styles.Copyright}> ©UNDO 2017 - 2024</Text>
 
       {isAlertVisible && (
         <CustomAlert
@@ -218,7 +223,7 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#0051C4',
     borderRadius: 8,
     paddingHorizontal: 16,
   },
@@ -226,15 +231,31 @@ const styles = StyleSheet.create({
     width: 300,
     height: 40,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 5,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#0066cc',
+    backgroundColor: '#AAB3DB',
     borderRadius: 5,
   },
   ButtonText: {
     color: 'white',
     textAlign: 'center',
+  },
+  image: {
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.3,
+    marginBottom: 25
+  },
+  imageU: {
+    width: windowWidth * 0.2,
+    height: windowHeight * 0.2,
+    marginTop: 5
+  },
+  Copyright: {
+    color: 'white',
+    textAlign: 'center',
+    color:'#0051C4',
+    fontSize:10
   },
 });
 

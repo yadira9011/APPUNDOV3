@@ -1166,7 +1166,6 @@ const styles = StyleSheet.create({
     marginLeft: 35
   },
 });
-
 const pickerSelectStyles = {
   viewContainer: {
     borderWidth: 1,

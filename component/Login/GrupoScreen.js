@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
-import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
+import { CountClientes, CountCanales, CountSubCanales, colors } from '../Utilities';
 
 const GrupoScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -47,14 +47,28 @@ const GrupoScreen = ({ route }) => {
         GetFlujoLogin(item.IdGrupoEmpresa);
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            style={[styles.item, selectedItem?.IdGrupoEmpresa === item.IdGrupoEmpresa && styles.selectedItem]}
-            onPress={() => handleItemPress(item)}
-        >
-            <Text>{item.Grupo}</Text>
-        </TouchableOpacity>
-    );
+    // const renderItem = ({ item }) => (
+    //     <TouchableOpacity
+    //         style={[styles.item, selectedItem?.IdGrupoEmpresa === item.IdGrupoEmpresa && styles.selectedItem]}
+    //         onPress={() => handleItemPress(item)} >
+    //         <Text>{item.Grupo}</Text>
+    //     </TouchableOpacity>
+    // );
+
+    const renderItem = ({ item, index }) => {
+        const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.item,
+                    selectedItem?.IdGrupoEmpresa === item.IdGrupoEmpresa && styles.selectedItem,
+                    dynamicBackgroundColor,
+                ]}
+                onPress={() => handleItemPress(item)}>
+                <Text style={styles.LabelTxt}>{item.Grupo}</Text>
+            </TouchableOpacity>
+        );
+    };
 
     const GetFlujoLogin = async (IdGrupo) => {
         try {
@@ -156,7 +170,7 @@ const styles = StyleSheet.create({
     item: {
         padding: 10,
         marginVertical: 8,
-        backgroundColor: '#f9c2ff',
+        alignItems: 'center',
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
@@ -166,6 +180,10 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 20,
         borderRadius: 5,
+    },
+    LabelTxt: {
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
 });
 
