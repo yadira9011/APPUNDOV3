@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
+import { View, Text, SectionList, ActivityIndicator, Image, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { UserClientes, UserGrupos, UserSubcanales } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
-import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
+import { CountClientes, CountCanales, CountSubCanales, colors, imagesSubcanales } from '../Utilities';
 
 const SubcanalesScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -23,13 +23,9 @@ const SubcanalesScreen = ({ route }) => {
                 DataParameterSubcanales.IdUsr,
                 DataParameterSubcanales.IdCanal,
             );
-            
             if (response.data.Subcanales) {
-
-                console.log(response.data.Subcanales);
-
+                console.log("SUBANALAAAASSS", response.data.Subcanales);
                 setData(response.data.Subcanales);
-
             } else {
                 console.error('La respuesta de la API no contiene subcanales.');
             }
@@ -41,10 +37,8 @@ const SubcanalesScreen = ({ route }) => {
     };
 
     const handleItemPress = (item) => {
-        
         setSelectedItem(item);
         console.log("item press", item.IDSubCanal);
-
         const _DataParameter = {
             IdUsr: DataParameterSubcanales.IdUsr,
             password: DataParameterSubcanales.password,
@@ -53,20 +47,41 @@ const SubcanalesScreen = ({ route }) => {
             NomSubCanal: item.SubCanal,
             IdPersona: DataParameterSubcanales.IdPersona,
             IdRol: DataParameterSubcanales.IdRol
-          };
-
-          navigation.navigate('Modulos', { DataParameter: _DataParameter });
-        
+        };
+        navigation.navigate('Modulos', { DataParameter: _DataParameter });
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            style={[styles.item, selectedItem?.IDSubCanal === item.IdSubcanal && styles.selectedItem]}
-            onPress={() => handleItemPress(item)}
-        >
-            <Text>{item.SubCanal}</Text>
-        </TouchableOpacity>
-    );
+    const renderItem = ({ item, index }) => {
+
+        const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
+        const imagePath = item.Icono;
+        const parts = imagePath.split('/');
+        const lastPart = parts[parts.length - 1];
+        const resultImg = lastPart.match(/^[a-zA-Z]+\.png$/) ? lastPart : 'SinIcono.png';
+        console.log(resultImg)
+        return (
+            <TouchableOpacity
+                style={[styles.item, selectedItem?.IDSubCanal === item.IdSubcanal && styles.selectedItem, dynamicBackgroundColor]}
+                onPress={() => handleItemPress(item)} >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ marginRight: 10, width: 200 }}>
+                        <Text style={{ textAlign: 'left', fontSize: 14 }}>{item.SubCanal}</Text>
+                    </View>
+                    <Image source={imagesSubcanales[resultImg]} style={{ width: 80, height: 80, marginRight: 30, marginLeft: 30 }} />
+                </View>
+            </TouchableOpacity>
+        );
+    };
+
+
+    // const renderItem = ({ item }) => (
+    //     console.log(item.Icono)
+    //     < TouchableOpacity
+    //         style = { [styles.item, selectedItem?.IDSubCanal === item.IdSubcanal && styles.selectedItem]}
+    // onPress = {() => handleItemPress(item)} >
+    //     <Text>{item.SubCanal}</Text>
+    //     </TouchableOpacity >
+    // );
 
     return (
         <View style={styles.container}>
@@ -89,7 +104,7 @@ const SubcanalesScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 40,
+        paddingTop: 30,
         paddingHorizontal: 20,
     },
     item: {

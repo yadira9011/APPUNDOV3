@@ -134,3 +134,11 @@ export const colors = [
   '#9BDAFF',
   '#6EC6FF',
 ];
+
+export const imagesSubcanales = {
+  'SinIcono.png': require('../assets/Subcanales/SinIcono.png'),
+  'CreditoUber.png': require('../assets/Subcanales/CreditoUber.png'),
+  'CreditoTaxi.png': require('../assets/Subcanales/CreditoTaxi.png'),
+  'SeguroCredito.png': require('../assets/Subcanales/SeguroCredito.png'),
+  'Empaquetados.png': require('../assets/Subcanales/Empaquetados.png'),
+}; 
