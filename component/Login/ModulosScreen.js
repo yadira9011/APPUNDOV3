@@ -10,7 +10,7 @@ import {
     Alert,
     TouchableOpacity
 } from 'react-native';
-
+import { colors as predefinedColors } from '../Utilities';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -50,9 +50,9 @@ const ModulosScreen = ({ route }) => {
     };
 
     const imagePaths = [
-        require('../../assets/Icon1.png'),
-        require('../../assets/Icon2.png'),
-        require('../../assets/Icon3.png'),
+        require('../../assets/Modulos/ICON_AUTOS.png'),
+        require('../../assets/Modulos/ICON_POLIZA.png'),
+        require('../../assets/Modulos/ICON_Agropecuario.png'),
     ];
 
     const imagenTitles = [
@@ -61,17 +61,26 @@ const ModulosScreen = ({ route }) => {
         'Agropecuario',
     ];
 
+    const getRandomColor = () => {
+        // Obtén un índice aleatorio de la lista de colores existente
+        const randomIndex = Math.floor(Math.random() * predefinedColors.length);
+        // Devuelve el color correspondiente al índice aleatorio
+        return predefinedColors[randomIndex];
+      };
+      
+
     const getItem = (_data, index) => ({
         id: Math.random().toString(12).substring(0),
         title: imagenTitles[index % imagenTitles.length],
         image: imagePaths[index % imagePaths.length],
+        backgroundColor: getRandomColor(),
     });
 
     const getItemCount = _data => 3;
 
-    const Item = ({ title, image, onPress }) => (
+    const Item = ({ title, image, backgroundColor, onPress }) => (
         <TouchableOpacity onPress={onPress}>
-            <View style={styles.item}>
+                  <View style={[styles.item, { backgroundColor }]}>
                 <Image source={image} style={styles.image} />
                 <Text style={styles.title}>{title}</Text>
             </View>
@@ -83,7 +92,7 @@ const ModulosScreen = ({ route }) => {
             <VirtualizedList
                 initialNumToRender={3}
                 // renderItem={({ item }) => <Item title={item.title} image={item.image} />}
-                renderItem={({ item }) => <Item title={item.title} image={item.image} onPress={() => onPressItem(item)} />}
+                renderItem={({ item }) => <Item title={item.title} image={item.image} backgroundColor={item.backgroundColor} onPress={() => onPressItem(item)} />}
                 keyExtractor={item => item.id}
                 getItemCount={getItemCount}
                 getItem={getItem}
@@ -109,7 +118,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         marginBottom: 10,
-        borderRadius: 75,
+        // borderRadius: 75,
     },
     title: {
         fontSize: 24,
