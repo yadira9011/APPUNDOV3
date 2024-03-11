@@ -954,6 +954,7 @@ const EmisionScreen = () => {
 
   return (
     <View>
+
       <ScrollView style={styles.container}>
 
         {/* dATOS emisión */}
@@ -971,93 +972,92 @@ const EmisionScreen = () => {
 
         {/* dATOS CONTRATANTE */}
 
-        <View>
-          <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
-            <Text style={styles.buttonText}>Datos Contratante</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
+          <Text style={styles.buttonText}>Datos Contratante</Text>
+        </TouchableOpacity>
 
-          <Collapsible collapsed={isCollapsed}>
+        <Collapsible collapsed={isCollapsed} align="center">
 
-            <Text style={{ marginTop: 15, marginBottom: 15 }}>Tipo Persona: {TextTipoPersona}</Text>
+          <Text>Tipo Persona: {TextTipoPersona}</Text>
 
-            {showPicker && (
+          {showPicker && (
+
+            <RNPickerSelect
+              // onValueChange={handleOptionChangeTipo}
+              onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
+              items={TiposPersona.map((tp) => ({
+                label: tp.Valor,
+                value: tp.Id,
+              }))}
+              value={selectedTipoPersona}
+            />
+
+            // <Picker
+            //   selectedValue={selectedTipoPersona}
+            //   onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
+            //   style={styles.input}
+            //   enabled={false} >
+            //   {TiposPersona.map((tp) => (
+            //     <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
+            //   ))}
+            // </Picker>
+
+
+          )}
+
+          <Text>Número de socio</Text>
+          <TextInput
+            style={[styles.input, !IsNumSocio && styles.hiddenInput]}
+            value={numerosocio}
+            onChangeText={setnumerosocio}
+          />
+
+          {/* PERSONA FISICA */}
+
+          {isVisiblePF && (
+            <View>
+
+              <Text>Nombre</Text>
+              <TextInput
+                style={styles.input}
+                value={nombre}
+                onChangeText={setNombre}
+              />
+
+              <Text>Apellido Paterno</Text>
+              <TextInput
+                style={styles.input}
+                value={apellidoPaterno}
+                onChangeText={setApellidoPaterno}
+              />
+
+              <Text>Apellido Materno</Text>
+              <TextInput
+                style={styles.input}
+                value={apellidoMaterno}
+                onChangeText={setApellidoMaterno}
+              />
+
+              <Text>CURP</Text>
+              <TextInput
+                style={styles.input}
+                value={curp}
+                onChangeText={setCURP}
+              />
+
+              <Text>Género</Text>
 
               <RNPickerSelect
                 // onValueChange={handleOptionChangeTipo}
-                onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
-                items={TiposPersona.map((tp) => ({
-                  label: tp.Valor,
-                  value: tp.Id,
+                onValueChange={(itemValue) => setSelectedGenero(itemValue)}
+                items={generos.map((genero) => ({
+                  label: genero.Valor,
+                  value: genero.Id,
                 }))}
-                value={selectedTipoPersona}
+                value={selectedGenero}
               />
 
-              // <Picker
-              //   selectedValue={selectedTipoPersona}
-              //   onValueChange={(itemValue) => setselectedTipoPersona(itemValue)}
-              //   style={styles.input}
-              //   enabled={false} >
-              //   {TiposPersona.map((tp) => (
-              //     <Picker.Item key={tp.Id} label={tp.Valor} value={tp.Id} />
-              //   ))}
-              // </Picker>
-
-
-            )}
-
-            <Text>Número de socio</Text>
-            <TextInput
-              style={[styles.input, !IsNumSocio && styles.hiddenInput]}
-              value={numerosocio}
-              onChangeText={setnumerosocio}
-            />
-
-            {/* PERSONA FISICA */}
-
-            {isVisiblePF && (
-              <View>
-
-                <Text>Nombre</Text>
-                <TextInput
-                  style={styles.input}
-                  value={nombre}
-                  onChangeText={setNombre}
-                />
-
-                <Text>Apellido Paterno</Text>
-                <TextInput
-                  style={styles.input}
-                  value={apellidoPaterno}
-                  onChangeText={setApellidoPaterno}
-                />
-
-                <Text>Apellido Materno</Text>
-                <TextInput
-                  style={styles.input}
-                  value={apellidoMaterno}
-                  onChangeText={setApellidoMaterno}
-                />
-
-                <Text>CURP</Text>
-                <TextInput
-                  style={styles.input}
-                  value={curp}
-                  onChangeText={setCURP}
-                />
-
-                <Text>Género</Text>
-
-                <RNPickerSelect
-                  // onValueChange={handleOptionChangeTipo}
-                  onValueChange={(itemValue) => setSelectedGenero(itemValue)}
-                  items={generos.map((genero) => ({
-                    label: genero.Valor,
-                    value: genero.Id,
-                  }))}
-                  value={selectedGenero}
-                />
-
-                {/* <Picker
+              {/* <Picker
                   selectedValue={selectedGenero}
                   onValueChange={(itemValue) => setSelectedGenero(itemValue)}
                   style={styles.input}
@@ -1068,19 +1068,19 @@ const EmisionScreen = () => {
                   ))}
                 </Picker> */}
 
-                <Text>Tipo de Identificación</Text>
+              <Text>Tipo de Identificación</Text>
 
-                <RNPickerSelect
-                  // onValueChange={handleOptionChangeTipo}
-                  onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
-                  items={opcionesIdentificacion.map((opcion) => ({
-                    label: opcion.Valor,
-                    value: opcion.Id,
-                  }))}
-                  value={tipoIdentificacion}
-                />
+              <RNPickerSelect
+                // onValueChange={handleOptionChangeTipo}
+                onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
+                items={opcionesIdentificacion.map((opcion) => ({
+                  label: opcion.label,
+                  value: opcion.value,
+                }))}
+                value={tipoIdentificacion}
+              />
 
-                {/* <Picker
+              {/* <Picker
                   selectedValue={tipoIdentificacion}
                   onValueChange={(itemValue, itemIndex) => setTipoIdentificacion(itemValue)}
                   style={{ width: 200 }}
@@ -1090,7 +1090,7 @@ const EmisionScreen = () => {
                   ))}
                 </Picker> */}
 
-                {/* <Picker
+              {/* <Picker
                 selectedValue={tipoIdentificacion}
                 onValueChange={setTipoIdentificacion}
                 style={styles.input}
@@ -1106,49 +1106,49 @@ const EmisionScreen = () => {
                 <Picker.Item label="CURP" value="11" />
               </Picker> */}
 
-                <Text>Número de Identificación</Text>
-                <TextInput
-                  style={styles.input}
-                  value={numIdentificacion}
-                  onChangeText={setNumIdentificacion}
-                />
+              <Text>Número de Identificación</Text>
+              <TextInput
+                style={styles.input}
+                value={numIdentificacion}
+                onChangeText={setNumIdentificacion}
+              />
 
-              </View>
-            )}
+            </View>
+          )}
 
-            {/* PERSONA MORAL */}
+          {/* PERSONA MORAL */}
 
-            {isVisiblePM && (
+          {isVisiblePM && (
 
-              <View>
+            <View>
 
-                <Text>Razón Social</Text>
-                <TextInput
-                  style={styles.input}
-                  value={razonSocial}
-                  onChangeText={setRazonSocial}
-                />
+              <Text>Razón Social</Text>
+              <TextInput
+                style={styles.input}
+                value={razonSocial}
+                onChangeText={setRazonSocial}
+              />
 
-                <Text>Nombre Comercial</Text>
-                <TextInput
-                  style={styles.input}
-                  value={nombreComercial}
-                  onChangeText={setNombreComercial}
-                />
+              <Text>Nombre Comercial</Text>
+              <TextInput
+                style={styles.input}
+                value={nombreComercial}
+                onChangeText={setNombreComercial}
+              />
 
-                <Text>Giro</Text>
+              <Text>Giro</Text>
 
-                <RNPickerSelect
-                  // onValueChange={handleOptionChangeTipo}
-                  onValueChange={(itemValue) => setselectedGiro(itemValue)}
-                  items={giros.map((g) => ({
-                    label: g.Valor,
-                    value: g.Id,
-                  }))}
-                  value={selectedGiro}
-                />
+              <RNPickerSelect
+                // onValueChange={handleOptionChangeTipo}
+                onValueChange={(itemValue) => setselectedGiro(itemValue)}
+                items={giros.map((g) => ({
+                  label: g.Valor,
+                  value: g.Id,
+                }))}
+                value={selectedGiro}
+              />
 
-                {/* <Picker
+              {/* <Picker
                   selectedValue={selectedGiro}
                   onValueChange={(itemValue) => setselectedGiro(itemValue)}
                   style={styles.input}
@@ -1158,18 +1158,18 @@ const EmisionScreen = () => {
                   ))}
                 </Picker> */}
 
-                <Text>Tipo sociedad</Text>
+              <Text>Tipo sociedad</Text>
 
-                <RNPickerSelect
-                  onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
-                  items={tiposSociedad.map((ts) => ({
-                    label: ts.Valor,
-                    value: ts.Id,
-                  }))}
-                  value={selectedTipoSociedad}
-                />
+              <RNPickerSelect
+                onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
+                items={tiposSociedad.map((ts) => ({
+                  label: ts.Valor,
+                  value: ts.Id,
+                }))}
+                value={selectedTipoSociedad}
+              />
 
-                {/* 
+              {/* 
                 <Picker
                   selectedValue={selectedTipoSociedad}
                   onValueChange={(itemValue) => setselectedTipoSociedad(itemValue)}
@@ -1180,19 +1180,19 @@ const EmisionScreen = () => {
                   ))}
                 </Picker> */}
 
-                <Text>Reminen Fiscal</Text>
+              <Text>Reminen Fiscal</Text>
 
 
-                <RNPickerSelect
-                  onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
-                  items={regimenesFiscales.map((rf) => ({
-                    label: rf.Valor,
-                    value: rf.Id,
-                  }))}
-                  value={selectedRegimenFiscal}
-                />
+              <RNPickerSelect
+                onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
+                items={regimenesFiscales.map((rf) => ({
+                  label: rf.Valor,
+                  value: rf.Id,
+                }))}
+                value={selectedRegimenFiscal}
+              />
 
-                {/* 
+              {/* 
                 <Picker
                   selectedValue={selectedRegimenFiscal}
                   onValueChange={(itemValue) => setselectedRegimenFiscal(itemValue)}
@@ -1204,100 +1204,165 @@ const EmisionScreen = () => {
                 </Picker> */}
 
 
-              </View>
+            </View>
 
-            )}
+          )}
 
-            <Text>RFC</Text>
-            <TextInput
-              style={styles.input}
-              value={rfc}
-              onChangeText={setRFC}
+          <Text>RFC</Text>
+          <TextInput
+            style={styles.input}
+            value={rfc}
+            onChangeText={setRFC}
+          />
+
+          <Text>{TxtFecha}</Text>
+
+
+          <View style={styles.pickerContainerNew}>
+
+            <RNPickerSelect
+              onValueChange={(itemValue) => setSelectedDia(itemValue)}
+              style={{
+                inputAndroid: {
+                  fontSize: 5,
+                  color: 'blue',
+                  borderWidth: 0,
+                  borderColor: 'gray',
+                  borderRadius: 3,
+                  width: 110,
+                  marginRight: 5,
+                  marginBottom: 10,
+                  marginLeft: 0,
+                  backgroundColor: 'white',
+                },
+                inputIOS: {
+                  fontSize: 14,
+                  color: 'blue',
+                  borderWidth: 1,
+                  borderRadius: 4,
+                  borderColor:'gray',
+                  width: 60,
+                  marginRight: 5,
+                  marginBottom: 15,
+                  backgroundColor: 'white',
+                  textAlign: 'center',
+                },
+                viewContainer: {
+                  padding: 0,
+                },
+              }}
+              items={dias.map((dia) => ({
+                label: dia.Valor,
+                value: dia.Id,
+              }))}
+              value={selectedDia}
+              placeholder={{
+                label: 'Dia',
+                value: null,
+                color: 'blue',
+                fontSize: 5,
+              }}
             />
 
-            <Text>{TxtFecha}</Text>
-            <View style={styles.pickerContainer}>
-
-              <RNPickerSelect
-                onValueChange={(itemValue) => setSelectedDia(itemValue)}
-                items={dias.map((dia) => ({
-                  label: dia.Valor,
-                  value: dia.Id,
-                }))}
-                value={selectedDia}
-              />
-
-              {/* 
-              <Picker
-                style={styles.picker}
-                selectedValue={selectedDia}
-                onValueChange={(itemValue) => setSelectedDia(itemValue)}
-              >
-                <Picker.Item label="Selecciona día" value="" />
-                {dias.map((dia) => (
-                  <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
-                ))}
-              </Picker> */}
-
-              <RNPickerSelect
-                onValueChange={(itemValue) => setSelectedMes(itemValue)}
-                items={meses.map((mes) => ({
-                  label: mes.Valor,
-                  value: mes.Id,
-                }))}
-                value={selectedMes}
-              />
-
-              {/* 
-              <Picker
-                style={styles.picker}
-                selectedValue={selectedMes}
-                onValueChange={(itemValue) => setSelectedMes(itemValue)}
-              >
-                <Picker.Item label="Selecciona mes" value="" />
-                {meses.map((mes) => (
-                  <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
-                ))}
-              </Picker> */}
-
-            </View>
+            <RNPickerSelect
+              onValueChange={(itemValue) => setSelectedMes(itemValue)}
+              style={{
+                inputAndroid: {
+                  fontSize: 7,
+                  color: 'blue',
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  borderRadius: 4,
+                  width: 118,
+                  marginRight: 5,
+                  backgroundColor: 'white',
+                },
+                inputIOS: {
+                  fontSize: 14,
+                  color: 'blue',
+                  borderWidth: 1,
+                  borderRadius: 4,
+                  borderColor:'gray',
+                  width: 70,
+                  marginRight: 5,
+                  marginBottom: 15,
+                  backgroundColor: 'white',
+                  textAlign: 'center',
+                },
+                viewContainer: {
+                  padding: 0,
+                },
+              }}
+              items={meses.map((mes) => ({
+                label: mes.Valor,
+                value: mes.Id,
+              }))}
+              value={selectedMes}
+              placeholder={{
+                label: 'Mes',
+                value: null,
+                color: 'blue',
+                fontSize: 5,
+              }}
+            />
 
             <RNPickerSelect
               onValueChange={(itemValue) => setSelectedAno(itemValue)}
+              style={{
+                inputAndroid: {
+                  fontSize: 7,
+                  color: 'blue',
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  borderRadius: 4,
+                  width: 125,
+                  backgroundColor: 'white',
+                },
+                inputIOS: {
+                  fontSize: 14,
+                  color: 'blue',
+                  borderWidth: 1,
+                  borderRadius: 4,
+                  borderColor:'gray',
+                  width: 80,
+                  marginRight: 5,
+                  marginBottom: 15,
+                  backgroundColor: 'white',
+                  textAlign: 'center',
+                },
+                viewContainer: {
+                  padding: 0,
+                },
+              }}
               items={anos.map((ano) => ({
                 label: ano.Valor,
                 value: ano.Id,
               }))}
               value={selectedAno}
+              placeholder={{
+                label: 'Año',
+                value: null,
+                color: 'blue',
+                fontSize: 5,
+              }}
             />
+          </View>
 
-            {/* <Picker
-              style={styles.picker2}
-              selectedValue={selectedAno}
-              onValueChange={(itemValue) => setSelectedAno(itemValue)}
-            >
-              <Picker.Item label="Selecciona año" value="" />
-              {anos.map((ano) => (
-                <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
-              ))}
-            </Picker> */}
+          <Text>Teléfono</Text>
+          <TextInput
+            style={styles.input}
+            value={telefono}
+            onChangeText={setTelefono}
+          />
 
-            <Text>Teléfono</Text>
-            <TextInput
-              style={styles.input}
-              value={telefono}
-              onChangeText={setTelefono}
-            />
-
-            <Text>Correo Electrónico</Text>
-            <TextInput
-              style={styles.input}
-              value={correo}
-              onChangeText={setCorreo}
-              keyboardType="email-address"
-            />
-          </Collapsible>
-        </View>
+          <Text>Correo Electrónico</Text>
+          <TextInput
+            style={styles.input}
+            value={correo}
+            onChangeText={setCorreo}
+            keyboardType="email-address"
+          />
+        </Collapsible>
 
         {/* dATOS Dirección */}
         <View>
@@ -1687,6 +1752,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  pickerContainerNew: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    marginTop: 20,
+  },
   imageContainer: {
     alignItems: 'center',
     marginBottom: 20,
@@ -1719,7 +1790,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   hiddenInput: {
-    display: 'none', // Ocultar el TextInput cuando IsNumCredito sea falso
+    display: 'none',
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30,
+  },
+
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30,
   },
 });
 

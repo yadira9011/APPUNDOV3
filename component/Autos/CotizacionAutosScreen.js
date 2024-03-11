@@ -479,7 +479,7 @@ const CotizacionAutosScreen = () => {
   const handleOptionChangeMarca = (itemValue, itemIndex) => {
     if (itemValue !== null) {
       setSelectedOptionMarca(itemValue);
-      const selectedOption = AutoMarcas.find(item => item.Id === itemValue);
+      const selectedOption = AutoMarcas.find(item => item.Valor === itemValue);
       setselectedLabel(selectedOption.Valor);
       setselectedTextMarca(selectedOption.Valor);
       const str_marca = selectedOption.Valor
@@ -737,7 +737,6 @@ const CotizacionAutosScreen = () => {
           value={selectedOption}
         />
 
-
         <Text style={styles.label}>Tipo vehículo:</Text>
 
         <RNPickerSelect
@@ -750,27 +749,80 @@ const CotizacionAutosScreen = () => {
         />
 
 
-        <Text style={styles.label}>Modelo:</Text>
-
-        <RNPickerSelect
-          onValueChange={handleOptionChangeModelo}
-          items={AutoModelos.map((AutoModelo) => ({
-            label: AutoModelo.Valor,
-            value: AutoModelo.Id,
-          }))}
-          value={selectedOptionModelo}
-        />
-
-        <Text style={styles.label}>Marca:</Text>
-
-        <RNPickerSelect
-          onValueChange={handleOptionChangeMarca}
-          items={AutoMarcas.map((AutoMarca) => ({
-            label: AutoMarca.Valor,
-            value: AutoMarca.Id,
-          }))}
-          value={selectedOptionMarca}
-        />
+        <View style={styles.ContainerModelMarca}>
+          <View style={styles.ContentCombo}>
+            <Text style={styles.labelCmb}>Modelo</Text>
+            <RNPickerSelect
+              onValueChange={handleOptionChangeModelo}
+              style={{
+                inputAndroid: {
+                  fontSize: 7,
+                  color: 'blue',
+                  width: 150,
+                  backgroundColor: 'white',
+                },
+                inputIOS: {
+                  fontSize: 12,
+                  color: 'blue',
+                  width: 80,
+                  backgroundColor: 'white',
+                  textAlign: 'center',
+                },
+                viewContainer: {
+                  padding: 0,
+                },
+              }}
+              items={AutoModelos.map((AutoModelo) => ({
+                label: AutoModelo.Valor,
+                value: AutoModelo.Id,
+              }))}
+              placeholder={{
+                label: 'Año',
+                value: null,
+                color: 'blue',
+                fontSize: 5,
+              }}
+              value={selectedOptionModelo}
+            />
+          </View>
+          <View style={styles.ContentComboDos}>
+            <Text style={styles.labelCmb}>Marca</Text>
+            <RNPickerSelect
+              onValueChange={handleOptionChangeMarca}
+              textInputProps={{ multiline: true }}
+              pickerProps={{ numberOfLines: 2 }}
+              style={{
+                inputAndroid: {
+                  fontSize: 7,
+                  color: 'blue',
+                  width: 180,
+                  backgroundColor: 'white',
+                },
+                inputIOS: {
+                  fontSize: 12,
+                  color: 'blue',
+                  width: 150,
+                  backgroundColor: 'white',
+                  textAlign: 'center',
+                },
+                viewContainer: {
+                  padding: 0,
+                },
+              }}
+              items={AutoMarcas.map((AutoMarca) => ({
+                label: AutoMarca.Valor,
+                value: AutoMarca.Valor,
+              }))}
+              value={selectedOptionMarca}
+              placeholder={{
+                label: 'Marca',
+                value: null,
+                color: 'blue',
+                fontSize: 5,
+              }}
+            />
+          </View>
+        </View>
 
         {/* 
         <Picker
@@ -784,7 +836,6 @@ const CotizacionAutosScreen = () => {
               value={AutoMarca.Valor} />
           ))}
         </Picker> */}
-
 
         <Text style={styles.label}>Tipo:</Text>
 
@@ -808,7 +859,6 @@ const CotizacionAutosScreen = () => {
               value={AutoTipo.Valor} />
           ))}
         </Picker> */}
-
 
         <Text style={styles.label}>Descripción:</Text>
         <RNPickerSelect
@@ -899,7 +949,6 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionDeducible}
         />
-
 
         <Text style={styles.label}>Paquetes :</Text>
         <RNPickerSelect
@@ -1005,6 +1054,7 @@ const CotizacionAutosScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 0,
+    backgroundColor: 'white'
   },
   cotizarButton: {
     backgroundColor: '#007bff',
@@ -1014,15 +1064,12 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     alignItems: 'center',
   },
-
   scrollstyle: {
     marginTop: 5,
   },
-
   menustyle: {
     backgroundColor: '#92c5fc',
   },
-
   cotizarButtonText: {
     color: '#fff',
     fontSize: 18,
@@ -1097,6 +1144,41 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9c2ff',
   },
 
+  ContainerModelMarca: {
+    flexDirection: 'row',
+    marginTop: 25,
+    marginBottom: 15,
+  },
+
+  ContentCombo: {
+    width: '40%',
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    padding: 20,
+    marginLeft: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRightWidth: 0,
+  },
+  ContentComboDos: {
+    width: '55%',
+    backgroundColor: '#fff',
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+  },
+  labelCmb: {
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: -35,
+    color: 'blue',
+    width: 100,
+    backgroundColor: 'white',
+    textAlign: 'center',
+  },
 });
 
 export default CotizacionAutosScreen;
