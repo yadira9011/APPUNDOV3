@@ -724,10 +724,10 @@ const CotizacionAutosScreen = () => {
             value: AutoTU.Id,
           }))}
           value={selectedOptionTipoUso}
+          style={pickerSelectStyles}
         />
 
         <Text style={styles.label}>Estatus vehículo:</Text>
-
         <RNPickerSelect
           onValueChange={handleOptionChange}
           items={AutoEstatusVehiculos.map((AutoEstatusVehiculo) => ({
@@ -735,10 +735,10 @@ const CotizacionAutosScreen = () => {
             value: AutoEstatusVehiculo.Id,
           }))}
           value={selectedOption}
+          style={pickerSelectStyles}
         />
 
         <Text style={styles.label}>Tipo vehículo:</Text>
-
         <RNPickerSelect
           onValueChange={handleOptionChangeTipoVehiculo}
           items={AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
@@ -746,8 +746,8 @@ const CotizacionAutosScreen = () => {
             value: AutoTipoVehiculo.Id,
           }))}
           value={selectedOptionTipoVehiculo}
+          style={pickerSelectStyles}
         />
-
 
         <View style={styles.ContainerModelMarca}>
           <View style={styles.ContentCombo}>
@@ -824,19 +824,6 @@ const CotizacionAutosScreen = () => {
           </View>
         </View>
 
-        {/* 
-        <Picker
-          selectedValue={selectedOptionMarca}
-          onValueChange={handleOptionChangeMarca}
-          keyExtractor={(item) => item.Valor.toString()}>
-          {AutoMarcas.map((AutoMarca) => (
-            <Picker.Item
-              key={AutoMarca.Valor}
-              label={AutoMarca.Valor}
-              value={AutoMarca.Valor} />
-          ))}
-        </Picker> */}
-
         <Text style={styles.label}>Tipo:</Text>
 
         <RNPickerSelect
@@ -846,19 +833,8 @@ const CotizacionAutosScreen = () => {
             value: AutoTipo.Id,
           }))}
           value={selectedOptionTipo}
+          style={pickerSelectStyles}
         />
-
-        {/* <Picker
-          selectedValue={selectedOptionTipo}
-          onValueChange={handleOptionChangeTipo}
-          keyExtractor={(item) => item.Valor.toString()}>
-          {AutoTipos.map((AutoTipo) => (
-            <Picker.Item
-              key={AutoTipo.Valor}
-              label={AutoTipo.Valor}
-              value={AutoTipo.Valor} />
-          ))}
-        </Picker> */}
 
         <Text style={styles.label}>Descripción:</Text>
         <RNPickerSelect
@@ -867,27 +843,8 @@ const CotizacionAutosScreen = () => {
           onValueChange={handleOptionChangeDescripcion}
           items={AutoDescripciones}
           value={selectedOptionDescripcion}
-          style={{
-            viewContainer: {
-              borderWidth: 1,
-              borderColor: 'gray',
-              borderRadius: 4,
-              padding: 10,
-              margin: 10,
-              color: 'blue',
-              backgroundColor: 'white',
-            },
-            inputAndroid: {
-              fontSize: 16,
-              color: 'black',
-            },
-            inputIOS: {
-              fontSize: 16,
-              color: 'blue',
-            },
-          }}
+          style={pickerSelectStyles}
         />
-
 
         <Text style={styles.label}>Indemnización:</Text>
         <RNPickerSelect
@@ -897,8 +854,8 @@ const CotizacionAutosScreen = () => {
             value: AutoIndemnizacion.Id,
           }))}
           value={selectedOptionIndemnizacion}
+          style={pickerSelectStyles}
         />
-
 
         <View style={{
           flexDirection: 'row',
@@ -906,7 +863,9 @@ const CotizacionAutosScreen = () => {
           alignItems: 'center',
           borderColor: '#ccc',
           borderWidth: 1,
-          borderRadius: 20,
+          marginLeft: 8,
+          marginRight: 8,
+          borderRadius: 10,
           padding: 8
         }}>
           <TextInput
@@ -923,7 +882,9 @@ const CotizacionAutosScreen = () => {
           alignItems: 'center',
           borderColor: '#ccc',
           borderWidth: 1,
-          borderRadius: 20,
+          marginLeft: 8,
+          marginRight: 8,
+          borderRadius: 10,
           padding: 5
         }}>
           <TextInput
@@ -937,7 +898,8 @@ const CotizacionAutosScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.label}>{TextDireccionElegida}</Text>
+
+        <Text style={styles.labelDireccion}>{TextDireccionElegida}</Text>
 
         <Text style={styles.label}>Deducibles :</Text>
 
@@ -947,6 +909,7 @@ const CotizacionAutosScreen = () => {
             label: AutoDeducible.Valor,
             value: AutoDeducible.Id,
           }))}
+          style={pickerSelectStyles}
           value={selectedOptionDeducible}
         />
 
@@ -958,6 +921,7 @@ const CotizacionAutosScreen = () => {
             value: AutoPaquete.Id,
           }))}
           value={selectedOptionPaquete}
+          style={pickerSelectStyles}
         />
 
 
@@ -969,8 +933,8 @@ const CotizacionAutosScreen = () => {
             value: AutoTP.Id,
           }))}
           value={selectedOptionTipoPoliza}
+          style={pickerSelectStyles}
         />
-
 
         <Text style={styles.label}>Vigencias:</Text>
         <RNPickerSelect
@@ -980,6 +944,7 @@ const CotizacionAutosScreen = () => {
             value: AutoVigencia.Id,
           }))}
           value={selectedOptionVigencia}
+          style={pickerSelectStyles}
         />
 
 
@@ -1062,7 +1027,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     marginBottom: 40,
+    marginLeft: 15,
+    marginRight: 15,
     alignItems: 'center',
+  },
+  label: {
+    marginTop: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    alignItems: 'center',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   scrollstyle: {
     marginTop: 5,
@@ -1143,13 +1118,11 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     backgroundColor: '#f9c2ff',
   },
-
   ContainerModelMarca: {
     flexDirection: 'row',
     marginTop: 25,
     marginBottom: 15,
   },
-
   ContentCombo: {
     width: '40%',
     backgroundColor: '#fff',
@@ -1174,11 +1147,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     marginTop: -35,
-    color: 'blue',
     width: 100,
     backgroundColor: 'white',
     textAlign: 'center',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+  labelDireccion: {
+    alignContent: 'center',
+    marginBottom: 10,
+    color: 'blue',
+    width: '80%',
+    backgroundColor: 'white',
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    marginLeft: 35
   },
 });
+
+const pickerSelectStyles = {
+  viewContainer: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    padding: 10,
+    margin: 10,
+    color: 'blue',
+    backgroundColor: 'white',
+  },
+  inputAndroid: {
+    fontSize: 16,
+    color: 'black',
+  },
+  inputIOS: {
+    fontSize: 16,
+    color: 'blue',
+  },
+};
 
 export default CotizacionAutosScreen;
