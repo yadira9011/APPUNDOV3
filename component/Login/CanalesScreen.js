@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { UserCanales, UserClientes, UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
-import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
+import { CountClientes, CountCanales, CountSubCanales, colors } from '../Utilities';
 
 const CanalesScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -45,14 +45,26 @@ const CanalesScreen = ({ route }) => {
         GetFlujoLogin(item.IdCanal);
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem]}
-            onPress={() => handleItemPress(item)}
-        >
-            <Text>{item.NomCanal}</Text>
-        </TouchableOpacity>
-    );
+    // const renderItem = ({ item }) => (
+    //     <TouchableOpacity
+    //         style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem]}
+    //         onPress={() => handleItemPress(item)}
+    //     >
+    //         <Text>{item.NomCanal}</Text>
+    //     </TouchableOpacity>
+    // );
+
+    const renderItem = ({ item, index }) => {
+        const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
+        return (
+            <TouchableOpacity
+                style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem, dynamicBackgroundColor]}
+                onPress={() => handleItemPress(item)}>
+                <Text>{item.NomCanal}</Text>
+            </TouchableOpacity>
+        );
+    };
+
 
     const GetFlujoLogin = async (IdCanal) => {
         try {

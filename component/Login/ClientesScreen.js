@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { UserClientes, UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
-import { CountClientes, CountCanales, CountSubCanales } from '../Utilities';
+import { CountClientes, CountCanales, CountSubCanales, colors } from '../Utilities';
 
 const ClientesScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -46,14 +46,25 @@ const ClientesScreen = ({ route }) => {
         GetFlujoLogin(item.IdCliente);
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem]}
-            onPress={() => handleItemPress(item)}
-        >
-            <Text>{item.NomCliente}</Text>
-        </TouchableOpacity>
-    );
+    // const renderIteme = ({ item }) => (
+    //     <TouchableOpacity
+    //         style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem]}
+    //         onPress={() => handleItemPress(item)}
+    //     >
+    //         <Text>{item.NomCliente}</Text>
+    //     </TouchableOpacity>
+    // );
+
+    const renderItem = ({ item, index }) => {
+        const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
+        return (
+            <TouchableOpacity
+                style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem, dynamicBackgroundColor]}
+                onPress={() => handleItemPress(item)} >
+                <Text>{item.NomCliente}</Text>
+            </TouchableOpacity>
+        );
+    };
 
     const GetFlujoLogin = async (IdCliente) => {
         try {

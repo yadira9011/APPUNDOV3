@@ -73,7 +73,6 @@ const SubcanalesScreen = ({ route }) => {
         );
     };
 
-
     // const renderItem = ({ item }) => (
     //     console.log(item.Icono)
     //     < TouchableOpacity
