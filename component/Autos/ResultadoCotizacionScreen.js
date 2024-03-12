@@ -56,7 +56,7 @@ const ResultadoCotizacionScreen = () => {
                     HasError: item.HasError,
                     Message: item.Message,
                     imageUrl: ImagePath.path,
-                    IdClaveAgente:item.IdClaveAgente
+                    IdClaveAgente: item.IdClaveAgente
                 };
                 return data;
             });
@@ -216,7 +216,7 @@ const ResultadoCotizacionScreen = () => {
             DataResul: dataArray.DataResul,
             CotiData: dataArray.CotiData,
             DataTitulos: dataArray.DataTitulos,
-            DataParameter:dataArray.DataParameter,
+            DataParameter: dataArray.DataParameter,
         }
 
         navigation.navigate('Emision', { dataArrayEmi });
