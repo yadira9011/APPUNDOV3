@@ -80,6 +80,7 @@ const NewPolizas = ({ route }) => {
 
   const FirstRoute = () => (
     <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
+      <Text style={styles.HeaderTxt}> Individuales</Text>
       {PolizasIdividualesTitular.length > 0 ? (
         <FlatList
           data={PolizasIdividualesTitular}
@@ -95,6 +96,7 @@ const NewPolizas = ({ route }) => {
 
   const SecondRoute = () => (
     <View style={{ flex: 1, backgroundColor: '#a7a7a7' }}>
+      <Text style={styles.HeaderTxt}>Polizas de grupo</Text>
       {PolizasGpo.length > 0 ? (
         <FlatList
           data={PolizasGpo}
@@ -110,6 +112,7 @@ const NewPolizas = ({ route }) => {
 
   const TercerRoute = () => (
     <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
+      <Text style={styles.HeaderTxt}>Dependientes</Text>
       {CertificadosDepTitular.length > 0 ? (
         <FlatList
           data={CertificadosDepTitular}
@@ -125,6 +128,7 @@ const NewPolizas = ({ route }) => {
 
   const CuartaRoute = () => (
     <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
+      <Text style={styles.HeaderTxt}>Contratantes</Text>
       {PolizasXContratanteTitular.length > 0 ? (
         <FlatList
           data={PolizasXContratanteTitular}
@@ -407,39 +411,6 @@ const NewPolizas = ({ route }) => {
     }
   };
 
-  const toggleCollapsePolizasGpo = () => {
-    setIsCollapsedPolizasGpoTitular(!IsCollapsedPolizasGpoTitular);
-    setIsCollapsedCertificadosDepTitular(false);
-    setIsCollapsedPolizasIdividualesTitular(false);
-    setIsCollapsedPolizasXContratanteTitular(false);
-  };
-
-  const toggleCollapseCertificadosDepTitular = () => {
-    setIsCollapsedCertificadosDepTitular(!IsCollapsedCertificadosDepTitular);
-    setIsCollapsedPolizasGpoTitular(false);
-    setIsCollapsedPolizasXContratanteTitular(false);
-    setIsCollapsedPolizasIdividualesTitular(false);
-  };
-
-  const toggleCollapsePolizasIdividualesTitular = () => {
-    setIsCollapsedPolizasIdividualesTitular(!IsCollapsedPolizasIdividualesTitular);
-    setIsCollapsedPolizasGpoTitular(false);
-    setIsCollapsedCertificadosDepTitular(false);
-    setIsCollapsedPolizasXContratanteTitular(false);
-  };
-
-  const toggleCollapsePolizasXContratanteTitular = () => {
-    setIsCollapsedPolizasXContratanteTitular(!IsCollapsedPolizasXContratanteTitular);
-    setIsCollapsedPolizasIdividualesTitular(false);
-    setIsCollapsedPolizasGpoTitular(false);
-    setIsCollapsedCertificadosDepTitular(false);
-  };
-
-  const GotoMyPerfil = () => {
-    console.log("dii aquiiiii")
-    navigation.navigate('MiPerfilScreen', { DataParameter });
-  };
-
   const renderItemPolizasGpo = ({ item, onPress, tipo_poliza = 0 }) => (
     <View style={styles.itemContainer} >
       <View style={styles.itemDetailsUnO}>
@@ -481,11 +452,16 @@ const NewPolizas = ({ route }) => {
     setModalCoberturasVisible(false);
   };
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
+        <LoadingComponent />
+      </View>
+    );
+  }
+
   return (
-
     <View style={{ flex: 1 }}>
-      {loading && <LoadingComponent />}
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -514,7 +490,6 @@ const NewPolizas = ({ route }) => {
           </View>
         </View>
       </Modal>
-
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
@@ -523,7 +498,6 @@ const NewPolizas = ({ route }) => {
         renderTabBar={renderTabBar}
       />
     </View>
-
   );
 
 }
@@ -711,12 +685,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+
   noRecordsText: {
     fontSize: 16,
     color: 'gray',
     textAlign: 'center',
     marginTop: 10,
   },
+
+  HeaderTxt: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+
 
 });
 

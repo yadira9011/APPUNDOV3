@@ -231,16 +231,8 @@ export default function App() {
               headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
             };
           }}
-
-        // options={({ route, navigation }) => ({
-        //   ...defaultHeaderOptions,
-        //   // title: 'Cotización',
-        //   title: route.params.DataResul[0],
-        //   headerBackImage: () => headerBackImageFuntion(),
-        //   headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-        // })}
         />
-        
+
         <Stack.Screen
           name="Emision"
           component={EmisionScreen}
