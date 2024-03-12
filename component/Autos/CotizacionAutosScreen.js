@@ -490,8 +490,9 @@ const CotizacionAutosScreen = () => {
   const handleOptionChangeTipo = (itemValue, itemIndex) => {
     if (itemValue !== null) {
       setSelectedOptionTipo(itemValue);
-      const selectedOption = AutoTipos.find(item => item.Id === itemValue);
+      const selectedOption = AutoTipos.find(item => item.Valor === itemValue);
       setselectedTextTipos(selectedOption.Valor);
+      console.log(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue)
       fetchAutoDescripciones(selectedOptionTipoVehiculo, selectedOptionModelo, selectedLabel, itemValue);
     }
   };
@@ -671,20 +672,16 @@ const CotizacionAutosScreen = () => {
   const RefresData = () => {
     //window.location.reload();  setIsRefreshing(true);
     setTimeout(async () => {
-
       console.log("ENTRE COTIZACION lololo...")
-
       console.log(DataParameter.email,
         DataParameter.password,
         DataParameter.IdSubCanal)
-
       await fetchAutoEstatusVehiculos();
       // await fetchAutoTipoVehiculos();
       // await fetchAutoTiposDeUso();
       // await fetchAutoDeducibles();
       // await fetchAutoPaquetes();
       // await fetchAutoTiposPoliza();
-
       setIsRefreshing(false);
     }, 1000);
 
@@ -774,7 +771,7 @@ const CotizacionAutosScreen = () => {
               }}
               items={AutoModelos.map((AutoModelo) => ({
                 label: AutoModelo.Valor,
-                value: AutoModelo.Id,
+                value: AutoModelo.Valor,
               }))}
               placeholder={{
                 label: 'Año',
@@ -830,7 +827,7 @@ const CotizacionAutosScreen = () => {
           onValueChange={handleOptionChangeTipo}
           items={AutoTipos.map((AutoTipo) => ({
             label: AutoTipo.Valor,
-            value: AutoTipo.Id,
+            value: AutoTipo.Valor,
           }))}
           value={selectedOptionTipo}
           style={pickerSelectStyles}
