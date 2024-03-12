@@ -33,9 +33,8 @@ const ResultadoCotizacionScreen = () => {
     ];
 
     useEffect(() => {
-        console.log('entre pantalla de resultados...')
         if (dataArray.DataResul.length > 0) {
-            const primerElemento = dataArray.DataResul[0];
+            const primerElemento = dataArray.DataResul[0].Folio;
             setFolioCotizacion(primerElemento.Folio);
             const newArray = dataArray.DataResul.map(item => {
                 let data = null;

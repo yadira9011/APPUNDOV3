@@ -138,7 +138,6 @@ export default function App() {
 
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
-
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -218,14 +217,30 @@ export default function App() {
         <Stack.Screen
           name="ResultadoCotizacion"
           component={ResultadoCotizacionScreen}
-          options={({ route, navigation }) => ({
-            ...defaultHeaderOptions,
-            title: 'Cotización',
-            headerBackImage: () => headerBackImageFuntion(),
-            headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-          })}
-        />
+          options={({ route, navigation }) => {
+            console.log('route.params:', route.params.dataArray.DataResul[0].Folio);
+            const FolioCot = route.params.dataArray.DataResul[0].Folio;
+            return {
+              ...defaultHeaderOptions,
+              title: FolioCot,
+              headerTitleStyle: {
+                fontSize: 12,
+                color: 'white'
+              },
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            };
+          }}
 
+        // options={({ route, navigation }) => ({
+        //   ...defaultHeaderOptions,
+        //   // title: 'Cotización',
+        //   title: route.params.DataResul[0],
+        //   headerBackImage: () => headerBackImageFuntion(),
+        //   headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+        // })}
+        />
+        
         <Stack.Screen
           name="Emision"
           component={EmisionScreen}

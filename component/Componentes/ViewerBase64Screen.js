@@ -93,7 +93,7 @@ const ViewerBase64Screen = ({ route }) => {
                 //const xx=`http://docs.google.com/gview?embedded=true&url=${encodeURIComponent(uri)}`;
                 //setadaptedUrl(xx)
 
-                console.log("adaa",uri)
+                console.log("adaa", uri)
 
             } else {
                 console.error('El archivo PDF no existe en la ruta especificada.');
@@ -103,7 +103,7 @@ const ViewerBase64Screen = ({ route }) => {
         }
     };
 
-   // const adaptedUrl = `http://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUri)}`;
+    // const adaptedUrl = `http://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUri)}`;
 
     return (
         <View style={styles.container}>
