@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CustomAlert = ({ visible, message, onClose, iconName }) => {
-  
+
   console.log("ICON NAME ... ", iconName)
 
   const handleClose = () => {
