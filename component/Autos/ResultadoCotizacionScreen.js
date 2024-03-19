@@ -64,7 +64,7 @@ const ResultadoCotizacionScreen = () => {
         }
     }, [dataArray]);
 
-    const renderItem = ({ item, onPress }) => (
+    const renderItem4 = ({ item, onPress }) => (
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>
                 <Image source={item.imageUrl} style={styles.image} />
@@ -80,25 +80,104 @@ const ResultadoCotizacionScreen = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            {item.HasError ? (
+                <Text style={styles.errorText}>{item.Message}</Text>
+            ) : (
+                <View style={styles.itemDetails}>
+                    <Text style={styles.title}>Prima Total: {item.PrimaTotal}</Text>
+                    <Text style={styles.description}>Paquete: {item.Paquete}</Text>
+                    <Text style={styles.description}>Tipo de Póliza: {item.TipoPoliza}</Text>
+                    {/* <Text style={styles.description}>Forma de Pago: {item.FormaPago}</Text> */}
+                    {/* <Text style={styles.description}>Indemnización: {item.Indenmizacion}</Text> */}
+                    {/* <Text style={styles.description}>Deducibles: {item.Deducibles}</Text> */}
+                    <Text style={styles.description}>Vigencia: {item.Vigencia}</Text>
+                    {/* <Text style={styles.description}>Derechos de Póliza: {item.DerechosPoliza}</Text> */}
+                </View>
+            )}
+        </View>
+    );
 
-            <View style={styles.itemDetails}>
+
+    const renderItem2 = ({ item, onPress }) => (
+        <View style={styles.itemContainer} >
+            <View style={styles.itemDetailsUnO}>
+                <Image source={item.imageUrl} style={styles.image} />
+                <Text style={styles.title}>Prima Total: {item.PrimaTotal}</Text>
+                {/* <View style={styles.itemDetailsDos}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                        <Ionicons name="ios-information-circle" size={24} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
+                        <Ionicons name="ios-mail" size={24} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleEmitir(item)}>
+                        <Ionicons name="ios-send" size={24} color="black" />
+                    </TouchableOpacity>
+                </View> */}
+            </View>
+            {item.HasError ? (
+                <Text style={styles.errorText}>{item.Message}</Text>
+            ) : (
+                <View style={styles.itemDetails}>
+
+                    <Text style={styles.description}>Paquete: {item.Paquete}</Text>
+                    <Text style={styles.description}>Tipo de Póliza: {item.TipoPoliza}</Text>
+                    {/* <Text style={styles.description}>Forma de Pago: {item.FormaPago}</Text> */}
+                    {/* <Text style={styles.description}>Indemnización: {item.Indenmizacion}</Text> */}
+                    {/* <Text style={styles.description}>Deducibles: {item.Deducibles}</Text> */}
+                    <Text style={styles.description}>Vigencia: {item.Vigencia}</Text>
+                    {/* <Text style={styles.description}>Derechos de Póliza: {item.DerechosPoliza}</Text> */}
+                </View>
+            )}
+        </View>
+    );
+
+    const renderItem = ({ item, onPress }) => {
+        const primaTotalFormateada = item.PrimaTotal.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'MXN',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+
+        return (
+            <View style={styles.itemContainer}>
+                <View style={styles.itemDetailsUnO}>
+                    <Image source={item.imageUrl} style={styles.image} />
+                    <View style={styles.itemDetailPrima}>
+                        <Text style={styles.titlePrima}>Prima Total :</Text>
+                        <Text style={styles.title}>{primaTotalFormateada}</Text>
+                        <View style={styles.itemDetailsDos}>
+                            <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                                <Ionicons name="information-circle" size={30} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
+                                <Ionicons name="mail" size={30} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
                 {item.HasError ? (
                     <Text style={styles.errorText}>{item.Message}</Text>
                 ) : (
-                    <>
+                    <View style={styles.itemDetails}>
                         <Text style={styles.description}>Paquete: {item.Paquete}</Text>
                         <Text style={styles.description}>Tipo de Póliza: {item.TipoPoliza}</Text>
-                        <Text style={styles.description}>Forma de Pago: {item.FormaPago}</Text>
-                        <Text style={styles.description}>Indemnización: {item.Indenmizacion}</Text>
-                        <Text style={styles.description}>Deducibles: {item.Deducibles}</Text>
+                        {/* <Text style={styles.description}>Forma de Pago: {item.FormaPago}</Text> */}
+                        {/* <Text style={styles.description}>Indemnización: {item.Indenmizacion}</Text> */}
+                        {/* <Text style={styles.description}>Deducibles: {item.Deducibles}</Text> */}
                         <Text style={styles.description}>Vigencia: {item.Vigencia}</Text>
-                        <Text style={styles.description}>Derechos de Póliza: {item.DerechosPoliza}</Text>
-                        <Text style={styles.description}>Prima Total: {item.PrimaTotal}</Text>
-                    </>
+                        {/* <Text style={styles.description}>Derechos de Póliza: {item.DerechosPoliza}</Text> */}
+                        <TouchableOpacity style={styles.buttonContratar} onPress={() => handleEmitir(item)}>
+                            <Text style={styles.buttonText}>Contratar</Text>
+                        </TouchableOpacity>
+                    </View>
                 )}
             </View>
-        </View>
-    );
+        );
+    };
+
+
 
     const handleCoberturas = async (item) => {
 
@@ -306,8 +385,14 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     itemContainer: {
-        flexDirection: 'row',
         marginBottom: 16,
+        backgroundColor: 'white', 
+        borderRadius: 8,
+        borderWidth: 3,
+        borderColor: 'gray',
+        width: '98%',
+        alignItems:'center',
+        justifyContent: 'center',
     },
     image: {
         width: 100,
@@ -320,29 +405,46 @@ const styles = StyleSheet.create({
         height: 120,
     },
     itemDetails: {
-        flex: 1,
+        alignItems: 'center',
+        marginBottom:15
     },
     itemDetailsUnO: {
+        marginTop:15,
         marginRight: 15,
+        flexDirection: 'row',
+    },
+    itemDetailPrima: {
+        marginRight: 5,
+        flexDirection: 'column',
     },
     itemDetailsDos: {
-        marginTop: 15,
+        marginTop: 10,
+        marginLeft: 15,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
     },
     title: {
         fontSize: 16,
         fontWeight: 'bold',
+        marginLeft: 15,
+    },
+    titlePrima: {
+        fontSize: 10,
+        marginBottom: 10,
+        marginLeft: 15,
+        color: 'gray',
     },
     description: {
         marginTop: 4,
         color: 'gray',
+        fontSize: 10,
     },
     errorText: {
         color: 'red',
+        marginBottom:15
     },
     iconContainer: {
+        marginRight:10,
     },
     modalContainerCom: {
         flex: 1,
@@ -438,6 +540,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 10,
+    },
+    buttonContratar: {
+        backgroundColor: 'blue',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginTop: 10, 
+    },
+    buttonText: {
+        color: 'white', 
+        fontSize: 16, 
+        fontWeight: 'bold',
     },
 });
 
