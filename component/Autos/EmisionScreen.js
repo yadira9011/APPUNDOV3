@@ -973,10 +973,7 @@ const EmisionScreen = () => {
         {/* dATOS CONTRATANTE ../../assets/EmiIcons/DatosContra.png */}
 
         <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
-          <View style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', }}>
             <Image source={require('../../assets/EmiIcons/DatosContra.png')} style={styles.imageIcons} />
             <Text style={styles.buttonText}>Datos Contratante</Text>
             <View style={styles.iconContainer}>
@@ -1376,7 +1373,13 @@ const EmisionScreen = () => {
         {/* dATOS Dirección */}
         <View>
           <TouchableOpacity onPress={toggleDireccionCollapse} style={styles.button}>
-            <Text style={styles.buttonText}> Datos Dirección </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <Image source={require('../../assets/EmiIcons/DatosDireccion.png')} style={styles.imageIcons} />
+              <Text style={styles.buttonText}> Datos Dirección </Text>
+              <View style={styles.iconContainer}>
+                <Ionicons name="chevron-expand" size={26} color="white" />
+              </View>
+            </View>
           </TouchableOpacity>
           <Collapsible collapsed={direccionCollapsed}>
             <Text>Calle</Text>
@@ -1446,7 +1449,13 @@ const EmisionScreen = () => {
         {/* dATOS vehiculo */}
         <View>
           <TouchableOpacity onPress={toggleVehiculoCollapse} style={styles.button}>
-            <Text style={styles.buttonText}>Datos de Vehículo</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <Image source={require('../../assets/EmiIcons/DatosVehiculo.png')} style={styles.imageIcons} />
+              <Text style={styles.buttonText}>Datos de Vehículo</Text>
+              <View style={styles.iconContainer}>
+                <Ionicons name="chevron-expand" size={26} color="white" />
+              </View>
+            </View>
           </TouchableOpacity>
 
           <Collapsible collapsed={vehiculoCollapsed}>
@@ -1486,7 +1495,13 @@ const EmisionScreen = () => {
         {/* dATOS POLIZA */}
         <View>
           <TouchableOpacity onPress={toggleDPCollapse} style={styles.button}>
-            <Text style={styles.buttonText}>Datos de Póliza</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <Image source={require('../../assets/EmiIcons/DatosPoliza.png')} style={styles.imageIcons} />
+              <Text style={styles.buttonText}>Datos de Póliza</Text>
+              <View style={styles.iconContainer}>
+                <Ionicons name="chevron-expand" size={26} color="white" />
+              </View>
+            </View>
           </TouchableOpacity>
           <Collapsible collapsed={DPCollapsed}>
 
@@ -1584,7 +1599,13 @@ const EmisionScreen = () => {
         {/* display: 'none'  */}
         < View style={{ marginBottom: 10, marginTop: 5 }}>
           <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
-            <Text style={styles.buttonText}>Forma de Pago</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <Image source={require('../../assets/EmiIcons/FormasPago.png')} style={styles.imageIcons} />
+              <Text style={styles.buttonText}>Forma de Pago</Text>
+              <View style={styles.iconContainer}>
+                <Ionicons name="chevron-expand" size={26} color="white" />
+              </View>
+            </View>
           </TouchableOpacity>
           <Collapsible collapsed={PlCollapsed}>
             {!isPL && !isPR && (
