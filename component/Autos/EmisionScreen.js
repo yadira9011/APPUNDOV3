@@ -970,10 +970,13 @@ const EmisionScreen = () => {
           </View>
         </View>
 
-        {/* dATOS CONTRATANTE */}
+        {/* dATOS CONTRATANTE ../../assets/EmiIcons/DatosContra.png */}
 
         <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
+          <Image source={require('../../assets/EmiIcons/DatosContra.png')} style={styles.imageIcons} />
           <Text style={styles.buttonText}>Datos Contratante</Text>
+          <Ionicons name="arrow-drop-down" size={24} color="black" style={styles.icon} />
+          <Ionicons name="arrow-drop-up" size={24} color="black" style={styles.icon} />
         </TouchableOpacity>
 
         <Collapsible collapsed={isCollapsed} align="center">
@@ -1240,7 +1243,7 @@ const EmisionScreen = () => {
                   color: 'blue',
                   borderWidth: 1,
                   borderRadius: 4,
-                  borderColor:'gray',
+                  borderColor: 'gray',
                   width: 60,
                   marginRight: 5,
                   marginBottom: 15,
@@ -1282,7 +1285,7 @@ const EmisionScreen = () => {
                   color: 'blue',
                   borderWidth: 1,
                   borderRadius: 4,
-                  borderColor:'gray',
+                  borderColor: 'gray',
                   width: 70,
                   marginRight: 5,
                   marginBottom: 15,
@@ -1323,7 +1326,7 @@ const EmisionScreen = () => {
                   color: 'blue',
                   borderWidth: 1,
                   borderRadius: 4,
-                  borderColor:'gray',
+                  borderColor: 'gray',
                   width: 80,
                   marginRight: 5,
                   marginBottom: 15,
@@ -1730,7 +1733,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
-
   picker: {
     flex: 1,
     borderWidth: 1,
@@ -1741,13 +1743,11 @@ const styles = StyleSheet.create({
     marginRight: 5,
     fontSize: 10,
   },
-
   picker2: {
     borderWidth: 1,
     borderColor: '#ccc',
     fontSize: 10,
   },
-
   pickerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -1791,6 +1791,14 @@ const styles = StyleSheet.create({
   },
   hiddenInput: {
     display: 'none',
+  },
+  icon: {
+    marginLeft: 5,
+  },
+  imageIcons: {
+    width: 24,
+    height: 24,
+    marginRight: 5,
   },
 });
 
