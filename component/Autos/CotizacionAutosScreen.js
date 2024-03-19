@@ -1040,7 +1040,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   menustyle: {
-    backgroundColor: '#92c5fc',
+    backgroundColor: '#0051C4',
   },
   cotizarButtonText: {
     color: '#fff',

@@ -64,73 +64,6 @@ const ResultadoCotizacionScreen = () => {
         }
     }, [dataArray]);
 
-    const renderItem4 = ({ item, onPress }) => (
-        <View style={styles.itemContainer} >
-            <View style={styles.itemDetailsUnO}>
-                <Image source={item.imageUrl} style={styles.image} />
-                <View style={styles.itemDetailsDos}>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
-                        <Ionicons name="ios-information-circle" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
-                        <Ionicons name="ios-mail" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleEmitir(item)}>
-                        <Ionicons name="ios-send" size={24} color="black" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            {item.HasError ? (
-                <Text style={styles.errorText}>{item.Message}</Text>
-            ) : (
-                <View style={styles.itemDetails}>
-                    <Text style={styles.title}>Prima Total: {item.PrimaTotal}</Text>
-                    <Text style={styles.description}>Paquete: {item.Paquete}</Text>
-                    <Text style={styles.description}>Tipo de Póliza: {item.TipoPoliza}</Text>
-                    {/* <Text style={styles.description}>Forma de Pago: {item.FormaPago}</Text> */}
-                    {/* <Text style={styles.description}>Indemnización: {item.Indenmizacion}</Text> */}
-                    {/* <Text style={styles.description}>Deducibles: {item.Deducibles}</Text> */}
-                    <Text style={styles.description}>Vigencia: {item.Vigencia}</Text>
-                    {/* <Text style={styles.description}>Derechos de Póliza: {item.DerechosPoliza}</Text> */}
-                </View>
-            )}
-        </View>
-    );
-
-
-    const renderItem2 = ({ item, onPress }) => (
-        <View style={styles.itemContainer} >
-            <View style={styles.itemDetailsUnO}>
-                <Image source={item.imageUrl} style={styles.image} />
-                <Text style={styles.title}>Prima Total: {item.PrimaTotal}</Text>
-                {/* <View style={styles.itemDetailsDos}>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
-                        <Ionicons name="ios-information-circle" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
-                        <Ionicons name="ios-mail" size={24} color="black" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleEmitir(item)}>
-                        <Ionicons name="ios-send" size={24} color="black" />
-                    </TouchableOpacity>
-                </View> */}
-            </View>
-            {item.HasError ? (
-                <Text style={styles.errorText}>{item.Message}</Text>
-            ) : (
-                <View style={styles.itemDetails}>
-
-                    <Text style={styles.description}>Paquete: {item.Paquete}</Text>
-                    <Text style={styles.description}>Tipo de Póliza: {item.TipoPoliza}</Text>
-                    {/* <Text style={styles.description}>Forma de Pago: {item.FormaPago}</Text> */}
-                    {/* <Text style={styles.description}>Indemnización: {item.Indenmizacion}</Text> */}
-                    {/* <Text style={styles.description}>Deducibles: {item.Deducibles}</Text> */}
-                    <Text style={styles.description}>Vigencia: {item.Vigencia}</Text>
-                    {/* <Text style={styles.description}>Derechos de Póliza: {item.DerechosPoliza}</Text> */}
-                </View>
-            )}
-        </View>
-    );
 
     const renderItem = ({ item, onPress }) => {
         const primaTotalFormateada = item.PrimaTotal.toLocaleString('es-ES', {
@@ -176,8 +109,6 @@ const ResultadoCotizacionScreen = () => {
             </View>
         );
     };
-
-
 
     const handleCoberturas = async (item) => {
 
