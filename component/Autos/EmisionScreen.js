@@ -975,8 +975,8 @@ const EmisionScreen = () => {
         <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
           <Image source={require('../../assets/EmiIcons/DatosContra.png')} style={styles.imageIcons} />
           <Text style={styles.buttonText}>Datos Contratante</Text>
-          <Ionicons name="arrow-drop-down" size={24} color="black" style={styles.icon} />
-          <Ionicons name="arrow-drop-up" size={24} color="black" style={styles.icon} />
+          <Ionicons name="arrow-drop-down" size={20} color="black" style={styles.icon} />
+          <Ionicons name="arrow-drop-up" size={20} color="black" style={styles.icon} />
         </TouchableOpacity>
 
         <Collapsible collapsed={isCollapsed} align="center">
