@@ -973,10 +973,16 @@ const EmisionScreen = () => {
         {/* dATOS CONTRATANTE ../../assets/EmiIcons/DatosContra.png */}
 
         <TouchableOpacity onPress={toggleCollapse} style={styles.button}>
-          <Image source={require('../../assets/EmiIcons/DatosContra.png')} style={styles.imageIcons} />
-          <Text style={styles.buttonText}>Datos Contratante</Text>
-          <Ionicons name="arrow-drop-down" size={20} color="black" style={styles.icon} />
-          <Ionicons name="arrow-drop-up" size={20} color="black" style={styles.icon} />
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+            <Image source={require('../../assets/EmiIcons/DatosContra.png')} style={styles.imageIcons} />
+            <Text style={styles.buttonText}>Datos Contratante</Text>
+            <View style={styles.iconContainer}>
+              <Ionicons name="chevron-expand" size={26} color="white" />
+            </View>
+          </View>
         </TouchableOpacity>
 
         <Collapsible collapsed={isCollapsed} align="center">
@@ -1726,6 +1732,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,
@@ -1793,12 +1800,15 @@ const styles = StyleSheet.create({
     display: 'none',
   },
   icon: {
-    marginLeft: 5,
+    marginLeft: 30,
+  },
+  iconContainer: {
+    marginLeft: 'auto',
   },
   imageIcons: {
-    width: 24,
-    height: 24,
-    marginRight: 5,
+    width: 30,
+    height: 30,
+    marginRight: 15,
   },
 });
 
