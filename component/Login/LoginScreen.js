@@ -17,12 +17,14 @@ const LoginScreen = ({ navigation, route }) => {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
 
-  useEffect(() => {ps
+  useEffect(() => {
     const tokenFromProps = route.params?.expoPushToken || '';
     setExpoPushToken(tokenFromProps);
     console.log("token fromm login .... ", tokenFromProps)
   }, [route.params]);
+
   const handleLogin = async () => {
     try {
       const response = await loginUser(email, password, expoPushToken);
@@ -38,13 +40,14 @@ const LoginScreen = ({ navigation, route }) => {
           IdRol: IdRol
         };
         GetFlujoLogin(userDataParameter);
-
       } else {
         setAlertMessage('No se encontro el usuario');
+        setIconMessage('Icon_Red.png');
         setAlertVisible(true);
       }
     } catch (error) {
       setAlertMessage('Inicio de sesión fallido');
+      setIconMessage('Icon_Red.png');
       setAlertVisible(true);
     }
   };
@@ -164,10 +167,11 @@ const LoginScreen = ({ navigation, route }) => {
         <CustomAlert
           visible={isAlertVisible}
           message={alertMessage}
+          iconName={IconMessage}
           onClose={hideAlert}
         />
       )}
-
+      {/* Icon_Red.png */}
     </View>
   );
 
@@ -217,8 +221,8 @@ const styles = StyleSheet.create({
   Copyright: {
     color: 'white',
     textAlign: 'center',
-    color:'#0051C4',
-    fontSize:10
+    color: '#0051C4',
+    fontSize: 10
   },
 });
 

@@ -891,7 +891,7 @@ const CotizacionAutosScreen = () => {
             style={{ fontSize: 18, flex: 1 }}
           />
           <TouchableOpacity onPress={handleSearch} style={{ padding: 8 }}>
-            <Ionicons name="ios-search" size={24} color="black" />
+            <Ionicons name="search" size={24} color="black" />
           </TouchableOpacity>
         </View>
 

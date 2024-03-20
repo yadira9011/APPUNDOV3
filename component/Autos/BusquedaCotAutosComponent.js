@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Modal, StyleSheet, Image } from 'react-native';
 import { GetCotizacionApi } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
+import modalStyles from '../Styles/ModalStyles';
+import { IconsAlerts } from '../Utilities';
 
 export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password, DataParameter }) {
 
@@ -82,23 +84,29 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
 
     return (
         <Modal transparent={true} visible={isVisible}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <Text style={{ marginBottom: 10, fontSize: 18 }}>
+            <View style={modalStyles.modalContainer}>
+                <View style={modalStyles.modalContent}>
+                    <View style={modalStyles.iconContainer}>
+                        <Image
+                            source={IconsAlerts['Icon_Blue.png']}
+                            style={modalStyles.iconImage}
+                        />
+                    </View>
+                    <Text style={modalStyles.LabelTxt}>
                         Folio de Cotización:
                     </Text>
                     <TextInput
                         value={FolioCotizacion}
                         onChangeText={(text) => setFolioCotizacion(text)}
                         placeholder="Folio de Cotización"
-                        style={styles.input}
+                        style={modalStyles.input}
                     />
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={handleBuscarCotizacion} style={styles.saveButton}>
-                            <Text style={styles.buttonText}>Buscar</Text>
+                    <View style={modalStyles.buttonContainer}>
+                        <TouchableOpacity onPress={handleBuscarCotizacion} style={modalStyles.saveButton}>
+                            <Text style={modalStyles.buttonText}>Buscar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
-                            <Text style={styles.buttonText}>Cancelar</Text>
+                        <TouchableOpacity onPress={onClose} style={modalStyles.cancelButton}>
+                            <Text style={modalStyles.buttonText}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -106,46 +114,3 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
         </Modal>
     );
 }
-
-const styles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente gris
-    },
-    modalContent: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 10,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 5,
-        padding: 8,
-        marginBottom: 10,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    saveButton: {
-        flex: 1,
-        backgroundColor: 'green',
-        borderRadius: 5,
-        padding: 10,
-        alignItems: 'center',
-    },
-    cancelButton: {
-        flex: 1,
-        backgroundColor: 'red',
-        borderRadius: 5,
-        padding: 10,
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-});

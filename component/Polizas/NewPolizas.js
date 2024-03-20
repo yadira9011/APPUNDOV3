@@ -480,7 +480,6 @@ const NewPolizas = ({ route }) => {
                 width:35, 
                 height: 35,
                 marginTop: -8,  
-                alignSelf: 'left',
                 resizeMode: 'contain' }}
             />
             <Text style={styles.descriptionwhite}><Text style={styles.boldWhiteText}>Atención: </Text>{item.FSNUM_ATENCION}</Text>
@@ -556,7 +555,6 @@ const NewPolizas = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     paddingTop: 5,
     paddingHorizontal: 20,

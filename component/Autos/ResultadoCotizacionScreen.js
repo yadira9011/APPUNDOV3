@@ -4,6 +4,8 @@ import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GetCoberturasCotizacion, EnvioCotizacion } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
+import modalStyles from '../Styles/ModalStyles';
+import { IconsAlerts } from '../Utilities';
 
 
 const ResultadoCotizacionScreen = () => {
@@ -234,20 +236,24 @@ const ResultadoCotizacionScreen = () => {
 
     return (
         <View style={styles.container}>
-
             <Text>{folioCotizacion}</Text>
             <FlatList
                 data={CotizacionData}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => renderItem({ item, onPress: handleItemClick })}
             />
-
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={isModalVisible}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
+                        <View style={modalStyles.iconContainer}>
+                            <Image
+                                source={IconsAlerts['Icon_Blue.png']}
+                                style={modalStyles.iconImage}
+                            />
+                        </View>
                         <Text style={styles.description}>DETALLE COBERTURAS</Text>
                         <Image source={TxtUrlconAse} style={styles.imageCober} />
                         <Text style={styles.description}>PAQUETE: {TxtPqtCobertura}</Text>
@@ -276,17 +282,21 @@ const ResultadoCotizacionScreen = () => {
                     </View>
                 </View>
             </Modal>
-
-
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={isModalEnvioCotiVisible}>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.description}>Enviar Cotización</Text>
+                <View style={modalStyles.modalContainer}>
+                    <View style={modalStyles.modalContent}>
+                        <View style={modalStyles.iconContainer}>
+                            <Image
+                                source={IconsAlerts['Icon_Blue.png']}
+                                style={modalStyles.iconImage}
+                            />
+                        </View>
+                        <Text style={modalStyles.description}>Enviar Cotización</Text>
                         <TextInput
-                            style={styles.input}
+                            style={modalStyles.input}
                             placeholder="Correo Electrónico"
                             value={email}
                             onChangeText={setEmail}
@@ -298,14 +308,17 @@ const ResultadoCotizacionScreen = () => {
                                 onValueChange={value => setSendAll(value)}
                             />
                         </View>
-                        <Button title="Enviar" onPress={handleEnviarClick} />
-                        <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
-                            <Text style={styles.closeButtonText}>Cerrar</Text>
-                        </TouchableOpacity>
+                        <View style={modalStyles.buttonContainer}>
+                            <TouchableOpacity onPress={handleEnviarClick} style={modalStyles.saveButton}>
+                                <Text style={modalStyles.buttonText}>Enviar</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleCloseModal} style={modalStyles.cancelButton}>
+                                <Text style={modalStyles.buttonText}>Cancelar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
-
         </View>
     );
 };
@@ -317,12 +330,12 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         marginBottom: 16,
-        backgroundColor: 'white', 
+        backgroundColor: 'white',
         borderRadius: 8,
         borderWidth: 3,
         borderColor: 'gray',
         width: '98%',
-        alignItems:'center',
+        alignItems: 'center',
         justifyContent: 'center',
     },
     image: {
@@ -337,10 +350,10 @@ const styles = StyleSheet.create({
     },
     itemDetails: {
         alignItems: 'center',
-        marginBottom:15
+        marginBottom: 15
     },
     itemDetailsUnO: {
-        marginTop:15,
+        marginTop: 15,
         marginRight: 15,
         flexDirection: 'row',
     },
@@ -372,10 +385,10 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: 'red',
-        marginBottom:15
+        marginBottom: 15
     },
     iconContainer: {
-        marginRight:10,
+        marginRight: 10,
     },
     modalContainerCom: {
         flex: 1,
@@ -477,11 +490,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        marginTop: 10, 
+        marginTop: 10,
     },
     buttonText: {
-        color: 'white', 
-        fontSize: 16, 
+        color: 'white',
+        fontSize: 16,
         fontWeight: 'bold',
     },
 });
