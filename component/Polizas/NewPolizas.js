@@ -10,7 +10,9 @@ import {
   Alert,
   ScrollView,
   FlatList,
-  Modal
+  Modal,
+  Image,
+  ImageBackground
 } from 'react-native';
 
 import {
@@ -27,6 +29,12 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import LoadingComponent from '../Componentes/LoadingComponent';
+// Importaciones de imágenes estáticas
+import UndoAutosImage from '../../assets/Polizas/UndoAutos.png';
+import UndoProteccionImage from '../../assets/Polizas/UndoProteccion.png';
+import UndoVidaImage from '../../assets/Polizas/UndoVida.png';
+
+import { imagenesAseguradoras } from '../Utilities';
 
 const NewPolizas = ({ route }) => {
 
@@ -79,8 +87,8 @@ const NewPolizas = ({ route }) => {
   }, []);
 
   const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
-      <Text style={styles.HeaderTxt}> Individuales</Text>
+    <View style={{ flex: 1, backgroundColor: 'white' }} >
+      <Text style={styles.HeaderTxt}> INDIVIDUALES </Text>
       {PolizasIdividualesTitular.length > 0 ? (
         <FlatList
           data={PolizasIdividualesTitular}
@@ -95,7 +103,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Text style={styles.HeaderTxt}>Polizas de grupo</Text>
       {PolizasGpo.length > 0 ? (
         <FlatList
@@ -111,7 +119,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const TercerRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
+    <View style={{ flex: 1, backgroundColor: 'white' }} >
       <Text style={styles.HeaderTxt}>Dependientes</Text>
       {CertificadosDepTitular.length > 0 ? (
         <FlatList
@@ -127,7 +135,7 @@ const NewPolizas = ({ route }) => {
   );
 
   const CuartaRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#a7a7a7' }} >
+    <View style={{ flex: 1, backgroundColor: 'white' }} >
       <Text style={styles.HeaderTxt}>Contratantes</Text>
       {PolizasXContratanteTitular.length > 0 ? (
         <FlatList
@@ -145,7 +153,7 @@ const NewPolizas = ({ route }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      style={{ backgroundColor: '#001F3F' }}
+      style={{ backgroundColor: '#0051C4' }}
       renderIcon={({ route, focused, color }) => {
         let iconName;
 
@@ -225,29 +233,17 @@ const NewPolizas = ({ route }) => {
       if (response.data.Data) {
         const data = response.data.Data;
         setPolizasGpo(data);
-
+        console.log("ppolizassss grupooo .....", data);
         const botonesPorIdPoliza = { ...botonesPorPoliza };
         for (const poliza of data) {
           const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
           botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
         }
         setBotonesPorPoliza(prevBotones => ({ ...prevBotones, ...botonesPorIdPoliza }));
-
-        // const botonesPorIdPoliza = {};
-        // for (const poliza of data) {
-        //     const botones = await fetchBotonesServPoliza(poliza.FIIDPOLIZA);
-        //     botonesPorIdPoliza[poliza.FIIDPOLIZA] = botones;
-        // }
-        // setBotonesPorPoliza(botonesPorIdPoliza);
-        // setLoading(false);
-
-
       } else {
-        console.error('no se encontraron grupos');
         setLoading(false);
       }
     } catch (error) {
-      console.error('Error al obtener los datos:', error);
       setLoading(false);
     }
   };
@@ -411,33 +407,89 @@ const NewPolizas = ({ route }) => {
     }
   };
 
-  const renderItemPolizasGpo = ({ item, onPress, tipo_poliza = 0 }) => (
-    <View style={styles.itemContainer} >
-      <View style={styles.itemDetailsUnO}>
-        <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
-        <Text style={styles.description}>
-          {tipo_poliza === 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
-        </Text>
-        <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
-        <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
-        <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
-        <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>
-        <View style={styles.buttonContainer}>
-          {botonesPorPoliza[item.FIIDPOLIZA] !== undefined &&
-            botonesPorPoliza[item.FIIDPOLIZA].map((boton, index) => (
-              <TouchableOpacity key={index} onPress={() => handleBotonPress(boton, item.FIIDPOLIZA, item.FIIDASEGURADO)}>
-                <Ionicons
+  const renderItemPolizasGpo = ({ item, onPress, tipo_poliza = 0 }) => {
+
+    // console.log('Item actual:', item.FSIMAGEN);
+    // const imagePath = '../../assets/Polizas/' + item.FSIMAGEN;
+    // console.log('RUTAAAA :', imagePath);
+
+    return (
+      <ImageBackground
+        style={styles.itemContainer}
+        source={require('../../assets/Polizas/background.png')}
+        imageStyle={styles.backgroundImage} >
+        <View style={styles.itemDetailsUnO}>
+          {/* FSIMAGEN
+      LogoAseguradora FSNUM_ATENCION */}
+
+          {item.FSIMAGEN === 'UndoProteccion.png' ? (
+            <Image source={UndoProteccionImage} style={styles.ImgHeader} />
+          ) : item.FSIMAGEN === 'UndoVida.png' ? (
+            <Image source={UndoVidaImage} style={styles.ImgHeader} />
+          ) : (
+            <Image source={UndoAutosImage} style={styles.ImgHeader} />
+          )}
+
+          <Text style={styles.descriptionTitle}>{item.FSCERTIFICADO}</Text>
+
+          {item.LogoAseguradora ? (
+            <Image
+              source={imagenesAseguradoras[item.LogoAseguradora]}
+              style={{
+                width: 80,
+                height: 80,
+                marginTop: 10,
+                marginBottom: 10,
+                alignSelf: 'center'
+              }}
+            />
+          ) : (
+
+            <Text style={styles.boldBlackTextAse}>
+              {tipo_poliza === 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+            </Text>
+
+          )}
+
+          <Text style={styles.description}><Text style={styles.boldBlackText}>Inicio vigencia: </Text>{item.FDINICIO_VIGENCIA}</Text>
+          <Text style={styles.description}><Text style={styles.boldBlackText}>Fin vigencia: </Text>{item.FDFIN_VIGENCIA}</Text>
+          <Text style={styles.description}><Text style={styles.boldBlackText}>Producto: </Text> {item.FSPRODUCTO}</Text>
+          <Text style={styles.description}><Text style={styles.boldBlackText}>Estatus: </Text>{item.FSESTATUS}</Text>
+          <View style={styles.buttonContainer}>
+            {botonesPorPoliza[item.FIIDPOLIZA] !== undefined &&
+              botonesPorPoliza[item.FIIDPOLIZA].map((boton, index) => (
+                <TouchableOpacity key={index} onPress={() => handleBotonPress(boton, item.FIIDPOLIZA, item.FIIDASEGURADO)}>
+                  {/* <Ionicons
                   name={boton === 'Cer' ? 'ios-document' : 'ios-information-circle'}
                   size={30}
                   color="black"
-                />
-              </TouchableOpacity>
-            ))
-          }
+                /> */}
+                  <Image
+                    source={boton === 'Cer' ? require('../../assets/Polizas/IconPoliza.png') : require('../../assets/Polizas/IconInfo.png')}
+                    style={{ width: 35, height: 35 }}
+                  />
+                </TouchableOpacity>
+              ))
+            }
+          </View>
+
+          <View style={styles.ConteinerAtencion}>
+            <Image
+              source={require('../../assets/Polizas/call_button.png')}
+              style={{ 
+                width:35, 
+                height: 35,
+                marginTop: -8,  
+                alignSelf: 'left',
+                resizeMode: 'contain' }}
+            />
+            <Text style={styles.descriptionwhite}><Text style={styles.boldWhiteText}>Atención: </Text>{item.FSNUM_ATENCION}</Text>
+          </View>
+
         </View>
-      </View>
-    </View >
-  );
+      </ImageBackground >
+    );
+  }
 
   const handleBotonPress = async (tipoBoton, idpoliza, idasegurado) => {
     if (tipoBoton === 'Cer') {
@@ -451,6 +503,7 @@ const NewPolizas = ({ route }) => {
     setCoberturasPolizas([]);
     setModalCoberturasVisible(false);
   };
+
 
   if (loading) {
     return (
@@ -513,25 +566,36 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    justifyContent: 'center',
   },
 
   itemContainer: {
     marginBottom: 16,
+    borderRadius: 8,
+    width: '85%',
+    marginLeft: 30,
+    borderWidth: 2,
+    borderColor: 'blue',
+    justifyContent: 'center',
   },
-
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 8,
+  },
   item: {
     padding: 10,
     marginVertical: 8,
     backgroundColor: '#f9c2ff',
   },
-
   itemDetailsUnO: {
     flexDirection: 'column',
     marginRight: 0,
-    backgroundColor: '#D9D9F3'
-  },
 
+  },
   flatListContent: {
     flexGrow: 1,
   },
@@ -542,14 +606,12 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 5,
   },
-
   button: {
     backgroundColor: '#3498db',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
   },
-
   buttonText: {
     color: 'white',
     fontSize: 16,
@@ -563,55 +625,76 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
   },
-
   imageCober: {
     width: 120,
     height: 120,
   },
-
   title: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-
   description: {
     marginTop: 4,
     color: 'gray',
+    textAlign: 'center',
   },
 
+  descriptionwhite: {
+    marginTop: 4,
+    color: 'white',
+    textAlign: 'center',
+    marginLeft: 10,
+    fontSize:10
+  },
+
+  boldBlackText: {
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  boldWhiteText: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize:10
+  },
+  boldBlackTextAse: {
+    fontWeight: 'bold',
+    color: 'gray',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  descriptionTitle: {
+    marginTop: 4,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
   errorText: {
     color: 'red',
   },
-
   row: {
     flexDirection: 'row',
     fontSize: 12,
     marginVertical: 0,
   },
-
   column: {
     flex: 1,
     alignItems: 'center',
   },
-
   dataText: {
     fontSize: 12,
     textAlign: 'center',
     justifyContent: 'center',
   },
-
   closeButtonText: {
     color: '#fff',
     fontSize: 18,
   },
-
   closeButton: {
     marginTop: 10,
     backgroundColor: '#e74c3c',
     padding: 10,
     borderRadius: 5,
   },
-
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -620,7 +703,6 @@ const styles = StyleSheet.create({
     maxHeight: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-
   modalContent: {
     backgroundColor: '#fff',
     padding: 20,
@@ -630,19 +712,16 @@ const styles = StyleSheet.create({
     width: '90%',
     maxHeight: '90%',
   },
-
   modalText: {
     fontSize: 20,
     marginBottom: 10,
   },
-
   list: {
     width: '100%',
     marginBottom: 10,
     marginTop: 15,
     flex: 1,
   },
-
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -652,7 +731,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-
   headerText: {
     fontWeight: 'bold',
     fontSize: 12,
@@ -702,6 +780,24 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 
+  ImgHeader: {
+    marginTop: 10,
+    width: 100,
+    height: 100,
+    alignSelf: 'center'
+  },
+
+  ConteinerAtencion: {
+    flexDirection: 'row',
+    backgroundColor: '#091496',
+    color: 'white',
+    borderRadius: 10,
+    width: '95%',
+    height: 30,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 10
+  },
 
 });
 

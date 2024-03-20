@@ -141,4 +141,16 @@ export const imagesSubcanales = {
   'CreditoTaxi.png': require('../assets/Subcanales/CreditoTaxi.png'),
   'SeguroCredito.png': require('../assets/Subcanales/SeguroCredito.png'),
   'Empaquetados.png': require('../assets/Subcanales/Empaquetados.png'),
+};
+
+export const imagenesAseguradoras = {
+  'LogoAna.png': require('../assets/Aseguradoras/LogoAna.png'),
+  'LogoChubb.png': require('../assets/Aseguradoras/LogoChubb.png'),
+  'LogoDentegra.png': require('../assets/Aseguradoras/LogoDentegra.png'),
+  'LogoGnp.png': require('../assets/Aseguradoras/LogoGnp.gif'),
+  'LogoHdi.png': require('../assets/Aseguradoras/LogoHdi.png'),
+  'LogoHir.png': require('../assets/Aseguradoras/LogoHir.png'),
+  'LogoProagro.png': require('../assets/Aseguradoras/LogoProagro.png'),
+  'LogoQualitas.png': require('../assets/Aseguradoras/LogoQualitas.jpg'),
+  'LogoSura.png': require('../assets/Aseguradoras/LogoSura.png'),
 }; 
