@@ -153,4 +153,11 @@ export const imagenesAseguradoras = {
   'LogoProagro.png': require('../assets/Aseguradoras/LogoProagro.png'),
   'LogoQualitas.png': require('../assets/Aseguradoras/LogoQualitas.jpg'),
   'LogoSura.png': require('../assets/Aseguradoras/LogoSura.png'),
+};
+
+export const IconsAlerts = {
+  'Icon_Red.png': require('../assets/AlertIcons/Icon_Red.png'),
+  'Icon_Green.png': require('../assets/AlertIcons/Icon_Green.png'),
+  'Icon_Blue.png': require('../assets/AlertIcons/Icon_Blue.png'),
+  'Icon_Yellow.png': require('../assets/AlertIcons/Icon_Yellow.png'),
 }; 

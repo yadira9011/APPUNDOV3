@@ -12,22 +12,17 @@ const LoginScreen = ({ navigation, route }) => {
 
   // const [email, setEmail] = useState('mail@mail.com');
   // const [password, setPassword] = useState('Ven99234');
-
   const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
   const [password, setPassword] = useState('marcosSL');
   const [expoPushToken, setExpoPushToken] = useState('');
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  useEffect(() => {
-    // Accede al valor de expoPushToken desde las props
+  useEffect(() => {ps
     const tokenFromProps = route.params?.expoPushToken || '';
     setExpoPushToken(tokenFromProps);
     console.log("token fromm login .... ", tokenFromProps)
   }, [route.params]);
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync();
-  // }, []);
   const handleLogin = async () => {
     try {
       const response = await loginUser(email, password, expoPushToken);
@@ -42,17 +37,13 @@ const LoginScreen = ({ navigation, route }) => {
           IdPersona: IdPersona,
           IdRol: IdRol
         };
-        //navigation.navigate('Home', { userDataParameter });
-        //navigation.navigate('Grupos', { userDataParameter });
         GetFlujoLogin(userDataParameter);
 
       } else {
-        // Alert.alert('Error', 'No se encontro el usuario');
         setAlertMessage('No se encontro el usuario');
         setAlertVisible(true);
       }
     } catch (error) {
-      //Alert.alert('Error', 'Inicio de sesión fallido');
       setAlertMessage('Inicio de sesión fallido');
       setAlertVisible(true);
     }
@@ -131,38 +122,10 @@ const LoginScreen = ({ navigation, route }) => {
         }
       }
     } catch (error) {
-      // Alert.alert('Error', 'Inicio de sesión fallido');
       setAlertMessage('Inicio de sesión fallido');
       setAlertVisible(true);
     }
   };
-
-  // const registerForPushNotificationsAsync = async () => {
-  //   const { status } = await Notifications.getPermissionsAsync();
-
-  //   if (status !== 'granted') {
-  //     const { status: askStatus } = await Notifications.requestPermissionsAsync();
-
-  //     if (askStatus !== 'granted') {
-  //       console.error('Permission to receive push notifications denied.');
-  //       return;
-  //     }
-  //   }
-  //   const { data: token } = await Notifications.getExpoPushTokenAsync();
-  //   console.log('Expo Push Token:', token);
-
-  //   Notifications.addNotificationReceivedListener(handleNotification);
-
-  //   console.log('Expo recibida notificacion');
-
-
-  // };
-
-  // const handleNotification = (notification) => {
-  //   console.log('Notificación recibida:', notification);
-  //   // Manejar la notificación según tus necesidades...
-  //   // Puedes navegar a la pantalla correspondiente o realizar otras acciones.
-  // };
 
   const hideAlert = () => {
     setAlertVisible(false);
