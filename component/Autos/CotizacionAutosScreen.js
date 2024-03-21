@@ -861,7 +861,7 @@ const CotizacionAutosScreen = () => {
           borderWidth: 1,
           marginLeft: 8,
           marginRight: 8,
-          marginTop:10,
+          marginTop: 10,
           borderRadius: 10,
           padding: 8
         }}>
