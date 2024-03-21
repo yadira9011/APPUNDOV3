@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import {
     View,
     Text,
@@ -30,6 +29,7 @@ import Collapsible from 'react-native-collapsible';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
 import RNPickerSelect from 'react-native-picker-select';
+import pickerSelectStyles from '../Styles/PickerSelectStyles';
 
 const MiPerfilScreen = ({ route }) => {
 
@@ -292,171 +292,207 @@ const MiPerfilScreen = ({ route }) => {
             <ScrollView >
                 <View style={styles.container}>
 
-                    <Text>{nombreCompleto} </Text>
+                    <Text style={styles.LabelTextHeader}>{nombreCompleto} </Text>
 
                     {/* Campos de información personal */}
-                    <Text>Nombre:</Text>
+                    <Text style={styles.LabelText}>Nombre:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={nombre}
                         onChangeText={setNombre}
                     />
 
-                    <Text>Apellido Paterno:</Text>
+                    <Text style={styles.LabelText}>Apellido Paterno:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={apellidoPaterno}
                         onChangeText={setApellidoPaterno}
                     />
 
-                    <Text>RFC:</Text>
+                    <Text style={styles.LabelText}>RFC:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={rfc}
                         onChangeText={setRFC}
                     />
 
-                    <Text>Género</Text>
+                    <Text style={styles.LabelText}>Género</Text>
 
                     <RNPickerSelect
-                        // onValueChange={handleOptionChangeTiposUso}
                         onValueChange={(itemValue) => setSelectedGenero(itemValue)}
                         items={generos.map((genero) => ({
                             label: genero.Valor,
                             value: genero.Id,
                         }))}
                         value={selectedGenero}
+                        style={pickerSelectStyles}
                     />
 
-                    {/* <Picker
-                        selectedValue={selectedGenero}
-                        onValueChange={(itemValue) => setSelectedGenero(itemValue)}
-                        style={styles.input}>
-                        <Picker.Item label="Selecciona género" value="" />
-                        {generos.map((genero) => (
-                            <Picker.Item key={genero.Id} label={genero.Valor} value={genero.Id} />
-                        ))}
-                    </Picker> */}
-
-                    <Text>Correo Electrónico:</Text>
+                    <Text style={styles.LabelText}>Correo Electrónico:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={correoElectronico}
                         onChangeText={setCorreoElectronico}
                     />
 
-                    <Text>Móvil:</Text>
+                    <Text style={styles.LabelText}>Móvil:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={movil}
                         onChangeText={setMovil}
                     />
 
-                    <Text>Fijo:</Text>
+                    <Text style={styles.LabelText}>Fijo:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={fijo}
                         onChangeText={setFijo}
                     />
 
-                    <Text>Número de Empleado:</Text>
+                    <Text style={styles.LabelText}>Número de Empleado:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={numeroEmpleado}
                         onChangeText={setNumeroEmpleado}
                     />
 
-                    <Text>Fecha de Nacimiento:</Text>
+                    <Text style={styles.LabelText}>Fecha de Nacimiento:</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginTop: 25,
+                        marginBottom: 15,
+                    }}>
+                        <RNPickerSelect
+                            onValueChange={(itemValue) => setSelectedDia(itemValue)}
+                            items={dias.map((dia) => ({
+                                label: dia.Valor,
+                                value: dia.Id,
+                            }))}
+                            value={selectedDia}
+                            style={{
+                                inputAndroid: {
+                                    fontSize: 7,
+                                    color: 'blue',
+                                    width: 130,
+                                    backgroundColor: 'white',
+                                },
+                                inputIOS: {
+                                    fontSize: 12,
+                                    color: 'blue',
+                                    width: 80,
+                                    backgroundColor: 'white',
+                                    textAlign: 'center',
+                                },
+                                viewContainer: {
+                                    padding: 0,
+                                },
+                            }}
+                            placeholder={{
+                                label: 'Mes',
+                                value: null,
+                                color: 'blue',
+                                fontSize: 5,
+                            }}
+                        />
 
-                    <RNPickerSelect
-                        onValueChange={(itemValue) => setSelectedDia(itemValue)}
-                        items={dias.map((dia) => ({
-                            label: dia.Valor,
-                            value: dia.Id,
-                        }))}
-                        value={selectedDia}
-                    />
-
-                    {/* <Picker
-                        style={styles.picker}
-                        selectedValue={selectedDia}
-                        onValueChange={(itemValue) => setSelectedDia(itemValue)}>
-                        <Picker.Item label="Selecciona día" value="" />
-                        {dias.map((dia) => (
-                            <Picker.Item key={dia.Id} label={dia.Valor} value={dia.Id} />
-                        ))}
-                    </Picker> */}
-
-
-                    <RNPickerSelect
-                        onValueChange={(itemValue) => setSelectedMes(itemValue)}
-                        items={meses.map((mes) => ({
-                            label: mes.Valor,
-                            value: mes.Id,
-                        }))}
-                        value={selectedMes}
-                    />
-
-
-                    {/* <Picker
-                        style={styles.picker}
-                        selectedValue={selectedMes}
-                        onValueChange={(itemValue) => setSelectedMes(itemValue)}>
-                        <Picker.Item label="Selecciona mes" value="" />
-                        {meses.map((mes) => (
-                            <Picker.Item key={mes.Id} label={mes.Valor} value={mes.Id} />
-                        ))}
-                    </Picker> */}
+                        <RNPickerSelect
+                            onValueChange={(itemValue) => setSelectedMes(itemValue)}
+                            items={meses.map((mes) => ({
+                                label: mes.Valor,
+                                value: mes.Id,
+                            }))}
+                            value={selectedMes}
+                            style={{
+                                inputAndroid: {
+                                    fontSize: 7,
+                                    color: 'blue',
+                                    width: 130,
+                                    backgroundColor: 'white',
+                                },
+                                inputIOS: {
+                                    fontSize: 12,
+                                    color: 'blue',
+                                    width: 80,
+                                    backgroundColor: 'white',
+                                    textAlign: 'center',
+                                },
+                                viewContainer: {
+                                    padding: 0,
+                                },
+                            }}
+                            placeholder={{
+                                label: 'Día',
+                                value: null,
+                                color: 'blue',
+                                fontSize: 5,
+                            }} />
 
 
+                        <RNPickerSelect
+                            onValueChange={(itemValue) => setSelectedAno(itemValue)}
+                            items={anos.map((ano) => ({
+                                label: ano.Valor,
+                                value: ano.Id,
+                            }))}
+                            value={selectedAno}
+                            style={{
+                                inputAndroid: {
+                                    fontSize: 7,
+                                    color: 'blue',
+                                    width: 130,
+                                    backgroundColor: 'white',
+                                },
+                                inputIOS: {
+                                    fontSize: 12,
+                                    color: 'blue',
+                                    width: 80,
+                                    backgroundColor: 'white',
+                                    textAlign: 'center',
+                                },
+                                viewContainer: {
+                                    padding: 0,
+                                },
+                            }}
+                            placeholder={{
+                                label: 'Año',
+                                value: null,
+                                color: 'blue',
+                                fontSize: 5,
+                            }} />
+                    </View>
 
-                    <RNPickerSelect
-                        onValueChange={(itemValue) => setSelectedAno(itemValue)}
-                        items={anos.map((ano) => ({
-                            label: ano.Valor,
-                            value: ano.Id,
-                        }))}
-                        value={selectedAno} />
-
-
-                    {/* <Picker
-                        style={styles.picker2}
-                        selectedValue={selectedAno}
-                        onValueChange={(itemValue) => setSelectedAno(itemValue)} >
-                        <Picker.Item label="Selecciona año" value="" />
-                        {anos.map((ano) => (
-                            <Picker.Item key={ano.Id} label={ano.Valor} value={ano.Id} />
-                        ))}
-                    </Picker> */}
-
-
-                    <Text>Edad:</Text>
+                    <Text style={styles.LabelText}>Edad:</Text>
 
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={edad}
                         onChangeText={setEdad}
                     />
 
                     {/* Campos de cuenta de acceso */}
-                    <Text>Usuario:</Text>
+                    <Text style={styles.LabelText}>Usuario:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         value={usuario}
                         onChangeText={setUsuario}
                     />
 
-                    <Text>Contraseña:</Text>
+                    <Text style={styles.LabelText}>Contraseña:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={styles.inputText}
                         secureTextEntry
                         value={contrasena}
                         onChangeText={setContrasena}
                     />
 
-                    {/* Botón de envío del formulario */}
-                    <Button title="Actualizar" onPress={handleFormSubmit} style={styles.submitButton} />
-                    {/* Espacio después del botón */}
+                    {/* <Button title="Actualizar"
+                        onPress={handleFormSubmit}
+                        style={styles.submitButton} /> */}
+
+                    <TouchableOpacity style={styles.submitButton} onPress={handleFormSubmit}>
+                        <Text style={styles.ButtonText}>Actualizar</Text>
+                    </TouchableOpacity>
+
                     <View style={styles.spaceAfterButton} />
 
                 </View>
@@ -474,18 +510,56 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginBottom: 10,
     },
-    input: {
+
+    inputText: {
         height: 40,
+        width: '90%',
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
         padding: 8,
+        borderRadius: 12,
+        alignSelf: 'center'
     },
+
+    LabelTextHeader: {
+        marginTop: 10,
+        marginBottom:10,
+        marginLeft: 15,
+        marginRight: 15,
+        alignItems: 'center',
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        alignSelf: 'center',
+    },
+
+    LabelText: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 15,
+        fontWeight: 'bold',
+    },
+    
     submitButton: {
-        marginBottom: 30,
+        backgroundColor: '#007bff',
+        width: '80%',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 10,
+        marginBottom: 40,
+        marginLeft: 15,
+        marginRight: 15,
+        alignSelf: 'center',
+        alignItems: 'center',
     },
+    ButtonText: {
+        color: 'white',
+        textAlign: 'center',
+      },
     spaceAfterButton: {
         marginBottom: 30,
+
     },
 });
 

@@ -12,7 +12,7 @@ import MenuComponentNew from '../Componentes/MenuComponentNew';
 
 import { Picker } from '@react-native-picker/picker';
 import RNPickerSelect from 'react-native-picker-select';
-
+import pickerSelectStyles from '../Styles/PickerSelectStyles';
 
 
 const CotizacionAutosScreen = () => {
@@ -822,7 +822,6 @@ const CotizacionAutosScreen = () => {
         </View>
 
         <Text style={styles.label}>Tipo:</Text>
-
         <RNPickerSelect
           onValueChange={handleOptionChangeTipo}
           items={AutoTipos.map((AutoTipo) => ({
@@ -862,6 +861,7 @@ const CotizacionAutosScreen = () => {
           borderWidth: 1,
           marginLeft: 8,
           marginRight: 8,
+          marginTop:10,
           borderRadius: 10,
           padding: 8
         }}>
@@ -895,9 +895,7 @@ const CotizacionAutosScreen = () => {
           </TouchableOpacity>
         </View>
 
-
         <Text style={styles.labelDireccion}>{TextDireccionElegida}</Text>
-
         <Text style={styles.label}>Deducibles :</Text>
 
         <RNPickerSelect
@@ -921,7 +919,6 @@ const CotizacionAutosScreen = () => {
           style={pickerSelectStyles}
         />
 
-
         <Text style={styles.label}>Tipo Poliza :</Text>
         <RNPickerSelect
           onValueChange={handleOptionChangeTipoPoliza}
@@ -943,7 +940,6 @@ const CotizacionAutosScreen = () => {
           value={selectedOptionVigencia}
           style={pickerSelectStyles}
         />
-
 
         {/* Botón de cotizar */}
         <TouchableOpacity
@@ -1002,11 +998,9 @@ const CotizacionAutosScreen = () => {
 
       </ScrollView>
 
-      {
-        loadingCotizacion && (
-          <LoadingComponent />
-        )
-      }
+      {loadingCotizacion && (
+        <LoadingComponent />
+      )}
 
     </View >
   );
@@ -1163,24 +1157,25 @@ const styles = StyleSheet.create({
     marginLeft: 35
   },
 });
-const pickerSelectStyles = {
-  viewContainer: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    padding: 10,
-    margin: 10,
-    color: 'blue',
-    backgroundColor: 'white',
-  },
-  inputAndroid: {
-    fontSize: 16,
-    color: 'black',
-  },
-  inputIOS: {
-    fontSize: 16,
-    color: 'blue',
-  },
-};
+
+// const pickerSelectStyles = {
+//   viewContainer: {
+//     borderWidth: 1,
+//     borderColor: 'gray',
+//     borderRadius: 4,
+//     padding: 10,
+//     margin: 10,
+//     color: 'blue',
+//     backgroundColor: 'white',
+//   },
+//   inputAndroid: {
+//     fontSize: 16,
+//     color: 'black',
+//   },
+//   inputIOS: {
+//     fontSize: 16,
+//     color: 'blue',
+//   },
+// };
 
 export default CotizacionAutosScreen;
