@@ -150,12 +150,14 @@ const GrupoScreen = ({ route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IdGrupoEmpresa.toString()}
             />
-            {selectedItem && (
+
+            {/* {selectedItem && (
                 <View style={styles.selectedItemContainer}>
                     <Text>Selected Item:</Text>
                     <Text>{selectedItem.Grupo}</Text>
                 </View>
-            )}
+            )} */}
+
         </View>
     );
 
@@ -171,6 +173,9 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 8,
         alignItems: 'center',
+        borderRadius: 15,
+        borderColor: 'blue',
+        borderWidth: 2,
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',

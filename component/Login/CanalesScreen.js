@@ -109,12 +109,12 @@ const CanalesScreen = ({ route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IdCanal.toString()}
             />
-            {selectedItem && (
+            {/* {selectedItem && (
                 <View style={styles.selectedItemContainer}>
                     <Text>Selected Item:</Text>
                     <Text>{selectedItem.NomCanal}</Text>
                 </View>
-            )}
+            )} */}
         </View>
     );
 
@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 8,
         backgroundColor: '#f9c2ff',
+        borderRadius: 15,
+        borderColor: 'blue',
+        borderWidth: 2,
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',

@@ -361,6 +361,7 @@ const MiPerfilScreen = ({ route }) => {
                         flexDirection: 'row',
                         marginTop: 25,
                         marginBottom: 15,
+                        marginLeft: 20
                     }}>
                         <RNPickerSelect
                             onValueChange={(itemValue) => setSelectedDia(itemValue)}
@@ -375,6 +376,9 @@ const MiPerfilScreen = ({ route }) => {
                                     color: 'blue',
                                     width: 130,
                                     backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: 'gray',
                                 },
                                 inputIOS: {
                                     fontSize: 12,
@@ -382,6 +386,9 @@ const MiPerfilScreen = ({ route }) => {
                                     width: 80,
                                     backgroundColor: 'white',
                                     textAlign: 'center',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: 'gray',
                                 },
                                 viewContainer: {
                                     padding: 0,
@@ -408,6 +415,9 @@ const MiPerfilScreen = ({ route }) => {
                                     color: 'blue',
                                     width: 130,
                                     backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: 'gray',
                                 },
                                 inputIOS: {
                                     fontSize: 12,
@@ -415,9 +425,13 @@ const MiPerfilScreen = ({ route }) => {
                                     width: 80,
                                     backgroundColor: 'white',
                                     textAlign: 'center',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: 'gray',
                                 },
                                 viewContainer: {
                                     padding: 0,
+                                    marginLeft: 10
                                 },
                             }}
                             placeholder={{
@@ -441,6 +455,9 @@ const MiPerfilScreen = ({ route }) => {
                                     color: 'blue',
                                     width: 130,
                                     backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: 'gray',
                                 },
                                 inputIOS: {
                                     fontSize: 12,
@@ -448,9 +465,13 @@ const MiPerfilScreen = ({ route }) => {
                                     width: 80,
                                     backgroundColor: 'white',
                                     textAlign: 'center',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: 'gray',
                                 },
                                 viewContainer: {
                                     padding: 0,
+                                    marginLeft: 10
                                 },
                             }}
                             placeholder={{
@@ -459,6 +480,7 @@ const MiPerfilScreen = ({ route }) => {
                                 color: 'blue',
                                 fontSize: 5,
                             }} />
+                            
                     </View>
 
                     <Text style={styles.LabelText}>Edad:</Text>
@@ -524,7 +546,7 @@ const styles = StyleSheet.create({
 
     LabelTextHeader: {
         marginTop: 10,
-        marginBottom:10,
+        marginBottom: 10,
         marginLeft: 15,
         marginRight: 15,
         alignItems: 'center',
@@ -540,7 +562,7 @@ const styles = StyleSheet.create({
         marginRight: 15,
         fontWeight: 'bold',
     },
-    
+
     submitButton: {
         backgroundColor: '#007bff',
         width: '80%',
@@ -556,7 +578,7 @@ const styles = StyleSheet.create({
     ButtonText: {
         color: 'white',
         textAlign: 'center',
-      },
+    },
     spaceAfterButton: {
         marginBottom: 30,
 

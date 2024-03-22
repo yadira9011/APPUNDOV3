@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Modal, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, Modal, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
   CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
@@ -13,7 +13,8 @@ import MenuComponentNew from '../Componentes/MenuComponentNew';
 import { Picker } from '@react-native-picker/picker';
 import RNPickerSelect from 'react-native-picker-select';
 import pickerSelectStyles from '../Styles/PickerSelectStyles';
-
+import modalStyles from '../Styles/ModalStyles';
+import { IconsAlerts } from '../Utilities';
 
 const CotizacionAutosScreen = () => {
 
@@ -790,20 +791,21 @@ const CotizacionAutosScreen = () => {
               pickerProps={{ numberOfLines: 2 }}
               style={{
                 inputAndroid: {
-                  fontSize: 7,
+                  fontSize: 10,
                   color: 'blue',
                   width: 180,
                   backgroundColor: 'white',
                 },
                 inputIOS: {
-                  fontSize: 12,
+                  fontSize: 10,
                   color: 'blue',
                   width: 150,
+                  height: 30,
                   backgroundColor: 'white',
                   textAlign: 'center',
                 },
                 viewContainer: {
-                  padding: 0,
+                  padding: 1,
                 },
               }}
               items={AutoMarcas.map((AutoMarca) => ({
@@ -888,7 +890,7 @@ const CotizacionAutosScreen = () => {
             placeholder="Codigo Postal"
             value={textCP}
             onChangeText={setTextCP}
-            style={{ fontSize: 18, flex: 1 }}
+            style={{ fontSize: 10, flex: 1 }}
           />
           <TouchableOpacity onPress={handleSearch} style={{ padding: 8 }}>
             <Ionicons name="search" size={24} color="black" />
@@ -954,10 +956,15 @@ const CotizacionAutosScreen = () => {
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={handleCloseModal}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
+          onRequestClose={handleCloseModal}>
+          <View style={modalStyles.modalContainer}>
+            <View style={modalStyles.modalContent}>
+              <View style={modalStyles.iconContainer}>
+                <Image
+                  source={IconsAlerts['Icon_Blue.png']}
+                  style={modalStyles.iconImage}
+                />
+              </View>
               {AutoInfoPostal.length > 0 ? (
                 <>
                   <Text style={styles.modalText}>Dirección:</Text>
@@ -972,8 +979,8 @@ const CotizacionAutosScreen = () => {
               ) : (
                 <>
                   <Text style={styles.emptyText}>No se encontró información para el código postal ingresado.</Text>
-                  <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
-                    <Text style={styles.closeButtonText}>Cerrar</Text>
+                  <TouchableOpacity onPress={handleCloseModal} style={modalStyles.closeButton}>
+                    <Text style={modalStyles.closeButtonText}>Cerrar</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -1029,6 +1036,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    fontSize: 10,
+
   },
   scrollstyle: {
     marginTop: 5,
@@ -1046,11 +1055,12 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     marginBottom: 25,
+    fontSize: 10,
   },
   input: {
     paddingHorizontal: 10,
     paddingVertical: 8,
-    fontSize: 16,
+    fontSize: 10,
   },
   button: {
     backgroundColor: '#3498db',
@@ -1107,7 +1117,8 @@ const styles = StyleSheet.create({
   item: {
     padding: 10,
     marginVertical: 8,
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#9BDAFF',
+    borderRadius: 15,
   },
   ContainerModelMarca: {
     flexDirection: 'row',
@@ -1143,6 +1154,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    fontSize: 10,
   },
   labelDireccion: {
     alignContent: 'center',
@@ -1154,7 +1166,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 4,
-    marginLeft: 35
+    fontSize: 10,
+    marginLeft: 35,
   },
 });
 

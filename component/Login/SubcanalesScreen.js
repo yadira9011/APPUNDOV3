@@ -63,7 +63,7 @@ const SubcanalesScreen = ({ route }) => {
             <TouchableOpacity
                 style={[styles.item, selectedItem?.IDSubCanal === item.IdSubcanal && styles.selectedItem, dynamicBackgroundColor]}
                 onPress={() => handleItemPress(item)} >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={styles.ItemConteiner}>
                     <View style={{ marginRight: 10, width: 200 }}>
                         <Text style={{ textAlign: 'left', fontSize: 14 }}>{item.SubCanal}</Text>
                     </View>
@@ -89,12 +89,15 @@ const SubcanalesScreen = ({ route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IDSubCanal.toString()}
             />
-            {selectedItem && (
+
+            {/* {selectedItem && (
                 <View style={styles.selectedItemContainer}>
                     <Text>Selected Item:</Text>
                     <Text>{selectedItem.SubCanal}</Text>
                 </View>
             )}
+             */}
+             
         </View>
     );
 
@@ -106,10 +109,18 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingHorizontal: 20,
     },
+    ItemConteiner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
     item: {
         padding: 10,
         marginVertical: 8,
         backgroundColor: '#f9c2ff',
+        borderRadius: 15,
+        borderColor: 'blue',
+        borderWidth: 2,
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',

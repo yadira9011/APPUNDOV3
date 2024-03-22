@@ -160,7 +160,7 @@ const LoginScreen = ({ navigation, route }) => {
         <Text style={styles.ButtonText}>Iniciar sesión</Text>
       </TouchableOpacity>
 
-      <Image source={require('../../assets/IconoU.png')} style={styles.imageU} resizeMode="contain" />
+      {/* <Image source={require('../../assets/IconoU.png')} style={styles.imageU} resizeMode="contain" /> */}
       <Text style={styles.Copyright}> ©UNDO 2017 - 2024</Text>
 
       {isAlertVisible && (
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
+    backgroundColor: 'white'
   },
   textInput: {
     width: '80%',
@@ -222,7 +223,8 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     color: '#0051C4',
-    fontSize: 10
+    fontSize: 10,
+    marginTop: 10
   },
 });
 

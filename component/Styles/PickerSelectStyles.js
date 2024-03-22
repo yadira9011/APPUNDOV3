@@ -16,7 +16,7 @@ const PickerSelectStyles = {
         color: 'black',
     },
     inputIOS: {
-        fontSize: 16,
+        fontSize: 10,
         color: 'blue',
     },
 };
