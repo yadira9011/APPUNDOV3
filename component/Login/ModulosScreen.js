@@ -66,8 +66,8 @@ const ModulosScreen = ({ route }) => {
         const randomIndex = Math.floor(Math.random() * predefinedColors.length);
         // Devuelve el color correspondiente al índice aleatorio
         return predefinedColors[randomIndex];
-      };
-      
+    };
+
 
     const getItem = (_data, index) => ({
         id: Math.random().toString(12).substring(0),
@@ -80,7 +80,7 @@ const ModulosScreen = ({ route }) => {
 
     const Item = ({ title, image, backgroundColor, onPress }) => (
         <TouchableOpacity onPress={onPress}>
-                  <View style={[styles.item, { backgroundColor }]}>
+            <View style={[styles.item, { backgroundColor }]}>
                 <Image source={image} style={styles.image} />
                 <Text style={styles.title}>{title}</Text>
             </View>
@@ -116,15 +116,18 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         borderColor: 'blue',
         borderWidth: 2,
+        flexDirection: 'row',
     },
     image: {
-        width: 150,
-        height: 150,
+        width: 120,
+        height: 120,
         marginBottom: 10,
         // borderRadius: 75,
+        marginRight:15,
+        resizeMode: 'cover',
     },
     title: {
-        fontSize: 24,
+        fontSize: 20,
     },
     menustyle: {
         backgroundColor: '#92c5fc',
