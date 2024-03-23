@@ -3,8 +3,8 @@ const PickerSelectStyles = {
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 12,
-        padding: 10,
-        margin: 2,
+        padding: 5,
+        margin:3,
         color: 'blue',
         width: '90%',
         backgroundColor: 'white',
@@ -12,12 +12,17 @@ const PickerSelectStyles = {
     },
     inputAndroid: {
         fontSize: 10,
-        width: '90%',
-        color: 'black',
+        width: '100%',
+        color: 'blue',
     },
     inputIOS: {
+        width: '100%',
         fontSize: 10,
         color: 'blue',
     },
+    placeholder: {
+        color: 'gray',
+        fontSize: 10,
+      },
 };
 export default PickerSelectStyles;

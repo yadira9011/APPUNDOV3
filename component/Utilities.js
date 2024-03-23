@@ -135,6 +135,18 @@ export const colors = [
   '#6EC6FF',
 ];
 
+export const colorsSubcanales = [
+  '#d3d4d9',
+  '#ffe999',
+  '#c2cfec',
+  '#c1b7ff',
+
+  '#C4ECFF',
+  '#D9FDFF',
+  '#E9FEFF',
+];
+
+
 export const imagesSubcanales = {
   'SinIcono.png': require('../assets/Subcanales/SinIcono.png'),
   'CreditoUber.png': require('../assets/Subcanales/CreditoUber.png'),
@@ -160,4 +172,27 @@ export const IconsAlerts = {
   'Icon_Green.png': require('../assets/AlertIcons/Icon_Green.png'),
   'Icon_Blue.png': require('../assets/AlertIcons/Icon_Blue.png'),
   'Icon_Yellow.png': require('../assets/AlertIcons/Icon_Yellow.png'),
-}; 
+};
+
+
+const isLightColor = (color) => {
+  const r = parseInt(color.substr(1, 2), 16);
+  const g = parseInt(color.substr(3, 2), 16);
+  const b = parseInt(color.substr(5, 2), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5;
+};
+
+export const getTextColor = (backgroundColor) => {
+  return isLightColor(backgroundColor) ? '#002F89' : 'white';
+};
+
+export const FormatoEntradaMoneda = (text) => {
+  const formattedText = text.replace(/[^0-9,.]/g, '');
+  const parts = formattedText.split(/[,.]/);
+  const integerPart = parts[0];
+  const decimalPart = parts[1] || '';
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const formattedValue = decimalPart.length > 0 ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+  return formattedValue;
+};

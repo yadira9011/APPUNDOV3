@@ -23,7 +23,7 @@ const CustomAlert = ({ visible, message, onClose, iconName }) => {
               style={styles.iconImage}
             /> */}
             <Image
-              source={IconsAlerts[iconName]}
+              source={IconsAlerts['Icon_Blue.png']}
               style={modalStyles.iconImage}
             />
           </View>

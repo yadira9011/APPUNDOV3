@@ -14,7 +14,7 @@ import { Picker } from '@react-native-picker/picker';
 import RNPickerSelect from 'react-native-picker-select';
 import pickerSelectStyles from '../Styles/PickerSelectStyles';
 import modalStyles from '../Styles/ModalStyles';
-import { IconsAlerts } from '../Utilities';
+import { IconsAlerts, FormatoEntradaMoneda } from '../Utilities';
 
 const CotizacionAutosScreen = () => {
 
@@ -93,6 +93,8 @@ const CotizacionAutosScreen = () => {
   const [TextEstado, setTextEstado] = useState('');
 
   const [TextDireccionElegida, setTextDireccionElegida] = useState('Direccion...');
+
+  const [IsSelectDireccion, setIsSelectDireccion] = useState(false);
 
   const [TextClaveUnica, setClaveUnica] = useState('');
 
@@ -187,7 +189,7 @@ const CotizacionAutosScreen = () => {
       if (response.data.Data.Data) {
         const data = response.data.Data.Data.slice(1);
         setAutoModelos(data);
-        setSelectedOptionModelo(data[0].Id);
+        setSelectedOptionModelo(data[0].Valor);
         setselectedTextModelo(data[0].Valor);
         await fetchAutoCotMarcas(estatusVehiculoId, data[0].Id);
       } else {
@@ -553,6 +555,10 @@ const CotizacionAutosScreen = () => {
     }
   };
 
+  const handleChangeMontoText = (text) => {
+    setTextMonto(FormatoEntradaMoneda(text));
+  };
+
   const handleCloseModal = () => {
     setModalVisible(false);
   };
@@ -569,7 +575,6 @@ const CotizacionAutosScreen = () => {
   );
 
   const handleItemPress = (item) => {
-
     setTextColonia(item.d_asenta);
     setTextMunicipio(item.D_mnpio);
     setTextCiudad(item.d_ciudad);
@@ -579,6 +584,7 @@ const CotizacionAutosScreen = () => {
     Ciudad: ${item.d_ciudad},
     Estado: ${item.d_estado}`;
     setTextDireccionElegida(txDireccion);
+    setIsSelectDireccion(true);
     setModalVisible(false);
   };
 
@@ -593,7 +599,9 @@ const CotizacionAutosScreen = () => {
       setTextCP(codigoPostal);
       fetchAutoInfoPostal();
       setModalVisible(true);
+      setIsSelectDireccion(false);
     } else {
+      setIsSelectDireccion(false);
       alert('Ingresa un código postal válido.');
     }
   };
@@ -723,6 +731,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionTipoUso}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Estatus vehículo:</Text>
@@ -734,6 +743,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOption}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Tipo vehículo:</Text>
@@ -745,18 +755,20 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionTipoVehiculo}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         <View style={styles.ContainerModelMarca}>
           <View style={styles.ContentCombo}>
             <Text style={styles.labelCmb}>Modelo</Text>
+
             <RNPickerSelect
               onValueChange={handleOptionChangeModelo}
               style={{
                 inputAndroid: {
                   fontSize: 7,
                   color: 'blue',
-                  width: 150,
+                  width: 130,
                   backgroundColor: 'white',
                 },
                 inputIOS: {
@@ -782,6 +794,7 @@ const CotizacionAutosScreen = () => {
               }}
               value={selectedOptionModelo}
             />
+
           </View>
           <View style={styles.ContentComboDos}>
             <Text style={styles.labelCmb}>Marca</Text>
@@ -832,6 +845,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionTipo}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Descripción:</Text>
@@ -842,6 +856,11 @@ const CotizacionAutosScreen = () => {
           items={AutoDescripciones}
           value={selectedOptionDescripcion}
           style={pickerSelectStyles}
+          // placeholder={{
+          //   label: 'Selecciona una descripción',
+          //   value: null,
+          // }}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Indemnización:</Text>
@@ -857,49 +876,72 @@ const CotizacionAutosScreen = () => {
 
         <View style={{
           flexDirection: 'row',
-          marginBottom: 20,
+          marginBottom: 15,
           alignItems: 'center',
-          borderColor: '#ccc',
+          borderColor: 'gray',
           borderWidth: 1,
-          marginLeft: 8,
+          marginLeft: 20,
+          width: '90%',
           marginRight: 8,
           marginTop: 10,
           borderRadius: 10,
           padding: 8
         }}>
           <TextInput
-            placeholder="Monto"
+            placeholder="Ingresa el monto del valor factura"
             value={textMonto}
             onChangeText={setTextMonto}
             style={styles.input}
+            //onChangeText={handleChangeMontoText}
+            keyboardType="numeric"
           />
         </View>
 
         <View style={{
           flexDirection: 'row',
-          marginBottom: 20,
+          marginBottom: 15,
           alignItems: 'center',
-          borderColor: '#ccc',
+          borderColor: 'gray',
           borderWidth: 1,
-          marginLeft: 8,
           marginRight: 8,
+          marginLeft: 20,
+          width: '90%',
           borderRadius: 10,
           padding: 5
         }}>
           <TextInput
-            placeholder="Codigo Postal"
+            placeholder="Ingresa un codigo postal"
             value={textCP}
             onChangeText={setTextCP}
-            style={{ fontSize: 10, flex: 1 }}
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 8,
+              fontSize: 14,
+              flex: 1,
+              color: 'blue',
+            }}
+            keyboardType="numeric"
           />
           <TouchableOpacity onPress={handleSearch} style={{ padding: 8 }}>
             <Ionicons name="search" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.labelDireccion}>{TextDireccionElegida}</Text>
-        <Text style={styles.label}>Deducibles :</Text>
+        {IsSelectDireccion ? (
+          <View>
+            <Text style={styles.label}>Colonia :</Text>
+            <Text style={styles.labelTxtdirecciones}>{TextColonia}</Text>
+            <Text style={styles.label}>Municipio :</Text>
+            <Text style={styles.labelTxtdirecciones}>{TextMunicipio}</Text>
+            <Text style={styles.label}>Ciudad :</Text>
+            <Text style={styles.labelTxtdirecciones}>{TextCiudad}</Text>
+            <Text style={styles.label}>Estado :</Text>
+            <Text style={styles.labelTxtdirecciones}>{TextEstado}</Text>
+          </View>
+        ) : null}
+        {/* <Text style={styles.labelDireccion}>{TextDireccionElegida}</Text> */}
 
+        <Text style={styles.label}>Deducibles :</Text>
         <RNPickerSelect
           onValueChange={handleOptionChangeDeducibles}
           items={AutoDeducibles.map((AutoDeducible) => ({
@@ -908,6 +950,7 @@ const CotizacionAutosScreen = () => {
           }))}
           style={pickerSelectStyles}
           value={selectedOptionDeducible}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Paquetes :</Text>
@@ -919,6 +962,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionPaquete}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Tipo Poliza :</Text>
@@ -930,6 +974,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionTipoPoliza}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         <Text style={styles.label}>Vigencias:</Text>
@@ -938,9 +983,10 @@ const CotizacionAutosScreen = () => {
           items={AutoVigencias.map((AutoVigencia) => ({
             label: AutoVigencia.Valor,
             value: AutoVigencia.Id,
-          }))}
+          })).filter(option => option.value !== null)}
           value={selectedOptionVigencia}
           style={pickerSelectStyles}
+          placeholder={{}}
         />
 
         {/* Botón de cotizar */}
@@ -1031,13 +1077,30 @@ const styles = StyleSheet.create({
   },
   label: {
     marginTop: 10,
-    marginLeft: 15,
+    marginLeft: 25,
     marginRight: 15,
     alignItems: 'center',
     fontWeight: 'bold',
     textTransform: 'uppercase',
     fontSize: 10,
 
+  },
+  labelTxtdirecciones: {
+    fontSize: 12,
+    flex: 1,
+    color:'blue',
+    marginBottom: 15,
+    alignItems: 'center',
+    textAlign: 'left',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginRight: 8,
+    marginLeft: 20,
+    width: '90%',
+    height: 40,
+    borderRadius: 10,
+    padding: 5,
+    paddingVertical: 8,
   },
   scrollstyle: {
     marginTop: 5,
@@ -1052,7 +1115,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 5,
     marginBottom: 25,
     fontSize: 10,
@@ -1060,7 +1122,8 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 10,
     paddingVertical: 8,
-    fontSize: 10,
+    fontSize: 14,
+    color: 'blue',
   },
   button: {
     backgroundColor: '#3498db',
@@ -1124,6 +1187,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 25,
     marginBottom: 15,
+    marginLeft: 10,
+    width: '90%',
   },
   ContentCombo: {
     width: '40%',
@@ -1137,7 +1202,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
   },
   ContentComboDos: {
-    width: '55%',
+    width: '60%',
     backgroundColor: '#fff',
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
@@ -1156,6 +1221,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 10,
   },
+
   labelDireccion: {
     alignContent: 'center',
     marginBottom: 10,

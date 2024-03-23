@@ -577,6 +577,7 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
     justifyContent: 'center',
   },
+  
   backgroundImage: {
     flex: 1,
     width: '100%',

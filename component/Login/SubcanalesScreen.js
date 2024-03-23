@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, SectionList, ActivityIndicator, Image, StyleSheet, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { UserClientes, UserGrupos, UserSubcanales } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
-import { CountClientes, CountCanales, CountSubCanales, colors, imagesSubcanales } from '../Utilities';
-
+import { CountClientes, CountCanales, CountSubCanales, colorsSubcanales, imagesSubcanales } from '../Utilities';
+import { Ionicons } from '@expo/vector-icons';
 const SubcanalesScreen = ({ route }) => {
     const navigation = useNavigation();
     const { DataParameterSubcanales } = route.params;
@@ -53,7 +53,7 @@ const SubcanalesScreen = ({ route }) => {
 
     const renderItem = ({ item, index }) => {
 
-        const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
+        const dynamicBackgroundColor = { backgroundColor: colorsSubcanales[index % colorsSubcanales.length] };
         const imagePath = item.Icono;
         const parts = imagePath.split('/');
         const lastPart = parts[parts.length - 1];
@@ -64,10 +64,36 @@ const SubcanalesScreen = ({ route }) => {
                 style={[styles.item, selectedItem?.IDSubCanal === item.IdSubcanal && styles.selectedItem, dynamicBackgroundColor]}
                 onPress={() => handleItemPress(item)} >
                 <View style={styles.ItemConteiner}>
-                    <View style={{ marginRight: 10, width: 200 }}>
-                        <Text style={{ textAlign: 'left', fontSize: 14 }}>{item.SubCanal}</Text>
+
+                    <View style={{ marginRight: 10, width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{
+                            textAlign: 'left',
+                            fontSize: 14, 
+                            marginLeft: 15, 
+                            marginRight: 10,
+                            fontSize: 14,
+                            color:'#002F89',
+                            fontWeight: 'bold',
+                        }}>{item.SubCanal}</Text>
                     </View>
-                    <Image source={imagesSubcanales[resultImg]} style={{ width: 80, height: 80, marginRight: 30, marginLeft: 30 }} />
+
+                    <View style={{ flex: 1, width: '20%', alignItems: 'flex-start' }}>
+                        <Image source={imagesSubcanales[resultImg]}
+                            style={{
+                                width: 100,
+                                height: 100,
+                                resizeMode: 'cover',
+                            }}
+                        />
+                    </View>
+
+                    <View style={{ marginRight: 5, width: '20%', flexDirection: 'row', alignItems: 'center' }}>
+
+                        <Ionicons
+                            name="arrow-forward-circle-outline"
+                            size={40}
+                            color="black" />
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -89,7 +115,6 @@ const SubcanalesScreen = ({ route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IDSubCanal.toString()}
             />
-
             {/* {selectedItem && (
                 <View style={styles.selectedItemContainer}>
                     <Text>Selected Item:</Text>
@@ -97,7 +122,6 @@ const SubcanalesScreen = ({ route }) => {
                 </View>
             )}
              */}
-             
         </View>
     );
 
@@ -106,29 +130,30 @@ const SubcanalesScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
-        paddingHorizontal: 20,
+        marginTop: 20
+        // paddingTop: 30,
+        // paddingHorizontal: 20,
     },
     ItemConteiner: {
         flexDirection: 'row',
         alignItems: 'center',
-
     },
     item: {
-        padding: 10,
-        marginVertical: 8,
-        backgroundColor: '#f9c2ff',
-        borderRadius: 15,
-        borderColor: 'blue',
-        borderWidth: 2,
+        marginTop: 15
+        // padding: 10,
+        // marginVertical: 8,
+        // backgroundColor: '#f9c2ff',
+        // borderRadius: 15,
+        // borderColor: 'blue',
+        // borderWidth: 2,
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
     },
     selectedItemContainer: {
         backgroundColor: '#f0ebeb',
-        padding: 10,
-        marginVertical: 20,
+        // padding: 10,
+        // marginVertical: 20,
         borderRadius: 5,
     },
 });

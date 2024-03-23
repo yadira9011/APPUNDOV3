@@ -10,8 +10,10 @@ import {
     Alert,
     TouchableOpacity
 } from 'react-native';
-import { colors as predefinedColors } from '../Utilities';
+import { colors as predefinedColors, getTextColor } from '../Utilities';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+// import { ColorScheme } from 'react-native-color';
 
 
 const ModulosScreen = ({ route }) => {
@@ -81,8 +83,17 @@ const ModulosScreen = ({ route }) => {
     const Item = ({ title, image, backgroundColor, onPress }) => (
         <TouchableOpacity onPress={onPress}>
             <View style={[styles.item, { backgroundColor }]}>
-                <Image source={image} style={styles.image} />
-                <Text style={styles.title}>{title}</Text>
+                <View style={{ flex: 1 }}>
+                    <Image source={image} style={styles.image} />
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                    {/* <Text style={styles.title}>{title}</Text> */}
+                    <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>{title}</Text>
+                    <Ionicons
+                        name="arrow-forward-circle-outline"
+                        size={40}
+                        color="black" />
+                </View>
             </View>
         </TouchableOpacity>
     );
@@ -107,27 +118,30 @@ const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight,
     },
     item: {
-        backgroundColor: '#ccc',
         height: 200,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 8,
-        marginHorizontal: 16,
-        borderRadius: 15,
-        borderColor: 'blue',
-        borderWidth: 2,
+        marginBottom:15,
+        // alignItems: 'center',
+        // marginVertical: 8,
+        // marginHorizontal: 16,
+        // borderRadius: 15,
+        // borderColor: 'blue',
+        // borderWidth: 2,
         flexDirection: 'row',
     },
     image: {
-        width: 120,
-        height: 120,
-        marginBottom: 10,
-        // borderRadius: 75,
-        marginRight:15,
-        resizeMode: 'cover',
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
     },
     title: {
         fontSize: 20,
+        marginLeft: 15,
+        marginRight: 5,
+        marginTop: 1,
+        fontSize: 12,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
     menustyle: {
         backgroundColor: '#92c5fc',
