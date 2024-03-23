@@ -816,7 +816,7 @@ const EmisionScreen = () => {
       "strPoliza": ""
     }
 
-    console.log(dataemi);
+    console.log('DATAAAA EMIIII', dataemi);
 
     if (EmisionOK == false) {
       const response = await GetCEmision(dataemi);
@@ -849,7 +849,6 @@ const EmisionScreen = () => {
         setloadingEmision(false);
       }
     }
-
 
     if (EmisionOK) {
       setloadingEmision(true);
