@@ -4,34 +4,57 @@ import { GetPolizaPdfApi } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts } from '../Utilities';
+import CustomAlert from '../Componentes/CustomAlert';
+import LoadingComponent from '../Componentes/LoadingComponent';
 
 export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
     const [numeroPoliza, setNumeroPoliza] = useState('6040035690');
+    const [isAlertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+    const [isAlertTwo, setAlertTwo] = useState(false);
+    const [Isloading, setIsloading] = useState(false);
 
     const handleGuardarPoliza = async () => {
-        onSave(numeroPoliza, idsubcanal, email, password);
+        // onSave(numeroPoliza, idsubcanal, email, password);
         try {
+            setIsloading(true);
             const DataRquest = {
                 numeroPoliza: numeroPoliza,
                 IDSubcananal: idsubcanal,
                 usuario: email,
                 contraseña: password,
             }
+            // console.log('data polizaaaa', DataRquest)
             const response = await GetPolizaPdfApi(DataRquest);
-
             if (response.data.Data.Data) {
                 const data = response.data.Data.Data;
                 const pdfUrl = data;
+                setIsloading(false);
                 navigation.navigate('PDFViewerScreen', { pdfUrl });
             } else {
-                console.error('La respuesta de la API no contiene pdf de poliza.');
+                setIsloading(false);
+                setAlertMessage(response.data.Data.Message);
+                setAlertVisible(true);
+                //console.error('La respuesta de la API no contiene pdf de poliza.');
             }
-
         } catch (error) {
-            console.error('Error al obtener los datos:', error);
+            setIsloading(false);
+            setAlertMessage('Error al obtener los datos:', error);
+            setAlertVisible(true);
+            //console.error('Error al obtener los datos:', error);
         }
+    };
+
+    const hideAlert = () => {
+        setAlertVisible(false);
+    };
+
+    const handleOnclose = () => {
+        setFolioCotizacion("");
+        onClose();
     };
 
     return (
@@ -63,6 +86,20 @@ export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, e
                     </View>
                 </View>
             </View>
+
+            {Isloading && (
+                <LoadingComponent />
+            )}
+
+            {isAlertVisible && (
+                <CustomAlert
+                    visible={isAlertVisible}
+                    message={alertMessage}
+                    iconName={IconMessage}
+                    onClose={hideAlert}
+                    AlertTwo={isAlertTwo}
+                />
+            )}
         </Modal>
     );
 }

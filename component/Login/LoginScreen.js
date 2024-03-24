@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  Alert,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions
+} from 'react-native';
 import { loginUser } from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 //import * as Notifications from 'expo-notifications';
@@ -18,6 +28,7 @@ const LoginScreen = ({ navigation, route }) => {
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+  const [isAlertTwo, setAlertTwo] = useState(false);
 
   useEffect(() => {
     const tokenFromProps = route.params?.expoPushToken || '';
@@ -151,27 +162,22 @@ const LoginScreen = ({ navigation, route }) => {
         onChangeText={setPassword}
         style={styles.textInput}
       />
-
       {/* <Text>TOKEN: {expoPushToken} </Text> */}
-
       {/* <Button title="Iniciar sesión" onPress={handleLogin}  style={styles.button} /> */}
-
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.ButtonText}>Iniciar sesión</Text>
       </TouchableOpacity>
-
       {/* <Image source={require('../../assets/IconoU.png')} style={styles.imageU} resizeMode="contain" /> */}
       <Text style={styles.Copyright}> ©UNDO 2017 - 2024</Text>
-
       {isAlertVisible && (
         <CustomAlert
           visible={isAlertVisible}
           message={alertMessage}
           iconName={IconMessage}
           onClose={hideAlert}
+          AlertTwo={isAlertTwo}
         />
       )}
-      {/* Icon_Red.png */}
     </View>
   );
 

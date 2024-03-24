@@ -4,19 +4,32 @@ import { GetCotizacionApi } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts } from '../Utilities';
+import CustomAlert from '../Componentes/CustomAlert';
+import LoadingComponent from '../Componentes/LoadingComponent';
 
-export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, idsubcanal, email, password, DataParameter }) {
+export default function ModalSolitarCotizacion({ isVisible,
+    onClose,
+    onSave,
+    idsubcanal,
+    email,
+    password,
+    DataParameter }) {
 
     const navigation = useNavigation();
     const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3164-23022024133225346');
-
+    const [isAlertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+    const [isAlertTwo, setAlertTwo] = useState(false);
+    const [Isloading, setIsloading] = useState(false);
     // AUT-1-12102023082739534
     //AUT-1-11112023124847111
 
     const handleBuscarCotizacion = async () => {
-        onSave(FolioCotizacion, email, password, idsubcanal);
+        console.log("aquiii")
         try {
-
+            setIsloading(true);
+            // onSave(FolioCotizacion, email, password, idsubcanal);
             const DataRquest = {
                 Cotizacion: FolioCotizacion,
                 IdSubcanal: idsubcanal,
@@ -39,8 +52,7 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     tipoPoliza: parametros_cot.TipoPoliza.text,
                     tipoVigenciaPago: parametros_cot.PagoVigencia.text,
                 }
-                //console.log(DataSolicitudTitulos);
-                //console.log( parametros_cot.vehiculo);
+
                 const dataCotizacion = {
                     ClaveVehiculo: parametros_cot.vehiculo.Descripcion.cu,
                     IDTipoVehiculo: parametros_cot.TipoVehiculo.value,
@@ -61,7 +73,6 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     contraseña: password,
                     IDSubcananal: idsubcanal
                 }
-                //console.log("cottttt",dataCotizacion)
                 const resultData = datos_cot.responses
                 const dataArray = {
                     DataResul: resultData,
@@ -69,17 +80,29 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                     DataTitulos: DataSolicitudTitulos,
                     DataParameter: DataParameter
                 }
-
+                setIsloading(false);
                 navigation.navigate('ResultadoCotizacion', { dataArray });
-
             } else {
-                alert(response.data.Data.Message);
+                setIsloading(false);
+                setAlertMessage(response.data.Data.Message);
+                setAlertVisible(true);
             }
 
         } catch (error) {
-            console.log(error);
+            setIsloading(false);
+            setAlertMessage(error);
+            setAlertVisible(true);
         }
 
+    };
+
+    const hideAlert = () => {
+        setAlertVisible(false);
+    };
+
+    const handleOnclose = () => {
+        setFolioCotizacion("");
+        onClose();
     };
 
     return (
@@ -105,12 +128,27 @@ export default function ModalSolitarCotizacion({ isVisible, onClose, onSave, ids
                         <TouchableOpacity onPress={handleBuscarCotizacion} style={modalStyles.saveButton}>
                             <Text style={modalStyles.buttonText}>Buscar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onClose} style={modalStyles.cancelButton}>
+                        <TouchableOpacity onPress={handleOnclose} style={modalStyles.cancelButton}>
                             <Text style={modalStyles.buttonText}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
+
+            {Isloading && (
+                <LoadingComponent />
+            )}
+
+            {isAlertVisible && (
+                <CustomAlert
+                    visible={isAlertVisible}
+                    message={alertMessage}
+                    iconName={IconMessage}
+                    onClose={hideAlert}
+                    AlertTwo={isAlertTwo}
+                />
+            )}
         </Modal>
+
     );
 }

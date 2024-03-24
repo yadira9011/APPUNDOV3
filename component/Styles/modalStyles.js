@@ -25,18 +25,31 @@ const modalStyles = {
     fontSize: 14,
     textAlign: 'center',
   },
+
   closeButton: {
     alignSelf: 'center',
     marginTop: 10,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#0066cc',
+    backgroundColor: 'red',
     borderRadius: 5,
   },
+
+  confirmButton: {
+    alignSelf: 'center',
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: 'green',
+    borderRadius: 5,
+    marginRight:15
+  },
+
   closeButtonText: {
     color: 'white',
     textAlign: 'center',
   },
+
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -46,7 +59,7 @@ const modalStyles = {
     backgroundColor: 'green',
     borderRadius: 5,
     padding: 10,
-    marginRight:10,
+    marginRight: 10,
     alignItems: 'center',
   },
   cancelButton: {
@@ -70,7 +83,7 @@ const modalStyles = {
     fontSize: 12
   },
   LabelTxt: {
-    marginBottom: 10, 
+    marginBottom: 10,
     fontSize: 12
   },
 };

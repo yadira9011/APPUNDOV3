@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomAlert from './CustomAlert';
 
 const YourModal = ({ navigation, route }) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
     const routename = route.name;
+    const [isAlertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
 
 
     const openModal = () => {
@@ -26,6 +30,16 @@ const YourModal = ({ navigation, route }) => {
             params = { DataParameter: route.params?.dataArrayEmi?.DataParameter };
         }
         return params
+    };
+
+    const hideAlert = () => {
+        setAlertVisible(false);
+    };
+
+    const handleConfirm = () => {
+        setAlertVisible(false);
+        setModalVisible(false);
+        navigation.navigate('Login');
     };
 
     return (
@@ -70,8 +84,8 @@ const YourModal = ({ navigation, route }) => {
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-start' }}>
                         <TouchableOpacity
                             onPress={() => {
-                                setModalVisible(false);
-                                navigation.navigate('Login');
+                                setAlertMessage('¿Esta seguro que desea cerrar sesión?');
+                                setAlertVisible(true);
                             }}
                             style={{ marginBottom: 10, flexDirection: 'row', }}>
                             <Ionicons name="exit" size={35} color="white" />
@@ -80,9 +94,21 @@ const YourModal = ({ navigation, route }) => {
                     </View>
                 </View>
             </Modal>
+            {isAlertVisible && (
+                <CustomAlert
+                    visible={isAlertVisible}
+                    message={alertMessage}
+                    iconName={IconMessage}
+                    onClose={hideAlert}
+                    onConfirm={handleConfirm}
+                    AlertTwo={true}
+                />
+            )}
         </>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     menuButton: {

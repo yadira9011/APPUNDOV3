@@ -2,13 +2,13 @@ import React from 'react';
 import { Modal, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts } from '../Utilities';
-
-const CustomAlert = ({ visible, message, onClose, iconName }) => {
-  console.log("ICON NAME ... ", iconName)
+const CustomAlert = ({ visible, message, onClose, iconName, AlertTwo, onConfirm }) => {
   const handleClose = () => {
     onClose();
   };
-  
+  const handleConfirm = () => {
+    onConfirm();
+  };
   return (
     <Modal
       transparent
@@ -28,9 +28,21 @@ const CustomAlert = ({ visible, message, onClose, iconName }) => {
             />
           </View>
           <Text style={modalStyles.message}>{message}</Text>
-          <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose}>
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            {AlertTwo && (
+              <TouchableOpacity style={modalStyles.confirmButton} onPress={handleConfirm}>
+                <Text style={modalStyles.closeButtonText}>Sí</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose}>
+              {/* <Text style={modalStyles.closeButtonText}>No</Text> */}
+              <Text style={modalStyles.closeButtonText}>{AlertTwo ? "No" : "Cerrar"}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose}>
             <Text style={modalStyles.closeButtonText}>Cerrar</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </Modal>

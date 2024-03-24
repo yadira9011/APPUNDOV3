@@ -15,6 +15,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import pickerSelectStyles from '../Styles/PickerSelectStyles';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts, FormatoEntradaMoneda } from '../Utilities';
+import CustomAlert from '../Componentes/CustomAlert';
 
 const CotizacionAutosScreen = () => {
 
@@ -100,6 +101,11 @@ const CotizacionAutosScreen = () => {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+  const [isAlertTwo, setAlertTwo] = useState(false);
+
   useEffect(() => {
 
     const loadData = async () => {
@@ -128,7 +134,6 @@ const CotizacionAutosScreen = () => {
     };
     loadData();
   }, []);
-
 
   const fetchAutoEstatusVehiculos = async () => {
     try {
@@ -602,7 +607,9 @@ const CotizacionAutosScreen = () => {
       setIsSelectDireccion(false);
     } else {
       setIsSelectDireccion(false);
-      alert('Ingresa un código postal válido.');
+
+      setAlertMessage('Ingresa un código postal válido.');
+      setAlertVisible(true);
     }
   };
 
@@ -623,7 +630,6 @@ const CotizacionAutosScreen = () => {
         tipoPoliza: selectedTextTipoPoliza,
         tipoVigenciaPago: selectedTextTipoVigencia,
       }
-
       const dataCotizacion = {
         ClaveVehiculo: selectedOptionDescripcion,
         IDTipoVehiculo: selectedOptionTipoVehiculo,
@@ -644,17 +650,10 @@ const CotizacionAutosScreen = () => {
         contraseña: DataParameter.password,
         IDSubcananal: DataParameter.IdSubCanal
       }
-
-      console.log("Datos Cotizacion", DataSolicitudTitulos);
-
       const response = await GetCotizacion(dataCotizacion);
-      console.log(response);
-
       if (response.data.Data.Data) {
-
         const resultData = response.data.Data.Data;
         setLoadingCotizacion(false);
-
         const dataArray = {
           DataResul: resultData,
           CotiData: dataCotizacion,
@@ -663,10 +662,11 @@ const CotizacionAutosScreen = () => {
         }
         navigation.navigate('ResultadoCotizacion', { dataArray });
       }
-
     } catch (error) {
       setLoadingCotizacion(false);
-      console.error('Error al obtener los datos:', error);
+      setAlertMessage('Error al obtener los datos:', error);
+      setAlertVisible(true);
+      //console.error('Error al obtener los datos:', error);
       setLoading(false);
     } finally {
       setLoadingCotizacion(false);
@@ -676,6 +676,10 @@ const CotizacionAutosScreen = () => {
 
   const closeModalDes = () => {
     setModalVisibleDescription(false);
+  };
+
+  const hideAlert = () => {
+    setAlertVisible(false);
   };
 
   const RefresData = () => {
@@ -1055,11 +1059,20 @@ const CotizacionAutosScreen = () => {
         <LoadingComponent />
       )}
 
+      {isAlertVisible && (
+        <CustomAlert
+          visible={isAlertVisible}
+          message={alertMessage}
+          iconName={IconMessage}
+          onClose={hideAlert}
+          AlertTwo={isAlertTwo}
+        />
+      )}
+
     </View >
   );
 
 };
-
 const styles = StyleSheet.create({
   container: {
     padding: 0,
@@ -1088,7 +1101,7 @@ const styles = StyleSheet.create({
   labelTxtdirecciones: {
     fontSize: 12,
     flex: 1,
-    color:'blue',
+    color: 'blue',
     marginBottom: 15,
     alignItems: 'center',
     textAlign: 'left',
@@ -1236,25 +1249,4 @@ const styles = StyleSheet.create({
     marginLeft: 35,
   },
 });
-
-// const pickerSelectStyles = {
-//   viewContainer: {
-//     borderWidth: 1,
-//     borderColor: 'gray',
-//     borderRadius: 4,
-//     padding: 10,
-//     margin: 10,
-//     color: 'blue',
-//     backgroundColor: 'white',
-//   },
-//   inputAndroid: {
-//     fontSize: 16,
-//     color: 'black',
-//   },
-//   inputIOS: {
-//     fontSize: 16,
-//     color: 'blue',
-//   },
-// };
-
 export default CotizacionAutosScreen;
