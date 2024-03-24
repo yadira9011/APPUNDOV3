@@ -302,11 +302,13 @@ const CotizacionAutosScreen = () => {
         DataParameter.IdSubCanal,
         estatusVehiculoId
       );
-
       if (response.data.Data.Data) {
+
         const data = response.data.Data.Data;
+        console.log('INDEPIII', data);
         setAutoIndemnizaciones(data);
         setSelectedOptionIndemnizacion(data[0].Id);
+
       } else {
         console.error('La respuesta de la API no contiene indenmizaciones.');
       }
@@ -790,12 +792,13 @@ const CotizacionAutosScreen = () => {
                 label: AutoModelo.Valor,
                 value: AutoModelo.Valor,
               }))}
-              placeholder={{
-                label: 'Año',
-                value: null,
-                color: 'blue',
-                fontSize: 5,
-              }}
+              // placeholder={{
+              //   label: 'Año',
+              //   value: null,
+              //   color: 'blue',
+              //   fontSize: 5,
+              // }}
+              placeholder={{}}
               value={selectedOptionModelo}
             />
 
@@ -830,12 +833,13 @@ const CotizacionAutosScreen = () => {
                 value: AutoMarca.Valor,
               }))}
               value={selectedOptionMarca}
-              placeholder={{
-                label: 'Marca',
-                value: null,
-                color: 'blue',
-                fontSize: 5,
-              }}
+              // placeholder={{
+              //   label: 'Marca',
+              //   value: null,
+              //   color: 'blue',
+              //   fontSize: 5,
+              // }}
+              placeholder={{}}
             />
           </View>
         </View>
@@ -878,28 +882,32 @@ const CotizacionAutosScreen = () => {
           style={pickerSelectStyles}
         />
 
-        <View style={{
-          flexDirection: 'row',
-          marginBottom: 15,
-          alignItems: 'center',
-          borderColor: 'gray',
-          borderWidth: 1,
-          marginLeft: 20,
-          width: '90%',
-          marginRight: 8,
-          marginTop: 10,
-          borderRadius: 10,
-          padding: 8
-        }}>
-          <TextInput
-            placeholder="Ingresa el monto del valor factura"
-            value={textMonto}
-            onChangeText={setTextMonto}
-            style={styles.input}
-            //onChangeText={handleChangeMontoText}
-            keyboardType="numeric"
-          />
-        </View>
+        {selectedOptionIndemnizacion === 1 && (
+          <View style={{
+            flexDirection: 'row',
+            marginBottom: 15,
+            alignItems: 'center',
+            borderColor: 'gray',
+            borderWidth: 1,
+            marginLeft: 20,
+            width: '90%',
+            marginRight: 8,
+            marginTop: 10,
+            borderRadius: 10,
+            padding: 8
+          }}>
+            <TextInput
+              placeholder="Ingresa el monto del valor factura"
+              value={textMonto}
+              onChangeText={setTextMonto}
+              style={styles.input}
+              keyboardType="numeric"
+            />
+          </View>
+        )}
+
+
+        <Text style={styles.label}>Codigo Postal :</Text>
 
         <View style={{
           flexDirection: 'row',

@@ -104,6 +104,14 @@ const CanalesScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
+            
+            <Text style={{
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'gray',
+                marginBottom: 15
+            }}>Selecciona un canal:</Text>
+
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -123,7 +131,7 @@ const CanalesScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 40,
+        paddingTop: 20,
         paddingHorizontal: 20,
     },
     item: {

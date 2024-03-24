@@ -100,6 +100,15 @@ const ModulosScreen = ({ route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            
+            <Text style={{
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'gray',
+                marginBottom: 15
+            }}>Selecciona un módulo:</Text>
+
+
             <VirtualizedList
                 initialNumToRender={3}
                 // renderItem={({ item }) => <Item title={item.title} image={item.image} />}

@@ -68,11 +68,10 @@ const SubcanalesScreen = ({ route }) => {
                     <View style={{ marginRight: 10, width: '50%', flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
                             textAlign: 'left',
-                            fontSize: 14, 
-                            marginLeft: 15, 
-                            marginRight: 10,
                             fontSize: 14,
-                            color:'#002F89',
+                            marginLeft: 15,
+                            marginRight: 10,
+                            color: '#002F89',
                             fontWeight: 'bold',
                         }}>{item.SubCanal}</Text>
                     </View>
@@ -110,6 +109,13 @@ const SubcanalesScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
+
+            <Text style={{
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'gray',
+            }}>Selecciona un subcanal:</Text>
+
             <FlatList
                 data={data}
                 renderItem={renderItem}

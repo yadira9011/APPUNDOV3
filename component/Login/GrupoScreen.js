@@ -145,6 +145,14 @@ const GrupoScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
+
+            <Text style={{
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'gray',
+                marginBottom: 15
+            }}>Selecciona un grupo:</Text>
+
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -166,7 +174,7 @@ const GrupoScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 40,
+        paddingTop: 20,
         paddingHorizontal: 20,
     },
     item: {

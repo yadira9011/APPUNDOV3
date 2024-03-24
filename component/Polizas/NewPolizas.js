@@ -573,8 +573,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: '85%',
     marginLeft: 30,
-    borderWidth: 2,
-    borderColor: 'blue',
+    borderWidth: 4,
+    borderColor: '#1c7dff',
     justifyContent: 'center',
   },
   
@@ -634,7 +634,7 @@ const styles = StyleSheet.create({
   },
   description: {
     marginTop: 4,
-    color: 'gray',
+    color: '#091496',
     textAlign: 'center',
   },
 
@@ -648,7 +648,7 @@ const styles = StyleSheet.create({
 
   boldBlackText: {
     fontWeight: 'bold',
-    color: 'black',
+    color: '#091496',
   },
   boldWhiteText: {
     fontWeight: 'bold',
