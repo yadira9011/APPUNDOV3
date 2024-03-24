@@ -3,6 +3,7 @@ import { View, Text, SectionList, ActivityIndicator, StyleSheet, TouchableOpacit
 import { UserGrupos } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales, colors } from '../Utilities';
+import { Ionicons } from '@expo/vector-icons';
 
 const GrupoScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -65,7 +66,17 @@ const GrupoScreen = ({ route }) => {
                     dynamicBackgroundColor,
                 ]}
                 onPress={() => handleItemPress(item)}>
-                <Text style={styles.LabelTxt}>{item.Grupo}</Text>
+
+                <View style={{ marginRight: 5, width: '60%', alignItems: 'center' }}>
+                    <Text style={styles.LabelTxt}>{item.Grupo}</Text>
+                </View>
+                <View style={{ marginRight: 5, width: '40%', alignItems: 'center' }}>
+                    <Ionicons
+                        name="arrow-forward-circle-outline"
+                        size={40}
+                        color="black" />
+                </View>
+
             </TouchableOpacity>
         );
     };
@@ -175,15 +186,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 20,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
     },
     item: {
         padding: 10,
         marginVertical: 8,
         alignItems: 'center',
-        borderRadius: 15,
-        borderColor: 'blue',
-        borderWidth: 2,
+        flexDirection: 'row',
+        // borderRadius: 15,
+        // borderColor: 'blue',
+        // borderWidth: 2,
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
@@ -195,7 +207,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     LabelTxt: {
+        fontSize:20,
         fontWeight: 'bold',
+        color: '#002F89',
         textTransform: 'uppercase',
     },
 });

@@ -302,7 +302,7 @@ const ResultadoCotizacionScreen = () => {
                             onChangeText={setEmail}
                         />
                         <View style={styles.switchContainer}>
-                            <Text>Enviar a Todos</Text>
+                            <Text>Enviar Todas</Text>
                             <Switch
                                 value={sendAll}
                                 onValueChange={value => setSendAll(value)}

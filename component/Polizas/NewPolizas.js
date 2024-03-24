@@ -12,8 +12,9 @@ import {
   FlatList,
   Modal,
   Image,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
+import { Linking } from 'expo';
 
 import {
   GetPolizasGpoTitular,
@@ -33,7 +34,6 @@ import LoadingComponent from '../Componentes/LoadingComponent';
 import UndoAutosImage from '../../assets/Polizas/UndoAutos.png';
 import UndoProteccionImage from '../../assets/Polizas/UndoProteccion.png';
 import UndoVidaImage from '../../assets/Polizas/UndoVida.png';
-
 import { imagenesAseguradoras } from '../Utilities';
 
 const NewPolizas = ({ route }) => {
@@ -162,10 +162,12 @@ const NewPolizas = ({ route }) => {
             iconName = 'person';
             break;
           case 'second':
-            iconName = 'people';
+            iconName = 'business';
+            //iconName = 'people';
             break;
           case 'tercero':
-            iconName = 'business';
+            iconName = 'people';
+            //iconName = 'business';
             break;
           case 'cuarto':
             iconName = 'briefcase';
@@ -473,17 +475,36 @@ const NewPolizas = ({ route }) => {
             }
           </View>
 
+          <TouchableOpacity onPress={() => handleCall(item.FSNUM_ATENCION)}>
+            <View style={styles.ConteinerAtencion}>
+              <Image
+                source={require('../../assets/Polizas/call_button.png')}
+                style={{
+                  width: 35,
+                  height: 35,
+                  marginTop: -8,
+                  resizeMode: 'contain'
+                }}
+              />
+              <Text style={styles.descriptionwhite}>
+                <Text style={styles.boldWhiteText}>Atención: </Text>{item.FSNUM_ATENCION}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          {/* 
           <View style={styles.ConteinerAtencion}>
             <Image
               source={require('../../assets/Polizas/call_button.png')}
-              style={{ 
-                width:35, 
+              style={{
+                width: 35,
                 height: 35,
-                marginTop: -8,  
-                resizeMode: 'contain' }}
+                marginTop: -8,
+                resizeMode: 'contain'
+              }}
             />
             <Text style={styles.descriptionwhite}><Text style={styles.boldWhiteText}>Atención: </Text>{item.FSNUM_ATENCION}</Text>
-          </View>
+          </View> */}
 
         </View>
       </ImageBackground >
@@ -503,6 +524,19 @@ const NewPolizas = ({ route }) => {
     setModalCoberturasVisible(false);
   };
 
+  const handleCall = async (phoneNumber) => {
+    const fon = '2781152721'
+    // const url = `tel:${fon}`;
+    const url = `tel:${fon}`;
+    //await Linking.openURL(url);
+    // Linking.canOpenURL(url).then((supported) => {
+    //   if (supported) {
+    //     Linking.openURL(url);
+    //   } else {
+    //     console.log(`No se puede realizar una llamada al número ${phoneNumber}`);
+    //   }
+    // });
+  };
 
   if (loading) {
     return (
@@ -538,7 +572,6 @@ const NewPolizas = ({ route }) => {
             <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </TouchableOpacity>
-
           </View>
         </View>
       </Modal>
@@ -577,7 +610,7 @@ const styles = StyleSheet.create({
     borderColor: '#1c7dff',
     justifyContent: 'center',
   },
-  
+
   backgroundImage: {
     flex: 1,
     width: '100%',
@@ -643,7 +676,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginLeft: 10,
-    fontSize:10
+    fontSize: 10
   },
 
   boldBlackText: {
@@ -653,7 +686,7 @@ const styles = StyleSheet.create({
   boldWhiteText: {
     fontWeight: 'bold',
     color: 'white',
-    fontSize:10
+    fontSize: 10
   },
   boldBlackTextAse: {
     fontWeight: 'bold',

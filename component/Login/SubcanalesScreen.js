@@ -87,7 +87,6 @@ const SubcanalesScreen = ({ route }) => {
                     </View>
 
                     <View style={{ marginRight: 5, width: '20%', flexDirection: 'row', alignItems: 'center' }}>
-
                         <Ionicons
                             name="arrow-forward-circle-outline"
                             size={40}
