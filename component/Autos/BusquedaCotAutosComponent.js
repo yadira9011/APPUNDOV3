@@ -16,13 +16,13 @@ export default function ModalSolitarCotizacion({ isVisible,
     DataParameter }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3164-23022024133225346');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3160-26032024134853515');
     const [isAlertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
     const [isAlertTwo, setAlertTwo] = useState(false);
     const [Isloading, setIsloading] = useState(false);
-    // AUT-1-12102023082739534
+    // AUT-1-12102023082739534 AUT-3164-23022024133225346
     //AUT-1-11112023124847111
 
     const handleBuscarCotizacion = async () => {
@@ -81,6 +81,7 @@ export default function ModalSolitarCotizacion({ isVisible,
                     DataParameter: DataParameter
                 }
                 setIsloading(false);
+                onClose();
                 navigation.navigate('ResultadoCotizacion', { dataArray });
             } else {
                 setIsloading(false);

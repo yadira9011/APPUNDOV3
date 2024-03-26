@@ -10,7 +10,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Switch,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Collapsible from 'react-native-collapsible';
@@ -958,16 +959,23 @@ const EmisionScreen = () => {
       <ScrollView style={styles.container}>
 
         {/* dATOS emisión */}
+
         <View style={styles.imageContainer}>
-          <Image source={TxtUrlconAse} style={styles.imageCober} />
-          <View style={styles.textContainer}>
-            <Text style={styles.description}><Text style={styles.boldText}>MODELO:</Text> {dataArrayEmi.DataTitulos.Modelo}</Text>
-            <Text style={styles.description}><Text style={styles.boldText}>DESCRIPCION:</Text> {dataArrayEmi.DataTitulos.DescripcionVehiculo}</Text>
-            <Text style={styles.description}><Text style={styles.boldText}>TIPO USO :</Text> {dataArrayEmi.DataTitulos.TipoUso}</Text>
-            <Text style={styles.description}><Text style={styles.boldText}>PAQUETE:</Text> {dataArrayEmi.DataTitulos.tipoPaquete}</Text>
-            <Text style={styles.description}><Text style={styles.boldText}>VIGENCIA:</Text> {dataArrayEmi.DataTitulos.tipoVigenciaPago}</Text>
-            <Text style={styles.description}><Text style={styles.boldText}>PRIMA TOTAL:</Text> {dataArrayEmi.DataItemSelect.PrimaTotal}</Text>
+          <View style={styles.imageContain}>
+            <Image source={TxtUrlconAse} style={styles.imageCober} />
           </View>
+          <ImageBackground
+            source={require('../../assets/Polizas/background.png')}
+            imageStyle={styles.backgroundImage} >
+            <View style={styles.textContainer}>
+              <Text style={styles.description}><Text style={styles.boldText}>MODELO:</Text> {dataArrayEmi.DataTitulos.Modelo}</Text>
+              <Text style={styles.description}><Text style={styles.boldText}>DESCRIPCION:</Text> {dataArrayEmi.DataTitulos.DescripcionVehiculo}</Text>
+              <Text style={styles.description}><Text style={styles.boldText}>TIPO USO :</Text> {dataArrayEmi.DataTitulos.TipoUso}</Text>
+              <Text style={styles.description}><Text style={styles.boldText}>PAQUETE:</Text> {dataArrayEmi.DataTitulos.tipoPaquete}</Text>
+              <Text style={styles.description}><Text style={styles.boldText}>VIGENCIA:</Text> {dataArrayEmi.DataTitulos.tipoVigenciaPago}</Text>
+              <Text style={styles.description}><Text style={styles.boldText}>PRIMA TOTAL:</Text> {dataArrayEmi.DataItemSelect.PrimaTotal}</Text>
+            </View>
+          </ImageBackground >
         </View>
 
         {/* dATOS CONTRATANTE ../../assets/EmiIcons/DatosContra.png */}
@@ -1140,132 +1148,151 @@ const EmisionScreen = () => {
 
           <View style={styles.pickerContainerNew}>
 
-            <RNPickerSelect
-              onValueChange={(itemValue) => setSelectedDia(itemValue)}
-              style={{
-                inputAndroid: {
+            <View style={{
+              flexDirection: 'column',
+              width: '30%',
+            }}>
+              <Text>Dia:</Text>
+              <RNPickerSelect
+                onValueChange={(itemValue) => setSelectedDia(itemValue)}
+                style={{
+                  inputAndroid: {
+                    fontSize: 5,
+                    color: 'blue',
+                    borderWidth: 0,
+                    borderColor: 'gray',
+                    borderRadius: 3,
+                    width: 110,
+                    marginRight: 5,
+                    marginBottom: 10,
+                    marginLeft: 0,
+                    backgroundColor: 'white',
+                  },
+                  inputIOS: {
+                    fontSize: 14,
+                    color: 'blue',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                    width: 60,
+                    marginRight: 5,
+                    marginBottom: 15,
+                    backgroundColor: 'white',
+                    textAlign: 'center',
+                  },
+                  viewContainer: {
+                    padding: 0,
+                  },
+                }}
+                items={dias.map((dia) => ({
+                  label: dia.Valor,
+                  value: dia.Id,
+                }))}
+                value={selectedDia}
+                placeholder={{
+                  label: 'Dia',
+                  value: null,
+                  color: 'blue',
                   fontSize: 5,
-                  color: 'blue',
-                  borderWidth: 0,
-                  borderColor: 'gray',
-                  borderRadius: 3,
-                  width: 110,
-                  marginRight: 5,
-                  marginBottom: 10,
-                  marginLeft: 0,
-                  backgroundColor: 'white',
-                },
-                inputIOS: {
-                  fontSize: 14,
-                  color: 'blue',
-                  borderWidth: 1,
-                  borderRadius: 4,
-                  borderColor: 'gray',
-                  width: 60,
-                  marginRight: 5,
-                  marginBottom: 15,
-                  backgroundColor: 'white',
-                  textAlign: 'center',
-                },
-                viewContainer: {
-                  padding: 0,
-                },
-              }}
-              items={dias.map((dia) => ({
-                label: dia.Valor,
-                value: dia.Id,
-              }))}
-              value={selectedDia}
-              placeholder={{
-                label: 'Dia',
-                value: null,
-                color: 'blue',
-                fontSize: 5,
-              }}
-            />
+                }}
+              />
+            </View>
 
-            <RNPickerSelect
-              onValueChange={(itemValue) => setSelectedMes(itemValue)}
-              style={{
-                inputAndroid: {
-                  fontSize: 7,
+            <View style={{
+              flexDirection: 'column',
+              width: '30%',
+            }}>
+              <Text>Mes:</Text>
+              <RNPickerSelect
+                onValueChange={(itemValue) => setSelectedMes(itemValue)}
+                style={{
+                  inputAndroid: {
+                    fontSize: 7,
+                    color: 'blue',
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    borderRadius: 4,
+                    width: 118,
+                    marginRight: 5,
+                    backgroundColor: 'white',
+                  },
+                  inputIOS: {
+                    fontSize: 14,
+                    color: 'blue',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                    width: 70,
+                    marginRight: 5,
+                    marginBottom: 15,
+                    backgroundColor: 'white',
+                    textAlign: 'center',
+                  },
+                  viewContainer: {
+                    padding: 0,
+                  },
+                }}
+                items={meses.map((mes) => ({
+                  label: mes.Valor,
+                  value: mes.Id,
+                }))}
+                value={selectedMes}
+                placeholder={{
+                  label: 'Mes',
+                  value: null,
                   color: 'blue',
-                  borderWidth: 1,
-                  borderColor: 'gray',
-                  borderRadius: 4,
-                  width: 118,
-                  marginRight: 5,
-                  backgroundColor: 'white',
-                },
-                inputIOS: {
-                  fontSize: 14,
-                  color: 'blue',
-                  borderWidth: 1,
-                  borderRadius: 4,
-                  borderColor: 'gray',
-                  width: 70,
-                  marginRight: 5,
-                  marginBottom: 15,
-                  backgroundColor: 'white',
-                  textAlign: 'center',
-                },
-                viewContainer: {
-                  padding: 0,
-                },
-              }}
-              items={meses.map((mes) => ({
-                label: mes.Valor,
-                value: mes.Id,
-              }))}
-              value={selectedMes}
-              placeholder={{
-                label: 'Mes',
-                value: null,
-                color: 'blue',
-                fontSize: 5,
-              }}
-            />
+                  fontSize: 5,
+                }}
+              />
+            </View>
 
-            <RNPickerSelect
-              onValueChange={(itemValue) => setSelectedAno(itemValue)}
-              style={{
-                inputAndroid: {
-                  fontSize: 7,
+
+            <View style={{
+              flexDirection: 'column',
+              width: '30%',
+            }}>
+              <Text>Año:</Text>
+              <RNPickerSelect
+                onValueChange={(itemValue) => setSelectedAno(itemValue)}
+                style={{
+                  inputAndroid: {
+                    fontSize: 7,
+                    color: 'blue',
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    borderRadius: 4,
+                    width: 125,
+                    backgroundColor: 'white',
+                  },
+                  inputIOS: {
+                    fontSize: 14,
+                    color: 'blue',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                    width: 80,
+                    marginRight: 5,
+                    marginBottom: 15,
+                    backgroundColor: 'white',
+                    textAlign: 'center',
+                  },
+                  viewContainer: {
+                    padding: 0,
+                  },
+                }}
+                items={anos.map((ano) => ({
+                  label: ano.Valor,
+                  value: ano.Id,
+                }))}
+                value={selectedAno}
+                placeholder={{
+                  label: 'Año',
+                  value: null,
                   color: 'blue',
-                  borderWidth: 1,
-                  borderColor: 'gray',
-                  borderRadius: 4,
-                  width: 125,
-                  backgroundColor: 'white',
-                },
-                inputIOS: {
-                  fontSize: 14,
-                  color: 'blue',
-                  borderWidth: 1,
-                  borderRadius: 4,
-                  borderColor: 'gray',
-                  width: 80,
-                  marginRight: 5,
-                  marginBottom: 15,
-                  backgroundColor: 'white',
-                  textAlign: 'center',
-                },
-                viewContainer: {
-                  padding: 0,
-                },
-              }}
-              items={anos.map((ano) => ({
-                label: ano.Valor,
-                value: ano.Id,
-              }))}
-              value={selectedAno}
-              placeholder={{
-                label: 'Año',
-                value: null,
-                color: 'blue',
-                fontSize: 5,
-              }}
-            />
+                  fontSize: 5,
+                }}
+              />
+            </View>
           </View>
 
           <Text style={styles.LabelText}>Teléfono</Text>
@@ -1421,9 +1448,38 @@ const EmisionScreen = () => {
 
             <View style={{ marginBottom: 10 }}>
 
-              <Text style={styles.LabelText}>Vigencia Desde:</Text>
+              <View style={{ flexDirection: 'row', }}>
+                <View style={{ marginBottom: 10, marginTop: 10, width: '55%', }}>
+                  <Text style={styles.LabelText}>Vigencia Desde:</Text>
+                </View>
+                <View style={{
+                  marginTop: 20,
+                  width: '45%',
+                  alignItems: 'right',
+                }}>
+                  <Text >Fecha: {TextDateVP}</Text>
+                </View>
+              </View>
 
-              <Text style={styles.LabelText}>Fecha: {TextDateVP}</Text>
+              <View style={{
+                flexDirection: 'row',
+                marginRight: '12',
+              }}>
+
+                <View style={{ marginBottom: 10, marginTop: 10, width: '75%' }}>
+                  <Text style={styles.LabelText} >Cambiar Fecha: </Text>
+                </View>
+                <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+                  <Switch
+                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitchCV}
+                    value={IsChangeVigencia}
+                    disabled={isDatePickerEnabled}
+                  />
+                </View>
+              </View>
 
               {showPicker && (
                 <DateTimePicker
@@ -1439,52 +1495,63 @@ const EmisionScreen = () => {
                 />
               )}
 
-              <Text style={styles.LabelText}>Cambiar Fecha</Text>
-              <Switch
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitchCV}
-                value={IsChangeVigencia}
-                disabled={isDatePickerEnabled}
-              />
+            </View>
+
+            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+              <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
+                <Text style={styles.LabelText}>Beneficiario Preferente</Text>
+              </View>
+              <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+                <Switch
+                  style={{ marginTop: 5, }}
+                  trackColor={{ false: '#767577', true: '#81b0ff' }}
+                  thumbColor={IsBP ? '#f5dd4b' : '#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  value={IsBP}
+                  disabled={true}
+                />
+              </View>
             </View>
 
             <View style={{ marginBottom: 10 }}>
-              <Text style={styles.LabelText}>Beneficiario Preferente</Text>
-              <Switch
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={IsBP ? '#f5dd4b' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                value={IsBP}
-                disabled={true}
-              />
-            </View>
 
-            <View style={{ marginBottom: 10 }}>
               {ShowisRenovacion && (
-                <View>
-                  <Text style={{ marginRight: 10 }}>Renovación:</Text>
-                  <Switch
-                    trackColor={{ false: '#767577', true: '#81b0ff' }}
-                    thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitchRembolso}
-                    value={isRenovacion}
-                  />
+
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                  <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
+                    <Text style={styles.LabelText}>Renovación</Text>
+                  </View>
+                  <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+                    <Switch
+                      trackColor={{ false: '#767577', true: '#81b0ff' }}
+                      thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
+                      ios_backgroundColor="#3e3e3e"
+                      onValueChange={toggleSwitchRembolso}
+                      value={isRenovacion}
+                    />
+                  </View>
+
                 </View>
+
               )}
 
               {showPickerFDesembolso && (
                 <View>
-                  <Text style={{ marginRight: 10 }}>Fecha de desembolso: {TextDateFD} </Text>
-                  <Switch
-                    trackColor={{ false: '#767577', true: '#81b0ff' }}
-                    thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={() => setShowChangeFD(true)}
-                    value={showChangeFD}
-                  />
+
+                  <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <View style={{ marginBottom: 10, width: '75%', }}>
+                      <Text style={styles.LabelText}>Fecha de desembolso: {TextDateFD} </Text>
+                    </View>
+                    <View style={{ marginBottom: 8, width: '25%', marginLeft: 20 }}>
+                      <Switch
+                        trackColor={{ false: '#767577', true: '#81b0ff' }}
+                        thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={() => setShowChangeFD(true)}
+                        value={showChangeFD}
+                      />
+                    </View>
+                  </View>
                   {showChangeFD && (
                     <DateTimePicker
                       testID="dateTimePicker"
@@ -1497,6 +1564,7 @@ const EmisionScreen = () => {
                       pickerStyle={{ backgroundColor: 'white' }}
                     />
                   )}
+
                 </View>
               )}
 
@@ -1522,30 +1590,44 @@ const EmisionScreen = () => {
               <Text style={{ marginRight: 10 }}>No se cuenta con método de pago configurado</Text>
             )}
             {isPL && (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Pago en Línea</Text>
-                <Switch
-                  trackColor={{ false: '#767577', true: '#81b0ff' }}
-                  thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitchPL}
-                  value={isEnabledPL}
-                  disabled={!isPL}
-                />
+
+              <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+
+                <View style={{ marginBottom: 10, marginTop: 10, width: '55%', }}>
+                  <Text style={styles.LabelText}>Pago en Línea</Text>
+                </View>
+
+                <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+                  <Switch
+                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    thumbColor={isEnabledPL ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitchPL}
+                    value={isEnabledPL}
+                    disabled={!isPL}
+                  />
+                </View>
+
               </View>
             )}
 
             {isPR && (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ marginRight: 10 }}>Pago Referenciado</Text>
-                <Switch
-                  trackColor={{ false: '#767577', true: '#81b0ff' }}
-                  thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitchPR}
-                  value={isEnabledPR}
-                  disabled={!isPR}
-                />
+              <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
+
+                <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
+                  <Text style={styles.LabelText}>Pago Referenciado</Text>
+                </View>
+
+                <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 10 }}>
+                  <Switch
+                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    thumbColor={isEnabledPR ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitchPR}
+                    value={isEnabledPR}
+                    disabled={!isPR}
+                  />
+                </View>
               </View>
             )}
 
@@ -1570,6 +1652,7 @@ const EmisionScreen = () => {
                   }))}
                   style={pickerSelectStyles}
                   value={selectedBancoEmisor}
+                  placeholder={{}}
                 />
 
                 <Text style={styles.LabelText}>Método de Pago</Text>
@@ -1581,6 +1664,7 @@ const EmisionScreen = () => {
                     value: mp.Id,
                   }))}
                   style={pickerSelectStyles}
+                  placeholder={{}}
                   value={selectedMetodosPagos}
                 />
 
@@ -1627,7 +1711,7 @@ const EmisionScreen = () => {
       {loadingEmision && (
         <LoadingComponent />
       )}
-    </View>
+    </View >
   );
 
 };
@@ -1683,22 +1767,28 @@ const styles = StyleSheet.create({
   pickerContainerNew: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    marginTop: 20,
+    marginTop: 10,
+    alignSelf: 'center',
+    width: '85%',
   },
   imageContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  imageContain: {
+    alignItems: 'center',
   },
   imageCober: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
   },
   textContainer: {
-    marginTop: 2,
+    marginLeft: 10,
+    marginTop: 10,
+    marginBottom: 10
   },
   description: {
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 4,
   },
   boldText: {
@@ -1738,7 +1828,13 @@ const styles = StyleSheet.create({
     marginRight: 15,
     fontWeight: 'bold',
   },
-
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 8,
+  },
 });
 
 export default EmisionScreen;

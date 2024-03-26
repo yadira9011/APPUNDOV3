@@ -325,6 +325,7 @@ const MiPerfilScreen = ({ route }) => {
                             value: genero.Id,
                         }))}
                         value={selectedGenero}
+                        placeholder={{}}
                         style={pickerSelectStyles}
                     />
 
@@ -357,130 +358,148 @@ const MiPerfilScreen = ({ route }) => {
                     />
 
                     <Text style={styles.LabelText}>Fecha de Nacimiento:</Text>
+
                     <View style={{
                         flexDirection: 'row',
-                        marginTop: 25,
-                        marginBottom: 15,
-                        marginLeft: 20
+                        justifyContent: 'center',
+                        width: '85%',
+                        alignItems: 'center',
+                        alignSelf: 'center'
                     }}>
-                        <RNPickerSelect
-                            onValueChange={(itemValue) => setSelectedDia(itemValue)}
-                            items={dias.map((dia) => ({
-                                label: dia.Valor,
-                                value: dia.Id,
-                            }))}
-                            value={selectedDia}
-                            style={{
-                                inputAndroid: {
-                                    fontSize: 7,
-                                    color: 'blue',
-                                    width: 130,
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: 'gray',
-                                },
-                                inputIOS: {
-                                    fontSize: 12,
-                                    color: 'blue',
-                                    width: 80,
-                                    backgroundColor: 'white',
-                                    textAlign: 'center',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: 'gray',
-                                },
-                                viewContainer: {
-                                    padding: 0,
-                                },
-                            }}
-                            placeholder={{
-                                label: 'Mes',
-                                value: null,
-                                color: 'blue',
-                                fontSize: 5,
-                            }}
-                        />
-
-                        <RNPickerSelect
-                            onValueChange={(itemValue) => setSelectedMes(itemValue)}
-                            items={meses.map((mes) => ({
-                                label: mes.Valor,
-                                value: mes.Id,
-                            }))}
-                            value={selectedMes}
-                            style={{
-                                inputAndroid: {
-                                    fontSize: 7,
-                                    color: 'blue',
-                                    width: 130,
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: 'gray',
-                                },
-                                inputIOS: {
-                                    fontSize: 12,
-                                    color: 'blue',
-                                    width: 80,
-                                    backgroundColor: 'white',
-                                    textAlign: 'center',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: 'gray',
-                                },
-                                viewContainer: {
-                                    padding: 0,
-                                    marginLeft: 10
-                                },
-                            }}
-                            placeholder={{
-                                label: 'Día',
-                                value: null,
-                                color: 'blue',
-                                fontSize: 5,
-                            }} />
 
 
-                        <RNPickerSelect
-                            onValueChange={(itemValue) => setSelectedAno(itemValue)}
-                            items={anos.map((ano) => ({
-                                label: ano.Valor,
-                                value: ano.Id,
-                            }))}
-                            value={selectedAno}
-                            style={{
-                                inputAndroid: {
-                                    fontSize: 7,
-                                    color: 'blue',
-                                    width: 130,
-                                    backgroundColor: 'white',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: 'gray',
-                                },
-                                inputIOS: {
-                                    fontSize: 12,
-                                    color: 'blue',
-                                    width: 80,
-                                    backgroundColor: 'white',
-                                    textAlign: 'center',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: 'gray',
-                                },
-                                viewContainer: {
-                                    padding: 0,
-                                    marginLeft: 10
-                                },
-                            }}
-                            placeholder={{
-                                label: 'Año',
-                                value: null,
-                                color: 'blue',
-                                fontSize: 5,
-                            }} />
-                            
+                        <View style={{
+                            flexDirection: 'column',
+                            width: '30%',
+                        }}>
+                            <Text>Dia:</Text>
+                            <RNPickerSelect
+                                onValueChange={(itemValue) => setSelectedDia(itemValue)}
+                                items={dias.filter(dia => dia.Valor !== 'Dia').map((dia) => ({
+                                    label: dia.Valor,
+                                    value: dia.Id,
+                                }))}
+                                value={selectedDia}
+                                style={{
+                                    inputAndroid: {
+                                        fontSize: 7,
+                                        color: 'blue',
+                                        width: 130,
+                                        backgroundColor: 'white',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: 'gray',
+                                    },
+                                    inputIOS: {
+                                        fontSize: 12,
+                                        color: 'blue',
+                                        width: 80,
+                                        backgroundColor: 'white',
+                                        textAlign: 'center',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: 'gray',
+                                    },
+                                    viewContainer: {
+                                        padding: 0,
+                                    },
+                                }}
+                                placeholder={{}}
+                            />
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'column',
+                            width: '30%',
+                        }}>
+                            <Text>Mes:</Text>
+                            <RNPickerSelect
+                                onValueChange={(itemValue) => setSelectedMes(itemValue)}
+                                // items={meses.map((mes) => ({
+                                //     label: mes.Valor,
+                                //     value: mes.Id,
+                                // }))}
+                                items={meses.filter(mes => mes.Valor !== 'Mes').map((mes) => ({
+                                    label: mes.Valor,
+                                    value: mes.Id,
+                                }))}
+                                value={selectedMes}
+                                style={{
+                                    inputAndroid: {
+                                        fontSize: 7,
+                                        color: 'blue',
+                                        width: 130,
+                                        backgroundColor: 'white',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: 'gray',
+                                    },
+                                    inputIOS: {
+                                        fontSize: 12,
+                                        color: 'blue',
+                                        width: 80,
+                                        backgroundColor: 'white',
+                                        textAlign: 'center',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: 'gray',
+                                    },
+                                    viewContainer: {
+                                        padding: 0,
+                                    },
+                                }}
+                                placeholder={{}} />
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'column',
+                        }}>
+                            <Text>Año:</Text>
+                            <RNPickerSelect
+                                onValueChange={(itemValue) => setSelectedAno(itemValue)}
+                                // items={anos.map((ano) => ({
+                                //     label: ano.Valor,
+                                //     value: ano.Id,
+                                // }))}
+                                items={anos.filter(ano => ano.Valor !== 'Año').map((ano) => ({
+                                    label: ano.Valor,
+                                    value: ano.Id,
+                                }))}
+                                value={selectedAno}
+                                style={{
+                                    inputAndroid: {
+                                        fontSize: 7,
+                                        color: 'blue',
+                                        width: 130,
+                                        backgroundColor: 'white',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: 'gray',
+                                    },
+                                    inputIOS: {
+                                        fontSize: 12,
+                                        color: 'blue',
+                                        width: 80,
+                                        backgroundColor: 'white',
+                                        textAlign: 'center',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: 'gray',
+                                    },
+                                    viewContainer: {
+                                        padding: 0,
+                                    },
+                                }}
+                                placeholder={{}}
+                            // placeholder={{
+                            //     label: 'Año',
+                            //     value: null,
+                            //     color: 'blue',
+                            //     fontSize: 5,
+                            // }} 
+                            />
+                        </View>
+
                     </View>
 
                     <Text style={styles.LabelText}>Edad:</Text>
@@ -527,8 +546,9 @@ const MiPerfilScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+
     container: {
-        padding: 5,
+
         backgroundColor: '#fff',
         marginBottom: 10,
     },
@@ -575,10 +595,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
     },
+
     ButtonText: {
         color: 'white',
         textAlign: 'center',
     },
+
     spaceAfterButton: {
         marginBottom: 30,
 

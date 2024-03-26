@@ -105,7 +105,8 @@ const ModulosScreen = ({ route }) => {
                 textAlign: 'center',
                 fontSize: 14,
                 color: 'gray',
-                marginBottom: 15
+                marginBottom: 15,
+                marginTop:15
             }}>Selecciona un módulo:</Text>
 
 
