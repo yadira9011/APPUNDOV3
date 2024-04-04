@@ -10,10 +10,16 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
-import { loginUser } from '../Api/api';
+import {
+  loginUser,
+  GetValidaTerminosCondiciones,
+  UpdateAceptaTerminosCondiciones
+} from '../Api/api';
 import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Utilities';
 //import * as Notifications from 'expo-notifications';
 import CustomAlert from '../Componentes/CustomAlert';
+import TerminosCondiciones from './TerminosCondiciones';
+import { ForceTouchGestureHandler } from 'react-native-gesture-handler';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -29,6 +35,7 @@ const LoginScreen = ({ navigation, route }) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
   const [isAlertTwo, setAlertTwo] = useState(false);
+  const [ShowTyC, setShowTyC] = useState(false);
 
   useEffect(() => {
     const tokenFromProps = route.params?.expoPushToken || '';
@@ -43,6 +50,7 @@ const LoginScreen = ({ navigation, route }) => {
       const IdPersona = parseInt(response.data.FIIDPERSONA, 10);
       const IdRol = parseInt(response.data.FSIDROL, 10);
       if (res >= 0) {
+
         const userDataParameter = {
           IdUsr: res,
           password: password,
@@ -50,7 +58,10 @@ const LoginScreen = ({ navigation, route }) => {
           IdPersona: IdPersona,
           IdRol: IdRol
         };
+
+        //GetTyC(res);
         GetFlujoLogin(userDataParameter);
+
       } else {
         setAlertMessage('No se encontro el usuario');
         setIconMessage('Icon_Red.png');
@@ -141,8 +152,32 @@ const LoginScreen = ({ navigation, route }) => {
     }
   };
 
+  const GetTyC = async (IdUsuario) => {
+
+    try {
+
+      const credential = {
+        Contraseña: password,
+        Usuario: email,
+        IdUsuario: IdUsuario,
+      };
+
+      const response = await GetValidaTerminosCondiciones(credential);
+      setShowTyC(true);
+
+    } catch (error) {
+      setAlertMessage('Inicio de sesión fallido');
+      setIconMessage('Icon_Red.png');
+      setAlertVisible(true);
+    }
+  };
+
   const hideAlert = () => {
     setAlertVisible(false);
+  };
+
+  const handleCloseTerminosCondiciones = () => {
+    setShowTyC(false);
   };
 
   return (
@@ -178,6 +213,7 @@ const LoginScreen = ({ navigation, route }) => {
           AlertTwo={isAlertTwo}
         />
       )}
+      {ShowTyC && <TerminosCondiciones onClose={handleCloseTerminosCondiciones} />}
     </View>
   );
 

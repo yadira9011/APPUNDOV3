@@ -89,10 +89,11 @@ const ModulosScreen = ({ route }) => {
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                     {/* <Text style={styles.title}>{title}</Text> */}
                     <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>{title}</Text>
-                    <Ionicons
+                    {/* <Ionicons
                         name="arrow-forward-circle-outline"
                         size={40}
-                        color="black" />
+                        color="black" /> */}
+                    <Ionicons name="chevron-forward-sharp" size={40} color="black" />
                 </View>
             </View>
         </TouchableOpacity>
@@ -100,13 +101,13 @@ const ModulosScreen = ({ route }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            
+
             <Text style={{
                 textAlign: 'center',
                 fontSize: 14,
                 color: 'gray',
                 marginBottom: 15,
-                marginTop:15
+                marginTop: 15
             }}>Selecciona un módulo:</Text>
 
 
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     item: {
         height: 200,
         justifyContent: 'center',
-        marginBottom:15,
+        marginBottom: 15,
         // alignItems: 'center',
         // marginVertical: 8,
         // marginHorizontal: 16,

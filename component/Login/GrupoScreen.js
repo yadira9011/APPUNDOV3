@@ -70,13 +70,12 @@ const GrupoScreen = ({ route }) => {
                 <View style={{ marginRight: 5, width: '60%', alignItems: 'center' }}>
                     <Text style={styles.LabelTxt}>{item.Grupo}</Text>
                 </View>
-                <View style={{ marginRight: 5, width: '40%', alignItems: 'center' }}>
+                {/* <View style={{ marginRight: 5, width: '40%', alignItems: 'center' }}>
                     <Ionicons
                         name="arrow-forward-circle-outline"
                         size={40}
                         color="black" />
-                </View>
-
+                </View> */}
             </TouchableOpacity>
         );
     };
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     LabelTxt: {
-        fontSize:20,
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#002F89',
         textTransform: 'uppercase',

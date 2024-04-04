@@ -104,7 +104,7 @@ const CanalesScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            
+
             <Text style={{
                 textAlign: 'center',
                 fontSize: 14,
@@ -137,10 +137,12 @@ const styles = StyleSheet.create({
     item: {
         padding: 10,
         marginVertical: 8,
-        backgroundColor: '#f9c2ff',
-        borderRadius: 15,
-        borderColor: 'blue',
-        borderWidth: 2,
+        alignItems: 'center',
+        flexDirection: 'row',
+        // backgroundColor: '#f9c2ff',
+        // borderRadius: 15,
+        // borderColor: 'blue',
+        // borderWidth: 2,
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
