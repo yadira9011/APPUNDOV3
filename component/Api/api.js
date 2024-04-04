@@ -10,7 +10,7 @@ export const loginUser = (email, password, TokenDevice) => {
   const credential = {
     Usuario: email,
     Contraseña: password,
-    TokenDevice:TokenDevice
+    TokenDevice: TokenDevice
   };
 
   // console.log(credential);
@@ -79,6 +79,16 @@ export const UserSubcanales = (email, password, _IdUsuario, _IdCanal) => {
   };
   // console.log(credential);
   return axios.post(`${BASE_URL}/API/Login/Subcanales`, credential);
+};
+
+export const GetValidaTerminosCondiciones = (credential) => {
+  return axios.get(`${BASE_URL}/API/Autos/ValidaTerminosCondiciones`, {
+    params: credential
+  });
+};
+
+export const UpdateAceptaTerminosCondiciones = (datarequest) => {
+  return axios.post(`${BASE_URL}/API/Autos/UpdateMantenimientoPersona`, datarequest);
 };
 
 // export const CotEstatusVehiculos = (email, password, IdSubCanal) => {
