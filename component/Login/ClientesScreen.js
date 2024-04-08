@@ -61,7 +61,7 @@ const ClientesScreen = ({ route }) => {
             <TouchableOpacity
                 style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem, dynamicBackgroundColor]}
                 onPress={() => handleItemPress(item)} >
-                <Text>{item.NomCliente}</Text>
+                <Text style={styles.LabelTxt}>{item.NomCliente}</Text>
             </TouchableOpacity>
         );
     };
@@ -170,6 +170,12 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 20,
         borderRadius: 5,
+    },
+    LabelTxt: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#002F89',
+        textTransform: 'uppercase',
     },
 });
 

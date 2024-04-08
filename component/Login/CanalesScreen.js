@@ -60,7 +60,7 @@ const CanalesScreen = ({ route }) => {
             <TouchableOpacity
                 style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem, dynamicBackgroundColor]}
                 onPress={() => handleItemPress(item)}>
-                <Text>{item.NomCanal}</Text>
+                <Text style={styles.LabelTxt}>{item.NomCanal}</Text>
             </TouchableOpacity>
         );
     };
@@ -152,6 +152,12 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 20,
         borderRadius: 5,
+    },
+    LabelTxt: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#002F89',
+        textTransform: 'uppercase',
     },
 });
 

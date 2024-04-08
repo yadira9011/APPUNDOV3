@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomAlert from './CustomAlert';
@@ -116,10 +116,10 @@ const YourModal = ({ navigation, route }) => {
 };
 
 
-
 const styles = StyleSheet.create({
     menuButton: {
         marginRight: 10,
+        flexDirection: 'row',
     },
     modalContainer: {
         margin: 0,
@@ -135,11 +135,11 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 20,
     },
     iconContainer: {
-        marginRight: 10,
+        marginRight: 5,
     },
     imageIcon: {
-        width: 24,
-        height: 24,
+        width: 22,
+        height: 22,
     },
 });
 

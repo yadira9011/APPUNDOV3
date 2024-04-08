@@ -67,7 +67,7 @@ const GrupoScreen = ({ route }) => {
                 ]}
                 onPress={() => handleItemPress(item)}>
 
-                <View style={{ marginRight: 5, width: '60%', alignItems: 'center' }}>
+                <View style={{ marginRight: 5, width: '100%', alignItems: 'center' }}>
                     <Text style={styles.LabelTxt}>{item.Grupo}</Text>
                 </View>
                 {/* <View style={{ marginRight: 5, width: '40%', alignItems: 'center' }}>
