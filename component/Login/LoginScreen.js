@@ -182,7 +182,7 @@ const LoginScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/LoginApp.png')} style={styles.image} resizeMode="contain" />
+      <Image source={require('../../assets/IconUNDO.png')} style={styles.image} resizeMode="contain" />
       <TextInput
         placeholder="Correo electrónico"
         value={email}

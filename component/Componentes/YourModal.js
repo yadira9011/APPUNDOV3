@@ -45,8 +45,15 @@ const YourModal = ({ navigation, route }) => {
     return (
         <>
             <TouchableOpacity onPress={openModal} style={styles.menuButton}>
-                <Ionicons name="menu-outline" size={24} color="white" />
+                <View style={styles.iconContainer}>
+                    <Image source={require('../../assets/IconoUW.png')}
+                        style={styles.imageIcon} />
+                </View>
+                <Ionicons name="menu-outline"
+                    size={24}
+                    color="white" />
             </TouchableOpacity>
+
             <Modal
                 isVisible={isModalVisible}
                 animationIn="slideInRight"
@@ -126,6 +133,13 @@ const styles = StyleSheet.create({
         width: '35%',
         borderTopLeftRadius: 20,
         borderBottomLeftRadius: 20,
+    },
+    iconContainer: {
+        marginRight: 10,
+    },
+    imageIcon: {
+        width: 24,
+        height: 24,
     },
 });
 
