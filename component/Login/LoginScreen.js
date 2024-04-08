@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation, route }) => {
 
   const [email, setEmail] = useState('yadira.perez@rodac.com');
   const [password, setPassword] = useState('yadira.1990');
-
+  const [IdUsr, setIdUsr] = useState(0);
   const [expoPushToken, setExpoPushToken] = useState('');
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -63,10 +63,9 @@ const LoginScreen = ({ navigation, route }) => {
           IdPersona: IdPersona,
           IdRol: IdRol
         };
-
+        setIdUsr(res);
         GetTyC(res);
         GetFlujoLogin(userDataParameter);
-
       } else {
         setAlertMessage('No se encontro el usuario');
         setIconMessage('Icon_Red.png');
@@ -165,8 +164,9 @@ const LoginScreen = ({ navigation, route }) => {
         IdUsuario: IdUsuario,
       };
       const Resultado = await GetValidaTerminosCondiciones(credential);
-      if (!Resultado.hasError) {
-        if (Resultado.data == null) {
+      console.log(Resultado.data)
+      if (!Resultado.data.Data.hasError) {
+        if (Resultado.data.Data.Data == null) {
           setShowTyC(true);
         }
       } else {
@@ -220,7 +220,11 @@ const LoginScreen = ({ navigation, route }) => {
           AlertTwo={isAlertTwo}
         />
       )}
-      {ShowTyC && <TerminosCondiciones onClose={handleCloseTerminosCondiciones} />}
+      {ShowTyC && <TerminosCondiciones
+        onClose={handleCloseTerminosCondiciones}
+        password={password}
+        email={email}
+        IdUsuario={IdUsr} />}
     </View>
   );
 

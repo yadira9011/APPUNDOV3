@@ -100,17 +100,18 @@ const YourModal = ({ navigation, route }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                {isAlertVisible && (
+                    <CustomAlert
+                        visible={isAlertVisible}
+                        message={alertMessage}
+                        iconName={IconMessage}
+                        onClose={hideAlert}
+                        onConfirm={handleConfirm}
+                        AlertTwo={true}
+                    />
+                )}
             </Modal>
-            {isAlertVisible && (
-                <CustomAlert
-                    visible={isAlertVisible}
-                    message={alertMessage}
-                    iconName={IconMessage}
-                    onClose={hideAlert}
-                    onConfirm={handleConfirm}
-                    AlertTwo={true}
-                />
-            )}
+
         </>
     );
 };

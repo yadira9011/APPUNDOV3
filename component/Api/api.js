@@ -88,7 +88,7 @@ export const GetValidaTerminosCondiciones = (credential) => {
 };
 
 export const UpdateAceptaTerminosCondiciones = (datarequest) => {
-  return axios.post(`${BASE_URL}/API/Autos/UpdateMantenimientoPersona`, datarequest);
+  return axios.post(`${BASE_URL}/API/Autos/UpdateAceptaTerminosCondiciones`, datarequest);
 };
 
 // export const CotEstatusVehiculos = (email, password, IdSubCanal) => {
