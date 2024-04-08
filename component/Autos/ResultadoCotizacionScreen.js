@@ -165,11 +165,9 @@ const ResultadoCotizacionScreen = () => {
         <View style={styles.header}>
             <View style={styles.column}>
                 <Text style={styles.headerText}>Descripción</Text>
-                <Text style={styles.headerText}>Cobertura</Text>
             </View>
             <View style={styles.column}>
-                <Text style={styles.headerText}>Suma</Text>
-                <Text style={styles.headerText}>Asegurada</Text>
+                <Text style={styles.headerText}>Detalle</Text>
             </View>
         </View>
     );
@@ -269,7 +267,8 @@ const ResultadoCotizacionScreen = () => {
                                         <Text style={styles.dataText}>{item.descripcion}</Text>
                                     </View>
                                     <View style={[styles.column, styles.borderLeft]}>
-                                        <Text style={styles.dataText}>{item.sumaAsegurada}</Text>
+                                        {/* <Text style={styles.dataText}>{item.sumaAsegurada}</Text> */}
+                                        <Text style={styles.dataText}>{(item.sumaAsegurada === 0 || isNaN(item.sumaAsegurada)) ? "" : item.sumaAsegurada}</Text>
                                     </View>
                                 </View>
                             )}

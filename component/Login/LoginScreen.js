@@ -28,8 +28,13 @@ const LoginScreen = ({ navigation, route }) => {
 
   // const [email, setEmail] = useState('mail@mail.com');
   // const [password, setPassword] = useState('Ven99234');
-  const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
-  const [password, setPassword] = useState('marcosSL');
+
+  // const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
+  // const [password, setPassword] = useState('marcosSL');
+
+  const [email, setEmail] = useState('yadira.perez@rodac.com');
+  const [password, setPassword] = useState('yadira.1990');
+
   const [expoPushToken, setExpoPushToken] = useState('');
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -59,7 +64,7 @@ const LoginScreen = ({ navigation, route }) => {
           IdRol: IdRol
         };
 
-        //GetTyC(res);
+        GetTyC(res);
         GetFlujoLogin(userDataParameter);
 
       } else {
@@ -153,18 +158,20 @@ const LoginScreen = ({ navigation, route }) => {
   };
 
   const GetTyC = async (IdUsuario) => {
-
     try {
-
       const credential = {
         Contraseña: password,
         Usuario: email,
         IdUsuario: IdUsuario,
       };
-
-      const response = await GetValidaTerminosCondiciones(credential);
-      setShowTyC(true);
-
+      const Resultado = await GetValidaTerminosCondiciones(credential);
+      if (!Resultado.hasError) {
+        if (Resultado.data == null) {
+          setShowTyC(true);
+        }
+      } else {
+        setAlertMessage(Resultado.message);
+      }
     } catch (error) {
       setAlertMessage('Inicio de sesión fallido');
       setIconMessage('Icon_Red.png');

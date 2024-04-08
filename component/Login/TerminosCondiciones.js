@@ -1,13 +1,59 @@
 import React, { useState } from 'react';
 import { View, Text, CheckBox, Modal, Button } from 'react-native';
 
+import { UpdateAceptaTerminosCondiciones } from '../Api/api';
+import CustomAlert from '../Componentes/CustomAlert';
+
 const TerminosCondiciones = ({ onClose }) => {
     const [isCheckedTerminos, setIsCheckedTerminos] = useState(false);
     const [isCheckedAviso, setIsCheckedAviso] = useState(false);
 
-    const handleAccept = () => {
-        // Aquí puedes manejar la lógica cuando el usuario acepta los términos y condiciones
-        onClose();
+    const [isAlertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+    const [isAlertTwo, setAlertTwo] = useState(false);
+
+    const handleAccept = async () => {
+
+        const TYC = CheckTerminos();
+
+        if (TYC) {
+
+            const credential = {
+                Contraseña: password,
+                Usuario: email,
+                IdUsuario: IdUsuario,
+                Check: TYC
+            };
+
+            const Resultado = await UpdateAceptaTerminosCondiciones(credential)
+
+            if (!Resultado.hasError) {
+                if (Resultado.data == null) {
+                    setAlertMessage("error al aceptar Terminos y condiciones.");
+                }
+                onClose();
+            } else {
+                setAlertMessage(Resultado.message);
+                onClose();
+            }
+            
+        } else {
+            setAlertMessage("Debes de aceptar el aviso de privacidad, así como términos y condiciones para continuar.");
+        }
+
+    };
+
+    const CheckTerminos = () => {
+        if (isCheckedTerminos == true && isCheckedAviso == true) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    const hideAlert = () => {
+        setAlertVisible(false);
     };
 
     return (
@@ -34,6 +80,15 @@ const TerminosCondiciones = ({ onClose }) => {
                     </View>
                 </View>
             </View>
+            {isAlertVisible && (
+                <CustomAlert
+                    visible={isAlertVisible}
+                    message={alertMessage}
+                    iconName={IconMessage}
+                    onClose={hideAlert}
+                    AlertTwo={isAlertTwo}
+                />
+            )}
         </Modal>
     );
 };
