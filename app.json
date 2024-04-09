@@ -4,10 +4,10 @@
     "slug": "AppUndoV3",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/IconUNDO.png",
+    "icon": "./assets/IconApp.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/UndoLoading.gif",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

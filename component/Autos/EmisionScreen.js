@@ -985,7 +985,9 @@ const EmisionScreen = () => {
             <Image source={require('../../assets/EmiIcons/DatosContra.png')} style={styles.imageIcons} />
             <Text style={styles.buttonText}>Datos Contratante</Text>
             <View style={styles.iconContainer}>
-              <Ionicons name="chevron-expand" size={26} color="white" />
+              {/* <Ionicons name="chevron-expand" size={26} color="white" />
+              <Ionicons name="chevron-expand-sharp" size={24} color="black" /> */}
+              <Ionicons name="chevron-down-sharp" size={26} color="white" />
             </View>
           </View>
         </TouchableOpacity>
@@ -1318,7 +1320,8 @@ const EmisionScreen = () => {
               <Image source={require('../../assets/EmiIcons/DatosDireccion.png')} style={styles.imageIcons} />
               <Text style={styles.buttonText}> Datos Dirección </Text>
               <View style={styles.iconContainer}>
-                <Ionicons name="chevron-expand" size={26} color="white" />
+                {/* <Ionicons name="chevron-expand" size={26} color="white" /> */}
+                <Ionicons name="chevron-down-sharp" size={26} color="white" />
               </View>
             </View>
           </TouchableOpacity>
@@ -1394,7 +1397,8 @@ const EmisionScreen = () => {
               <Image source={require('../../assets/EmiIcons/DatosVehiculo.png')} style={styles.imageIcons} />
               <Text style={styles.buttonText}>Datos de Vehículo</Text>
               <View style={styles.iconContainer}>
-                <Ionicons name="chevron-expand" size={26} color="white" />
+                {/* <Ionicons name="chevron-expand" size={26} color="white" /> */}
+                <Ionicons name="chevron-down-sharp" size={26} color="white" />
               </View>
             </View>
           </TouchableOpacity>
@@ -1440,7 +1444,8 @@ const EmisionScreen = () => {
               <Image source={require('../../assets/EmiIcons/DatosPoliza.png')} style={styles.imageIcons} />
               <Text style={styles.buttonText}>Datos de Póliza</Text>
               <View style={styles.iconContainer}>
-                <Ionicons name="chevron-expand" size={26} color="white" />
+                {/* <Ionicons name="chevron-expand" size={26} color="white" /> */}
+                <Ionicons name="chevron-down-sharp" size={26} color="white" />
               </View>
             </View>
           </TouchableOpacity>
@@ -1581,7 +1586,8 @@ const EmisionScreen = () => {
               <Image source={require('../../assets/EmiIcons/FormasPago.png')} style={styles.imageIcons} />
               <Text style={styles.buttonText}>Forma de Pago</Text>
               <View style={styles.iconContainer}>
-                <Ionicons name="chevron-expand" size={26} color="white" />
+                {/* <Ionicons name="chevron-expand" size={26} color="white" /> */}
+                <Ionicons name="chevron-down-sharp" size={26} color="white" />
               </View>
             </View>
           </TouchableOpacity>
