@@ -268,7 +268,16 @@ const ResultadoCotizacionScreen = () => {
                                     </View>
                                     <View style={[styles.column, styles.borderLeft]}>
                                         {/* <Text style={styles.dataText}>{item.sumaAsegurada}</Text> */}
-                                        <Text style={styles.dataText}>{(item.sumaAsegurada === 0 || isNaN(item.sumaAsegurada)) ? "" : item.sumaAsegurada}</Text>
+                                        {/* <Text style={styles.dataText}>{(item.sumaAsegurada === 0 || isNaN(item.sumaAsegurada)) ? "" : item.sumaAsegurada}</Text> */}
+                                        <Text style={styles.dataText}>
+                                            {(item.sumaAsegurada === 0 || isNaN(item.sumaAsegurada))
+                                                ? ""
+                                                : item.sumaAsegurada.toLocaleString('es-MX', {
+                                                    style: 'currency',
+                                                    currency: 'MXN'
+                                                })
+                                            }
+                                        </Text>
                                     </View>
                                 </View>
                             )}

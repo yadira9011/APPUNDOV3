@@ -83,16 +83,16 @@ const ModulosScreen = ({ route }) => {
     const Item = ({ title, image, backgroundColor, onPress }) => (
         <TouchableOpacity onPress={onPress}>
             <View style={[styles.item, { backgroundColor }]}>
-                <View style={{ flex: 1 }}>
+
+                <View style={{ width: '50%' }}>
                     <Image source={image} style={styles.image} />
                 </View>
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    {/* <Text style={styles.title}>{title}</Text> */}
+
+                <View style={{ flexDirection: 'row', width: '40%', alignItems: 'center' }}>
                     <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>{title}</Text>
-                    {/* <Ionicons
-                        name="arrow-forward-circle-outline"
-                        size={40}
-                        color="black" /> */}
+                </View>
+
+                <View style={{ width: '10%', flexDirection: 'row', alignItems: "center", marginRight: 25 }}>
                     <Ionicons name="chevron-forward-sharp" size={40} color="black" />
                 </View>
             </View>
@@ -146,11 +146,10 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     title: {
-        fontSize: 20,
+        fontSize: 22,
         marginLeft: 15,
         marginRight: 5,
         marginTop: 1,
-        fontSize: 12,
         fontWeight: 'bold',
         textTransform: 'uppercase',
     },

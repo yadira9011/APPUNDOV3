@@ -619,6 +619,7 @@ const CotizacionAutosScreen = () => {
 
     try {
 
+      console.log("entroo corizar")
       setLoadingCotizacion(true);
 
       const DataSolicitudTitulos = {
@@ -632,6 +633,7 @@ const CotizacionAutosScreen = () => {
         tipoPoliza: selectedTextTipoPoliza,
         tipoVigenciaPago: selectedTextTipoVigencia,
       }
+
       const dataCotizacion = {
         ClaveVehiculo: selectedOptionDescripcion,
         IDTipoVehiculo: selectedOptionTipoVehiculo,
@@ -652,23 +654,31 @@ const CotizacionAutosScreen = () => {
         contraseña: DataParameter.password,
         IDSubcananal: DataParameter.IdSubCanal
       }
+
       const response = await GetCotizacion(dataCotizacion);
-      if (response.data.Data.Data) {
-        const resultData = response.data.Data.Data;
+
+      if (response.data.Data.HasError) {
         setLoadingCotizacion(false);
-        const dataArray = {
-          DataResul: resultData,
-          CotiData: dataCotizacion,
-          DataTitulos: DataSolicitudTitulos,
-          DataParameter: DataParameter
+        setAlertMessage(response.data.Data.Message);
+        setAlertVisible(true);
+      } else {
+        if (response.data.Data.Data) {
+          const resultData = response.data.Data.Data;
+          setLoadingCotizacion(false);
+          const dataArray = {
+            DataResul: resultData,
+            CotiData: dataCotizacion,
+            DataTitulos: DataSolicitudTitulos,
+            DataParameter: DataParameter
+          }
+          navigation.navigate('ResultadoCotizacion', { dataArray });
         }
-        navigation.navigate('ResultadoCotizacion', { dataArray });
       }
+
     } catch (error) {
       setLoadingCotizacion(false);
       setAlertMessage('Error al obtener los datos:', error);
       setAlertVisible(true);
-      //console.error('Error al obtener los datos:', error);
       setLoading(false);
     } finally {
       setLoadingCotizacion(false);

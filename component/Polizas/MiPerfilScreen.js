@@ -30,6 +30,7 @@ import { Ionicons } from '@expo/vector-icons';
 import LoadingComponent from '../Componentes/LoadingComponent';
 import RNPickerSelect from 'react-native-picker-select';
 import pickerSelectStyles from '../Styles/PickerSelectStyles';
+import CustomAlert from '../Componentes/CustomAlert';
 
 const MiPerfilScreen = ({ route }) => {
 
@@ -62,18 +63,21 @@ const MiPerfilScreen = ({ route }) => {
     const [selectedAno, setSelectedAno] = useState(0);
     const [selectedGenero, setSelectedGenero] = useState('');
 
+    const [isAlertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+    const [isAlertTwo, setAlertTwo] = useState(false);
+
     useEffect(() => {
 
         const loadData = async () => {
             try {
-                console.log("PARAMETROS", DataParameter)
                 setLoading(true);
                 await fetchAutoGeneros();
                 await fetchAutoDias();
                 await fetchAutoMeses();
                 await fetchAutoAynos();
                 await fetchDetallePersona();
-
                 setLoading(false);
             } catch (error) {
                 setLoading(false);
@@ -81,7 +85,6 @@ const MiPerfilScreen = ({ route }) => {
             }
         };
         loadData();
-
     }, []);
 
     const fetchAutoGeneros = async () => {
@@ -95,9 +98,8 @@ const MiPerfilScreen = ({ route }) => {
                 const data = response.data.Data.Data;
                 setGeneros(data);
             } else {
-                console.error('La respuesta de la API no contiene paquetes.');
+                console.error('La respuesta de la API.');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
             setLoading(false);
@@ -106,7 +108,6 @@ const MiPerfilScreen = ({ route }) => {
 
     const fetchAutoDias = async () => {
         try {
-
             const DataRquest = {
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password
@@ -118,10 +119,8 @@ const MiPerfilScreen = ({ route }) => {
             } else {
                 console.error('La respuesta de la API no contiene paquetes.');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            setLoading(false);
         }
     };
 
@@ -138,54 +137,39 @@ const MiPerfilScreen = ({ route }) => {
             } else {
                 console.error('La respuesta de la API no contiene paquetes.');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            setLoading(false);
         }
-
     };
 
     const fetchAutoAynos = async () => {
         try {
-
             const DataRquest = {
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password
             }
-
             const response = await GetAnyos(DataRquest);
-
             if (response.data.Data.Data) {
                 const data = response.data.Data.Data;
                 setAnos(data);
             } else {
                 console.error('La respuesta de la API no contiene paquetes.');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            setLoading(false);
         }
     };
 
     const fetchDetallePersona = async () => {
         try {
-
             const DataRquest = {
                 idPersona: DataParameter.IdPersona,
                 usuario: DataParameter.email,
                 contraseña: DataParameter.password
             }
-
             const response = await GetDetallePersona(DataRquest);
-
-            console.log(response.data.Data);
-
             if (response.data.Data) {
-
                 const data = response.data.Data;
-                console.log("Detalle persona", data);
                 setNombreCompleto(response.data.Data.FSNOMBRE_COMPLETO);
                 setNombre(response.data.Data.FSNOMBRE);
                 setApellidoPaterno(response.data.Data.FSAPELLIDO_PATERNO);
@@ -195,14 +179,11 @@ const MiPerfilScreen = ({ route }) => {
                 setMovil(response.data.Data.FSMOVIL);
                 setFijo(response.data.Data.FSTELEFONO);
                 setNumeroEmpleado(response.data.Data.FSNUMERO_EMPLEADO);
-
                 var edadPersona = response.data.Data.FIEDAD;
                 setEdad(edadPersona.toString());
-
                 setUsuario(DataParameter.email);
                 setContrasena(DataParameter.password);
                 setSelectedGenero(response.data.Data.FIIDGENERO);
-
                 //const fechaNacimientoString = "24/06/1981";
                 const fechaNacimientoString = response.data.Data.FDNACIMIENTO;
                 console.log(fechaNacimientoString)
@@ -210,14 +191,11 @@ const MiPerfilScreen = ({ route }) => {
                 setSelectedDia(parseInt(diaN, 10));
                 setSelectedMes(parseInt(mesN, 10));
                 setSelectedAno(parseInt(anoN, 10));
-
             } else {
                 console.error('La respuesta de la API no contiene personas.');
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error al obtener los datos:', error);
-            setLoading(false);
         }
     };
 
@@ -275,16 +253,22 @@ const MiPerfilScreen = ({ route }) => {
                 ContraseñaNew: contrasena,
                 IDUsuario: DataParameter.IdUsr,
             }
-            console.log(DataRquestPerfil)
-            const responseperfil = await ActualizaUsuarioPerfil(DataRquestPerfil);
+            const result = await ActualizaUsuarioPerfil(DataRquestPerfil);
+
             if (result.hasError) {
                 msg = "Se actualizaron los datos personales, Sin embargo la cuenta no se actualizó derivado a:  " + result.message;
             }
-            Alert.alert(msg)
+            setAlertMessage(msg);
+            setAlertVisible(true);
         } else {
-            Alert.alert("Los datos no se actualizaron, intente mas tarde.");
+            //Alert.alert("Los datos no se actualizaron, intente mas tarde.");
+            setAlertMessage("Los datos no se actualizaron, intente mas tarde.");
+            setAlertVisible(true);
         }
+    };
 
+    const hideAlert = () => {
+        setAlertVisible(false);
     };
 
     return (
@@ -540,6 +524,15 @@ const MiPerfilScreen = ({ route }) => {
             </ScrollView>
             {loading && (
                 <LoadingComponent />
+            )}
+            {isAlertVisible && (
+                <CustomAlert
+                    visible={isAlertVisible}
+                    message={alertMessage}
+                    iconName={IconMessage}
+                    onClose={hideAlert}
+                    AlertTwo={isAlertTwo}
+                />
             )}
         </View>
     );
