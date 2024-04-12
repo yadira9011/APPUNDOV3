@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity,
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
   CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
-  CotVigencias, CotInfoPostal, GetCotizacion
+  CotVigencias, CotInfoPostal, GetCotizacion, GetPrivilegios
 } from '../Api/api';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -106,18 +106,24 @@ const CotizacionAutosScreen = () => {
   const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
   const [isAlertTwo, setAlertTwo] = useState(false);
 
+  const [COTIZAR_BTN, setCOTIZAR_BTN] = useState(false);
+  const [IMPRPOLIZA_BTN, setIMPRPOLIZA_BTN] = useState(false);
+  const [descargarCotizacion_btn, setdescargarCotizacion_btn] = useState(false);
+
+
   useEffect(() => {
 
     const loadData = async () => {
 
       try {
 
-        console.log("ENTRE COTIZACION kk...")
+        console.log("ENTRE COTIZACION PARAMETROS...", DataParameter)
 
         console.log(DataParameter.email,
           DataParameter.password,
           DataParameter.IdSubCanal)
 
+        await fetchPrivilegios();
         await fetchAutoEstatusVehiculos();
         await fetchAutoTipoVehiculos();
         await fetchAutoTiposDeUso();
@@ -132,7 +138,9 @@ const CotizacionAutosScreen = () => {
         setloadingCombos(false);
       }
     };
+
     loadData();
+    
   }, []);
 
   const fetchAutoEstatusVehiculos = async () => {
@@ -457,6 +465,29 @@ const CotizacionAutosScreen = () => {
     }
   };
 
+  const fetchPrivilegios = async () => {
+    try {
+
+      const DataRquest = {
+        idUsuario: DataParameter.IdUsr,
+        rutaControlador: '/Autos/CotizadorAutos',
+        usuario: DataParameter.email,
+        contraseña: DataParameter.password
+      }
+      const response = await GetPrivilegios(DataRquest);
+      if (response.data.HasError == false) {
+        const parsedData = response.data.Data;
+        setCOTIZAR_BTN(parsedData[0].FIOCULTAR === 1 ? true : false)
+        setIMPRPOLIZA_BTN(parsedData[1].FIOCULTAR === 1 ? true : false)
+        setdescargarCotizacion_btn(parsedData[2].FIOCULTAR === 1 ? true : false)
+      } else {
+        console.error('La respuesta no contiene datos.');
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
+  };
+
   const handleOptionChange = (itemValue, itemIndex) => {
     if (itemValue !== null) {
       const selectedOption = AutoEstatusVehiculos.find(item => item.Id === itemValue);
@@ -733,7 +764,11 @@ const CotizacionAutosScreen = () => {
       }>
 
       <View style={styles.menustyle} >
-        <MenuComponentNew DataParameter={DataParameter} />
+        <MenuComponentNew
+          DataParameter={DataParameter}
+          isShowImpresion={IMPRPOLIZA_BTN}
+          IsShowCotizacion={descargarCotizacion_btn}
+        />
       </View >
 
       <ScrollView style={styles.scrollstyle} >
@@ -1011,12 +1046,14 @@ const CotizacionAutosScreen = () => {
           placeholder={{}}
         />
 
-        {/* Botón de cotizar */}
-        <TouchableOpacity
-          style={styles.cotizarButton}
-          onPress={handleCotizar} >
-          <Text style={styles.cotizarButtonText}>Cotizar</Text>
-        </TouchableOpacity>
+
+        {!COTIZAR_BTN && (
+          <TouchableOpacity
+            style={styles.cotizarButton}
+            onPress={handleCotizar} >
+            <Text style={styles.cotizarButtonText}>Cotizar</Text>
+          </TouchableOpacity>
+        )}
 
         <View style={{ height: 40 }} />
 

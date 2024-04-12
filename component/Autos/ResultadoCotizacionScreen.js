@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, TextInput, Image, Modal, Alert, Switch, Button } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    FlatList,
+    StyleSheet,
+    TextInput,
+    Image,
+    Modal,
+    Alert,
+    Switch
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { GetCoberturasCotizacion, EnvioCotizacion } from '../Api/api';
+import { GetCoberturasCotizacion, EnvioCotizacion, GetPrivilegios } from '../Api/api';
 import { useNavigation } from '@react-navigation/native';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts } from '../Utilities';
@@ -24,6 +35,9 @@ const ResultadoCotizacionScreen = () => {
     const [sendAll, setSendAll] = useState(false);
     const [IdCotiSeleccionada, setIdCotiSeleccionada] = useState('');
 
+    const [DETALLETS_COT_BTN, setDETALLETS_COT_BTN] = useState(false);
+    const [ENVIAR_COT_BTN, setENVIAR_COT_BTNN] = useState(false);
+
     const imagePaths = [
         { name: 'LogoChubb', path: require('../../assets/Aseguradoras/LogoChubb.png') },
         { name: 'LogoGnp', path: require('../../assets/Aseguradoras/LogoGnp.gif') },
@@ -35,6 +49,17 @@ const ResultadoCotizacionScreen = () => {
     ];
 
     useEffect(() => {
+
+        const loadData = async () => {
+            try {
+                await fetchPrivilegios();
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+            }
+        };
+
+        loadData();
+
         if (dataArray.DataResul.length > 0) {
             const primerElemento = dataArray.DataResul[0].Folio;
             setFolioCotizacion(primerElemento.Folio);
@@ -64,6 +89,7 @@ const ResultadoCotizacionScreen = () => {
             });
             setCotizacionData(newArray);
         }
+
     }, [dataArray]);
 
 
@@ -83,12 +109,19 @@ const ResultadoCotizacionScreen = () => {
                         <Text style={styles.titlePrima}>Prima Total :</Text>
                         <Text style={styles.title}>{primaTotalFormateada}</Text>
                         <View style={styles.itemDetailsDos}>
-                            <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
-                                <Ionicons name="information-circle" size={30} color="black" />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
-                                <Ionicons name="mail" size={30} color="black" />
-                            </TouchableOpacity>
+
+                            {!DETALLETS_COT_BTN && (
+                                <TouchableOpacity style={styles.iconContainer} onPress={() => handleCoberturas(item)}>
+                                    <Ionicons name="information-circle" size={30} color="black" />
+                                </TouchableOpacity>
+                            )}
+
+                            {!ENVIAR_COT_BTN && (
+                                <TouchableOpacity style={styles.iconContainer} onPress={() => handleShowModalEC(item)}>
+                                    <Ionicons name="mail" size={30} color="black" />
+                                </TouchableOpacity>
+                            )}
+
                         </View>
                     </View>
                 </View>
@@ -122,18 +155,14 @@ const ResultadoCotizacionScreen = () => {
                 CorreoEnvio: 0,
                 COTIZACIONESAUTOS_ID: 0
             }
-
             console.log("Datos cotizacion coberturas", DataRquest);
             const response = await GetCoberturasCotizacion(DataRquest);
-
             if (response.data.Data) {
                 if (response.data.Data.length > 0) {
                     setCoberturasCotizacion(response.data.Data);
                     setTxtPqtCobertura(item.Paquete);
                     setTxtUrlconAse(item.imageUrl);
                     setModalVisible(!isModalVisible);
-                    console.log(CoberturasCotizacion);
-                    console.log(response.data.Data);
                 } else {
                     Alert.alert('Error', 'No se pudo obtener la lista de coberturas');
                 }
@@ -232,6 +261,28 @@ const ResultadoCotizacionScreen = () => {
         navigation.navigate('Emision', { dataArrayEmi });
     };
 
+    const fetchPrivilegios = async () => {
+        try {
+
+            const DataRquest = {
+                idUsuario: dataArray.DataParameter.IdUsr,
+                rutaControlador: '/Autos/CotizadorAutos',
+                usuario: dataArray.DataParameter.usuario,
+                contraseña: dataArray.DataParameter.contraseña,
+            }
+            const response = await GetPrivilegios(DataRquest);
+            if (response.data.HasError == false) {
+                const parsedData = response.data.Data;
+                setDETALLETS_COT_BTN(parsedData[3].FIOCULTAR === 1 ? true : false)
+                setENVIAR_COT_BTNN(parsedData[4].FIOCULTAR === 1 ? true : false)
+            } else {
+                console.error('La respuesta no contiene datos.');
+            }
+        } catch (error) {
+            console.error('Error al obtener los datos:', error);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Text>{folioCotizacion}</Text>
@@ -263,10 +314,10 @@ const ResultadoCotizacionScreen = () => {
                             ListHeaderComponent={renderHeader}
                             renderItem={({ item }) => (
                                 <View style={styles.row} key={item.sumaAsegurada}>
-                                    <View style={[styles.column, styles.borderRight]}>
+                                    <View style={[styles.column, styles.borderRight, { alignItems: 'flex-start' }]}>
                                         <Text style={styles.dataText}>{item.descripcion}</Text>
                                     </View>
-                                    <View style={[styles.column, styles.borderLeft]}>
+                                    <View style={[styles.column, styles.borderLeft, { alignItems: 'flex-end' }]}>
                                         {/* <Text style={styles.dataText}>{item.sumaAsegurada}</Text> */}
                                         {/* <Text style={styles.dataText}>{(item.sumaAsegurada === 0 || isNaN(item.sumaAsegurada)) ? "" : item.sumaAsegurada}</Text> */}
                                         <Text style={styles.dataText}>
@@ -414,8 +465,7 @@ const styles = StyleSheet.create({
     },
     dataText: {
         fontSize: 12,
-        textAlign: 'center',
-        justifyContent: 'center',
+        textAlign: 'justify',
     },
     closeButtonText: {
         color: '#fff',

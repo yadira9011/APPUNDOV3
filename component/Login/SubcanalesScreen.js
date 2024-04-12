@@ -101,9 +101,9 @@ const SubcanalesScreen = ({ route }) => {
                         <Ionicons
                             name="chevron-forward-sharp"
                             size={40}
-                            color="black" />
+                            color='#002F89' />
                     </View>
-                    
+
                 </View>
 
             </TouchableOpacity>

@@ -78,7 +78,7 @@ export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, e
                     />
                     <View style={modalStyles.buttonContainer}>
                         <TouchableOpacity onPress={handleGuardarPoliza} style={modalStyles.saveButton}>
-                            <Text style={modalStyles.buttonText}>Guardar</Text>
+                            <Text style={modalStyles.buttonText}>Consultar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={onClose} style={modalStyles.cancelButton}>
                             <Text style={modalStyles.buttonText}>Cancelar</Text>

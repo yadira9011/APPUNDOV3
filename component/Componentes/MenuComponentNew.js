@@ -6,7 +6,8 @@ import ModalContent from '../Autos/ImpresionAutosComponent';
 import ModalBusquedaCotAutosComponent from '../Autos/BusquedaCotAutosComponent';
 import { Ionicons } from '@expo/vector-icons';
 
-const MenuComponentNew = ({ DataParameter }) => {
+const MenuComponentNew = ({ DataParameter, isShowImpresion, IsShowCotizacion }) => {
+
     const route = useRoute();
     const Navigation = useNavigation();
     // const { navigation } = props;
@@ -58,16 +59,25 @@ const MenuComponentNew = ({ DataParameter }) => {
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
             {currentScreen === 'CotizacionAutos' && (
+
                 <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={handleImprimirPoliza} style={{ padding: 10 }}>
-                        <Ionicons name="print" size={40} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleBuscarCoti} style={{ padding: 10 }}>
-                        <Ionicons name="search" size={40} color="white" />
-                    </TouchableOpacity>
+
+                    {!isShowImpresion && (
+                        <TouchableOpacity onPress={handleImprimirPoliza} style={{ padding: 10 }}>
+                            <Ionicons name="print" size={40} color="white" />
+                        </TouchableOpacity>
+                    )}
+
+                    {!IsShowCotizacion && (
+                        <TouchableOpacity onPress={handleBuscarCoti} style={{ padding: 10 }}>
+                            <Ionicons name="search" size={40} color="white" />
+                        </TouchableOpacity>
+                    )}
+
                     {/* <TouchableOpacity onPress={handleIrInicio} style={{ padding: 10 }}>
                         <Ionicons name="home" size={24} color="black" />
                     </TouchableOpacity> */}
+
                 </View>
             )}
 

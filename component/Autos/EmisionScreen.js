@@ -1056,6 +1056,7 @@ const EmisionScreen = () => {
                   label: genero.Valor,
                   value: genero.Id,
                 }))}
+                placeholder={{}}
                 style={pickerSelectStyles}
                 value={selectedGenero}
               />
@@ -1796,9 +1797,11 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     marginBottom: 4,
+    color: '#002F89'
   },
   boldText: {
     fontWeight: 'bold',
+    color: '#002F89'
   },
   cotizarButton: {
     backgroundColor: '#007bff',

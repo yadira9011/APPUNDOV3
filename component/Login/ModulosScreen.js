@@ -13,15 +13,11 @@ import {
 import { colors as predefinedColors, getTextColor } from '../Utilities';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-// import { ColorScheme } from 'react-native-color';
-
 
 const ModulosScreen = ({ route }) => {
 
     const navigation = useNavigation();
     const { DataParameter } = route.params;
-
-    console.log("desdeee", DataParameter)
 
     const onPressItem = (item) => {
         switch (item.title) {
@@ -64,12 +60,9 @@ const ModulosScreen = ({ route }) => {
     ];
 
     const getRandomColor = () => {
-        // Obtén un índice aleatorio de la lista de colores existente
         const randomIndex = Math.floor(Math.random() * predefinedColors.length);
-        // Devuelve el color correspondiente al índice aleatorio
         return predefinedColors[randomIndex];
     };
-
 
     const getItem = (_data, index) => ({
         id: Math.random().toString(12).substring(0),
@@ -88,13 +81,25 @@ const ModulosScreen = ({ route }) => {
                     <Image source={image} style={styles.image} />
                 </View>
 
-                <View style={{ flexDirection: 'row', width: '40%', alignItems: 'center' }}>
-                    <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>{title}</Text>
+                <View style={{ flexDirection: 'row', width: '35%', alignItems: 'center' }}>
+                    <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>
+                        {title.length > 7
+                            ? (
+                                <>
+                                    <Text>{title.substring(0, 4)}</Text>
+                                    {"\n"}
+                                    <Text>{title.substring(4)}</Text>
+                                </>
+                            )
+                            : title
+                        }
+                    </Text>
                 </View>
 
                 <View style={{ width: '10%', flexDirection: 'row', alignItems: "center", marginRight: 25 }}>
-                    <Ionicons name="chevron-forward-sharp" size={40} color="black" />
+                    <Ionicons name="chevron-forward-sharp" size={40} color='#002F89' />
                 </View>
+                
             </View>
         </TouchableOpacity>
     );
@@ -110,15 +115,14 @@ const ModulosScreen = ({ route }) => {
                 marginTop: 15
             }}>Selecciona un módulo:</Text>
 
-
             <VirtualizedList
                 initialNumToRender={3}
-                // renderItem={({ item }) => <Item title={item.title} image={item.image} />}
                 renderItem={({ item }) => <Item title={item.title} image={item.image} backgroundColor={item.backgroundColor} onPress={() => onPressItem(item)} />}
                 keyExtractor={item => item.id}
                 getItemCount={getItemCount}
                 getItem={getItem}
             />
+
         </SafeAreaView>
     );
 };
@@ -141,15 +145,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     image: {
-        width: '100%',
+        width: '90%',
         height: '100%',
         resizeMode: 'contain',
+        alignSelf: 'center',
     },
     title: {
-        fontSize: 22,
-        marginLeft: 15,
+        fontSize: 16,
+        marginLeft: 5,
         marginRight: 5,
         marginTop: 1,
+        alignSelf: 'center',
         fontWeight: 'bold',
         textTransform: 'uppercase',
     },
