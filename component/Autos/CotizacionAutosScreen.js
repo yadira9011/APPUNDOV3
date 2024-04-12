@@ -116,13 +116,9 @@ const CotizacionAutosScreen = () => {
     const loadData = async () => {
 
       try {
-
-        console.log("ENTRE COTIZACION PARAMETROS...", DataParameter)
-
-        console.log(DataParameter.email,
-          DataParameter.password,
-          DataParameter.IdSubCanal)
-
+        // console.log(DataParameter.email,
+        //   DataParameter.password,
+        //   DataParameter.IdSubCanal)
         await fetchPrivilegios();
         await fetchAutoEstatusVehiculos();
         await fetchAutoTipoVehiculos();
@@ -140,7 +136,7 @@ const CotizacionAutosScreen = () => {
     };
 
     loadData();
-    
+
   }, []);
 
   const fetchAutoEstatusVehiculos = async () => {

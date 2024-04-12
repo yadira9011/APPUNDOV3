@@ -76,13 +76,15 @@ const ModulosScreen = ({ route }) => {
     const Item = ({ title, image, backgroundColor, onPress }) => (
         <TouchableOpacity onPress={onPress}>
             <View style={[styles.item, { backgroundColor }]}>
-
-                <View style={{ width: '50%' }}>
+                <View style={{
+                    width: '45%',
+                    alignItems: "center", marginLeft: 2,
+                }}>
                     <Image source={image} style={styles.image} />
                 </View>
-
-                <View style={{ flexDirection: 'row', width: '35%', alignItems: 'center' }}>
-                    <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>
+                <View style={{ flexDirection: 'row', width: '42%', alignItems: 'center' }}>
+                    <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>{title}</Text>
+                    {/* <Text style={[styles.title, { color: getTextColor(backgroundColor) }]}>
                         {title.length > 7
                             ? (
                                 <>
@@ -93,13 +95,11 @@ const ModulosScreen = ({ route }) => {
                             )
                             : title
                         }
-                    </Text>
+                    </Text> */}
                 </View>
-
                 <View style={{ width: '10%', flexDirection: 'row', alignItems: "center", marginRight: 25 }}>
                     <Ionicons name="chevron-forward-sharp" size={40} color='#002F89' />
                 </View>
-                
             </View>
         </TouchableOpacity>
     );
@@ -144,17 +144,18 @@ const styles = StyleSheet.create({
         // borderWidth: 2,
         flexDirection: 'row',
     },
+
     image: {
         width: '90%',
         height: '100%',
         resizeMode: 'contain',
         alignSelf: 'center',
     },
+
     title: {
-        fontSize: 16,
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 1,
+        fontSize: 14,
+        // marginLeft: 5,
+        // marginRight: 5,
         alignSelf: 'center',
         fontWeight: 'bold',
         textTransform: 'uppercase',

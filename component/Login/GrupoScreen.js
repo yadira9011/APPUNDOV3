@@ -67,15 +67,14 @@ const GrupoScreen = ({ route }) => {
                 ]}
                 onPress={() => handleItemPress(item)}>
 
-                <View style={{ marginRight: 5, width: '100%', alignItems: 'center' }}>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
                     <Text style={styles.LabelTxt}>{item.Grupo}</Text>
                 </View>
-                {/* <View style={{ marginRight: 5, width: '40%', alignItems: 'center' }}>
-                    <Ionicons
-                        name="arrow-forward-circle-outline"
-                        size={40}
-                        color="black" />
-                </View> */}
+
             </TouchableOpacity>
         );
     };
@@ -155,27 +154,18 @@ const GrupoScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-
             <Text style={{
                 textAlign: 'center',
                 fontSize: 14,
                 color: 'gray',
                 marginBottom: 15
             }}>Selecciona un grupo:</Text>
-
             <FlatList
                 data={data}
+                numColumns={2}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IdGrupoEmpresa.toString()}
             />
-
-            {/* {selectedItem && (
-                <View style={styles.selectedItemContainer}>
-                    <Text>Selected Item:</Text>
-                    <Text>{selectedItem.Grupo}</Text>
-                </View>
-            )} */}
-
         </View>
     );
 
@@ -185,16 +175,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 20,
-        // paddingHorizontal: 20,
     },
     item: {
         padding: 10,
         marginVertical: 8,
-        alignItems: 'center',
         flexDirection: 'row',
-        // borderRadius: 15,
-        // borderColor: 'blue',
-        // borderWidth: 2,
+        marginLeft: 25,
+        marginRight: 3,
+        width: '40%',
+        height: 100
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
@@ -206,10 +195,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     LabelTxt: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 'bold',
         color: '#002F89',
         textTransform: 'uppercase',
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
 });
 

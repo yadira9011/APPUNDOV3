@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CountClientes, CountCanales, CountSubCanales, colors } from '../Utilities';
 
 const ClientesScreen = ({ route }) => {
+
     const navigation = useNavigation();
     const { DataParameterClientes } = route.params;
     const [loading, setLoading] = useState(true);
@@ -46,22 +47,19 @@ const ClientesScreen = ({ route }) => {
         GetFlujoLogin(item.IdCliente);
     };
 
-    // const renderIteme = ({ item }) => (
-    //     <TouchableOpacity
-    //         style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem]}
-    //         onPress={() => handleItemPress(item)}
-    //     >
-    //         <Text>{item.NomCliente}</Text>
-    //     </TouchableOpacity>
-    // );
-
     const renderItem = ({ item, index }) => {
         const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
         return (
             <TouchableOpacity
                 style={[styles.item, selectedItem?.IdCliente === item.IdCliente && styles.selectedItem, dynamicBackgroundColor]}
                 onPress={() => handleItemPress(item)} >
-                <Text style={styles.LabelTxt}>{item.NomCliente}</Text>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Text style={styles.LabelTxt}>{item.NomCliente}</Text>
+                </View>
             </TouchableOpacity>
         );
     };
@@ -121,26 +119,18 @@ const ClientesScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-
             <Text style={{
                 textAlign: 'center',
                 fontSize: 14,
                 color: 'gray',
                 marginBottom: 15
             }}>Selecciona un cliente:</Text>
-
-
             <FlatList
                 data={data}
+                numColumns={2}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IdCliente.toString()}
             />
-            {/* {selectedItem && (
-                <View style={styles.selectedItemContainer}>
-                    <Text>Selected Item:</Text>
-                    <Text>{selectedItem.NomCliente}</Text>
-                </View>
-            )} */}
         </View>
     );
 
@@ -155,12 +145,11 @@ const styles = StyleSheet.create({
     item: {
         padding: 10,
         marginVertical: 8,
-        alignItems: 'center',
         flexDirection: 'row',
-        // backgroundColor: '#f9c2ff',
-        // borderRadius: 15,
-        // borderColor: 'blue',
-        // borderWidth: 2,
+        marginLeft: 25,
+        marginRight: 3,
+        width: '40%',
+        height: 100
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
@@ -172,10 +161,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     LabelTxt: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 'bold',
         color: '#002F89',
         textTransform: 'uppercase',
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
 });
 

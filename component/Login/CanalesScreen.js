@@ -45,14 +45,6 @@ const CanalesScreen = ({ route }) => {
         GetFlujoLogin(item.IdCanal);
     };
 
-    // const renderItem = ({ item }) => (
-    //     <TouchableOpacity
-    //         style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem]}
-    //         onPress={() => handleItemPress(item)}
-    //     >
-    //         <Text>{item.NomCanal}</Text>
-    //     </TouchableOpacity>
-    // );
 
     const renderItem = ({ item, index }) => {
         const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
@@ -60,11 +52,16 @@ const CanalesScreen = ({ route }) => {
             <TouchableOpacity
                 style={[styles.item, selectedItem?.IdCanal === item.IdCanal && styles.selectedItem, dynamicBackgroundColor]}
                 onPress={() => handleItemPress(item)}>
-                <Text style={styles.LabelTxt}>{item.NomCanal}</Text>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text style={styles.LabelTxt}>{item.NomCanal}</Text>
+                </View>
             </TouchableOpacity>
         );
     };
-
 
     const GetFlujoLogin = async (IdCanal) => {
         try {
@@ -104,25 +101,18 @@ const CanalesScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-
             <Text style={{
                 textAlign: 'center',
                 fontSize: 14,
                 color: 'gray',
                 marginBottom: 15
             }}>Selecciona un canal:</Text>
-
             <FlatList
                 data={data}
+                numColumns={2}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.IdCanal.toString()}
             />
-            {/* {selectedItem && (
-                <View style={styles.selectedItemContainer}>
-                    <Text>Selected Item:</Text>
-                    <Text>{selectedItem.NomCanal}</Text>
-                </View>
-            )} */}
         </View>
     );
 
@@ -137,12 +127,11 @@ const styles = StyleSheet.create({
     item: {
         padding: 10,
         marginVertical: 8,
-        alignItems: 'center',
         flexDirection: 'row',
-        // backgroundColor: '#f9c2ff',
-        // borderRadius: 15,
-        // borderColor: 'blue',
-        // borderWidth: 2,
+        marginLeft: 25,
+        marginRight: 3,
+        width: '40%',
+        height: 100
     },
     selectedItem: {
         backgroundColor: '#9f8cbb',
@@ -154,10 +143,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     LabelTxt: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 'bold',
         color: '#002F89',
         textTransform: 'uppercase',
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
 });
 
