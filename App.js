@@ -136,7 +136,6 @@ export default function App() {
     <View style={{ marginLeft: 15 }}><Ionicons name="arrow-back" size={24} color="white" /></View>
   );
 
-
   return (
     <>
       <NavigationContainer>
@@ -292,6 +291,7 @@ export default function App() {
       </NavigationContainer>
     </>
   );
+
 }
 
 
