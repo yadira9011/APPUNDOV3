@@ -14,10 +14,12 @@ const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad }) => {
   };
 
   const resetInactividadTimer = () => {
+
     clearTimeout(inactividadTimerRef.current);
     inactividadTimerRef.current = setTimeout(() => {
       redireccionarALogin();
     }, tiempoMaximo);
+
   };
 
   const inactividadTimerRef = useRef(null);
@@ -46,7 +48,6 @@ const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad }) => {
   }, []);
 
   useEffect(() => {
-
     const handleInteraction = () => {
       console.log("Interacción detectada");
       setUltimaInteraccion(Date.now());
@@ -69,6 +70,7 @@ const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad }) => {
 
     return () => clearInterval(inactividadCheckInterval);
   }, [ultimaInteraccion, tiempoInactividad]);
+
   return null;
 };
 
