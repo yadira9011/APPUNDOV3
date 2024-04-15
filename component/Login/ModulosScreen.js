@@ -117,7 +117,10 @@ const ModulosScreen = ({ route }) => {
 
             <VirtualizedList
                 initialNumToRender={3}
-                renderItem={({ item }) => <Item title={item.title} image={item.image} backgroundColor={item.backgroundColor} onPress={() => onPressItem(item)} />}
+                renderItem={({ item }) => <Item title={item.title}
+                    image={item.image}
+                    backgroundColor={item.backgroundColor}
+                    onPress={() => onPressItem(item)} />}
                 keyExtractor={item => item.id}
                 getItemCount={getItemCount}
                 getItem={getItem}
@@ -136,12 +139,6 @@ const styles = StyleSheet.create({
         height: 200,
         justifyContent: 'center',
         marginBottom: 15,
-        // alignItems: 'center',
-        // marginVertical: 8,
-        // marginHorizontal: 16,
-        // borderRadius: 15,
-        // borderColor: 'blue',
-        // borderWidth: 2,
         flexDirection: 'row',
     },
 
@@ -154,12 +151,11 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 14,
-        // marginLeft: 5,
-        // marginRight: 5,
         alignSelf: 'center',
         fontWeight: 'bold',
         textTransform: 'uppercase',
     },
+
     menustyle: {
         backgroundColor: '#92c5fc',
     },
