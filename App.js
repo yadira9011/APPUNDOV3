@@ -288,12 +288,13 @@ export default function App() {
             })}
           />
         </Stack.Navigator>
-        <TiempoInactivo tiempoMaximo={10000} />
+        <TiempoInactivo tiempoMaximo={60000} tiempoInactividad={60000} />
       </NavigationContainer>
     </>
   );
-
 }
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
