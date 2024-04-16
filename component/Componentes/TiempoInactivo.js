@@ -42,6 +42,12 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
     resetInactivityTimer(true);
   };
 
+  const resetsetIsActiveApp = () => {
+    console.log("estoy ....")
+    setIsActiveApp(prevIsActiveApp => {
+      return true;
+    });
+  };
 
   useEffect(() => {
 
@@ -59,11 +65,9 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
       console.log(tiempoDesdeUltimaInteraccion, "jajaja ", ultimaInteraccionRef.current)
       console.log(tiempoMaximo)
       if (tiempoDesdeUltimaInteraccion >= tiempoMaximo) {
-
         setIsActiveApp(prevIsActiveApp => {
           return false;
         });
-
         redireccionarALogin();
       } else {
         resetInactivityTimer(true);
@@ -90,5 +94,6 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
   );
 };
 
+export { resetsetIsActiveApp };
 export default TiempoInactivo;
 

@@ -16,6 +16,8 @@ import pickerSelectStyles from '../Styles/PickerSelectStyles';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts, FormatoEntradaMoneda } from '../Utilities';
 import CustomAlert from '../Componentes/CustomAlert';
+import { resetsetIsActiveApp } from '../Componentes/TiempoInactivo';
+
 
 const CotizacionAutosScreen = () => {
 
@@ -556,6 +558,7 @@ const CotizacionAutosScreen = () => {
       setSelectedOptionTipoUso(itemValue);
       setselectedTextTipoUso(selectedOption.Valor);
     }
+    resetsetIsActiveApp();
   };
 
   const handleOptionChangeDeducibles = (itemValue) => {
