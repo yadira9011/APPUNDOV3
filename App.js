@@ -138,159 +138,161 @@ export default function App() {
 
   return (
     <>
+
       <NavigationContainer>
-        <TiempoInactivo tiempoMaximo={30000} tiempoInactividad={30000}>
-          <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              initialParams={{ expoPushToken: expoPushToken }}
-              listeners={({ navigation }) => ({
-                focus: () => {
-                  navigation.setParams({ expoPushToken: expoPushToken });
+        <TiempoInactivo tiempoMaximo={10000} tiempoInactividad={10000} />
+        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
+
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            initialParams={{ expoPushToken: expoPushToken }}
+            listeners={({ navigation }) => ({
+              focus: () => {
+                navigation.setParams({ expoPushToken: expoPushToken });
+              },
+            })}
+          />
+
+          <Stack.Screen
+            name="Grupos"
+            component={GruposScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              headerLeft: null,
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
+
+          <Stack.Screen
+            name="Clientes"
+            component={ClientesScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Clientes',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
+
+          <Stack.Screen
+            name="Canales"
+            component={CanalesScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Canales',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
+
+          <Stack.Screen
+            name="Subcanales"
+            component={SubcanalesScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Subcanales',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
+
+          <Stack.Screen
+            name="Modulos"
+            component={ModulosScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Modulos',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
+
+          <Stack.Screen
+            name="CotizacionAutos"
+            component={CotizacionAutosScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Cotizar Autos',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
+
+          <Stack.Screen
+            name="ResultadoCotizacion"
+            component={ResultadoCotizacionScreen}
+            options={({ route, navigation }) => {
+              console.log('route.params:', route.params.dataArray.DataResul[0].Folio);
+              const FolioCot = route.params.dataArray.DataResul[0].Folio;
+              return {
+                ...defaultHeaderOptions,
+                title: FolioCot,
+                headerTitleStyle: {
+                  fontSize: 12,
+                  color: 'white'
                 },
-              })}
-            />
-
-            <Stack.Screen
-              name="Grupos"
-              component={GruposScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                headerLeft: null,
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
-
-            <Stack.Screen
-              name="Clientes"
-              component={ClientesScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Clientes',
                 headerBackImage: () => headerBackImageFuntion(),
                 headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
+              };
+            }}
+          />
 
-            <Stack.Screen
-              name="Canales"
-              component={CanalesScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Canales',
-                headerBackImage: () => headerBackImageFuntion(),
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
+          <Stack.Screen
+            name="Emision"
+            component={EmisionScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Emisión',
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
 
-            <Stack.Screen
-              name="Subcanales"
-              component={SubcanalesScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Subcanales',
-                headerBackImage: () => headerBackImageFuntion(),
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
+          <Stack.Screen
+            name="PDFViewerScreen"
+            component={PDFViewerScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Documento',
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
 
-            <Stack.Screen
-              name="Modulos"
-              component={ModulosScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Modulos',
-                headerBackImage: () => headerBackImageFuntion(),
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
+          <Stack.Screen
+            name="ViewerBase64Screen"
+            component={ViewerBase64Screen}
+          />
 
-            <Stack.Screen
-              name="CotizacionAutos"
-              component={CotizacionAutosScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Cotizar Autos',
-                headerBackImage: () => headerBackImageFuntion(),
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
+          <Stack.Screen
+            name="NewPolizas"
+            component={NewPolizas}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Mis Pólizas',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
 
-            <Stack.Screen
-              name="ResultadoCotizacion"
-              component={ResultadoCotizacionScreen}
-              options={({ route, navigation }) => {
-                console.log('route.params:', route.params.dataArray.DataResul[0].Folio);
-                const FolioCot = route.params.dataArray.DataResul[0].Folio;
-                return {
-                  ...defaultHeaderOptions,
-                  title: FolioCot,
-                  headerTitleStyle: {
-                    fontSize: 12,
-                    color: 'white'
-                  },
-                  headerBackImage: () => headerBackImageFuntion(),
-                  headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-                };
-              }}
-            />
+          <Stack.Screen
+            name="InicioAPScreen"
+            component={InicioAPScreen}
+          />
 
-            <Stack.Screen
-              name="Emision"
-              component={EmisionScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Emisión',
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
+          <Stack.Screen
+            name="MiPerfilScreen"
+            component={MiPerfilScreen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'Mi Perfil',
+              headerBackImage: () => headerBackImageFuntion(),
+              headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+            })}
+          />
 
-            <Stack.Screen
-              name="PDFViewerScreen"
-              component={PDFViewerScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Documento',
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
-
-            <Stack.Screen
-              name="ViewerBase64Screen"
-              component={ViewerBase64Screen}
-            />
-
-            <Stack.Screen
-              name="NewPolizas"
-              component={NewPolizas}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Mis Pólizas',
-                headerBackImage: () => headerBackImageFuntion(),
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
-
-            <Stack.Screen
-              name="InicioAPScreen"
-              component={InicioAPScreen}
-            />
-
-            <Stack.Screen
-              name="MiPerfilScreen"
-              component={MiPerfilScreen}
-              options={({ route, navigation }) => ({
-                ...defaultHeaderOptions,
-                title: 'Mi Perfil',
-                headerBackImage: () => headerBackImageFuntion(),
-                headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
-              })}
-            />
-          </Stack.Navigator>
-        </TiempoInactivo>
-        {/* <TiempoInactivo tiempoMaximo={30000} tiempoInactividad={30000} /> */}
+        </Stack.Navigator>
       </NavigationContainer>
+
     </>
   );
 

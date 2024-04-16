@@ -1,72 +1,155 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AppState } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { AppState, InteractionManager, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad, children }) => {
+const TiempoInactivo = ({ tiempoMaximo }) => {
+
   const navigation = useNavigation();
-  const [ultimaInteraccion, setUltimaInteraccion] = useState(Date.now());
+  const ultimaInteraccionRef = useRef(Date.now());
+  const inactivityTimerRef = useRef(null);
+  const appStateRef = useRef(AppState.currentState);
 
   const redireccionarALogin = () => {
-    setUltimaInteraccion(Date.now());
+    handleUserInteraction();
+    console.log('Usuario inactivo. Redireccionando a la pantalla de inicio de sesión.');
     navigation.navigate('Login');
   };
 
-  const resetInactividadTimer = () => {
-    clearTimeout(inactividadTimerRef.current);
-    inactividadTimerRef.current = setTimeout(() => {
-      const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccion;
-      if (tiempoDesdeUltimaInteraccion >= tiempoInactividad) {
-        console.log('El usuario está inactivo');
-        redireccionarALogin();
-      }
+  const resetInactivityTimer = () => {
+    clearTimeout(inactivityTimerRef.current);
+    inactivityTimerRef.current = setTimeout(() => {
+      redireccionarALogin();
     }, tiempoMaximo);
   };
 
-  const inactividadTimerRef = useRef(null);
-
   const handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'active') {
-      resetInactividadTimer();
+
+    console.log('La aplicación está en segundo plano.');
+    console.log('handleAppStateChange:', nextAppState);
+    if (appStateRef.current === 'active' && nextAppState === 'background') {
+      console.log('La aplicación está en segundo plano.');
+      clearTimeout(inactivityTimerRef.current);
+    } else if (appStateRef.current === 'background' && nextAppState === 'active') {
+      console.log('La aplicación está activa. Reiniciando temporizador de inactividad.');
+      resetInactivityTimer();
     }
+    appStateRef.current = nextAppState;
   };
 
-  const handleInteraccionUsuario = () => {
-    console.log('El usuario ACTIVO');
-    setUltimaInteraccion(Date.now());
+  const handleUserInteraction = () => {
+    ultimaInteraccionRef.current = Date.now();
+    resetInactivityTimer();
+  };
+
+  const handleUser = () => {
+    console.log('okokisishshs');
   };
 
   useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-      clearTimeout(inactividadTimerRef.current);
-    };
-  }, []);
 
-  useEffect(() => {
-    const inactividadCheckInterval = setInterval(() => {
-      const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccion;
-      if (tiempoDesdeUltimaInteraccion >= tiempoInactividad) {
-        console.log('El usuario está inactivo');
+    const unsubscribe = navigation.addListener('state', () => {
+      console.log('Evento onPress detectado en cualquier pantalla.');
+      // Aquí puedes realizar cualquier acción que desees al detectar el evento onPress
+    });
+
+    const inactivityCheckInterval = setInterval(() => {
+      const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccionRef.current;
+      //console.log(appStateRef);
+      if (tiempoDesdeUltimaInteraccion >= tiempoMaximo) {
         redireccionarALogin();
+      } else {
+        resetInactivityTimer();
       }
     }, 1000);
-    
-    return () => clearInterval(inactividadCheckInterval);
-  }, [ultimaInteraccion, tiempoInactividad]);
 
-  useEffect(() => {
-    resetInactividadTimer();
-  }, [ultimaInteraccion, tiempoMaximo, tiempoInactividad]);
+    AppState.addEventListener('change', handleAppStateChange);
+    InteractionManager.runAfterInteractions(() => {
+      resetInactivityTimer();
+    });
 
-  return React.Children.map(children, (child) =>
-    React.cloneElement(child, {
-      onTouchStart: handleInteraccionUsuario,
-      onScroll: handleInteraccionUsuario,
-      onPress: handleInteraccionUsuario,
-      // Agrega otros eventos de interacción según sea necesario
-    })
+    const userInteractionSubscription = InteractionManager.createInteractionHandle();
+
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+      clearInterval(inactivityCheckInterval);
+      InteractionManager.clearInteractionHandle(userInteractionSubscription);
+      clearTimeout(inactivityTimerRef.current);
+    };
+
+  }, [tiempoMaximo]);
+
+  return (
+    <TouchableOpacity onPress={handleUser}>
+      <View>
+      </View>
+    </TouchableOpacity>
   );
 };
-
 export default TiempoInactivo;
+
+// import React, { useEffect, useRef } from 'react';
+// import { AppState, InteractionManager, TouchableWithoutFeedback, View } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+
+// const TiempoInactivo = ({ tiempoMaximo }) => {
+//   const navigation = useNavigation();
+//   const ultimaInteraccionRef = useRef(Date.now());
+//   const inactivityTimerRef = useRef(null);
+//   const appStateRef = useRef(AppState.currentState);
+
+//   const redireccionarALogin = () => {
+//     handleUserInteraction();
+//     console.log('Usuario inactivo. Redireccionando a la pantalla de inicio de sesión.');
+//     navigation.navigate('Login');
+//   };
+
+//   const resetInactivityTimer = () => {
+//     clearTimeout(inactivityTimerRef.current);
+//     inactivityTimerRef.current = setTimeout(() => {
+//       redireccionarALogin();
+//     }, tiempoMaximo);
+//   };
+
+//   const handleAppStateChange = (nextAppState) => {
+//     if (appStateRef.current === 'active' && nextAppState === 'background') {
+//       clearTimeout(inactivityTimerRef.current);
+//     } else if (appStateRef.current === 'background' && nextAppState === 'active') {
+//       resetInactivityTimer();
+//     }
+//     appStateRef.current = nextAppState;
+//   };
+
+//   const handleUserInteraction = () => {
+//     console.log("okikijiji");
+//     ultimaInteraccionRef.current = Date.now();
+//     resetInactivityTimer();
+//   };
+
+//   useEffect(() => {
+//     const inactivityCheckInterval = setInterval(() => {
+//       const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccionRef.current;
+//       if (tiempoDesdeUltimaInteraccion >= tiempoMaximo) {
+//         redireccionarALogin();
+//       } else {
+//         resetInactivityTimer();
+//       }
+//     }, 1000);
+
+//     AppState.addEventListener('change', handleAppStateChange);
+
+//     return () => {
+//       AppState.removeEventListener('change', handleAppStateChange);
+//       clearInterval(inactivityCheckInterval);
+//       clearTimeout(inactivityTimerRef.current);
+//     };
+//   }, [tiempoMaximo]);
+
+//   return (
+//     <TouchableWithoutFeedback onPress={handleUserInteraction}>
+//       <View />
+//     </TouchableWithoutFeedback>
+//   );
+// };
+
+// export default TiempoInactivo;
+
