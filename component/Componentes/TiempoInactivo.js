@@ -46,7 +46,6 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
   useEffect(() => {
 
     const unsubscribe = navigation.addListener('state', () => {
-      console.log("EVENTO CLIKC")
       setIsActiveApp(prevIsActiveApp => {
         console.log(prevIsActiveApp, "cccccc")
         resetInactivityTimer(prevIsActiveApp);
