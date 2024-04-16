@@ -2,37 +2,41 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad }) => {
+const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad, children }) => {
   const navigation = useNavigation();
-  const [tiempoRestante, setTiempoRestante] = useState(tiempoMaximo);
   const [ultimaInteraccion, setUltimaInteraccion] = useState(Date.now());
 
   const redireccionarALogin = () => {
-    setTiempoRestante(tiempoMaximo);
     setUltimaInteraccion(Date.now());
     navigation.navigate('Login');
   };
 
   const resetInactividadTimer = () => {
-
     clearTimeout(inactividadTimerRef.current);
     inactividadTimerRef.current = setTimeout(() => {
-      redireccionarALogin();
+      const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccion;
+      if (tiempoDesdeUltimaInteraccion >= tiempoInactividad) {
+        console.log('El usuario está inactivo');
+        redireccionarALogin();
+      }
     }, tiempoMaximo);
-
   };
 
   const inactividadTimerRef = useRef(null);
 
+  const handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active') {
+      resetInactividadTimer();
+    }
+  };
+
+  const handleInteraccionUsuario = () => {
+    console.log('El usuario ACTIVO');
+    setUltimaInteraccion(Date.now());
+  };
+
   useEffect(() => {
-    const handleAppStateChange = (nextAppState) => {
-      if (nextAppState === 'active') {
-        resetInactividadTimer();
-      }
-    };
-
     AppState.addEventListener('change', handleAppStateChange);
-
     return () => {
       AppState.removeEventListener('change', handleAppStateChange);
       clearTimeout(inactividadTimerRef.current);
@@ -40,38 +44,29 @@ const TiempoInactivo = ({ tiempoMaximo, tiempoInactividad }) => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTiempoRestante(prev => prev - 1000);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const handleInteraction = () => {
-      console.log("Interacción detectada");
-      setUltimaInteraccion(Date.now());
-    };
-
-    const interactionSubscription = navigation.addListener('focus', handleInteraction);
-
-    return () => {
-      interactionSubscription();
-    };
-  }, [navigation]);
-
-  useEffect(() => {
     const inactividadCheckInterval = setInterval(() => {
       const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccion;
       if (tiempoDesdeUltimaInteraccion >= tiempoInactividad) {
+        console.log('El usuario está inactivo');
         redireccionarALogin();
       }
     }, 1000);
-
+    
     return () => clearInterval(inactividadCheckInterval);
   }, [ultimaInteraccion, tiempoInactividad]);
 
-  return null;
+  useEffect(() => {
+    resetInactividadTimer();
+  }, [ultimaInteraccion, tiempoMaximo, tiempoInactividad]);
+
+  return React.Children.map(children, (child) =>
+    React.cloneElement(child, {
+      onTouchStart: handleInteraccionUsuario,
+      onScroll: handleInteraccionUsuario,
+      onPress: handleInteraccionUsuario,
+      // Agrega otros eventos de interacción según sea necesario
+    })
+  );
 };
 
 export default TiempoInactivo;
