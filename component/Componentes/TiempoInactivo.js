@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { AppState, InteractionManager, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
-let resetsetIsActiveApp; // Referencia global para la función de reseteo
+let resetsetIsActiveApp;
 
 const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 
@@ -12,14 +11,6 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   const inactivityTimerRef = useRef(null);
   const appStateRef = useRef(AppState.currentState);
   const [isActiveApp, setIsActiveApp] = useState(false);
-
-  // useImperativeHandle(ref, () => ({
-  //   resetsetIsActiveApp: () => {
-  //     console.log("llegue aqui...");
-  //     setIsActiveApp(true);
-  //     console.log(isActiveApp, "...");
-  //   }
-  // }));
 
   resetsetIsActiveApp = () => {
     console.log("llegue aqui...");
@@ -40,7 +31,6 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     clearTimeout(inactivityTimerRef.current);
     if (!isActive) {
       inactivityTimerRef.current = setTimeout(() => {
-        console.log("desde aqui")
         redireccionarALogin();
       }, tiempoMaximo);
     }
@@ -99,6 +89,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
       <View />
     </TouchableOpacity>
   );
+
 });
 
 export { resetsetIsActiveApp };

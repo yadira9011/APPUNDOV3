@@ -6,6 +6,7 @@ import * as FileSystem from 'expo-file-system';
 import LoadingComponent from './LoadingComponent';
 
 const ViewerBase64Screen = ({ route }) => {
+
     const { base64arc } = route.params;
     const [loading, setLoading] = useState(false);
 
