@@ -1,8 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { AppState, InteractionManager, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const TiempoInactivo = ({ tiempoMaximo }) => {
+
+let resetsetIsActiveApp; // Referencia global para la función de reseteo
+
+const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 
   const navigation = useNavigation();
   const ultimaInteraccionRef = useRef(Date.now());
@@ -10,9 +13,24 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
   const appStateRef = useRef(AppState.currentState);
   const [isActiveApp, setIsActiveApp] = useState(false);
 
+  // useImperativeHandle(ref, () => ({
+  //   resetsetIsActiveApp: () => {
+  //     console.log("llegue aqui...");
+  //     setIsActiveApp(true);
+  //     console.log(isActiveApp, "...");
+  //   }
+  // }));
+
+  resetsetIsActiveApp = () => {
+    console.log("llegue aqui...");
+    setIsActiveApp(true);
+    ultimaInteraccionRef.current = Date.now();
+    console.log(isActiveApp, "...");
+  };
+
   const redireccionarALogin = () => {
     console.log('Usuario inactivo. Redireccionando a la pantalla de inicio de sesión.', isActiveApp);
-    if (isActiveApp == false) {
+    if (!isActiveApp) {
       ultimaInteraccionRef.current = Date.now();
       navigation.navigate('Login');
     }
@@ -42,18 +60,9 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
     resetInactivityTimer(true);
   };
 
-  const resetsetIsActiveApp = () => {
-    console.log("estoy ....")
-    setIsActiveApp(prevIsActiveApp => {
-      return true;
-    });
-  };
-
   useEffect(() => {
-
     const unsubscribe = navigation.addListener('state', () => {
       setIsActiveApp(prevIsActiveApp => {
-        console.log(prevIsActiveApp, "cccccc")
         resetInactivityTimer(prevIsActiveApp);
         ultimaInteraccionRef.current = Date.now();
         return true;
@@ -65,9 +74,7 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
       console.log(tiempoDesdeUltimaInteraccion, "jajaja ", ultimaInteraccionRef.current)
       console.log(tiempoMaximo)
       if (tiempoDesdeUltimaInteraccion >= tiempoMaximo) {
-        setIsActiveApp(prevIsActiveApp => {
-          return false;
-        });
+        setIsActiveApp(false);
         redireccionarALogin();
       } else {
         resetInactivityTimer(true);
@@ -92,7 +99,7 @@ const TiempoInactivo = ({ tiempoMaximo }) => {
       <View />
     </TouchableOpacity>
   );
-};
+});
 
 export { resetsetIsActiveApp };
 export default TiempoInactivo;

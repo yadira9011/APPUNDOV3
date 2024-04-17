@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, Modal, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
@@ -16,10 +16,12 @@ import pickerSelectStyles from '../Styles/PickerSelectStyles';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts, FormatoEntradaMoneda } from '../Utilities';
 import CustomAlert from '../Componentes/CustomAlert';
+// import { TiempoInactivo } from '../Componentes/TiempoInactivo';
 import { resetsetIsActiveApp } from '../Componentes/TiempoInactivo';
 
-
 const CotizacionAutosScreen = () => {
+
+  // const tiempoInactivoRef = useRef(null);
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -553,12 +555,15 @@ const CotizacionAutosScreen = () => {
   };
 
   const handleOptionChangeTiposUso = (itemValue, itemIndex) => {
+
     if (itemValue !== null) {
       const selectedOption = AutoTipoUso.find(item => item.Id === itemValue);
       setSelectedOptionTipoUso(itemValue);
       setselectedTextTipoUso(selectedOption.Valor);
     }
-    resetsetIsActiveApp();
+
+    resetsetIsActiveApp(); 
+    // tiempoInactivoRef.current.resetsetIsActiveApp();
   };
 
   const handleOptionChangeDeducibles = (itemValue) => {
