@@ -51,6 +51,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   };
 
   useEffect(() => {
+
     const unsubscribe = navigation.addListener('state', () => {
       setIsActiveApp(prevIsActiveApp => {
         resetInactivityTimer(prevIsActiveApp);

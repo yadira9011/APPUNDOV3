@@ -562,7 +562,7 @@ const CotizacionAutosScreen = () => {
       setselectedTextTipoUso(selectedOption.Valor);
     }
 
-    resetsetIsActiveApp(); 
+    resetsetIsActiveApp();
     // tiempoInactivoRef.current.resetsetIsActiveApp();
   };
 
@@ -955,7 +955,6 @@ const CotizacionAutosScreen = () => {
           </View>
         )}
 
-
         <Text style={styles.label}>Codigo Postal :</Text>
 
         <View style={{
@@ -1308,4 +1307,5 @@ const styles = StyleSheet.create({
     marginLeft: 35,
   },
 });
+
 export default CotizacionAutosScreen;

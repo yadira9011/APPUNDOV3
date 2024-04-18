@@ -140,7 +140,8 @@ export default function App() {
     <>
 
       <NavigationContainer>
-        <TiempoInactivo tiempoMaximo={10000} tiempoInactividad={10000} />
+        {/* <TiempoInactivo tiempoMaximo={10000} tiempoInactividad={10000} /> */}
+        <TiempoInactivo tiempoMaximo={90000} tiempoInactividad={90000} />
         <Stack.Navigator screenOptions={screenOptions} initialRouteName="Login">
 
           <Stack.Screen
