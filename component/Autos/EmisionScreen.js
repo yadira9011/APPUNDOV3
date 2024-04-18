@@ -46,12 +46,19 @@ const EmisionScreen = () => {
   const [PlCollapsed, setPlCollapsed] = useState(true);
 
   //Datos contratante
-  const [numerosocio, setnumerosocio] = useState('XXX');
-  const [nombre, setNombre] = useState('YADIRA');
-  const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
-  const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
-  const [rfc, setRFC] = useState('PECY901120');
-  const [curp, setCURP] = useState('PECY901109MVZRSD06');
+  // const [numerosocio, setnumerosocio] = useState('XXX');
+  // const [nombre, setNombre] = useState('YADIRA');
+  // const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
+  // const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
+  // const [rfc, setRFC] = useState('PECY901120');
+  // const [curp, setCURP] = useState('PECY901109MVZRSD06');
+
+  const [numerosocio, setnumerosocio] = useState();
+  const [nombre, setNombre] = useState();
+  const [apellidoPaterno, setApellidoPaterno] = useState();
+  const [apellidoMaterno, setApellidoMaterno] = useState();
+  const [rfc, setRFC] = useState();
+  const [curp, setCURP] = useState();
 
   const [diaNacimiento, setDiaNacimiento] = useState('');
   const [mesNacimiento, setMesNacimiento] = useState('');
@@ -69,14 +76,23 @@ const EmisionScreen = () => {
 
   const [genero, setGenero] = useState('');
   const [tipoIdentificacion, setTipoIdentificacion] = useState('');
-  const [numIdentificacion, setNumIdentificacion] = useState('123567892');
-  const [telefono, setTelefono] = useState('2781152721');
-  const [correo, setCorreo] = useState('pruebas@gmail.com');
+  // const [numIdentificacion, setNumIdentificacion] = useState('123567892');
+  // const [telefono, setTelefono] = useState('2781152721');
+  // const [correo, setCorreo] = useState('pruebas@gmail.com');
+
+  const [numIdentificacion, setNumIdentificacion] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [correo, setCorreo] = useState('');
+
 
   //Datos Direccion
-  const [calle, setCalle] = useState('SALVATIERRA');
-  const [noExterior, setNoExterior] = useState('75');
-  const [noInterior, setNoInterior] = useState('0');
+  // const [calle, setCalle] = useState('SALVATIERRA');
+  // const [noExterior, setNoExterior] = useState('75');
+  // const [noInterior, setNoInterior] = useState('0');
+  const [calle, setCalle] = useState('');
+  const [noExterior, setNoExterior] = useState('');
+  const [noInterior, setNoInterior] = useState('');
+
   const [colonia, setColonia] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
   const [municipio, setMunicipio] = useState('');
@@ -84,10 +100,16 @@ const EmisionScreen = () => {
   const [ciudad, setCiudad] = useState('');
 
   //Datos DatosVehiculo
-  const [numCredito, setNumCredito] = useState('00000');
-  const [numSerie, setNumSerie] = useState('JH4DC4470YS801968');
-  const [numMotor, setNumMotor] = useState('HECHOMX');
-  const [placas, setPlacas] = useState('YJPC');
+  // const [numCredito, setNumCredito] = useState('00000');
+  // const [numSerie, setNumSerie] = useState('JH4DC4470YS801968');
+  // const [numMotor, setNumMotor] = useState('HECHOMX');
+  // const [placas, setPlacas] = useState('YJPC');
+
+  const [numCredito, setNumCredito] = useState();
+  const [numSerie, setNumSerie] = useState();
+  const [numMotor, setNumMotor] = useState();
+  const [placas, setPlacas] = useState();
+
 
   const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
 
@@ -124,10 +146,15 @@ const EmisionScreen = () => {
   const [isPL, setIsPL] = useState(false);
   const [isPR, setIsPR] = useState(false);
 
-  const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('PRUEBA RODAC');
-  const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('5454545454545454');
-  const [fechaExpiracion, setFechaExpiracion] = useState('11/26');
-  const [cvv, setCVV] = useState('123');
+  // const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('PRUEBA RODAC');
+  // const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('5454545454545454');
+  // const [fechaExpiracion, setFechaExpiracion] = useState('11/26');
+  // const [cvv, setCVV] = useState('123');
+
+  const [nombreTarjetahabiente, setNombreTarjetahabiente] = useState('');
+  const [cuentaClabeNoTarjeta, setCuentaClabeNoTarjeta] = useState('');
+  const [fechaExpiracion, setFechaExpiracion] = useState('');
+  const [cvv, setCVV] = useState('');
 
   const [BancosEmisores, setBancosEmisores] = useState([]);
   const [selectedBancoEmisor, setselectedBancoEmisor] = useState('');
