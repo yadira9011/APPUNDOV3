@@ -4,7 +4,7 @@
     "slug": "AppUndoV3",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/IconApp.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -20,12 +20,13 @@
         "NSAppTransportSecurity": {
           "allowsArbitraryLoads": true
         }
-      }
+      },
+      "bundleIdentifier": "com.yadira.perez.AppUndoV3"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
