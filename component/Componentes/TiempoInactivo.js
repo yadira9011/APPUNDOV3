@@ -13,14 +13,11 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   const [isActiveApp, setIsActiveApp] = useState(false);
 
   resetsetIsActiveApp = () => {
-    console.log("llegue aqui...");
     setIsActiveApp(true);
     ultimaInteraccionRef.current = Date.now();
-    console.log(isActiveApp, "...");
   };
 
   const redireccionarALogin = () => {
-    console.log('Usuario inactivo. Redireccionando a la pantalla de inicio de sesión.', isActiveApp);
     if (!isActiveApp) {
       ultimaInteraccionRef.current = Date.now();
       navigation.navigate('Login');
@@ -31,6 +28,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     clearTimeout(inactivityTimerRef.current);
     if (!isActive) {
       inactivityTimerRef.current = setTimeout(() => {
+        setIsActiveApp(false);
         redireccionarALogin();
       }, tiempoMaximo);
     }
@@ -40,7 +38,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     if (appStateRef.current === 'active' && nextAppState === 'background') {
       clearTimeout(inactivityTimerRef.current);
     } else if (appStateRef.current === 'background' && nextAppState === 'active') {
-      resetInactivityTimer(true);
+      resetInactivityTimer(false);
     }
     appStateRef.current = nextAppState;
   };
@@ -70,7 +68,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
       } else {
         resetInactivityTimer(true);
       }
-    }, 5000);
+    }, 30000);
 
     AppState.addEventListener('change', handleAppStateChange);
     InteractionManager.runAfterInteractions(() => {

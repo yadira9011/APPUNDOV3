@@ -1467,6 +1467,7 @@ const EmisionScreen = () => {
 
         {/* dATOS POLIZA */}
         <View>
+
           <TouchableOpacity onPress={toggleDPCollapse} style={styles.button}>
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
               <Image source={require('../../assets/EmiIcons/DatosPoliza.png')} style={styles.imageIcons} />
@@ -1502,7 +1503,7 @@ const EmisionScreen = () => {
                 <View style={{ marginBottom: 10, marginTop: 10, width: '75%' }}>
                   <Text style={styles.LabelText} >Cambiar Fecha: </Text>
                 </View>
-                <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+                <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 5 }}>
                   <Switch
                     trackColor={{ false: '#767577', true: '#81b0ff' }}
                     thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
@@ -1534,7 +1535,7 @@ const EmisionScreen = () => {
               <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
                 <Text style={styles.LabelText}>Beneficiario Preferente</Text>
               </View>
-              <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+              <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 5 }}>
                 <Switch
                   style={{ marginTop: 5, }}
                   trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -1554,7 +1555,7 @@ const EmisionScreen = () => {
                   <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
                     <Text style={styles.LabelText}>Renovación</Text>
                   </View>
-                  <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 20 }}>
+                  <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 5 }}>
                     <Switch
                       trackColor={{ false: '#767577', true: '#81b0ff' }}
                       thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
@@ -1575,7 +1576,7 @@ const EmisionScreen = () => {
                     <View style={{ marginBottom: 10, width: '75%', }}>
                       <Text style={styles.LabelText}>Fecha de desembolso: {TextDateFD} </Text>
                     </View>
-                    <View style={{ marginBottom: 8, width: '25%', marginLeft: 20 }}>
+                    <View style={{ marginBottom: 8, width: '25%', marginLeft: 5 }}>
                       <Switch
                         trackColor={{ false: '#767577', true: '#81b0ff' }}
                         thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
@@ -1625,7 +1626,7 @@ const EmisionScreen = () => {
             )}
             {isPL && (
 
-              <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+              <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center' }}>
 
                 <View style={{ marginBottom: 10, marginTop: 10, width: '55%', }}>
                   <Text style={styles.LabelText}>Pago en Línea</Text>
