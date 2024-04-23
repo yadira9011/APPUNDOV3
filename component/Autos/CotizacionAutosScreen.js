@@ -177,8 +177,8 @@ const CotizacionAutosScreen = () => {
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setAutoTipoVehiculos(data);
-        setSelectedOptionTipoVehiculo(data[0].Id);
-        setselectedTextTipoVehiculo(data[0].Valor);
+        //setSelectedOptionTipoVehiculo(data[0].Id);
+        //setselectedTextTipoVehiculo(data[0].Valor);
       } else {
         console.error('La respuesta de la API no contiene Estaus vehiculos.');
       }
@@ -804,13 +804,20 @@ const CotizacionAutosScreen = () => {
         <Text style={styles.label}>Tipo vehículo:</Text>
         <RNPickerSelect
           onValueChange={handleOptionChangeTipoVehiculo}
-          items={AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
-            label: AutoTipoVehiculo.Valor,
-            value: AutoTipoVehiculo.Id,
-          }))}
+          // items={AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
+          //   label: AutoTipoVehiculo.Valor,
+          //   value: AutoTipoVehiculo.Id,
+          // }))}
+          items={[
+            { label: 'Selecciona un tipo de vehículo...', value: -1 },
+            ...AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
+              label: AutoTipoVehiculo.Valor,
+              value: AutoTipoVehiculo.Id,
+            }))
+          ]}
           value={selectedOptionTipoVehiculo}
           style={pickerSelectStyles}
-          placeholder={{}}
+          placeholder={{ label: 'Selecciona un tipo de vehículo...', value: -1 }}
         />
 
         <View style={styles.ContainerModelMarca}>
