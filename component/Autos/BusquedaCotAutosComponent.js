@@ -22,6 +22,7 @@ export default function ModalSolitarCotizacion({ isVisible,
     const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
     const [isAlertTwo, setAlertTwo] = useState(false);
     const [Isloading, setIsloading] = useState(false);
+
     // AUT-1-12102023082739534 AUT-3164-23022024133225346
     //AUT-1-11112023124847111
 
@@ -33,10 +34,11 @@ export default function ModalSolitarCotizacion({ isVisible,
             const DataRquest = {
                 Cotizacion: FolioCotizacion,
                 IdSubcanal: idsubcanal,
-                IdUsuario: 1,
+                IdUsuario: DataParameter.IdUsr,
                 usuario: email,
                 contraseña: password,
             }
+            
             const response = await GetCotizacionApi(DataRquest);
             if (!response.data.Data.HasError) {
                 const datos_cot = response.data.Data.Data;
