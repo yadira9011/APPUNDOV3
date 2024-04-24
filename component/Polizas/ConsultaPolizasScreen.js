@@ -331,11 +331,12 @@ const ConsultaPolizasScreen = ({ route }) => {
     };
 
     const renderItemPolizasGpo = ({ item, onPress, tipo_poliza = 0 }) => (
+        
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>
                 <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
                 <Text style={styles.description}>
-                    {tipo_poliza === 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+                    {tipo_poliza == 1? item.FSNOMBRE_COMPLETO : item.FSALIAS}
                 </Text>
                 <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
                 <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
@@ -431,7 +432,7 @@ const ConsultaPolizasScreen = ({ route }) => {
                         data={PolizasIdividualesTitular}
                         contentContainerStyle={styles.flatListContent}
                         keyExtractor={item => item.FIIDPOLIZA}
-                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { }, tipo_poliza: 0 })}
+                        renderItem={({ item }) => renderItemPolizasGpo({ item, onPress: () => { }, tipo_poliza: 1 })}
                     />
                 ) : (
                     <Text style={styles.noRecordsText}>No hay registros disponibles</Text>
