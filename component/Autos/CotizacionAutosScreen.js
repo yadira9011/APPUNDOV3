@@ -683,64 +683,99 @@ const CotizacionAutosScreen = () => {
     }
   };
 
+
+  function validarCampos() {
+
+    let mensajeError = "";
+
+    if (!selectedOptionModelo) {
+      mensajeError = "Por favor selecciona un modelo.";
+    } else if (!selectedOptionMarca) {
+      mensajeError = "Por favor selecciona una marca.";
+    } else if (!selectedOptionTipo) {
+      mensajeError = "Por favor selecciona un tipo.";
+    } else if (!selectedTextDescripcion) {
+      mensajeError = "Por favor ingresa una descripción.";
+    } else if (!selectedOptionDescripcion) {
+      mensajeError = "Por favor selecciona una opción de descripción.";
+    }
+
+    const resultadoValidacion = {
+      valido: !mensajeError,
+      mensaje: mensajeError
+    };
+
+    return resultadoValidacion;
+  }
+
   const handleCotizar = async () => {
 
     try {
 
-      console.log("entroo corizar")
-      setLoadingCotizacion(true);
+      const validaCamposCoti = validarCampos();
+      
+      if (validaCamposCoti.valido) {
 
-      const DataSolicitudTitulos = {
-        DescripcionVehiculo: selectedTextDescripcion,
-        Modelo: selectedTextModelo,
-        TipoAut: selectedTextTipoVehiculo,
-        Marca: selectedTextMarca,
-        EstatusVehiculo: selectedTextEstatusVehiculo,
-        TipoUso: selectedTextTipoUso,
-        tipoPaquete: selectedTextPaquetes,
-        tipoPoliza: selectedTextTipoPoliza,
-        tipoVigenciaPago: selectedTextTipoVigencia,
-      }
+        setLoadingCotizacion(true);
 
-      const dataCotizacion = {
-        ClaveVehiculo: selectedOptionDescripcion,
-        IDTipoVehiculo: selectedOptionTipoVehiculo,
-        IDEstatusVehiculo: selectedOption,
-        IDIndenmizacion: selectedOptionIndemnizacion,
-        SumaAsegurada: textMonto,
-        CodigoPostal: textCP,
-        IDTipoUso: selectedOptionTipoUso,
-        IDDeducibles: selectedOptionDeducible,
-        IDPagoVigencia: selectedOptionVigencia,
-        IDUDI: 0,
-        IDPaquete: selectedOptionPaquete,
-        ColoniaPersona: TextColonia,
-        MunicipioPersona: TextMunicipio,
-        CiudadPersona: TextCiudad,
-        EstadoPersona: TextEstado,
-        usuario: DataParameter.email,
-        contraseña: DataParameter.password,
-        IDSubcananal: DataParameter.IdSubCanal
-      }
-
-      const response = await GetCotizacion(dataCotizacion);
-
-      if (response.data.Data.HasError) {
-        setLoadingCotizacion(false);
-        setAlertMessage(response.data.Data.Message);
-        setAlertVisible(true);
-      } else {
-        if (response.data.Data.Data) {
-          const resultData = response.data.Data.Data;
-          setLoadingCotizacion(false);
-          const dataArray = {
-            DataResul: resultData,
-            CotiData: dataCotizacion,
-            DataTitulos: DataSolicitudTitulos,
-            DataParameter: DataParameter
-          }
-          navigation.navigate('ResultadoCotizacion', { dataArray });
+        const DataSolicitudTitulos = {
+          DescripcionVehiculo: selectedTextDescripcion,
+          Modelo: selectedTextModelo,
+          TipoAut: selectedTextTipoVehiculo,
+          Marca: selectedTextMarca,
+          EstatusVehiculo: selectedTextEstatusVehiculo,
+          TipoUso: selectedTextTipoUso,
+          tipoPaquete: selectedTextPaquetes,
+          tipoPoliza: selectedTextTipoPoliza,
+          tipoVigenciaPago: selectedTextTipoVigencia,
         }
+
+        const dataCotizacion = {
+          ClaveVehiculo: selectedOptionDescripcion,
+          IDTipoVehiculo: selectedOptionTipoVehiculo,
+          IDEstatusVehiculo: selectedOption,
+          IDIndenmizacion: selectedOptionIndemnizacion,
+          SumaAsegurada: textMonto,
+          CodigoPostal: textCP,
+          IDTipoUso: selectedOptionTipoUso,
+          IDDeducibles: selectedOptionDeducible,
+          IDPagoVigencia: selectedOptionVigencia,
+          IDUDI: 0,
+          IDPaquete: selectedOptionPaquete,
+          ColoniaPersona: TextColonia,
+          MunicipioPersona: TextMunicipio,
+          CiudadPersona: TextCiudad,
+          EstadoPersona: TextEstado,
+          usuario: DataParameter.email,
+          contraseña: DataParameter.password,
+          IDSubcananal: DataParameter.IdSubCanal
+        }
+
+        const response = await GetCotizacion(dataCotizacion);
+
+        if (response.data.Data.HasError) {
+          setLoadingCotizacion(false);
+          setAlertMessage(response.data.Data.Message);
+          setAlertVisible(true);
+        } else {
+          if (response.data.Data.Data) {
+            const resultData = response.data.Data.Data;
+            setLoadingCotizacion(false);
+            const dataArray = {
+              DataResul: resultData,
+              CotiData: dataCotizacion,
+              DataTitulos: DataSolicitudTitulos,
+              DataParameter: DataParameter
+            }
+            navigation.navigate('ResultadoCotizacion', { dataArray });
+          }
+        }
+
+      } else {
+        setLoadingCotizacion(false);
+        setAlertMessage(validaCamposCoti.mensaje);
+        setAlertVisible(true);
+        setLoading(false);
       }
 
     } catch (error) {

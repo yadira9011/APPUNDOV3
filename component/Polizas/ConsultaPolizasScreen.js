@@ -327,7 +327,6 @@ const ConsultaPolizasScreen = ({ route }) => {
     };
 
     const GotoMyPerfil = () => {
-        console.log("dii aquiiiii")
         navigation.navigate('MiPerfilScreen', { DataParameter });
     };
 

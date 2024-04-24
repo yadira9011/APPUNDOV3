@@ -45,7 +45,6 @@ const CanalesScreen = ({ route }) => {
         GetFlujoLogin(item.IdCanal);
     };
 
-
     const renderItem = ({ item, index }) => {
         const dynamicBackgroundColor = { backgroundColor: colors[index % colors.length] };
         return (
