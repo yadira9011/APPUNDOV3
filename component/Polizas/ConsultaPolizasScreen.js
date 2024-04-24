@@ -331,14 +331,17 @@ const ConsultaPolizasScreen = ({ route }) => {
     };
 
     const renderItemPolizasGpo = ({ item, onPress, tipo_poliza = 0 }) => (
-        
+
         <View style={styles.itemContainer} >
             <View style={styles.itemDetailsUnO}>
                 <Text style={styles.description}>{item.FSCERTIFICADO}</Text>
                 <Text style={styles.description}>
-                    {tipo_poliza == 1? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+                   xxx {item.FSALIAS}
                 </Text>
-                <Text style={styles.description}>Inicio: {item.FDINICIO_VIGENCIA}</Text>
+                <Text style={styles.description}>
+                    {tipo_poliza == 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+                </Text>
+                <Text style={styles.description}>Iniciodd: {item.FDINICIO_VIGENCIA}</Text>
                 <Text style={styles.description}>Fin: {item.FDFIN_VIGENCIA}</Text>
                 <Text style={styles.description}>Producto: {item.FSPRODUCTO}</Text>
                 <Text style={styles.description}>Estatus: {item.FSESTATUS}</Text>

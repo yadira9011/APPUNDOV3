@@ -415,6 +415,8 @@ const NewPolizas = ({ route }) => {
     // const imagePath = '../../assets/Polizas/' + item.FSIMAGEN;
     // console.log('RUTAAAA :', imagePath);
 
+    console.log('RUTAAAA :', item.LogoAseguradora);
+
     return (
       <ImageBackground
         style={styles.itemContainer}
@@ -448,10 +450,14 @@ const NewPolizas = ({ route }) => {
           ) : (
 
             <Text style={styles.boldBlackTextAse}>
-              {tipo_poliza === 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+              {item.FSALIAS}
             </Text>
 
           )}
+
+          <Text style={styles.boldBlackTextAse}>
+            {tipo_poliza == 1 ? item.FSNOMBRE_COMPLETO : item.FSALIAS}
+          </Text>
 
           <Text style={styles.description}><Text style={styles.boldBlackText}>Inicio vigencia: </Text>{item.FDINICIO_VIGENCIA}</Text>
           <Text style={styles.description}><Text style={styles.boldBlackText}>Fin vigencia: </Text>{item.FDFIN_VIGENCIA}</Text>
