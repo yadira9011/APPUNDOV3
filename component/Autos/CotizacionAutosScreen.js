@@ -177,8 +177,8 @@ const CotizacionAutosScreen = () => {
       if (response.data.Data.Data) {
         const data = response.data.Data.Data;
         setAutoTipoVehiculos(data);
-        //setSelectedOptionTipoVehiculo(data[0].Id);
-        //setselectedTextTipoVehiculo(data[0].Valor);
+        setSelectedOptionTipoVehiculo(data[0].Id);
+        setselectedTextTipoVehiculo(data[0].Valor);
       } else {
         console.error('La respuesta de la API no contiene Estaus vehiculos.');
       }
@@ -198,13 +198,13 @@ const CotizacionAutosScreen = () => {
         DataParameter.IdSubCanal,
         estatusVehiculoId
       );
-
       if (response.data.Data.Data) {
         const data = response.data.Data.Data.slice(1);
         setAutoModelos(data);
-        setSelectedOptionModelo(data[0].Valor);
-        setselectedTextModelo(data[0].Valor);
-        await fetchAutoCotMarcas(estatusVehiculoId, data[0].Id);
+        // setSelectedOptionModelo(data[0].Valor);
+        // setselectedTextModelo(data[0].Valor);
+        //await fetchAutoCotMarcas(estatusVehiculoId, data[0].Id);
+        await fetchAutoCotMarcas(estatusVehiculoId, -1);
       } else {
         console.error('La respuesta de la API no contiene modelos.');
       }
@@ -218,6 +218,7 @@ const CotizacionAutosScreen = () => {
   const fetchAutoCotMarcas = async (TipoVehiculoId, Modelo) => {
 
     try {
+
       const response = await CotMarcas(
         DataParameter.email,
         DataParameter.password,
@@ -225,26 +226,44 @@ const CotizacionAutosScreen = () => {
         Modelo
       );
 
+
+
       if (response.data.Data.Data) {
+
+
         const data = response.data.Data.Data;
-        setAutoMarcas(data);
-        setSelectedOptionMarca(data[0].Valor);
-        setselectedLabel(data[0].Valor);
-        setselectedTextMarca(data[0].Valor);
-        await fetchAutoTipos(TipoVehiculoId, Modelo, data[0].Valor);
+
+        console.log("Marcassss ...", TipoVehiculoId, Modelo)
+        console.log("Marcassss ... dattaaaa", data)
+
+        if (typeof data[0] !== 'undefined' && data[0].Valor !== undefined && data[0].Valor !== null && data[0].Valor !== '') {
+
+          setAutoMarcas(data);
+          // setSelectedOptionMarca(data[0].Valor);
+          // setselectedLabel(data[0].Valor);
+          // setselectedTextMarca(data[0].Valor);
+          await fetchAutoTipos(TipoVehiculoId, Modelo, data[0].Valor);
+        }
+
       } else {
         console.error('La respuesta de la API no contiene marcas.');
+        setLoading(false);
       }
+
       setLoading(false);
+
     } catch (error) {
-      console.error('Error al obtener los datos:', error);
+      console.error('Error al obtener los datos marcas:', error);
       setLoading(false);
     }
+
   };
 
   const fetchAutoTipos = async (TipoVehiculoId, Modelo, submarca) => {
 
     try {
+
+      console.log("entre tipos", TipoVehiculoId, Modelo, submarca)
 
       const response = await CotTipos(
         DataParameter.email,
@@ -255,21 +274,31 @@ const CotizacionAutosScreen = () => {
       );
 
       if (response.data.Data.Data) {
+
         const data = response.data.Data.Data;
-        setAutoTipos(data);
-        setSelectedOptionTipo(data[0].Valor);
-        setselectedTextTipos(data[0].Valor);
-        await fetchAutoDescripciones(TipoVehiculoId,
-          Modelo,
-          submarca,
-          data[0].Valor);
+
+        if (typeof data[0] !== 'undefined' &&
+          data[0].Valor !== undefined &&
+          data[0].Valor !== null &&
+          data[0].Valor !== '') {
+
+          console.log("entre tipos ....", data[0].Valor)
+
+          setAutoTipos(data);
+          // setSelectedOptionTipo(data[0].Valor);
+          // setselectedTextTipos(data[0].Valor);
+          await fetchAutoDescripciones(TipoVehiculoId,
+            Modelo,
+            submarca,
+            data[0].Valor);
+        }
 
       } else {
         console.error('La respuesta de la API no contiene tipos.');
       }
       setLoading(false);
     } catch (error) {
-      console.error('Error al obtener los datos:', error);
+      console.error('Error al obtener los datos Tiposs:', error);
       setLoading(false);
     }
   };
@@ -510,10 +539,14 @@ const CotizacionAutosScreen = () => {
   };
 
   const handleOptionChangeModelo = (itemValue) => {
+    // console.log(itemValue)
     if (itemValue !== null) {
       setSelectedOptionModelo(itemValue);
       setselectedTextModelo(itemValue);
-      fetchAutoCotMarcas(selectedOptionTipoVehiculo, itemValue);
+      if (itemValue != -1) {
+        console.log(itemValue)
+        fetchAutoCotMarcas(selectedOptionTipoVehiculo, itemValue);
+      }
     }
   };
 
@@ -804,20 +837,20 @@ const CotizacionAutosScreen = () => {
         <Text style={styles.label}>Tipo vehículo:</Text>
         <RNPickerSelect
           onValueChange={handleOptionChangeTipoVehiculo}
-          // items={AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
-          //   label: AutoTipoVehiculo.Valor,
-          //   value: AutoTipoVehiculo.Id,
-          // }))}
-          items={[
-            { label: 'Selecciona un tipo de vehículo...', value: -1 },
-            ...AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
-              label: AutoTipoVehiculo.Valor,
-              value: AutoTipoVehiculo.Id,
-            }))
-          ]}
+          items={AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
+            label: AutoTipoVehiculo.Valor,
+            value: AutoTipoVehiculo.Id,
+          }))}
+          // items={[
+          //   { label: 'Selecciona un tipo de vehículo...', value: -1 },
+          //   ...AutoTipoVehiculos.map((AutoTipoVehiculo) => ({
+          //     label: AutoTipoVehiculo.Valor,
+          //     value: AutoTipoVehiculo.Id,
+          //   }))
+          // ]}
           value={selectedOptionTipoVehiculo}
           style={pickerSelectStyles}
-          placeholder={{ label: 'Selecciona un tipo de vehículo...', value: -1 }}
+          placeholder={{}}
         />
 
         <View style={styles.ContainerModelMarca}>
@@ -848,13 +881,14 @@ const CotizacionAutosScreen = () => {
                 label: AutoModelo.Valor,
                 value: AutoModelo.Valor,
               }))}
+              placeholder={{ label: 'Modelo...', value: -1 }}
               // placeholder={{
               //   label: 'Año',
               //   value: null,
               //   color: 'blue',
               //   fontSize: 5,
               // }}
-              placeholder={{}}
+              // placeholder={{}}
               value={selectedOptionModelo}
             />
 
@@ -895,7 +929,8 @@ const CotizacionAutosScreen = () => {
               //   color: 'blue',
               //   fontSize: 5,
               // }}
-              placeholder={{}}
+              // placeholder={{}}
+              placeholder={{ label: 'Marca...', value: null }}
             />
           </View>
         </View>
@@ -909,7 +944,7 @@ const CotizacionAutosScreen = () => {
           }))}
           value={selectedOptionTipo}
           style={pickerSelectStyles}
-          placeholder={{}}
+          placeholder={{ label: 'Selecciona tipo ...', value: null }}
         />
 
         <Text style={styles.label}>Descripción:</Text>
@@ -924,7 +959,7 @@ const CotizacionAutosScreen = () => {
           //   label: 'Selecciona una descripción',
           //   value: null,
           // }}
-          placeholder={{}}
+          placeholder={{ label: 'Selecciona descrición...', value: null }}
         />
 
         <Text style={styles.label}>Indemnización:</Text>
