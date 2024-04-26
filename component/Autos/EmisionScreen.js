@@ -187,7 +187,9 @@ const EmisionScreen = () => {
   const [isRenovacion, setisRenovacion] = useState(false);
   const [ShowisRenovacion, setShowisRenovacion] = useState(true);
 
-  const [showChangeFD, setShowChangeFD] = useState(false)
+  const [showChangeFD, setShowChangeFD] = useState(false);
+
+  const [showChangeFDpIKER, setshowChangeFDpIKER] = useState(false);
 
   const opcionesIdentificacion = [
     { label: "Selecciona", value: "" },
@@ -735,12 +737,48 @@ const EmisionScreen = () => {
   //   setSelectedDate(date);
   // };
 
-  const onChange = (event, selectedDate) => {
-    setShowPicker(Platform.OS === 'ios');
+  const onChangeV = (event, selectedDate) => {
+    console.log(selectedDate)
     if (selectedDate) {
-      setDate(selectedDate);
-      setTextDateVP(date.toLocaleDateString());
-      setShowChangeFD(false);
+      setTextDateVP(selectedDate.toLocaleDateString());
+      showPicker(previousState => !previousState);
+    }
+  };
+
+
+  const onChangeXXX = (event, selectedDate) => {
+
+    if (showChangeFD) {
+      setshowChangeFDpIKER(true);
+    } else {
+      setshowChangeFDpIKER(false);
+    }
+    //setShowChangeFD(previousState => !previousState);
+    // console.log(showChangeFD)
+    // //setShowPicker(Platform.OS === 'ios');
+    // if (selectedDate) {
+    //   setDate(selectedDate);
+    //   setTextDateVP(date.toLocaleDateString());
+    //   //etShowChangeFD(previousState => !previousState);
+    //   //setShowPicker(false);
+    // }
+  };
+
+  const onChangeFD = (event, selectedDate) => {
+    console.log(selectedDate)
+    if (selectedDate) {
+      setTextDateFD(selectedDate.toLocaleDateString());
+      setshowChangeFDpIKER(previousState => !previousState);
+    }
+  };
+
+  const onChangeFDS = () => {
+    setShowChangeFD(previousState => !previousState);
+    if (!showChangeFD) {
+      console.log(showChangeFD)
+      setshowChangeFDpIKER(true);
+    } else {
+      setshowChangeFDpIKER(false);
     }
   };
 
@@ -1503,7 +1541,7 @@ const EmisionScreen = () => {
                 <View style={{ marginBottom: 10, marginTop: 10, width: '75%' }}>
                   <Text style={styles.LabelText} >Cambiar Fecha: </Text>
                 </View>
-                <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 5 }}>
+                <View style={{ marginBottom: 10, marginTop: 10, width: '20%', marginLeft: 0 }}>
                   <Switch
                     trackColor={{ false: '#767577', true: '#81b0ff' }}
                     thumbColor={IsChangeVigencia ? '#f5dd4b' : '#f4f3f4'}
@@ -1522,7 +1560,7 @@ const EmisionScreen = () => {
                   mode={mode}
                   is24Hour={true}
                   display="default"
-                  onChange={onChange}
+                  onChange={onChangeV}
                   minimumDate={minDate}
                   maximumDate={maxDate}
                   style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
@@ -1535,7 +1573,7 @@ const EmisionScreen = () => {
               <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
                 <Text style={styles.LabelText}>Beneficiario Preferente</Text>
               </View>
-              <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 5 }}>
+              <View style={{ marginBottom: 10, marginTop: 10, width: '20%', marginLeft: 0 }}>
                 <Switch
                   style={{ marginTop: 5, }}
                   trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -1555,7 +1593,7 @@ const EmisionScreen = () => {
                   <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
                     <Text style={styles.LabelText}>Renovación</Text>
                   </View>
-                  <View style={{ marginBottom: 10, marginTop: 10, width: '25%', marginLeft: 5 }}>
+                  <View style={{ marginBottom: 10, marginTop: 10, width: '20%', marginLeft: 0 }}>
                     <Switch
                       trackColor={{ false: '#767577', true: '#81b0ff' }}
                       thumbColor={isRenovacion ? '#f5dd4b' : '#f4f3f4'}
@@ -1576,24 +1614,24 @@ const EmisionScreen = () => {
                     <View style={{ marginBottom: 10, width: '75%', }}>
                       <Text style={styles.LabelText}>Fecha de desembolso: {TextDateFD} </Text>
                     </View>
-                    <View style={{ marginBottom: 8, width: '25%', marginLeft: 5 }}>
+                    <View style={{ marginBottom: 8, width: '20%', marginLeft: 0 }}>
                       <Switch
                         trackColor={{ false: '#767577', true: '#81b0ff' }}
                         thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={() => setShowChangeFD(true)}
+                        onValueChange={onChangeFDS}
                         value={showChangeFD}
                       />
                     </View>
                   </View>
-                  {showChangeFD && (
+                  {showChangeFDpIKER && (
                     <DateTimePicker
                       testID="dateTimePicker"
                       value={dateFDesembolso}
                       mode="date"
                       is24Hour={true}
                       display="default"
-                      onChange={onChange}
+                      onChange={onChangeFD}
                       style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
                       pickerStyle={{ backgroundColor: 'white' }}
                     />
