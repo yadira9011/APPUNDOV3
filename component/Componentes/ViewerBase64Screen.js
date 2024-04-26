@@ -25,6 +25,7 @@ const ViewerBase64Screen = ({ route }) => {
             const fileExists = await FileSystem.getInfoAsync(uri);
             if (fileExists.exists) {
                 setPdfUri(uri);
+                console.log("URL ....", uri)
                 setIsPdfReady(true);
             } else {
                 console.error('El archivo PDF no existe en la ruta especificada.');
@@ -58,6 +59,12 @@ const ViewerBase64Screen = ({ route }) => {
                         originWhitelist={['*']}
                         useWebKit={true}
                         androidHardwareAccelerationDisabled={true}
+                        allowFileAccess={true}
+                        allowsInlineMediaPlayback={true}
+                        scalesPageToFit={true}
+                        bounces={false}
+                        javaScriptEnabled={true} // Habilitar JavaScript
+                        renderError={() => console.log('Merci de vérifier votre connexion Internet', 'Internet non disponible')}
                     />
                     {/* <Button title="Compartir PDF" onPress={sharePDF} /> */}
                     <TouchableOpacity style={styles.button} onPress={sharePDF}>
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignSelf: 'center',
         marginTop: 5,
-        marginBottom:50,
+        marginBottom: 50,
         paddingVertical: 8,
         paddingHorizontal: 16,
         backgroundColor: '#AAB3DB',

@@ -33,7 +33,12 @@
         "INTERNET",
         "NOTIFICATIONS",
         "WRITE_EXTERNAL_STORAGE",
-        "READ_EXTERNAL_STORAGE"
+        "READ_EXTERNAL_STORAGE",
+        "MANAGE_DOCUMENTS",
+        "ACCESS_MEDIA_LOCATION",
+        "WRITE_SETTINGS",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_WIFI_STATE"
       ],
       "package": "com.yadira.perez.AppUndoV3"
     },
