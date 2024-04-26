@@ -17,7 +17,7 @@ const ViewerBase64Screen = ({ route }) => {
                 const directory = FileSystem.cacheDirectory;
                 const filename = 'archivo.pdf';
                 const uri = directory + filename;
-                
+
                 // Verifica si el directorio de caché existe, y si no, créalo
                 const dirInfo = await FileSystem.getInfoAsync(directory);
                 if (!dirInfo.exists) {
