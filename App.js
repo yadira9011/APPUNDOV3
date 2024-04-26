@@ -262,6 +262,11 @@ export default function App() {
           <Stack.Screen
             name="ViewerBase64Screen"
             component={ViewerBase64Screen}
+            options={({ route, navigation }) => ({
+              ...defaultHeaderOptions,
+              title: 'View PDF',
+              headerBackImage: () => headerBackImageFuntion(),
+            })}
           />
 
           <Stack.Screen
