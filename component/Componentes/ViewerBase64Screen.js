@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Linking, TouchableOpacity, } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
@@ -25,7 +25,6 @@ const ViewerBase64Screen = ({ route }) => {
             const fileExists = await FileSystem.getInfoAsync(uri);
             if (fileExists.exists) {
                 setPdfUri(uri);
-                console.log("URL ....", uri)
                 setIsPdfReady(true);
             } else {
                 console.error('El archivo PDF no existe en la ruta especificada.');
@@ -52,30 +51,22 @@ const ViewerBase64Screen = ({ route }) => {
     return (
         <View style={styles.container}>
             {isPdfReady ? (
-                <View style={{ flex: 1, width: '90%' }}>
+                <View style={{ flex: 1, width: '100%' }}>
                     <WebView
                         style={{ flex: 1 }}
-                        // source={require(pdfUri)}
                         source={{ uri: pdfUri }}
-                        // originWhitelist={['*']}
                         originWhitelist={["http://*", "https://*", "file://*", "data:*", "content:*"]}
-                        // useWebKit={true}
-                        androidHardwareAccelerationDisabled={true}
-                        allowFileAccessFromFileURLs={true}
-                        allowUniversalAccessFromFileURLs={true}
                         allowFileAccess={true}
+                        androidHardwareAccelerationDisabled={true}
                         scalesPageToFit={true}
                         bounces={false}
                         mixedContentMode={Platform.OS === "android" ? "always" : undefined}
                         sharedCookiesEnabled={false}
                         scrollEnabled={true}
                     />
-
-                    {/* <Button title="Compartir PDF" onPress={sharePDF} /> */}
                     <TouchableOpacity style={styles.button} onPress={sharePDF}>
-                        <Text style={styles.ButtonText}>Compartir PDF"</Text>
+                        <Text style={styles.ButtonText}>Compartir PDF</Text>
                     </TouchableOpacity>
-                    
                 </View>
             ) : (
                 <LoadingComponent />
