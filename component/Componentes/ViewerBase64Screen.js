@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import { View, Text, StyleSheet, Button, Linking, TouchableOpacity, } from 'react-native';
+import { WebView } from 'react-native-webview';
+import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import LoadingComponent from './LoadingComponent';
 
@@ -8,65 +10,77 @@ const ViewerBase64Screen = ({ route }) => {
     const [loading, setLoading] = useState(false);
     const [pdfUri, setPdfUri] = useState(null);
     const [isPdfReady, setIsPdfReady] = useState(false);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const downloadPDF = async () => {
-            try {
-                setLoading(true);
-                const directory = FileSystem.cacheDirectory;
-                const filename = 'archivo.pdf';
-                const uri = directory + filename;
-
-                // Verifica si el directorio de caché existe, y si no, créalo
-                const dirInfo = await FileSystem.getInfoAsync(directory);
-                if (!dirInfo.exists) {
-                    await FileSystem.makeDirectoryAsync(directory, { intermediates: true });
-                }
-
-                await FileSystem.writeAsStringAsync(uri, base64arc, { encoding: FileSystem.EncodingType.Base64 });
-                const fileExists = await FileSystem.getInfoAsync(uri);
-                if (fileExists.exists) {
-                    setPdfUri(uri);
-                    setIsPdfReady(true);
-                } else {
-                    setError('El archivo PDF no se ha guardado correctamente.');
-                }
-            } catch (error) {
-                setError('Error al guardar el PDF: ' + error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        downloadPDF();
-
-        return () => {
-            // Limpiar recursos si es necesario
-        };
-    }, [base64arc]);
-
-    useEffect(() => {
-        if (isPdfReady) {
-            openPDF();
+        if (!isPdfReady) {
+            downloadPDF();
         }
     }, [isPdfReady]);
 
-    const openPDF = () => {
-        if (pdfUri) {
-            Linking.openURL(pdfUri);
+    const downloadPDF = async () => {
+        try {
+            setLoading(true);
+            const uri = FileSystem.cacheDirectory + 'archivo.pdf';
+            await FileSystem.writeAsStringAsync(uri, base64arc, { encoding: FileSystem.EncodingType.Base64 });
+            const fileExists = await FileSystem.getInfoAsync(uri);
+            if (fileExists.exists) {
+                setPdfUri(uri);
+                console.log("URL ....", uri)
+                setIsPdfReady(true);
+            } else {
+                console.error('El archivo PDF no existe en la ruta especificada.');
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error('Error al guardar el PDF:', error);
+            setLoading(false);
+        }
+    };
+
+    const sharePDF = async () => {
+        try {
+            setLoading(true);
+            const pdfPath = pdfUri || (FileSystem.cacheDirectory + 'archivo.pdf');
+            await Sharing.shareAsync(pdfPath);
+        } catch (error) {
+            console.error('Error al compartir PDF:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <View style={styles.container}>
-            {loading ? (
-                <LoadingComponent />
-            ) : error ? (
-                <Text style={styles.errorText}>{error}</Text>
+            {isPdfReady ? (
+                <View style={{ flex: 1, width: '90%' }}>
+                    <WebView
+                        style={{ flex: 1 }}
+                        // source={require(pdfUri)}
+                        source={{ uri: pdfUri }}
+                        // originWhitelist={['*']}
+                        originWhitelist={["http://*", "https://*", "file://*", "data:*", "content:*"]}
+                        // useWebKit={true}
+                        androidHardwareAccelerationDisabled={true}
+                        allowFileAccessFromFileURLs={true}
+                        allowUniversalAccessFromFileURLs={true}
+                        allowFileAccess={true}
+                        scalesPageToFit={true}
+                        bounces={false}
+                        mixedContentMode={Platform.OS === "android" ? "always" : undefined}
+                        sharedCookiesEnabled={false}
+                        scrollEnabled={true}
+                    />
+
+                    {/* <Button title="Compartir PDF" onPress={sharePDF} /> */}
+                    <TouchableOpacity style={styles.button} onPress={sharePDF}>
+                        <Text style={styles.ButtonText}>Compartir PDF"</Text>
+                    </TouchableOpacity>
+                    
+                </View>
             ) : (
-                <Text>Abriendo PDF...</Text>
+                <LoadingComponent />
             )}
+            {loading && <LoadingComponent />}
         </View>
     );
 };
@@ -77,8 +91,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    errorText: {
-        color: 'red',
+    button: {
+        width: 300,
+        height: 40,
+        alignSelf: 'center',
+        marginTop: 5,
+        marginBottom: 50,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        backgroundColor: '#AAB3DB',
+        borderRadius: 5,
+    },
+    ButtonText: {
+        color: 'white',
         textAlign: 'center',
     },
 });
