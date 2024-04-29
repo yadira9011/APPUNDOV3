@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
@@ -13,11 +13,11 @@ const ViewerBase64Screen = ({ route }) => {
 
     useEffect(() => {
         if (!isPdfReady) {
-            downloadPDF();
+            preparePDF();
         }
     }, [isPdfReady]);
 
-    const downloadPDF = async () => {
+    const preparePDF = async () => {
         try {
             setLoading(true);
             const uri = FileSystem.cacheDirectory + 'archivo.pdf';
@@ -48,29 +48,38 @@ const ViewerBase64Screen = ({ route }) => {
         }
     };
 
+    const renderPDFViewer = () => {
+        if (isPdfReady) {
+            const htmlContent = `
+                <html>
+                    <body>
+                        <embed src="${pdfUri}" type="application/pdf" width="100%" height="100%" />
+                    </body>
+                </html>
+            `;
+            return (
+                <WebView
+                    style={{ flex: 1 }}
+                    source={{ html: htmlContent }}
+                    originWhitelist={['*']}
+                    scalesPageToFit={true}
+                    bounces={false}
+                    mixedContentMode={Platform.OS === "android" ? "always" : undefined}
+                    sharedCookiesEnabled={false}
+                    scrollEnabled={true}
+                />
+            );
+        } else {
+            return <LoadingComponent />;
+        }
+    };
+
     return (
         <View style={styles.container}>
-            {isPdfReady ? (
-                <View style={{ flex: 1, width: '100%' }}>
-                    <WebView
-                        style={{ flex: 1 }}
-                        source={{ uri: pdfUri }}
-                        originWhitelist={["http://*", "https://*", "file://*", "data:*", "content:*"]}
-                        allowFileAccess={true}
-                        androidHardwareAccelerationDisabled={true}
-                        scalesPageToFit={true}
-                        bounces={false}
-                        mixedContentMode={Platform.OS === "android" ? "always" : undefined}
-                        sharedCookiesEnabled={false}
-                        scrollEnabled={true}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={sharePDF}>
-                        <Text style={styles.ButtonText}>Compartir PDF</Text>
-                    </TouchableOpacity>
-                </View>
-            ) : (
-                <LoadingComponent />
-            )}
+            {renderPDFViewer()}
+            <TouchableOpacity style={styles.button} onPress={sharePDF}>
+                <Text style={styles.ButtonText}>Compartir PDF</Text>
+            </TouchableOpacity>
             {loading && <LoadingComponent />}
         </View>
     );
