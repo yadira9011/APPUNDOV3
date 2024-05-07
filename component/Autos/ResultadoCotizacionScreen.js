@@ -34,7 +34,6 @@ const ResultadoCotizacionScreen = () => {
     const [email, setEmail] = useState('');
     const [sendAll, setSendAll] = useState(false);
     const [IdCotiSeleccionada, setIdCotiSeleccionada] = useState('');
-
     const [DETALLETS_COT_BTN, setDETALLETS_COT_BTN] = useState(false);
     const [ENVIAR_COT_BTN, setENVIAR_COT_BTNN] = useState(false);
 
@@ -91,7 +90,6 @@ const ResultadoCotizacionScreen = () => {
         }
 
     }, [dataArray]);
-
 
     const renderItem = ({ item, onPress }) => {
         const primaTotalFormateada = item.PrimaTotal.toLocaleString('es-ES', {

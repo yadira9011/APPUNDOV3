@@ -373,15 +373,19 @@ const NewPolizas = ({ route }) => {
       }
 
       const response = await GetCertificadoPoliza(DataRquest);
+
       if (response.data.Data) {
         const data = response.data.Data;
         const archivo = data[0].FSARCHIVO;
         const tipo_archivo = data[0].FSTIPO_ARCHIVO;
         const base64arc = archivo
         navigation.navigate('ViewerBase64Screen', { base64arc });
+
       } else {
         console.error('no se encontraron certificados');
       }
+
+      
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
