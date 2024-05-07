@@ -10,7 +10,8 @@ import LoadingComponent from '../Componentes/LoadingComponent';
 export default function ModalContent({ isVisible, onClose, onSave, idsubcanal, email, password }) {
 
     const navigation = useNavigation();
-    const [numeroPoliza, setNumeroPoliza] = useState('6040035690');
+    // const [numeroPoliza, setNumeroPoliza] = useState('6040035690');
+    const [numeroPoliza, setNumeroPoliza] = useState('');
     const [isAlertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
