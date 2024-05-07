@@ -371,21 +371,30 @@ const NewPolizas = ({ route }) => {
         usuario: DataParameter.email,
         Contraseña: DataParameter.password,
       }
-
+      
       const response = await GetCertificadoPoliza(DataRquest);
-
-      if (response.data.Data) {
-        const data = response.data.Data;
-        const archivo = data[0].FSARCHIVO;
-        const tipo_archivo = data[0].FSTIPO_ARCHIVO;
-        const base64arc = archivo
-        navigation.navigate('ViewerBase64Screen', { base64arc });
+      if (response.data) {
+        const pdfUrl = response.data.RutaArchivo;
+        if (pdfUrl.trim() !== '') {
+          navigation.navigate('PDFViewerScreen', { pdfUrl });
+        } else {
+          console.error('La URL está vacía');
+        }
 
       } else {
         console.error('no se encontraron certificados');
       }
 
-      
+      // if (response.data.Data) {
+      //   const data = response.data.Data;
+      //   const archivo = data[0].FSARCHIVO;
+      //   const tipo_archivo = data[0].FSTIPO_ARCHIVO;
+      //   const base64arc = archivo
+      //   navigation.navigate('ViewerBase64Screen', { base64arc });
+      // } else {
+      //   console.error('no se encontraron certificados');
+      // }
+
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }

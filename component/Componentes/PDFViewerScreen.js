@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Linking } from 'react-native';
+import { View, StyleSheet, Button, Linking, TouchableOpacity, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
@@ -80,7 +80,11 @@ const PDFViewerScreen = ({ route }) => {
                 source={{ html: htmlContent }}
             /> */}
 
-            <Button title="Compartir PDF" onPress={downloadAndSharePDF} />
+            {/* <Button title="Compartir PDF" onPress={downloadAndSharePDF} /> */}
+            <TouchableOpacity style={styles.button} onPress={downloadAndSharePDF}>
+                <Text style={styles.ButtonText}>Compartir PDF"</Text>
+            </TouchableOpacity>
+
             {loading && (
                 <LoadingComponent />
             )}
@@ -93,7 +97,22 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    button: {
+        width: 300,
+        height: 40,
+        alignSelf: 'center',
+        marginTop: 10,
+        marginBottom: 50,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        backgroundColor: '#AAB3DB',
+        borderRadius: 5,
+    },
+    ButtonText: {
+        color: 'white',
+        textAlign: 'center',
+    },
 });
 
 export default PDFViewerScreen;
