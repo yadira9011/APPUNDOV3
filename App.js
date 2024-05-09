@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, ActivityIndicator, BackHandler } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Clipboard from '@react-native-community/clipboard';
 import LoginScreen from './component/Login/LoginScreen';
 import GruposScreen from './component/Login/GrupoScreen';
 import ClientesScreen from './component/Login/ClientesScreen';
@@ -226,9 +227,17 @@ export default function App() {
             options={({ route, navigation }) => {
               console.log('route.params:', route.params.dataArray.DataResul[0].Folio);
               const FolioCot = route.params.dataArray.DataResul[0].Folio;
+              const copyToClipboard = () => {
+                Clipboard.setString(FolioCot);
+              };
               return {
                 ...defaultHeaderOptions,
-                title: FolioCot,
+                // title: FolioCot,
+                title: (
+                  <TouchableOpacity onPress={copyToClipboard}>
+                    <Text style={{ fontSize: 12, color: 'white' }}>{FolioCot}</Text>
+                  </TouchableOpacity>
+                ),
                 headerTitleStyle: {
                   fontSize: 12,
                   color: 'white'
