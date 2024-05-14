@@ -1004,6 +1004,7 @@ const CotizacionAutosScreen = () => {
             label: AutoIndemnizacion.Valor,
             value: AutoIndemnizacion.Id,
           }))}
+          placeholder={{}}
           value={selectedOptionIndemnizacion}
           style={pickerSelectStyles}
         />

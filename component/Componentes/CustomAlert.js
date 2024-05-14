@@ -39,7 +39,6 @@ const CustomAlert = ({ visible, message, onClose, iconName, AlertTwo, onConfirm 
               <Text style={modalStyles.closeButtonText}>{AlertTwo ? "No" : "Cerrar"}</Text>
             </TouchableOpacity>
           </View>
-
           {/* <TouchableOpacity style={modalStyles.closeButton} onPress={handleClose}>
             <Text style={modalStyles.closeButtonText}>Cerrar</Text>
           </TouchableOpacity> */}

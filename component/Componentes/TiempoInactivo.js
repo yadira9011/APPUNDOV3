@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { AppState, InteractionManager, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import CustomAlert from '../Componentes/CustomAlert';
+
 
 let resetsetIsActiveApp;
 
@@ -11,6 +13,11 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   const inactivityTimerRef = useRef(null);
   const appStateRef = useRef(AppState.currentState);
   const [isActiveApp, setIsActiveApp] = useState(false);
+
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+  const [isAlertTwo, setAlertTwo] = useState(true);
 
   resetsetIsActiveApp = () => {
     setIsActiveApp(true);
@@ -48,6 +55,19 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     resetInactivityTimer(true);
   };
 
+  const onAcepted = async () => {
+    resetsetIsActiveApp();
+    setAlertVisible(false);
+  };
+
+  const onClose = async () => {
+    setIsActiveApp(false);
+    ultimaInteraccionRef.current = Date.now();
+    navigation.navigate('Login');
+    setAlertVisible(false);
+  };
+
+
   useEffect(() => {
 
     const unsubscribe = navigation.addListener('state', () => {
@@ -63,8 +83,8 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
       console.log(tiempoDesdeUltimaInteraccion, "jajaja ", ultimaInteraccionRef.current)
       console.log(tiempoMaximo)
       if (tiempoDesdeUltimaInteraccion >= tiempoMaximo) {
-        setIsActiveApp(false);
-        redireccionarALogin();
+        setAlertMessage('Su sesión esta apunto de expirar ¿Desea mantenerla?');
+        setAlertVisible(true);
       } else {
         resetInactivityTimer(true);
       }
@@ -84,11 +104,29 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   }, [tiempoMaximo, isActiveApp]);
 
   return (
-    <TouchableOpacity onPress={handleUserInteraction}>
-      <View />
-    </TouchableOpacity>
-  );
 
+    <View>
+
+      <TouchableOpacity onPress={handleUserInteraction}>
+        <View />
+      </TouchableOpacity>
+
+      {
+        isAlertVisible && (
+          <CustomAlert
+            visible={isAlertVisible}
+            message={alertMessage}
+            iconName={IconMessage}
+            onClose={onClose}
+            onConfirm={onAcepted}
+            AlertTwo={isAlertTwo}
+          />
+        )
+      }
+
+    </View>
+
+  );
 });
 
 export { resetsetIsActiveApp };
