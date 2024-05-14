@@ -1,10 +1,17 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, ActivityIndicator, BackHandler } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+  BackHandler
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Clipboard from '@react-native-community/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import LoginScreen from './component/Login/LoginScreen';
 import GruposScreen from './component/Login/GrupoScreen';
 import ClientesScreen from './component/Login/ClientesScreen';
@@ -225,17 +232,17 @@ export default function App() {
             name="ResultadoCotizacion"
             component={ResultadoCotizacionScreen}
             options={({ route, navigation }) => {
-              console.log('route.params:', route.params.dataArray.DataResul[0].Folio);
+              //console.log('route.params:', route.params.dataArray.DataResul[0].Folio);
               const FolioCot = route.params.dataArray.DataResul[0].Folio;
-              const copyToClipboard = () => {
-                Clipboard.setString(FolioCot);
+              const copyToClipboard = async () => {
+                await Clipboard.setStringAsync(FolioCot);
               };
               return {
                 ...defaultHeaderOptions,
                 // title: FolioCot,
                 title: (
                   <TouchableOpacity onPress={copyToClipboard}>
-                    <Text style={{ fontSize: 12, color: 'white' }}>{FolioCot}</Text>
+                    <Text style={{ fontSize: 10, color: 'white' }}>{FolioCot}</Text>
                   </TouchableOpacity>
                 ),
                 headerTitleStyle: {

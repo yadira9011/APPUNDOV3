@@ -724,7 +724,7 @@ const CotizacionAutosScreen = () => {
           TipoAut: selectedTextTipoVehiculo,
           Marca: selectedTextMarca,
           EstatusVehiculo: selectedTextEstatusVehiculo,
-          TipoUso: selectedTextTipoUso,
+          TipoUso: selectedOptionTipoUso,
           tipoPaquete: selectedTextPaquetes,
           tipoPoliza: selectedTextTipoPoliza,
           tipoVigenciaPago: selectedTextTipoVigencia,
