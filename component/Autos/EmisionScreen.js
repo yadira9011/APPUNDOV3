@@ -796,7 +796,6 @@ const EmisionScreen = () => {
     const fecha_nacimiento_persona = selectedAno + "/" + monthfn + "/" + dayfn
 
     console.log(fecha_nacimiento_persona)
-
     const fecha = new Date();
     const anyoActual = fecha.getFullYear();
     const EdadPersona = anyoActual - selectedAno;
@@ -808,81 +807,89 @@ const EmisionScreen = () => {
     const vexpyear = "";
     const vcvv = "";
 
-    const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
+    console.log("Estatus vehiculo...",dataArrayEmi.CotiData.IDEstatusVehiculo)
+    if (placas === "" && dataArrayEmi.CotiData.IDEstatusVehiculo === 2) {
+      Alert.alert('Debe ingresar las placas del vehiculo');
+      setEmisionOK(false);
+      setloadingEmision(false);
+    } else {
 
-    if (isPL) {
-      const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
-      const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
-      vNameTarjetabiente = nombreTarjetahabiente;
-      vFormaCobro = LabelFP;
-      vnumber = cuentaClabeNoTarjeta;
-      vbankcode = LabelBE;
-      vexpmonth = fechaExpiracion.substring(0, 2);
-      vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
-      vcvv = cvv;
+      const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
+
+      if (isPL) {
+        const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
+        const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
+        vNameTarjetabiente = nombreTarjetahabiente;
+        vFormaCobro = LabelFP;
+        vnumber = cuentaClabeNoTarjeta;
+        vbankcode = LabelBE;
+        vexpmonth = fechaExpiracion.substring(0, 2);
+        vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
+        vcvv = cvv;
+      }
+
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      console.log(date.toLocaleDateString())
+      var yearfv = date.getFullYear();
+      var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
+      var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
+      var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+
+      const dataemi = {
+        "IdCotizacion": dataArrayEmi.DataItemSelect.id,
+        "NombrePersona": nombre,
+        "ApaternoPersona": apellidoPaterno,
+        "AmaternoPersona": apellidoMaterno,
+        "GeneroPersona": selectedGenero,
+        "EdadPersona": EdadPersona,
+        "NacimientoPersona": fecha_nacimiento_persona,
+        "RFCPersona": rfc,
+        "CURPPersona": curp,
+        "Mail": correo,
+        "Telefono": telefono,
+        "CallePersona": calle,
+        "NumeroExteriorPersona": noExterior,
+        "NumeroInteriorPersona": noInterior,
+        "ColoniaPersona": colonia,
+        "CodigoPostalPersona": codigoPostal,
+        "MunicipioPersona": municipio,
+        "EstadoPersona": estado,
+        "CiudadPersona": ciudad,
+        "NumeroVin": numSerie,
+        "NumeroMotor": numMotor,
+        "PlacasVehiculo": placas,
+        //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
+        "FInicioVigencia": formattedDatefv,
+        "BeneficiarioPreferente": IsBP,
+        "NumeroSocio": numerosocio,
+        "NumeroCredito": numCredito,
+        "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
+        "NumIdentificacionPersona": numIdentificacion,
+        "usuario": dataArrayEmi.CotiData.usuario,
+        "Contraseña": dataArrayEmi.CotiData.contraseña,
+        "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
+        "TipoPersona": 1,
+        "NameTarjetabiente": vNameTarjetabiente,
+        "FormaCobro": vFormaCobro,
+        "number": vnumber,
+        "bankcode": vbankcode,
+        "expmonth": vexpmonth,
+        "expyear": vexpyear,
+        "cvvcsc": vcvv,
+        "PagoEnLinea": false,
+        //para persona moral
+        // "RazonSocial": razonSocial,
+        // "NombreComercial": nombreComercial,
+        // "Giro": selectedGiro,
+        // "TipoSociedad": selectedTipoSociedad,
+        // "RegimenSimplificado": false,
+        // "TipoRegimenFiscal": selectedRegimenFiscal,
+        // "TipoCFDI": TipoCDFI,
+        "strPoliza": ""
+      }
+
+      console.log('DATAAAA EMIIII', dataemi);
     }
-
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    console.log(date.toLocaleDateString())
-    var yearfv = date.getFullYear();
-    var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
-    var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
-    var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
-
-    const dataemi = {
-      "IdCotizacion": dataArrayEmi.DataItemSelect.id,
-      "NombrePersona": nombre,
-      "ApaternoPersona": apellidoPaterno,
-      "AmaternoPersona": apellidoMaterno,
-      "GeneroPersona": selectedGenero,
-      "EdadPersona": EdadPersona,
-      "NacimientoPersona": fecha_nacimiento_persona,
-      "RFCPersona": rfc,
-      "CURPPersona": curp,
-      "Mail": correo,
-      "Telefono": telefono,
-      "CallePersona": calle,
-      "NumeroExteriorPersona": noExterior,
-      "NumeroInteriorPersona": noInterior,
-      "ColoniaPersona": colonia,
-      "CodigoPostalPersona": codigoPostal,
-      "MunicipioPersona": municipio,
-      "EstadoPersona": estado,
-      "CiudadPersona": ciudad,
-      "NumeroVin": numSerie,
-      "NumeroMotor": numMotor,
-      "PlacasVehiculo": placas,
-      //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
-      "FInicioVigencia": formattedDatefv,
-      "BeneficiarioPreferente": IsBP,
-      "NumeroSocio": numerosocio,
-      "NumeroCredito": numCredito,
-      "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
-      "NumIdentificacionPersona": numIdentificacion,
-      "usuario": dataArrayEmi.CotiData.usuario,
-      "Contraseña": dataArrayEmi.CotiData.contraseña,
-      "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
-      "TipoPersona": 1,
-      "NameTarjetabiente": vNameTarjetabiente,
-      "FormaCobro": vFormaCobro,
-      "number": vnumber,
-      "bankcode": vbankcode,
-      "expmonth": vexpmonth,
-      "expyear": vexpyear,
-      "cvvcsc": vcvv,
-      "PagoEnLinea": false,
-      //para persona moral
-      // "RazonSocial": razonSocial,
-      // "NombreComercial": nombreComercial,
-      // "Giro": selectedGiro,
-      // "TipoSociedad": selectedTipoSociedad,
-      // "RegimenSimplificado": false,
-      // "TipoRegimenFiscal": selectedRegimenFiscal,
-      // "TipoCFDI": TipoCDFI,
-      "strPoliza": ""
-    }
-
-    console.log('DATAAAA EMIIII', dataemi);
 
     if (EmisionOK == false) {
       const response = await GetCEmision(dataemi);
