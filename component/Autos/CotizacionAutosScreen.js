@@ -688,16 +688,18 @@ const CotizacionAutosScreen = () => {
 
     let mensajeError = "";
 
-    if (!selectedOptionModelo) {
+    if (selectedOptionModelo === '') {
       mensajeError = "Por favor selecciona un modelo.";
-    } else if (!selectedOptionMarca) {
+    } else if (!selectedOptionMarca === '') {
       mensajeError = "Por favor selecciona una marca.";
-    } else if (!selectedOptionTipo) {
+    } else if (!selectedOptionTipo === '') {
       mensajeError = "Por favor selecciona un tipo.";
-    } else if (!selectedTextDescripcion) {
+    } else if (!selectedTextDescripcion === '') {
       mensajeError = "Por favor ingresa una descripción.";
-    } else if (!selectedOptionDescripcion) {
+    } else if (!selectedOptionDescripcion === '') {
       mensajeError = "Por favor selecciona una opción de descripción.";
+    }else if (textCP=== '') {
+      mensajeError = "Por favor selecciona un Código Postal.";
     }
 
     const resultadoValidacion = {

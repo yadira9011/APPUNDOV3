@@ -88,7 +88,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
       } else {
         resetInactivityTimer(true);
       }
-    }, 30000);
+    }, 60000);
 
     AppState.addEventListener('change', handleAppStateChange);
     InteractionManager.runAfterInteractions(() => {
