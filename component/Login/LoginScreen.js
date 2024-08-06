@@ -27,14 +27,14 @@ const LoginScreen = ({ navigation, route }) => {
   // const [email, setEmail] = useState('mail@mail.com');
   // const [password, setPassword] = useState('Ven99234');
 
-  const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
-  const [password, setPassword] = useState('marcosSL');
+  // const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
+  // const [password, setPassword] = useState('marcosSL');
 
   // const [email, setEmail] = useState('yadira.perez@rodac.com');
   // const [password, setPassword] = useState('yadira.1990');
 
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [IdUsr, setIdUsr] = useState(0);
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white'
   },
+
   textInput: {
     width: '80%',
     height: 40,
@@ -250,6 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 16,
   },
+
   button: {
     width: 300,
     height: 40,
@@ -260,15 +262,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#AAB3DB',
     borderRadius: 5,
   },
+
   ButtonText: {
     color: 'white',
     textAlign: 'center',
   },
+
   image: {
     width: windowWidth * 0.8,
     height: windowHeight * 0.3,
     marginBottom: 25
   },
+  
   imageU: {
     width: windowWidth * 0.2,
     height: windowHeight * 0.2,
