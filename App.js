@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   StyleSheet,
   View,
@@ -9,7 +10,7 @@ import {
   Text,
   BackHandler
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Clipboard from 'expo-clipboard';
 import LoginScreen from './component/Login/LoginScreen';
@@ -81,12 +82,14 @@ export default function App() {
     return token.data;
   }
 
+  
   const [notification, setNotification] = useState(false);
   const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
   const [loading, setLoading] = useState(true);
 
+  //const routeName = useNavigationState(state => state?.routes[state.index]?.name);
 
   useEffect(() => {
 
@@ -262,6 +265,7 @@ export default function App() {
               ...defaultHeaderOptions,
               title: 'Emisión',
               headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
+              headerLeft: () => null, 
             })}
           />
 
@@ -319,7 +323,6 @@ export default function App() {
   );
 
 }
-
 
 const styles = StyleSheet.create({
   container: {

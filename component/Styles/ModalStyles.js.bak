@@ -16,7 +16,6 @@ const modalStyles = {
     marginBottom: 10,
     marginTop: -40,
   },
-  
   iconImage: {
     width: 50,
     height: 50,

@@ -2,14 +2,15 @@ import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { AppState, InteractionManager, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import CustomAlert from '../Componentes/CustomAlert';
-
+import useCurrentRoute from '../Componentes/CurrentRoute';
 
 let resetsetIsActiveApp;
 
 const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 
   const navigation = useNavigation();
-  const route = useRoute();
+  // const route = useRoute();
+  const routeName = useCurrentRoute(); // Obtén la ruta actual
   const ultimaInteraccionRef = useRef(Date.now());
   const inactivityTimerRef = useRef(null);
   const appStateRef = useRef(AppState.currentState);
@@ -81,9 +82,9 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 
     const inactivityCheckInterval = setInterval(() => {
       const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccionRef.current;
-      console.log(tiempoDesdeUltimaInteraccion, "jajaja ", ultimaInteraccionRef.current)
-      console.log(tiempoMaximo)
-      if (tiempoDesdeUltimaInteraccion >= tiempoMaximo && route.name !== 'Login') {
+      console.log(tiempoDesdeUltimaInteraccion, "jajaja ", routeName, ultimaInteraccionRef.current)
+      console.log(tiempoMaximo,routeName)
+      if (tiempoDesdeUltimaInteraccion >= tiempoMaximo && routeName !== 'Login') {
         setAlertMessage('Su sesión esta apunto de expirar ¿Desea mantenerla?');
         setAlertVisible(true);
       } else {
