@@ -46,7 +46,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   const handleAppStateChange = (nextAppState) => {
     if (appStateRef.current === 'active' && nextAppState === 'background') {
       clearTimeout(inactivityTimerRef.current);
-    } else if (appStateRef.current === 'background' && nextAppState === 'active') {
+    } else if (appStateRef.current === 'background' && nextAppState === 'active' && routeName === 'Login') {
       resetInactivityTimer(false);
     }
     appStateRef.current = nextAppState;
@@ -69,8 +69,9 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     setAlertVisible(false);
   };
 
-
   useEffect(() => {
+
+    console.log('Ruta al inicio:', routeName);
 
     const unsubscribe = navigation.addListener('state', () => {
       setIsActiveApp(prevIsActiveApp => {
@@ -83,13 +84,15 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     const inactivityCheckInterval = setInterval(() => {
       const tiempoDesdeUltimaInteraccion = Date.now() - ultimaInteraccionRef.current;
       console.log(tiempoDesdeUltimaInteraccion, "jajaja ", routeName, ultimaInteraccionRef.current)
-      console.log(tiempoMaximo,routeName)
+      console.log(tiempoMaximo,routeName);
       if (tiempoDesdeUltimaInteraccion >= tiempoMaximo && routeName !== 'Login') {
-        setAlertMessage('Su sesión esta apunto de expirar ¿Desea mantenerla?');
+        setAlertMessage('Su sesión está a punto de expirar ¿Desea mantenerla?');
         setAlertVisible(true);
       } else {
+        setAlertVisible(false);
         resetInactivityTimer(true);
       }
+
     }, 60000);
 
     AppState.addEventListener('change', handleAppStateChange);
@@ -99,11 +102,12 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 
     return () => {
       unsubscribe();
+      console.log(routeName)
       clearInterval(inactivityCheckInterval);
       clearTimeout(inactivityTimerRef.current);
     };
 
-  }, [tiempoMaximo, isActiveApp]);
+  }, [tiempoMaximo, isActiveApp, routeName]);
 
   return (
 
