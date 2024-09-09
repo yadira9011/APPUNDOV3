@@ -1,5 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, Modal, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
+import { 
+  View,
+  Text, 
+  StyleSheet,
+  ScrollView, 
+  Image,
+  TextInput, 
+  TouchableOpacity, 
+  Modal, 
+  FlatList, 
+  RefreshControl, 
+  ActivityIndicator } from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
   CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
@@ -16,6 +27,7 @@ import pickerSelectStyles from '../Styles/PickerSelectStyles';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts, FormatoEntradaMoneda } from '../Utilities';
 import CustomAlert from '../Componentes/CustomAlert';
+import config from '../../Config';
 // import { TiempoInactivo } from '../Componentes/TiempoInactivo';
 import { resetsetIsActiveApp } from '../Componentes/TiempoInactivo';
 
@@ -114,6 +126,9 @@ const CotizacionAutosScreen = () => {
   const [IMPRPOLIZA_BTN, setIMPRPOLIZA_BTN] = useState(false);
   const [descargarCotizacion_btn, setdescargarCotizacion_btn] = useState(false);
 
+  const [showNumeroPasajeros, setshowNumeroPasajeros] = useState('');
+  const [TextNumeroPasajeros, setTextNumeroPasajeros] = useState('');
+  const ID_TIPO_USO_CU = config.ID_TIPO_USO_CU;
 
   useEffect(() => {
 
@@ -368,6 +383,13 @@ const CotizacionAutosScreen = () => {
         setAutoTipoUso(data);
         setSelectedOptionTipoUso(data[0].Id);
         setselectedTextTipoUso(data[0].Valor);
+
+        if(data[0].Id==ID_TIPO_USO_CU){
+          setshowNumeroPasajeros(true);
+        }else{
+          setshowNumeroPasajeros(false);
+        }
+
       } else {
         console.error('La respuesta de la API no contiene tipos de uso.');
       }
@@ -683,7 +705,6 @@ const CotizacionAutosScreen = () => {
     }
   };
 
-
   function validarCampos() {
 
     let mensajeError = "";
@@ -752,7 +773,8 @@ const CotizacionAutosScreen = () => {
           EstadoPersona: TextEstado,
           usuario: DataParameter.email,
           contraseña: DataParameter.password,
-          IDSubcananal: DataParameter.IdSubCanal
+          IDSubcananal: DataParameter.IdSubCanal,
+          NumPasajeros: TextNumeroPasajeros
         }
 
         const response = await GetCotizacion(dataCotizacion);
@@ -1012,6 +1034,18 @@ const CotizacionAutosScreen = () => {
           value={selectedOptionIndemnizacion}
           style={pickerSelectStyles}
         />
+
+
+      { showNumeroPasajeros && ( 
+        <TextInput
+              placeholder="Ingresa el número de pasajeros"
+              value={TextNumeroPasajeros}
+              onChangeText={setTextNumeroPasajeros}
+              style={styles.input}
+              keyboardType="numeric"
+        />
+        )}
+       
 
         {selectedOptionIndemnizacion === 1 && (
           <View style={{
