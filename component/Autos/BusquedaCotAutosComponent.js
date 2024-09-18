@@ -16,7 +16,7 @@ export default function ModalSolitarCotizacion({ isVisible,
     DataParameter }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3160-26032024134853515');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-18092024101014074');
     const [isAlertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
@@ -25,6 +25,7 @@ export default function ModalSolitarCotizacion({ isVisible,
 
     // AUT-1-12102023082739534 AUT-3164-23022024133225346
     //AUT-1-11112023124847111
+        //AUT-1-18092024101014074
 
     const handleBuscarCotizacion = async () => {
         console.log("aquiii")

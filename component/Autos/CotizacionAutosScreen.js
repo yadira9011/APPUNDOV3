@@ -358,6 +358,12 @@ const CotizacionAutosScreen = () => {
 
         const data = response.data.Data.Data;
         console.log('INDEPIII', data);
+        console.log(data[0].Id)
+
+        if(data[0].Id!=1){
+         setTextMonto('');
+        }
+        
         setAutoIndemnizaciones(data);
         setSelectedOptionIndemnizacion(data[0].Id);
 
@@ -544,6 +550,7 @@ const CotizacionAutosScreen = () => {
       const selectedOption = AutoEstatusVehiculos.find(item => item.Id === itemValue);
       setSelectedOption(itemValue);
       setselectedTextEstatusVehiculo(selectedOption.Valor);
+      setTextMonto('');
       fetchAutoModelos(itemValue);
       fetchAutoIndenmizaciones(itemValue);
       fetchAutoTipoVehiculos();
@@ -605,8 +612,15 @@ const CotizacionAutosScreen = () => {
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
     if (itemValue !== null) {
+
+      if(itemValue==1){
+
+        console.log(itemValue)
+      }
+
       setSelectedOptionIndemnizacion(itemValue);
     }
+  
   };
 
   const handleOptionChangeTiposUso = (itemValue, itemIndex) => {
@@ -1036,16 +1050,6 @@ const CotizacionAutosScreen = () => {
         />
 
 
-      { showNumeroPasajeros && ( 
-        <TextInput
-              placeholder="Ingresa el número de pasajeros"
-              value={TextNumeroPasajeros}
-              onChangeText={setTextNumeroPasajeros}
-              style={styles.input}
-              keyboardType="numeric"
-        />
-        )}
-       
 
         {selectedOptionIndemnizacion === 1 && (
           <View style={{
@@ -1070,6 +1074,37 @@ const CotizacionAutosScreen = () => {
             />
           </View>
         )}
+
+        
+       {showNumeroPasajeros && ( 
+        <View>
+          <Text style={styles.label}>número de pasajeros :</Text>
+          <View style={{
+            flexDirection: 'row',
+            marginBottom: 15,
+            alignItems: 'center',
+            borderColor: 'gray',
+            borderWidth: 1,
+            marginLeft: 20,
+            width: '90%',
+            marginRight: 8,
+            marginTop: 10,
+            borderRadius: 10,
+            padding: 8
+          }}>
+
+      
+          <TextInput
+                placeholder="Ingresa el número de pasajeros"
+                value={TextNumeroPasajeros}
+                onChangeText={setTextNumeroPasajeros}
+                style={styles.input}
+                keyboardType="numeric"
+          />
+          </View>
+        </View>
+        )}
+       
 
         <Text style={styles.label}>Codigo Postal :</Text>
 
