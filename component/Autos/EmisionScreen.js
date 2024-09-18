@@ -913,7 +913,6 @@ const EmisionScreen = () => {
       }
     }
 
-
     if (EmisionOK == false) {
       const response = await GetCEmision(dataemi);
       console.log(response.data.Data)
@@ -921,23 +920,10 @@ const EmisionScreen = () => {
         const data = response.data.Data.Data;
         const NumeroPoliza = data.Poliza;
         dataemi.strPoliza = NumeroPoliza;
-        //const PagoLinea = data.pl;
         console.log(data)
         setEmisionOK(true);
         Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
         setloadingEmision(false);
-        // Alert.alert(
-        //   'Información',
-        //   'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza,
-        //   [
-        //     {
-        //       text: 'OK',
-        //       onPress: () => handleOkGoImpresionPress(NumeroPoliza),
-        //       style: 'default',
-        //     },
-        //   ],
-        //   { cancelable: false }
-        // );
       } else {
         Alert.alert('Error', response.data.Data.Message);
         setEmisionOK(false);
