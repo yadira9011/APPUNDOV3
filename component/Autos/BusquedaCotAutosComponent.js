@@ -22,9 +22,10 @@ export default function ModalSolitarCotizacion({ isVisible,
     const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
     const [isAlertTwo, setAlertTwo] = useState(false);
     const [Isloading, setIsloading] = useState(false);
-    
+
     //AUT-1-19092024164648952
-    // AUT-1-12102023082739534 AUT-3164-23022024133225346
+    //AUT-1-12102023082739534 
+    //AUT-3164-23022024133225346
     //AUT-1-11112023124847111
     //AUT-1-18092024101014074
 
