@@ -46,19 +46,20 @@ const EmisionScreen = () => {
   const [PlCollapsed, setPlCollapsed] = useState(true);
 
   //Datos contratante
-  // const [numerosocio, setnumerosocio] = useState('XXX');
-  // const [nombre, setNombre] = useState('YADIRA');
-  // const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
-  // const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
-  // const [rfc, setRFC] = useState('PECY901120');
-  // const [curp, setCURP] = useState('PECY901109MVZRSD06');
 
-  const [numerosocio, setnumerosocio] = useState();
-  const [nombre, setNombre] = useState();
-  const [apellidoPaterno, setApellidoPaterno] = useState();
-  const [apellidoMaterno, setApellidoMaterno] = useState();
-  const [rfc, setRFC] = useState();
-  const [curp, setCURP] = useState();
+  const [numerosocio, setnumerosocio] = useState('XXX');
+  const [nombre, setNombre] = useState('YADIRA');
+  const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
+  const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
+  const [rfc, setRFC] = useState('PECY901120');
+  const [curp, setCURP] = useState('PECY901109MVZRSD06');
+
+  // const [numerosocio, setnumerosocio] = useState();
+  // const [nombre, setNombre] = useState();
+  // const [apellidoPaterno, setApellidoPaterno] = useState();
+  // const [apellidoMaterno, setApellidoMaterno] = useState();
+  // const [rfc, setRFC] = useState();
+  // const [curp, setCURP] = useState();
 
   const [diaNacimiento, setDiaNacimiento] = useState('');
   const [mesNacimiento, setMesNacimiento] = useState('');
@@ -76,22 +77,25 @@ const EmisionScreen = () => {
 
   const [genero, setGenero] = useState('');
   const [tipoIdentificacion, setTipoIdentificacion] = useState('');
-  // const [numIdentificacion, setNumIdentificacion] = useState('123567892');
-  // const [telefono, setTelefono] = useState('2781152721');
-  // const [correo, setCorreo] = useState('pruebas@gmail.com');
 
-  const [numIdentificacion, setNumIdentificacion] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [correo, setCorreo] = useState('');
+  const [numIdentificacion, setNumIdentificacion] = useState('123567892');
+  const [telefono, setTelefono] = useState('2781152721');
+  const [correo, setCorreo] = useState('pruebas@gmail.com');
+
+  // const [numIdentificacion, setNumIdentificacion] = useState('');
+  // const [telefono, setTelefono] = useState('');
+  // const [correo, setCorreo] = useState('');
 
 
   //Datos Direccion
-  // const [calle, setCalle] = useState('SALVATIERRA');
-  // const [noExterior, setNoExterior] = useState('75');
-  // const [noInterior, setNoInterior] = useState('0');
-  const [calle, setCalle] = useState('');
-  const [noExterior, setNoExterior] = useState('');
-  const [noInterior, setNoInterior] = useState('');
+
+  const [calle, setCalle] = useState('SALVATIERRA');
+  const [noExterior, setNoExterior] = useState('75');
+  const [noInterior, setNoInterior] = useState('0');
+
+  // const [calle, setCalle] = useState('');
+  // const [noExterior, setNoExterior] = useState('');
+  // const [noInterior, setNoInterior] = useState('');
 
   const [colonia, setColonia] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
@@ -100,19 +104,19 @@ const EmisionScreen = () => {
   const [ciudad, setCiudad] = useState('');
 
   //Datos DatosVehiculo
-  // const [numCredito, setNumCredito] = useState('00000');
-  // const [numSerie, setNumSerie] = useState('JH4DC4470YS801968');
-  // const [numMotor, setNumMotor] = useState('HECHOMX');
-  // const [placas, setPlacas] = useState('YJPC');
 
-  const [numCredito, setNumCredito] = useState();
-  const [numSerie, setNumSerie] = useState();
-  const [numMotor, setNumMotor] = useState();
-  const [placas, setPlacas] = useState();
+  const [numCredito, setNumCredito] = useState('00000');
+  const [numSerie, setNumSerie] = useState('4JGBB2FB4AA612782');
+  const [numMotor, setNumMotor] = useState('HECHOMX');
+  const [placas, setPlacas] = useState('YJPC');
+
+  // const [numCredito, setNumCredito] = useState();
+  // const [numSerie, setNumSerie] = useState();
+  // const [numMotor, setNumMotor] = useState();
+  // const [placas, setPlacas] = useState();
 
 
   const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
-
   const [isVisiblePM, setIsVisiblePM] = useState(true);
   const [isVisiblePF, setIsVisiblePF] = useState(true);
 
@@ -137,7 +141,6 @@ const EmisionScreen = () => {
 
   const [TipoCDFI, setTipoCDFI] = useState([]);
   const [selectedTipoCDFI, setselectedTipoCDFI] = useState('');
-
   const [showPickerPMPF, setshowPickerPMPF] = useState(false);
   const [isEnabledPL, setIsEnabledPL] = useState(false);
   const [isEnabledPR, setIsEnabledPR] = useState(false);
@@ -717,25 +720,6 @@ const EmisionScreen = () => {
     }
   };
 
-  // const toggleSwitchPL = () => {
-  //   if (plBool) {
-  //     setIsEnabledPL(True);
-  //   } else {
-  //     setIsEnabledPL(False);
-  //   }
-  // };
-
-  // const toggleSwitchPR = () => {
-  //   if (prBool) {
-  //     setIsEnabledPR(True);
-  //   } else {
-  //     setIsEnabledPR(False);
-  //   }
-  // };
-
-  // const toggleSwitchPL = () => setIsEnabledPL(previousState => !previousState); setIsEnabledPR(false);
-  // const toggleSwitchPR = () => setIsEnabledPR(previousState => !previousState); setIsEnabledPL(false);
-
   const formatFechaExpiracion = (input) => {
     const cleanedInput = input.replace(/[^0-9]/g, '');
     if (cleanedInput.length > 2) {
@@ -746,35 +730,12 @@ const EmisionScreen = () => {
     }
   };
 
-  // const handleDateChange = (date) => {
-  //   setSelectedDate(date);
-  // };
-
   const onChangeV = (event, selectedDate) => {
     console.log(selectedDate)
     if (selectedDate) {
       setTextDateVP(selectedDate.toLocaleDateString());
       showPicker(previousState => !previousState);
     }
-  };
-
-
-  const onChangeXXX = (event, selectedDate) => {
-
-    if (showChangeFD) {
-      setshowChangeFDpIKER(true);
-    } else {
-      setshowChangeFDpIKER(false);
-    }
-    //setShowChangeFD(previousState => !previousState);
-    // console.log(showChangeFD)
-    // //setShowPicker(Platform.OS === 'ios');
-    // if (selectedDate) {
-    //   setDate(selectedDate);
-    //   setTextDateVP(date.toLocaleDateString());
-    //   //etShowChangeFD(previousState => !previousState);
-    //   //setShowPicker(false);
-    // }
   };
 
   const onChangeFD = (event, selectedDate) => {
@@ -794,11 +755,6 @@ const EmisionScreen = () => {
       setshowChangeFDpIKER(false);
     }
   };
-
-  // const showDatepicker = () => {
-  //   setMode('date');
-  //   setShowPicker(true);
-  // };
 
   const handleEmitir = async () => {
 
@@ -1016,14 +972,6 @@ const EmisionScreen = () => {
       console.error('Ocurrio un error al procesar la impresión.', response.data.Data.Message);
     }
   };
-
-  // const getLabelForTipoPersona = (value) => {
-  //   console.log("xx",value)
-  //   selectedTipoPersona();
-  //   const selectedData = TiposPersona.find((item) => item.Id === value);
-  //   console.log("tupo persona..",selectedData)
-  //   return selectedData ? selectedData.Valor : '';
-  // };
 
   if (!loadingCombos) {
     return (
@@ -1520,6 +1468,7 @@ const EmisionScreen = () => {
         </View>
 
         {/* dATOS POLIZA */}
+
         <View>
 
           <TouchableOpacity onPress={toggleDPCollapse} style={styles.button}>
@@ -1532,6 +1481,7 @@ const EmisionScreen = () => {
               </View>
             </View>
           </TouchableOpacity>
+
           <Collapsible collapsed={DPCollapsed}>
 
             <View style={{ marginBottom: 10 }}>
@@ -1672,6 +1622,7 @@ const EmisionScreen = () => {
 
         {/* Forma pago */}
         {/* display: 'none'  */}
+        
         < View style={{ marginBottom: 10, marginTop: 5 }}>
           <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
