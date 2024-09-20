@@ -16,7 +16,7 @@ export default function ModalSolitarCotizacion({ isVisible,
     DataParameter }) {
 
     const navigation = useNavigation();
-    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-1-19092024164648952');
+    const [FolioCotizacion, setFolioCotizacion] = useState('AUT-3160-20092024144932244');
     const [isAlertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [IconMessage, setIconMessage] = useState('Icon_Blue.png');

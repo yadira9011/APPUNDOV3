@@ -131,6 +131,9 @@ const CotizacionAutosScreen = () => {
   const [TextNumeroPasajeros, setTextNumeroPasajeros] = useState('');
   const ID_TIPO_USO_CU = config.ID_TIPO_USO_CU;
 
+  const [COTIZAR_BTN_isDisabled, setCOTIZAR_BTN_isDisabled] = useState(true);
+
+
   useEffect(() => {
 
     const loadData = async () => {
@@ -752,6 +755,7 @@ const CotizacionAutosScreen = () => {
 
     try {
 
+      setCOTIZAR_BTN_isDisabled(true);
       const validaCamposCoti = validarCampos();
 
       if (validaCamposCoti.valido) {
@@ -791,17 +795,18 @@ const CotizacionAutosScreen = () => {
           IDSubcananal: DataParameter.IdSubCanal,
           NumPasajeros: TextNumeroPasajeros
         }
-        
+
         const response = await GetCotizacion(dataCotizacion);
-   
+
         if (response.data.Data.HasError) {
           setLoadingCotizacion(false);
           setAlertMessage(response.data.Data.Message);
           setAlertVisible(true);
+          setCOTIZAR_BTN_isDisabled(false);
         } else {
           if (response.data.Data.Data) {
             const resultData = response.data.Data.Data;
-        
+
             setLoadingCotizacion(false);
             const dataArray = {
               DataResul: resultData,
@@ -809,6 +814,7 @@ const CotizacionAutosScreen = () => {
               DataTitulos: DataSolicitudTitulos,
               DataParameter: DataParameter
             }
+            setCOTIZAR_BTN_isDisabled(false);
             //console.log(dataArray)
             navigation.navigate('ResultadoCotizacion', { dataArray });
           }
@@ -819,6 +825,7 @@ const CotizacionAutosScreen = () => {
         setAlertMessage(validaCamposCoti.mensaje);
         setAlertVisible(true);
         setLoading(false);
+        setCOTIZAR_BTN_isDisabled(false);
       }
 
     } catch (error) {
@@ -828,6 +835,7 @@ const CotizacionAutosScreen = () => {
       setLoading(false);
     } finally {
       setLoadingCotizacion(false);
+      setCOTIZAR_BTN_isDisabled(false);
     }
 
   };
@@ -1207,7 +1215,8 @@ const CotizacionAutosScreen = () => {
         {!COTIZAR_BTN && (
           <TouchableOpacity
             style={styles.cotizarButton}
-            onPress={handleCotizar} >
+            onPress={handleCotizar}
+            disabled={COTIZAR_BTN_isDisabled}>
             <Text style={styles.cotizarButtonText}>Cotizar</Text>
           </TouchableOpacity>
         )}

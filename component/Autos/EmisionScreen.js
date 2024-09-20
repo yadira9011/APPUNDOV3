@@ -588,7 +588,10 @@ const EmisionScreen = () => {
         //console.log("ccccc",date.toLocaleDateString())
         setTextDateVP(date.toLocaleDateString());
         setTextDateFD(dateFDesembolso.toLocaleDateString());
+
+        console.log("proceso emii anticipada ...")
         if (response.data.Data[0].FIEMISION_ANTICIPADA != 0) {
+          console.log("VALOR EMI ANTICIPADA...",response.data.Data[0].FIEMISION_ANTICIPADA);
           setisDatePickerEnabled(true);
           setMaxDate(new Date(fMax));
           setMinDate(new Date(fMin));
@@ -734,11 +737,19 @@ const EmisionScreen = () => {
     }
   };
 
+  // const onChangeV = (event, selectedDate) => {
+  //   console.log(selectedDate)
+  //   if (selectedDate) {
+  //     setTextDateVP(selectedDate.toLocaleDateString());
+  //     showPicker(previousState => !previousState);
+  //   }
+  // };
+
   const onChangeV = (event, selectedDate) => {
-    console.log(selectedDate)
+    console.log(selectedDate);
     if (selectedDate) {
       setTextDateVP(selectedDate.toLocaleDateString());
-      showPicker(previousState => !previousState);
+      setShowPicker(false);
     }
   };
 
@@ -746,9 +757,18 @@ const EmisionScreen = () => {
     console.log(selectedDate)
     if (selectedDate) {
       setTextDateFD(selectedDate.toLocaleDateString());
-      setshowChangeFDpIKER(previousState => !previousState);
+      setshowChangeFDpIKER(false);
     }
   };
+
+  // const onChangeFD = (event, selectedDate) => {
+  //   console.log(selectedDate)
+  //   if (selectedDate) {
+  //     setTextDateFD(selectedDate.toLocaleDateString());
+  //     setshowChangeFDpIKER(previousState => !previousState);
+  //   }
+  // };
+
 
   const onChangeFDS = () => {
     setShowChangeFD(previousState => !previousState);
@@ -763,7 +783,7 @@ const EmisionScreen = () => {
   const handleEmitir = async () => {
 
     setloadingEmision(true);
-
+    resertTiempoMaximoApp(true);
     var monthfn = ('0' + selectedMes).slice(-2);
     var dayfn = ('0' + selectedDia).slice(-2);
     const fecha_nacimiento_persona = selectedAno + "/" + monthfn + "/" + dayfn
@@ -814,90 +834,91 @@ const EmisionScreen = () => {
           var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
           var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
 
-          const dataemi = {
-            "IdCotizacion": dataArrayEmi.DataItemSelect.id,
-            "NombrePersona": nombre,
-            "ApaternoPersona": apellidoPaterno,
-            "AmaternoPersona": apellidoMaterno,
-            "GeneroPersona": selectedGenero,
-            "EdadPersona": EdadPersona,
-            "NacimientoPersona": fecha_nacimiento_persona,
-            "RFCPersona": rfc,
-            "CURPPersona": curp,
-            "Mail": correo,
-            "Telefono": telefono,
-            "CallePersona": calle,
-            "NumeroExteriorPersona": noExterior,
-            "NumeroInteriorPersona": noInterior,
-            "ColoniaPersona": colonia,
-            "CodigoPostalPersona": codigoPostal,
-            "MunicipioPersona": municipio,
-            "EstadoPersona": estado,
-            "CiudadPersona": ciudad,
-            "NumeroVin": numSerie,
-            "NumeroMotor": numMotor,
-            "PlacasVehiculo": placas,
-            //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
-            "FInicioVigencia": formattedDatefv,
-            "BeneficiarioPreferente": IsBP,
-            "NumeroSocio": numerosocio,
-            "NumeroCredito": numCredito,
-            "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
-            "NumIdentificacionPersona": numIdentificacion,
-            "usuario": dataArrayEmi.CotiData.usuario,
-            "Contraseña": dataArrayEmi.CotiData.contraseña,
-            "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
-            "TipoPersona": 1,
-            "NameTarjetabiente": vNameTarjetabiente,
-            "FormaCobro": vFormaCobro,
-            "number": vnumber,
-            "bankcode": vbankcode,
-            "expmonth": vexpmonth,
-            "expyear": vexpyear,
-            "cvvcsc": vcvv,
-            "PagoEnLinea": false,
-            //para persona moral
-            // "RazonSocial": razonSocial,
-            // "NombreComercial": nombreComercial,
-            // "Giro": selectedGiro,
-            // "TipoSociedad": selectedTipoSociedad,
-            // "RegimenSimplificado": false,
-            // "TipoRegimenFiscal": selectedRegimenFiscal,
-            // "TipoCFDI": TipoCDFI,
-            "strPoliza": "",
-            "FolioPolizaAnterior": TxtFolioPolizaAnterior,
-            "renovacion": isRenovacion
-          }
-          console.log('DATAAAA EMIIII', dataemi);
+            const dataemi = {
+              "IdCotizacion": dataArrayEmi.DataItemSelect.id,
+              "NombrePersona": nombre,
+              "ApaternoPersona": apellidoPaterno,
+              "AmaternoPersona": apellidoMaterno,
+              "GeneroPersona": selectedGenero,
+              "EdadPersona": EdadPersona,
+              "NacimientoPersona": fecha_nacimiento_persona,
+              "RFCPersona": rfc,
+              "CURPPersona": curp,
+              "Mail": correo,
+              "Telefono": telefono,
+              "CallePersona": calle,
+              "NumeroExteriorPersona": noExterior,
+              "NumeroInteriorPersona": noInterior,
+              "ColoniaPersona": colonia,
+              "CodigoPostalPersona": codigoPostal,
+              "MunicipioPersona": municipio,
+              "EstadoPersona": estado,
+              "CiudadPersona": ciudad,
+              "NumeroVin": numSerie,
+              "NumeroMotor": numMotor,
+              "PlacasVehiculo": placas,
+              //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
+              "FInicioVigencia": formattedDatefv,
+              "BeneficiarioPreferente": IsBP,
+              "NumeroSocio": numerosocio,
+              "NumeroCredito": numCredito,
+              "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
+              "NumIdentificacionPersona": numIdentificacion,
+              "usuario": dataArrayEmi.CotiData.usuario,
+              "Contraseña": dataArrayEmi.CotiData.contraseña,
+              "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
+              "TipoPersona": 1,
+              "NameTarjetabiente": vNameTarjetabiente,
+              "FormaCobro": vFormaCobro,
+              "number": vnumber,
+              "bankcode": vbankcode,
+              "expmonth": vexpmonth,
+              "expyear": vexpyear,
+              "cvvcsc": vcvv,
+              "PagoEnLinea": false,
+              //para persona moral
+              // "RazonSocial": razonSocial,
+              // "NombreComercial": nombreComercial,
+              // "Giro": selectedGiro,
+              // "TipoSociedad": selectedTipoSociedad,
+              // "RegimenSimplificado": false,
+              // "TipoRegimenFiscal": selectedRegimenFiscal,
+              // "TipoCFDI": TipoCDFI,
+              "strPoliza": "",
+              "FolioPolizaAnterior": TxtFolioPolizaAnterior,
+              "renovacion": isRenovacion
+            }
+
+            if (EmisionOK == false) {
+              console.log('Mande a emitir....')
+              console.log(dataemi)
+              const response = await GetCEmision(dataemi);
+              console.log(response.data.Data)
+              if (!response.data.Data.HasError) {
+                const data = response.data.Data.Data;
+                const NumeroPoliza = data.Poliza;
+                dataemi.strPoliza = NumeroPoliza;
+                console.log(data)
+                setEmisionOK(true);
+                Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
+                setloadingEmision(false);
+              } else {
+                Alert.alert('Error', response.data.Data.Message);
+                setEmisionOK(false);
+                console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
+                setloadingEmision(false);
+              }
+            }
+
+            if (EmisionOK) {
+              setloadingEmision(true);
+              await PagoLineaProcess(dataemi, dataemi.strPoliza);
+              setloadingEmision(false);
+            }
+            //console.log('DATAAAA EMIIII', dataemi);
         }
       }
     }
-
-    if (EmisionOK == false) {
-      const response = await GetCEmision(dataemi);
-      console.log(response.data.Data)
-      if (!response.data.Data.HasError) {
-        const data = response.data.Data.Data;
-        const NumeroPoliza = data.Poliza;
-        dataemi.strPoliza = NumeroPoliza;
-        console.log(data)
-        setEmisionOK(true);
-        Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
-        setloadingEmision(false);
-      } else {
-        Alert.alert('Error', response.data.Data.Message);
-        setEmisionOK(false);
-        console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
-        setloadingEmision(false);
-      }
-    }
-
-    if (EmisionOK) {
-      setloadingEmision(true);
-      await PagoLineaProcess(dataemi, dataemi.strPoliza);
-      setloadingEmision(false);
-    }
-
   };
 
   const PagoLineaProcess = async (emi, NumeroPoliza) => {
@@ -1518,7 +1539,7 @@ const EmisionScreen = () => {
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={toggleSwitchCV}
                     value={IsChangeVigencia}
-                    disabled={isDatePickerEnabled}
+                    disabled={!isDatePickerEnabled}
                   />
                 </View>
               </View>

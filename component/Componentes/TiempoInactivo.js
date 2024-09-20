@@ -33,6 +33,7 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
     }else{
       tiempoMaximo=120000;
     }
+    console.log("cambie tiempo...",tiempoMaximo)
     setIsActiveApp(true);
   };
 
