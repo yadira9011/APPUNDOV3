@@ -30,6 +30,8 @@ import {
   GetConfigAgente, GetCEmision, ImpresionPoliza, GetPagoEnLinea, GetPrivilegios
 } from '../Api/api';
 
+import { resertTiempoMaximoApp } from '../Componentes/TiempoInactivo';
+
 const EmisionScreen = () => {
 
   const route = useRoute();
@@ -209,6 +211,8 @@ const EmisionScreen = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
+
+        resertTiempoMaximoApp();
         // dataArrayEmi.DataItemSelect.IdClaveAgente
         setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
         setColonia(dataArrayEmi.CotiData.ColoniaPersona);

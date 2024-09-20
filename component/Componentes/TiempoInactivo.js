@@ -5,6 +5,7 @@ import CustomAlert from '../Componentes/CustomAlert';
 import useCurrentRoute from '../Componentes/CurrentRoute';
 
 let resetsetIsActiveApp;
+let resertTiempoMaximoApp;
 
 const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 
@@ -24,6 +25,15 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
   resetsetIsActiveApp = () => {
     setIsActiveApp(true);
     ultimaInteraccionRef.current = Date.now();
+  };
+
+  resertTiempoMaximoApp = (IsEmision) => {
+    if(IsEmision){
+      tiempoMaximo=300000;
+    }else{
+      tiempoMaximo=120000;
+    }
+    setIsActiveApp(true);
   };
 
   const redireccionarALogin = () => {
@@ -136,5 +146,6 @@ const TiempoInactivo = forwardRef(({ tiempoMaximo }, ref) => {
 });
 
 export { resetsetIsActiveApp };
+export { resertTiempoMaximoApp };
 export default TiempoInactivo;
 
