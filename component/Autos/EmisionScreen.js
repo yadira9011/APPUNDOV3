@@ -217,7 +217,7 @@ const EmisionScreen = () => {
     const loadData = async () => {
       try {
 
-        resertTiempoMaximoApp();
+        resertTiempoMaximoApp(true);
         // dataArrayEmi.DataItemSelect.IdClaveAgente
         setTxtUrlconAse(dataArrayEmi.DataItemSelect.imageUrl);
         setColonia(dataArrayEmi.CotiData.ColoniaPersona);
