@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
+import {
   View,
-  Text, 
+  Text,
   StyleSheet,
-  ScrollView, 
+  ScrollView,
   Image,
-  TextInput, 
-  TouchableOpacity, 
-  Modal, 
-  FlatList, 
-  RefreshControl, 
-  ActivityIndicator } from 'react-native';
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator
+} from 'react-native';
 import {
   CotEstatusVehiculos, CotTiposDeVehiculos, CotModelos, CotMarcas, CotTipos, CotDescripciones,
   CotIndenmizaciones, CotTiposDeUso, CotDeducibles, CotPaquetes, CotTipoPoliza,
@@ -358,6 +359,12 @@ const CotizacionAutosScreen = () => {
 
         const data = response.data.Data.Data;
         console.log('INDEPIII', data);
+        console.log(data[0].Id)
+
+        if (data[0].Id != 1) {
+          setTextMonto('');
+        }
+
         setAutoIndemnizaciones(data);
         setSelectedOptionIndemnizacion(data[0].Id);
 
@@ -384,9 +391,9 @@ const CotizacionAutosScreen = () => {
         setSelectedOptionTipoUso(data[0].Id);
         setselectedTextTipoUso(data[0].Valor);
 
-        if(data[0].Id==ID_TIPO_USO_CU){
+        if (data[0].Id == ID_TIPO_USO_CU) {
           setshowNumeroPasajeros(true);
-        }else{
+        } else {
           setshowNumeroPasajeros(false);
         }
 
@@ -544,6 +551,7 @@ const CotizacionAutosScreen = () => {
       const selectedOption = AutoEstatusVehiculos.find(item => item.Id === itemValue);
       setSelectedOption(itemValue);
       setselectedTextEstatusVehiculo(selectedOption.Valor);
+      setTextMonto('');
       fetchAutoModelos(itemValue);
       fetchAutoIndenmizaciones(itemValue);
       fetchAutoTipoVehiculos();
@@ -605,8 +613,15 @@ const CotizacionAutosScreen = () => {
 
   const handleOptionChangeIndenmizaciones = (itemValue) => {
     if (itemValue !== null) {
+
+      if (itemValue == 1) {
+
+        console.log(itemValue)
+      }
+
       setSelectedOptionIndemnizacion(itemValue);
     }
+
   };
 
   const handleOptionChangeTiposUso = (itemValue, itemIndex) => {
@@ -719,12 +734,12 @@ const CotizacionAutosScreen = () => {
       mensajeError = "Por favor ingresa una descripción.";
     } else if (selectedOptionDescripcion === '') {
       mensajeError = "Por favor selecciona una opción de descripción.";
-    }else if (textCP=== '') {
+    } else if (textCP === '') {
       mensajeError = "Por favor selecciona un Código Postal.";
-    } else if (TextColonia=== '' || TextMunicipio=== '' || TextEstado=== '' || TextCiudad=== '') {
+    } else if (TextColonia === '' || TextMunicipio === '' || TextEstado === '' || TextCiudad === '') {
       mensajeError = "Por favor revisa los datos de dirección.";
     }
-    
+
     const resultadoValidacion = {
       valido: !mensajeError,
       mensaje: mensajeError
@@ -738,7 +753,7 @@ const CotizacionAutosScreen = () => {
     try {
 
       const validaCamposCoti = validarCampos();
-      
+
       if (validaCamposCoti.valido) {
 
         setLoadingCotizacion(true);
@@ -776,9 +791,9 @@ const CotizacionAutosScreen = () => {
           IDSubcananal: DataParameter.IdSubCanal,
           NumPasajeros: TextNumeroPasajeros
         }
-
+        
         const response = await GetCotizacion(dataCotizacion);
-
+   
         if (response.data.Data.HasError) {
           setLoadingCotizacion(false);
           setAlertMessage(response.data.Data.Message);
@@ -786,6 +801,7 @@ const CotizacionAutosScreen = () => {
         } else {
           if (response.data.Data.Data) {
             const resultData = response.data.Data.Data;
+        
             setLoadingCotizacion(false);
             const dataArray = {
               DataResul: resultData,
@@ -793,6 +809,7 @@ const CotizacionAutosScreen = () => {
               DataTitulos: DataSolicitudTitulos,
               DataParameter: DataParameter
             }
+            //console.log(dataArray)
             navigation.navigate('ResultadoCotizacion', { dataArray });
           }
         }
@@ -1036,16 +1053,6 @@ const CotizacionAutosScreen = () => {
         />
 
 
-      { showNumeroPasajeros && ( 
-        <TextInput
-              placeholder="Ingresa el número de pasajeros"
-              value={TextNumeroPasajeros}
-              onChangeText={setTextNumeroPasajeros}
-              style={styles.input}
-              keyboardType="numeric"
-        />
-        )}
-       
 
         {selectedOptionIndemnizacion === 1 && (
           <View style={{
@@ -1070,6 +1077,37 @@ const CotizacionAutosScreen = () => {
             />
           </View>
         )}
+
+
+        {showNumeroPasajeros && (
+          <View>
+            <Text style={styles.label}>número de pasajeros :</Text>
+            <View style={{
+              flexDirection: 'row',
+              marginBottom: 15,
+              alignItems: 'center',
+              borderColor: 'gray',
+              borderWidth: 1,
+              marginLeft: 20,
+              width: '90%',
+              marginRight: 8,
+              marginTop: 10,
+              borderRadius: 10,
+              padding: 8
+            }}>
+
+
+              <TextInput
+                placeholder="Ingresa el número de pasajeros"
+                value={TextNumeroPasajeros}
+                onChangeText={setTextNumeroPasajeros}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+        )}
+
 
         <Text style={styles.label}>Codigo Postal :</Text>
 

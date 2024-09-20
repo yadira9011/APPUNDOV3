@@ -48,19 +48,20 @@ const EmisionScreen = () => {
   const [PlCollapsed, setPlCollapsed] = useState(true);
 
   //Datos contratante
-  // const [numerosocio, setnumerosocio] = useState('XXX');
-  // const [nombre, setNombre] = useState('YADIRA');
-  // const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
-  // const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
-  // const [rfc, setRFC] = useState('PECY901120');
-  // const [curp, setCURP] = useState('PECY901109MVZRSD06');
 
-  const [numerosocio, setnumerosocio] = useState();
-  const [nombre, setNombre] = useState();
-  const [apellidoPaterno, setApellidoPaterno] = useState();
-  const [apellidoMaterno, setApellidoMaterno] = useState();
-  const [rfc, setRFC] = useState();
-  const [curp, setCURP] = useState();
+  const [numerosocio, setnumerosocio] = useState('XXX');
+  const [nombre, setNombre] = useState('YADIRA');
+  const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
+  const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
+  const [rfc, setRFC] = useState('PECY901120');
+  const [curp, setCURP] = useState('PECY901109MVZRSD06');
+
+  // const [numerosocio, setnumerosocio] = useState();
+  // const [nombre, setNombre] = useState();
+  // const [apellidoPaterno, setApellidoPaterno] = useState();
+  // const [apellidoMaterno, setApellidoMaterno] = useState();
+  // const [rfc, setRFC] = useState();
+  // const [curp, setCURP] = useState();
 
   const [diaNacimiento, setDiaNacimiento] = useState('');
   const [mesNacimiento, setMesNacimiento] = useState('');
@@ -78,22 +79,25 @@ const EmisionScreen = () => {
 
   const [genero, setGenero] = useState('');
   const [tipoIdentificacion, setTipoIdentificacion] = useState('');
-  // const [numIdentificacion, setNumIdentificacion] = useState('123567892');
-  // const [telefono, setTelefono] = useState('2781152721');
-  // const [correo, setCorreo] = useState('pruebas@gmail.com');
 
-  const [numIdentificacion, setNumIdentificacion] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [correo, setCorreo] = useState('');
+  const [numIdentificacion, setNumIdentificacion] = useState('123567892');
+  const [telefono, setTelefono] = useState('2781152721');
+  const [correo, setCorreo] = useState('pruebas@gmail.com');
+
+  // const [numIdentificacion, setNumIdentificacion] = useState('');
+  // const [telefono, setTelefono] = useState('');
+  // const [correo, setCorreo] = useState('');
 
 
   //Datos Direccion
-  // const [calle, setCalle] = useState('SALVATIERRA');
-  // const [noExterior, setNoExterior] = useState('75');
-  // const [noInterior, setNoInterior] = useState('0');
-  const [calle, setCalle] = useState('');
-  const [noExterior, setNoExterior] = useState('');
-  const [noInterior, setNoInterior] = useState('');
+
+  const [calle, setCalle] = useState('SALVATIERRA');
+  const [noExterior, setNoExterior] = useState('75');
+  const [noInterior, setNoInterior] = useState('0');
+
+  // const [calle, setCalle] = useState('');
+  // const [noExterior, setNoExterior] = useState('');
+  // const [noInterior, setNoInterior] = useState('');
 
   const [colonia, setColonia] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
@@ -102,19 +106,19 @@ const EmisionScreen = () => {
   const [ciudad, setCiudad] = useState('');
 
   //Datos DatosVehiculo
-  // const [numCredito, setNumCredito] = useState('00000');
-  // const [numSerie, setNumSerie] = useState('JH4DC4470YS801968');
-  // const [numMotor, setNumMotor] = useState('HECHOMX');
-  // const [placas, setPlacas] = useState('YJPC');
 
-  const [numCredito, setNumCredito] = useState();
-  const [numSerie, setNumSerie] = useState();
-  const [numMotor, setNumMotor] = useState();
-  const [placas, setPlacas] = useState();
+  const [numCredito, setNumCredito] = useState('00000');
+  const [numSerie, setNumSerie] = useState('4JGBB2FB4AA612782');
+  const [numMotor, setNumMotor] = useState('HECHOMX');
+  const [placas, setPlacas] = useState('YJPC');
+
+  // const [numCredito, setNumCredito] = useState();
+  // const [numSerie, setNumSerie] = useState();
+  // const [numMotor, setNumMotor] = useState();
+  // const [placas, setPlacas] = useState();
 
 
   const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
-
   const [isVisiblePM, setIsVisiblePM] = useState(true);
   const [isVisiblePF, setIsVisiblePF] = useState(true);
 
@@ -139,9 +143,7 @@ const EmisionScreen = () => {
 
   const [TipoCDFI, setTipoCDFI] = useState([]);
   const [selectedTipoCDFI, setselectedTipoCDFI] = useState('');
-
   const [showPickerPMPF, setshowPickerPMPF] = useState(false);
-
   const [isEnabledPL, setIsEnabledPL] = useState(false);
   const [isEnabledPR, setIsEnabledPR] = useState(false);
 
@@ -186,8 +188,11 @@ const EmisionScreen = () => {
   const [showPickerFDesembolso, setShowPickerFDesembolso] = useState(true);
   const [dateFDesembolso, setDateFDesembolso] = useState(new Date());
   const [TextDateFD, setTextDateFD] = useState('');
+
   const [isRenovacion, setisRenovacion] = useState(false);
   const [ShowisRenovacion, setShowisRenovacion] = useState(true);
+  const [TxtFolioPolizaAnterior, setTxtFolioPolizaAnterior] = useState(null);
+  const [showChangeRenovacion, setshowChangeRenovacion] = useState(false);
 
   const [showChangeFD, setShowChangeFD] = useState(false);
 
@@ -506,7 +511,7 @@ const EmisionScreen = () => {
 
         const pr = response.data.Data.PagoEnLineaReferenciado;
 
-        console.log(pr, pl,"...");
+        console.log(pr, pl, "...");
 
         let prBool = pr === 1;
 
@@ -514,12 +519,12 @@ const EmisionScreen = () => {
         let prpanel = true;
 
 
-        console.log(plBool, prBool,"...");
+        console.log(plBool, prBool, "...");
 
         if (plBool) {
           //prBool = false;
           prpanel = false;
-          plpanel=true;
+          plpanel = true;
         }
 
         // if (prBool) {
@@ -711,26 +716,13 @@ const EmisionScreen = () => {
 
   const toggleSwitchRembolso = () => {
     setisRenovacion(previousState => !previousState);
+    if (!isRenovacion) {
+      console.log(isRenovacion)
+      setshowChangeRenovacion(true);
+    } else {
+      setshowChangeRenovacion(false);
+    }
   };
-
-  // const toggleSwitchPL = () => {
-  //   if (plBool) {
-  //     setIsEnabledPL(True);
-  //   } else {
-  //     setIsEnabledPL(False);
-  //   }
-  // };
-
-  // const toggleSwitchPR = () => {
-  //   if (prBool) {
-  //     setIsEnabledPR(True);
-  //   } else {
-  //     setIsEnabledPR(False);
-  //   }
-  // };
-
-  // const toggleSwitchPL = () => setIsEnabledPL(previousState => !previousState); setIsEnabledPR(false);
-  // const toggleSwitchPR = () => setIsEnabledPR(previousState => !previousState); setIsEnabledPL(false);
 
   const formatFechaExpiracion = (input) => {
     const cleanedInput = input.replace(/[^0-9]/g, '');
@@ -742,35 +734,12 @@ const EmisionScreen = () => {
     }
   };
 
-  // const handleDateChange = (date) => {
-  //   setSelectedDate(date);
-  // };
-
   const onChangeV = (event, selectedDate) => {
     console.log(selectedDate)
     if (selectedDate) {
       setTextDateVP(selectedDate.toLocaleDateString());
       showPicker(previousState => !previousState);
     }
-  };
-
-
-  const onChangeXXX = (event, selectedDate) => {
-
-    if (showChangeFD) {
-      setshowChangeFDpIKER(true);
-    } else {
-      setshowChangeFDpIKER(false);
-    }
-    //setShowChangeFD(previousState => !previousState);
-    // console.log(showChangeFD)
-    // //setShowPicker(Platform.OS === 'ios');
-    // if (selectedDate) {
-    //   setDate(selectedDate);
-    //   setTextDateVP(date.toLocaleDateString());
-    //   //etShowChangeFD(previousState => !previousState);
-    //   //setShowPicker(false);
-    // }
   };
 
   const onChangeFD = (event, selectedDate) => {
@@ -791,15 +760,10 @@ const EmisionScreen = () => {
     }
   };
 
-  // const showDatepicker = () => {
-  //   setMode('date');
-  //   setShowPicker(true);
-  // };
-
   const handleEmitir = async () => {
 
     setloadingEmision(true);
-  
+
     var monthfn = ('0' + selectedMes).slice(-2);
     var dayfn = ('0' + selectedDia).slice(-2);
     const fecha_nacimiento_persona = selectedAno + "/" + monthfn + "/" + dayfn
@@ -815,100 +779,100 @@ const EmisionScreen = () => {
     const vexpyear = "";
     const vcvv = "";
 
-    console.log("Estatus vehiculo...",dataArrayEmi.CotiData.IDEstatusVehiculo)
-    if (calle === "" ){
+    console.log("Estatus vehiculo...", dataArrayEmi.CotiData.IDEstatusVehiculo)
+    if (calle === "") {
       Alert.alert('Debe ingresa datos completos de dirección');
       setEmisionOK(false);
       setloadingEmision(false);
-    }else{
-        if (nombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || rfc === "" || correo === "" ||  fecha_nacimiento_persona ==="/0/0"|| fecha_nacimiento_persona ===""  ){
-          Alert.alert('Debe ingresa datos completos de contratante');
+    } else {
+      if (nombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || rfc === "" || correo === "" || fecha_nacimiento_persona === "/0/0" || fecha_nacimiento_persona === "") {
+        Alert.alert('Debe ingresa datos completos de contratante');
+        setEmisionOK(false);
+        setloadingEmision(false);
+      } else {
+        if ((placas === "" && dataArrayEmi.CotiData.IDEstatusVehiculo === 2) || numSerie === "") {
+          Alert.alert('Debe ingresar las placas/serie del vehiculo');
           setEmisionOK(false);
           setloadingEmision(false);
-        }else{
-          if ((placas === "" && dataArrayEmi.CotiData.IDEstatusVehiculo === 2) || numSerie === "" ) {
-                Alert.alert('Debe ingresar las placas/serie del vehiculo');
-                setEmisionOK(false);
-                setloadingEmision(false);
-              } else {
-                const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
-                if (isPL) {
-                  const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
-                  const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
-                  vNameTarjetabiente = nombreTarjetahabiente;
-                  vFormaCobro = LabelFP;
-                  vnumber = cuentaClabeNoTarjeta;
-                  vbankcode = LabelBE;
-                  vexpmonth = fechaExpiracion.substring(0, 2);
-                  vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
-                  vcvv = cvv;
-                }
-                date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-                console.log(date.toLocaleDateString())
-                var yearfv = date.getFullYear();
-                var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
-                var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
-                var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
-    
-                const dataemi = {
-                  "IdCotizacion": dataArrayEmi.DataItemSelect.id,
-                  "NombrePersona": nombre,
-                  "ApaternoPersona": apellidoPaterno,
-                  "AmaternoPersona": apellidoMaterno,
-                  "GeneroPersona": selectedGenero,
-                  "EdadPersona": EdadPersona,
-                  "NacimientoPersona": fecha_nacimiento_persona,
-                  "RFCPersona": rfc,
-                  "CURPPersona": curp,
-                  "Mail": correo,
-                  "Telefono": telefono,
-                  "CallePersona": calle,
-                  "NumeroExteriorPersona": noExterior,
-                  "NumeroInteriorPersona": noInterior,
-                  "ColoniaPersona": colonia,
-                  "CodigoPostalPersona": codigoPostal,
-                  "MunicipioPersona": municipio,
-                  "EstadoPersona": estado,
-                  "CiudadPersona": ciudad,
-                  "NumeroVin": numSerie,
-                  "NumeroMotor": numMotor,
-                  "PlacasVehiculo": placas,
-                  //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
-                  "FInicioVigencia": formattedDatefv,
-                  "BeneficiarioPreferente": IsBP,
-                  "NumeroSocio": numerosocio,
-                  "NumeroCredito": numCredito,
-                  "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
-                  "NumIdentificacionPersona": numIdentificacion,
-                  "usuario": dataArrayEmi.CotiData.usuario,
-                  "Contraseña": dataArrayEmi.CotiData.contraseña,
-                  "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
-                  "TipoPersona": 1,
-                  "NameTarjetabiente": vNameTarjetabiente,
-                  "FormaCobro": vFormaCobro,
-                  "number": vnumber,
-                  "bankcode": vbankcode,
-                  "expmonth": vexpmonth,
-                  "expyear": vexpyear,
-                  "cvvcsc": vcvv,
-                  "PagoEnLinea": false,
-                  //para persona moral
-                  // "RazonSocial": razonSocial,
-                  // "NombreComercial": nombreComercial,
-                  // "Giro": selectedGiro,
-                  // "TipoSociedad": selectedTipoSociedad,
-                  // "RegimenSimplificado": false,
-                  // "TipoRegimenFiscal": selectedRegimenFiscal,
-                  // "TipoCFDI": TipoCDFI,
-                  "strPoliza": ""
-                }
-                console.log('DATAAAA EMIIII', dataemi);
-                
-              }
+        } else {
+          const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
+          if (isPL) {
+            const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
+            const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
+            vNameTarjetabiente = nombreTarjetahabiente;
+            vFormaCobro = LabelFP;
+            vnumber = cuentaClabeNoTarjeta;
+            vbankcode = LabelBE;
+            vexpmonth = fechaExpiracion.substring(0, 2);
+            vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
+            vcvv = cvv;
+          }
+          date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+          console.log(date.toLocaleDateString())
+          var yearfv = date.getFullYear();
+          var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
+          var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
+          var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+
+          const dataemi = {
+            "IdCotizacion": dataArrayEmi.DataItemSelect.id,
+            "NombrePersona": nombre,
+            "ApaternoPersona": apellidoPaterno,
+            "AmaternoPersona": apellidoMaterno,
+            "GeneroPersona": selectedGenero,
+            "EdadPersona": EdadPersona,
+            "NacimientoPersona": fecha_nacimiento_persona,
+            "RFCPersona": rfc,
+            "CURPPersona": curp,
+            "Mail": correo,
+            "Telefono": telefono,
+            "CallePersona": calle,
+            "NumeroExteriorPersona": noExterior,
+            "NumeroInteriorPersona": noInterior,
+            "ColoniaPersona": colonia,
+            "CodigoPostalPersona": codigoPostal,
+            "MunicipioPersona": municipio,
+            "EstadoPersona": estado,
+            "CiudadPersona": ciudad,
+            "NumeroVin": numSerie,
+            "NumeroMotor": numMotor,
+            "PlacasVehiculo": placas,
+            //"FInicioVigencia": "2023-10-05T16:56:51.159Z",
+            "FInicioVigencia": formattedDatefv,
+            "BeneficiarioPreferente": IsBP,
+            "NumeroSocio": numerosocio,
+            "NumeroCredito": numCredito,
+            "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
+            "NumIdentificacionPersona": numIdentificacion,
+            "usuario": dataArrayEmi.CotiData.usuario,
+            "Contraseña": dataArrayEmi.CotiData.contraseña,
+            "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
+            "TipoPersona": 1,
+            "NameTarjetabiente": vNameTarjetabiente,
+            "FormaCobro": vFormaCobro,
+            "number": vnumber,
+            "bankcode": vbankcode,
+            "expmonth": vexpmonth,
+            "expyear": vexpyear,
+            "cvvcsc": vcvv,
+            "PagoEnLinea": false,
+            //para persona moral
+            // "RazonSocial": razonSocial,
+            // "NombreComercial": nombreComercial,
+            // "Giro": selectedGiro,
+            // "TipoSociedad": selectedTipoSociedad,
+            // "RegimenSimplificado": false,
+            // "TipoRegimenFiscal": selectedRegimenFiscal,
+            // "TipoCFDI": TipoCDFI,
+            "strPoliza": "",
+            "FolioPolizaAnterior": TxtFolioPolizaAnterior,
+            "renovacion": isRenovacion
+          }
+          console.log('DATAAAA EMIIII', dataemi);
         }
+      }
     }
 
-  
     if (EmisionOK == false) {
       const response = await GetCEmision(dataemi);
       console.log(response.data.Data)
@@ -916,23 +880,10 @@ const EmisionScreen = () => {
         const data = response.data.Data.Data;
         const NumeroPoliza = data.Poliza;
         dataemi.strPoliza = NumeroPoliza;
-        //const PagoLinea = data.pl;
         console.log(data)
         setEmisionOK(true);
         Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
         setloadingEmision(false);
-        // Alert.alert(
-        //   'Información',
-        //   'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza,
-        //   [
-        //     {
-        //       text: 'OK',
-        //       onPress: () => handleOkGoImpresionPress(NumeroPoliza),
-        //       style: 'default',
-        //     },
-        //   ],
-        //   { cancelable: false }
-        // );
       } else {
         Alert.alert('Error', response.data.Data.Message);
         setEmisionOK(false);
@@ -1025,14 +976,6 @@ const EmisionScreen = () => {
       console.error('Ocurrio un error al procesar la impresión.', response.data.Data.Message);
     }
   };
-
-  // const getLabelForTipoPersona = (value) => {
-  //   console.log("xx",value)
-  //   selectedTipoPersona();
-  //   const selectedData = TiposPersona.find((item) => item.Id === value);
-  //   console.log("tupo persona..",selectedData)
-  //   return selectedData ? selectedData.Valor : '';
-  // };
 
   if (!loadingCombos) {
     return (
@@ -1529,6 +1472,7 @@ const EmisionScreen = () => {
         </View>
 
         {/* dATOS POLIZA */}
+
         <View>
 
           <TouchableOpacity onPress={toggleDPCollapse} style={styles.button}>
@@ -1541,6 +1485,7 @@ const EmisionScreen = () => {
               </View>
             </View>
           </TouchableOpacity>
+
           <Collapsible collapsed={DPCollapsed}>
 
             <View style={{ marginBottom: 10 }}>
@@ -1613,7 +1558,7 @@ const EmisionScreen = () => {
             <View style={{ marginBottom: 10 }}>
 
               {ShowisRenovacion && (
-
+                //const [TxtFolioPolizaAnterior, setTxtFolioPolizaAnterior] = useState(null);
                 <View style={{ marginBottom: 10, flexDirection: 'row' }}>
                   <View style={{ marginBottom: 10, marginTop: 10, width: '75%', }}>
                     <Text style={styles.LabelText}>Renovación</Text>
@@ -1627,51 +1572,61 @@ const EmisionScreen = () => {
                       value={isRenovacion}
                     />
                   </View>
-
                 </View>
-
               )}
 
-              {showPickerFDesembolso && (
-                <View>
-
-                  <View style={{ marginBottom: 10, flexDirection: 'row' }}>
-                    <View style={{ marginBottom: 10, width: '75%', }}>
-                      <Text style={styles.LabelText}>Fecha de desembolso: {TextDateFD} </Text>
-                    </View>
-                    <View style={{ marginBottom: 8, width: '20%', marginLeft: 0 }}>
-                      <Switch
-                        trackColor={{ false: '#767577', true: '#81b0ff' }}
-                        thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={onChangeFDS}
-                        value={showChangeFD}
-                      />
-                    </View>
-                  </View>
-                  {showChangeFDpIKER && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={dateFDesembolso}
-                      mode="date"
-                      is24Hour={true}
-                      display="default"
-                      onChange={onChangeFD}
-                      style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
-                      pickerStyle={{ backgroundColor: 'white' }}
-                    />
-                  )}
-
+              {showChangeRenovacion && (
+                <View >
+                  <Text style={styles.LabelText}>Folio de poliza anterior</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={TxtFolioPolizaAnterior}
+                    onChangeText={setTxtFolioPolizaAnterior}
+                  />
                 </View>
               )}
 
             </View>
+
+            {showPickerFDesembolso && (
+              <View>
+
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                  <View style={{ marginBottom: 10, width: '75%', }}>
+                    <Text style={styles.LabelText}>Fecha de desembolso: {TextDateFD} </Text>
+                  </View>
+                  <View style={{ marginBottom: 8, width: '20%', marginLeft: 0 }}>
+                    <Switch
+                      trackColor={{ false: '#767577', true: '#81b0ff' }}
+                      thumbColor={showChangeFD ? '#f5dd4b' : '#f4f3f4'}
+                      ios_backgroundColor="#3e3e3e"
+                      onValueChange={onChangeFDS}
+                      value={showChangeFD}
+                    />
+                  </View>
+                </View>
+                {showChangeFDpIKER && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={dateFDesembolso}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChangeFD}
+                    style={{ alignSelf: 'center', marginBottom: 10, marginTop: 10 }}
+                    pickerStyle={{ backgroundColor: 'white' }}
+                  />
+                )}
+
+              </View>
+            )}
 
           </Collapsible>
         </View >
 
         {/* Forma pago */}
         {/* display: 'none'  */}
+        
         < View style={{ marginBottom: 10, marginTop: 5 }}>
           <TouchableOpacity onPress={togglePLCollapse} style={styles.button}>
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>

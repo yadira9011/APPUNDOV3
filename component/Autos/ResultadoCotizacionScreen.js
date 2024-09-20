@@ -44,7 +44,11 @@ const ResultadoCotizacionScreen = () => {
         { name: 'LogoHdi', path: require('../../assets/Aseguradoras/LogoHdi.png') },
         { name: 'LogoProagro', path: require('../../assets/Aseguradoras/LogoProagro.png') },
         { name: 'LogoQualitas', path: require('../../assets/Aseguradoras/LogoQualitas.jpg') },
-        { name: 'LogoSura', path: require('../../assets/Aseguradoras/LogoSura.png') }
+        { name: 'LogoSura', path: require('../../assets/Aseguradoras/LogoSura.png') },
+        { name: 'LogoAna', path: require('../../assets/Aseguradoras/LogoAna.png') },
+        { name: 'LogoProagro', path: require('../../assets/Aseguradoras/LogoProagro.png') },
+        { name: 'LogoHir', path: require('../../assets/Aseguradoras/LogoHir.png') },
+        { name: 'LogoDentegra', path: require('../../assets/Aseguradoras/LogoDentegra.png') }
     ];
 
     useEffect(() => {
@@ -68,6 +72,9 @@ const ResultadoCotizacionScreen = () => {
                 const logoase = item.LogoAseguradora;
                 const logoNameWithoutExtension = logoase.split('.')[0];
                 const ImagePath = imagePaths.find(image => image.name === logoNameWithoutExtension);
+                console.log(logoase)
+                console.log(logoNameWithoutExtension)
+                console.log(ImagePath)
 
                 data = {
                     id: item.IDCotizacion,
