@@ -1473,12 +1473,14 @@ const EmisionScreen = () => {
               style={styles.input}
               value={numSerie}
               onChangeText={setNumSerie}
+              autoCapitalize="characters"
             />
 
             <Text style={styles.LabelText}>Número de Motor</Text>
             <TextInput
               style={styles.input}
               value={numMotor}
+              autoCapitalize="characters"
               onChangeText={setNumMotor}
             />
 
@@ -1486,6 +1488,7 @@ const EmisionScreen = () => {
             <TextInput
               style={styles.input}
               value={placas}
+              autoCapitalize="characters"
               onChangeText={setPlacas}
             />
           </Collapsible>
