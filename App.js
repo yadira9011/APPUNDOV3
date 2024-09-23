@@ -244,9 +244,10 @@ export default function App() {
                 ...defaultHeaderOptions,
                 // title: FolioCot,
                 title: (
-                  <TouchableOpacity onPress={copyToClipboard}>
-                    <Text style={{ fontSize: 10, color: 'white' }}>{FolioCot}</Text>
-                  </TouchableOpacity>
+                  <Text selectable={true} style={{ fontSize: 10, color: 'white' }}>{FolioCot}</Text>
+                  // <TouchableOpacity onPress={copyToClipboard}>
+                  //   <Text style={{ fontSize: 10, color: 'white' }}>{FolioCot}</Text>
+                  // </TouchableOpacity>
                 ),
                 headerTitleStyle: {
                   fontSize: 12,

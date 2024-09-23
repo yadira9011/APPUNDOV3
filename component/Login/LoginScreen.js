@@ -218,7 +218,7 @@ const LoginScreen = ({ navigation, route }) => {
         <Text style={styles.ButtonText}>Iniciar sesión</Text>
       </TouchableOpacity>
       {/* <Image source={require('../../assets/IconoU.png')} style={styles.imageU} resizeMode="contain" /> */}
-      <Text style={styles.Copyright}> ©UNDO 2017 - 2024</Text>
+      <Text selectable={true} style={styles.Copyright}> ©UNDO 2017 - 2024</Text>
       {isAlertVisible && (
         <CustomAlert
           visible={isAlertVisible}
