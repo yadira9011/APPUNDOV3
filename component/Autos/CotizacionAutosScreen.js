@@ -131,7 +131,7 @@ const CotizacionAutosScreen = () => {
   const [TextNumeroPasajeros, setTextNumeroPasajeros] = useState('');
   const ID_TIPO_USO_CU = config.ID_TIPO_USO_CU;
 
-  const [COTIZAR_BTN_isDisabled, setCOTIZAR_BTN_isDisabled] = useState(true);
+  const [COTIZAR_BTN_isDisabled, setCOTIZAR_BTN_isDisabled] = useState(false);
 
 
   useEffect(() => {
