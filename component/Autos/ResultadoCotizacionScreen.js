@@ -17,7 +17,7 @@ import { GetCoberturasCotizacion, EnvioCotizacion, GetPrivilegios } from '../Api
 import { useNavigation } from '@react-navigation/native';
 import modalStyles from '../Styles/ModalStyles';
 import { IconsAlerts } from '../Utilities';
-
+import LoadingComponent from '../Componentes/LoadingComponent';
 
 const ResultadoCotizacionScreen = () => {
 
@@ -36,6 +36,7 @@ const ResultadoCotizacionScreen = () => {
     const [IdCotiSeleccionada, setIdCotiSeleccionada] = useState('');
     const [DETALLETS_COT_BTN, setDETALLETS_COT_BTN] = useState(false);
     const [ENVIAR_COT_BTN, setENVIAR_COT_BTNN] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const imagePaths = [
         { name: 'LogoChubb', path: require('../../assets/Aseguradoras/LogoChubb.png') },
@@ -209,6 +210,8 @@ const ResultadoCotizacionScreen = () => {
     const handleEnviarClick = async () => {
         try {
             console.log(IdCotiSeleccionada);
+            setLoading(true);
+            setModalEnvioCotiVisible(false);
             const DataSolicitud = {
                 IDCotizacion: IdCotiSeleccionada,
                 CorreoEnvio: email,
@@ -225,26 +228,28 @@ const ResultadoCotizacionScreen = () => {
                 tipoPoliza: dataArray.DataTitulos.tipoPoliza,
                 tipoVigenciaPago: dataArray.DataTitulos.tipoVigenciaPago,
             }
-
             const DataRquest = {
                 usuario: dataArray.CotiData.usuario,
                 contraseña: dataArray.CotiData.contraseña,
                 DataSolicitud: DataSolicitud
             }
-
             console.log("Datos envio correo", DataRquest);
             const response = await EnvioCotizacion(DataRquest);
             if (response.data.Data.HasError == false) {
                 console.log(response.data.Data);
+                setLoading(false);
                 Alert.alert('INFO', 'El envío de la cotización se realizo con exito');
+                setModalEnvioCotiVisible(false);
             } else {
+                setLoading(false);
+                setModalEnvioCotiVisible(true);
                 Alert.alert('Error', 'No se envio el correo' + response.data.Data.Message);
             }
 
         } catch (error) {
+            setLoading(false);
             Alert.alert('Error', 'error al obtener los datos' + error);
         }
-
     };
 
     const handleShowModalEC = (item) => {
@@ -288,14 +293,30 @@ const ResultadoCotizacionScreen = () => {
         }
     };
 
+    // if (loading) {
+    //     return (
+    //       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
+    //         <LoadingComponent />
+    //       </View>
+    //     );
+    // }
+
     return (
+
+
         <View style={styles.container}>
+
             <Text>{folioCotizacion}</Text>
             <FlatList
                 data={CotizacionData}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => renderItem({ item, onPress: handleItemClick })}
             />
+
+            {loading && (
+                    <LoadingComponent />
+             )}
+                        
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -346,6 +367,7 @@ const ResultadoCotizacionScreen = () => {
                     </View>
                 </View>
             </Modal>
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -385,6 +407,7 @@ const ResultadoCotizacionScreen = () => {
             </Modal>
         </View>
     );
+
 };
 
 const styles = StyleSheet.create({
