@@ -891,41 +891,49 @@ const EmisionScreen = () => {
               "renovacion": isRenovacion
             }
 
-            console.log(dataemi)
-            // if (EmisionOK == false) {
-            //   console.log('Mande a emitir....')
-            //   console.log(dataemi)
-            //   const response = await GetCEmision(dataemi);
-            //   console.log(response.data.Data)
-            //   if (!response.data.Data.HasError) {
-            //     const data = response.data.Data.Data;
-            //     const NumeroPoliza = data.Poliza;
-            //     dataemi.strPoliza = NumeroPoliza;
-            //     console.log(data)
-            //     setEmisionOK(true);
-            //     Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
-            //     setloadingEmision(false);
-            //   } else {
-            //     Alert.alert('Error', response.data.Data.Message);
-            //     setEmisionOK(false);
-            //     console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
-            //     setloadingEmision(false);
-            //   }
-            // }
+            console.log('DATAAAA EMIIII', dataemi);
 
-            // if (EmisionOK) {
-            //   setloadingEmision(true);
-            //   await PagoLineaProcess(dataemi, dataemi.strPoliza);
-            //   setloadingEmision(false);
-            // }
-            //console.log('DATAAAA EMIIII', dataemi);
+            if (EmisionOK == false) {
+              console.log('Mande a emitir....')
+              console.log(dataemi)
+              const response = await GetCEmision(dataemi);
+              console.log(response.data.Data)
+              if (!response.data.Data.HasError) {
+                const data = response.data.Data.Data;
+                const NumeroPoliza = data.Poliza;
+                dataemi.strPoliza = NumeroPoliza;
+                console.log(data)
+                setEmisionOK(true);
+                Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
+                setloadingEmision(false);
+
+              } else {
+                Alert.alert('Error', response.data.Data.Message);
+                setEmisionOK(false);
+                console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
+                setloadingEmision(false);
+              }
+            }
+
+            console.log('EMIII OK ', EmisionOK);
+
+            if (EmisionOK) {
+              setloadingEmision(true);
+              console.log('DATAAAA PARA IMPRESION....', dataemi.strPoliza);
+              await PagoLineaProcess(dataemi, dataemi.strPoliza);
+              setloadingEmision(false);
+            }
+            
         }
       }
     }
   };
 
   const PagoLineaProcess = async (emi, NumeroPoliza) => {
+
     const ProcessPL = false;
+    console.log("isEnabledPL...",isEnabledPL);
+
     if (isEnabledPL) {
       const res_pl = await CallPL(emi);
       if (res_pl.pls == false) {
@@ -950,6 +958,7 @@ const EmisionScreen = () => {
     }
 
     if (ProcessPL) {
+      console.log("pase a impresión.....",NumeroPoliza);
       await GetImpresionPoliza(NumeroPoliza)
     }
 
