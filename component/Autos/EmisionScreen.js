@@ -741,6 +741,7 @@ const EmisionScreen = () => {
     console.log(selectedDate);
     if (selectedDate) {
       setTextDateVP(selectedDate.toLocaleDateString());
+      setDate(selectedDate);
       setShowPicker(false);
     }
   };
@@ -810,6 +811,7 @@ const EmisionScreen = () => {
             vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
             vcvv = cvv;
           }
+
           date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
           console.log(date.toLocaleDateString())
           var yearfv = date.getFullYear();
@@ -846,7 +848,7 @@ const EmisionScreen = () => {
               "NumeroSocio": numerosocio,
               "NumeroCredito": numCredito,
               "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
-              "NumIdentificacionPersona": numIdentificacion,
+              "NumIdentificacionPersona": numIdentificacion ? numIdentificacion : '9999999999',
               "usuario": dataArrayEmi.CotiData.usuario,
               "Contraseña": dataArrayEmi.CotiData.contraseña,
               "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
