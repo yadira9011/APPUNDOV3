@@ -712,11 +712,6 @@ const EmisionScreen = () => {
     setIsEnabledPL(false);
   };
 
-  const toggleSwitchCV = () => {
-    setIsChangeVigencia(previousState => !previousState);
-    setShowPicker(!IsChangeVigencia);
-  };
-
   const toggleSwitchRembolso = () => {
     setisRenovacion(previousState => !previousState);
     if (!isRenovacion) {
@@ -738,16 +733,29 @@ const EmisionScreen = () => {
   };
 
   const onChangeV = (event, selectedDate) => {
-    console.log(selectedDate);
-    if (selectedDate) {
-      setTextDateVP(selectedDate.toLocaleDateString());
-      setDate(selectedDate);
+    console.log("jij",selectedDate);
+    if(showPicker){
+      if (selectedDate) {
+        setTextDateVP(selectedDate.toLocaleDateString());
+        setShowPicker(false);
+        console.log("jij3333",selectedDate);
+      }
+    }
+
+  };
+
+  const toggleSwitchCV = () => {
+    setIsChangeVigencia(previousState => !previousState);
+    //setShowPicker(!IsChangeVigencia);
+    if (!IsChangeVigencia) {
+      setShowPicker(true);
+    } else {
       setShowPicker(false);
     }
   };
 
   const onChangeFD = (event, selectedDate) => {
-    console.log(selectedDate)
+    console.log("jij",selectedDate)
     if (selectedDate) {
       setTextDateFD(selectedDate.toLocaleDateString());
       setshowChangeFDpIKER(false);
@@ -766,6 +774,8 @@ const EmisionScreen = () => {
 
   const handleEmitir = async () => {
 
+    console.log("datee",date.toLocaleDateString())
+    console.log("datee22",TextDateVP)
     setloadingEmision(true);
     resertTiempoMaximoApp(true);
     var monthfn = ('0' + selectedMes).slice(-2);
@@ -784,6 +794,7 @@ const EmisionScreen = () => {
     const vcvv = "";
 
     console.log("Estatus vehiculo...", dataArrayEmi.CotiData.IDEstatusVehiculo)
+
     if (calle === "") {
       Alert.alert('Debe ingresa datos completos de dirección');
       setEmisionOK(false);
@@ -800,6 +811,7 @@ const EmisionScreen = () => {
           setloadingEmision(false);
         } else {
           const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
+          
           if (isPL) {
             const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
             const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
@@ -812,12 +824,17 @@ const EmisionScreen = () => {
             vcvv = cvv;
           }
 
-          date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-          console.log(date.toLocaleDateString())
-          var yearfv = date.getFullYear();
-          var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
-          var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
-          var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+          // date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+          // console.log(date.toLocaleDateString())
+          // var yearfv = date.getFullYear();
+          // var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
+          // var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
+          // var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+
+            var [dayfv, monthfv, yearfv] = TextDateVP.split("/");
+            dayfv = dayfv.padStart(2, '0');
+            monthfv = monthfv.padStart(2, '0');
+            var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
 
             const dataemi = {
               "IdCotizacion": dataArrayEmi.DataItemSelect.id,
@@ -874,32 +891,33 @@ const EmisionScreen = () => {
               "renovacion": isRenovacion
             }
 
-            if (EmisionOK == false) {
-              console.log('Mande a emitir....')
-              console.log(dataemi)
-              const response = await GetCEmision(dataemi);
-              console.log(response.data.Data)
-              if (!response.data.Data.HasError) {
-                const data = response.data.Data.Data;
-                const NumeroPoliza = data.Poliza;
-                dataemi.strPoliza = NumeroPoliza;
-                console.log(data)
-                setEmisionOK(true);
-                Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
-                setloadingEmision(false);
-              } else {
-                Alert.alert('Error', response.data.Data.Message);
-                setEmisionOK(false);
-                console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
-                setloadingEmision(false);
-              }
-            }
+            console.log(dataemi)
+            // if (EmisionOK == false) {
+            //   console.log('Mande a emitir....')
+            //   console.log(dataemi)
+            //   const response = await GetCEmision(dataemi);
+            //   console.log(response.data.Data)
+            //   if (!response.data.Data.HasError) {
+            //     const data = response.data.Data.Data;
+            //     const NumeroPoliza = data.Poliza;
+            //     dataemi.strPoliza = NumeroPoliza;
+            //     console.log(data)
+            //     setEmisionOK(true);
+            //     Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
+            //     setloadingEmision(false);
+            //   } else {
+            //     Alert.alert('Error', response.data.Data.Message);
+            //     setEmisionOK(false);
+            //     console.error('Ocurrio un error al procesar la emisión.', response.data.Data.Message);
+            //     setloadingEmision(false);
+            //   }
+            // }
 
-            if (EmisionOK) {
-              setloadingEmision(true);
-              await PagoLineaProcess(dataemi, dataemi.strPoliza);
-              setloadingEmision(false);
-            }
+            // if (EmisionOK) {
+            //   setloadingEmision(true);
+            //   await PagoLineaProcess(dataemi, dataemi.strPoliza);
+            //   setloadingEmision(false);
+            // }
             //console.log('DATAAAA EMIIII', dataemi);
         }
       }
