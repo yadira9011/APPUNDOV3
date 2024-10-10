@@ -27,11 +27,11 @@ const LoginScreen = ({ navigation, route }) => {
   //const [email, setEmail] = useState('mail@mail.com');
   //const [password, setPassword] = useState('Ven99234');
 
-  // const [email, setEmail] = useState('jonathan.vences@rodac.com.mx');
-  // const [password, setPassword] = useState('Ven99234');
+  const [email, setEmail] = useState('jonathan.vences@rodac.com.mx');
+  const [password, setPassword] = useState('Ven99234');
 
-  //const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
-  //const [password, setPassword] = useState('SLmarcos');
+  // const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
+  // const [password, setPassword] = useState('SLmarcos');
 
   //const [email, setEmail] = useState('yadira.perez@rodac.com');
   //const [password, setPassword] = useState('yadira.1990');
@@ -39,8 +39,8 @@ const LoginScreen = ({ navigation, route }) => {
   //const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
   //const [password, setPassword] = useState('Sanchez74');
   
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
 
   const [IdUsr, setIdUsr] = useState(0);
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -59,6 +59,7 @@ const LoginScreen = ({ navigation, route }) => {
   const handleLogin = async () => {
     try {
       const response = await loginUser(email, password, expoPushToken);
+      console.log(response)
       const res = parseInt(response.data.FIIDUSUARIO, 10);
       const IdPersona = parseInt(response.data.FIIDPERSONA, 10);
       const IdRol = parseInt(response.data.FSIDROL, 10);
@@ -80,7 +81,7 @@ const LoginScreen = ({ navigation, route }) => {
         setAlertVisible(true);
       }
     } catch (error) {
-      setAlertMessage('Inicio de sesión fallido');
+      setAlertMessage('Inicio de sesión fallidocccc');
       setIconMessage('Icon_Red.png');
       setAlertVisible(true);
     }

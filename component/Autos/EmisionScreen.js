@@ -49,19 +49,19 @@ const EmisionScreen = () => {
 
   //Datos contratante
 
-  // const [numerosocio, setnumerosocio] = useState('XXX');
-  // const [nombre, setNombre] = useState('YADIRA');
-  // const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
-  // const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
-  // const [rfc, setRFC] = useState('PECY901120');
-  // const [curp, setCURP] = useState('PECY901109MVZRSD06');
+  const [numerosocio, setnumerosocio] = useState('XXX');
+  const [nombre, setNombre] = useState('YADIRA');
+  const [apellidoPaterno, setApellidoPaterno] = useState('PEREZ');
+  const [apellidoMaterno, setApellidoMaterno] = useState('CASTILLO');
+  const [rfc, setRFC] = useState('PECY901120');
+  const [curp, setCURP] = useState('PECY901109MVZRSD06');
 
-  const [numerosocio, setnumerosocio] = useState();
-  const [nombre, setNombre] = useState();
-  const [apellidoPaterno, setApellidoPaterno] = useState();
-  const [apellidoMaterno, setApellidoMaterno] = useState();
-  const [rfc, setRFC] = useState();
-  const [curp, setCURP] = useState();
+  // const [numerosocio, setnumerosocio] = useState();
+  // const [nombre, setNombre] = useState();
+  // const [apellidoPaterno, setApellidoPaterno] = useState();
+  // const [apellidoMaterno, setApellidoMaterno] = useState();
+  // const [rfc, setRFC] = useState();
+  // const [curp, setCURP] = useState();
 
   const [diaNacimiento, setDiaNacimiento] = useState('');
   const [mesNacimiento, setMesNacimiento] = useState('');
@@ -80,24 +80,24 @@ const EmisionScreen = () => {
   const [genero, setGenero] = useState('');
   const [tipoIdentificacion, setTipoIdentificacion] = useState('');
 
-  // const [numIdentificacion, setNumIdentificacion] = useState('123567892');
-  // const [telefono, setTelefono] = useState('2781152721');
-  // const [correo, setCorreo] = useState('pruebas@gmail.com');
+  const [numIdentificacion, setNumIdentificacion] = useState('123567892');
+  const [telefono, setTelefono] = useState('2781152721');
+  const [correo, setCorreo] = useState('pruebas@gmail.com');
 
-  const [numIdentificacion, setNumIdentificacion] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [correo, setCorreo] = useState('');
+  // const [numIdentificacion, setNumIdentificacion] = useState('');
+  // const [telefono, setTelefono] = useState('');
+  // const [correo, setCorreo] = useState('');
 
 
   //Datos Direccion
 
-  // const [calle, setCalle] = useState('SALVATIERRA');
-  // const [noExterior, setNoExterior] = useState('75');
-  // const [noInterior, setNoInterior] = useState('0');
+  const [calle, setCalle] = useState('SALVATIERRA');
+  const [noExterior, setNoExterior] = useState('75');
+  const [noInterior, setNoInterior] = useState('0');
 
-  const [calle, setCalle] = useState('');
-  const [noExterior, setNoExterior] = useState('');
-  const [noInterior, setNoInterior] = useState('');
+  // const [calle, setCalle] = useState('');
+  // const [noExterior, setNoExterior] = useState('');
+  // const [noInterior, setNoInterior] = useState('');
 
   const [colonia, setColonia] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
@@ -107,15 +107,15 @@ const EmisionScreen = () => {
 
   //Datos DatosVehiculo
 
-  // const [numCredito, setNumCredito] = useState('00000');
-  // const [numSerie, setNumSerie] = useState('4JGBB2FB4AA612782');
-  // const [numMotor, setNumMotor] = useState('HECHOMX');
-  // const [placas, setPlacas] = useState('YJPC');
+  const [numCredito, setNumCredito] = useState('00000');
+  const [numSerie, setNumSerie] = useState('4JGBB2FB4AA612782');
+  const [numMotor, setNumMotor] = useState('HECHOMX');
+  const [placas, setPlacas] = useState('YJPC');
 
-  const [numCredito, setNumCredito] = useState();
-  const [numSerie, setNumSerie] = useState();
-  const [numMotor, setNumMotor] = useState();
-  const [placas, setPlacas] = useState();
+  // const [numCredito, setNumCredito] = useState();
+  // const [numSerie, setNumSerie] = useState();
+  // const [numMotor, setNumMotor] = useState();
+  // const [placas, setPlacas] = useState();
 
 
   const [TxtUrlconAse, setTxtUrlconAse] = useState(null);
@@ -712,11 +712,6 @@ const EmisionScreen = () => {
     setIsEnabledPL(false);
   };
 
-  const toggleSwitchCV = () => {
-    setIsChangeVigencia(previousState => !previousState);
-    setShowPicker(!IsChangeVigencia);
-  };
-
   const toggleSwitchRembolso = () => {
     setisRenovacion(previousState => !previousState);
     if (!isRenovacion) {
@@ -738,15 +733,29 @@ const EmisionScreen = () => {
   };
 
   const onChangeV = (event, selectedDate) => {
-    console.log(selectedDate);
-    if (selectedDate) {
-      setTextDateVP(selectedDate.toLocaleDateString());
+    console.log("jij",selectedDate);
+    if(showPicker){
+      if (selectedDate) {
+        setTextDateVP(selectedDate.toLocaleDateString());
+        setShowPicker(false);
+        console.log("jij3333",selectedDate);
+      }
+    }
+
+  };
+
+  const toggleSwitchCV = () => {
+    setIsChangeVigencia(previousState => !previousState);
+    //setShowPicker(!IsChangeVigencia);
+    if (!IsChangeVigencia) {
+      setShowPicker(true);
+    } else {
       setShowPicker(false);
     }
   };
 
   const onChangeFD = (event, selectedDate) => {
-    console.log(selectedDate)
+    console.log("jij",selectedDate)
     if (selectedDate) {
       setTextDateFD(selectedDate.toLocaleDateString());
       setshowChangeFDpIKER(false);
@@ -765,6 +774,8 @@ const EmisionScreen = () => {
 
   const handleEmitir = async () => {
 
+    console.log("datee",date.toLocaleDateString())
+    console.log("datee22",TextDateVP)
     setloadingEmision(true);
     resertTiempoMaximoApp(true);
     var monthfn = ('0' + selectedMes).slice(-2);
@@ -783,6 +794,7 @@ const EmisionScreen = () => {
     const vcvv = "";
 
     console.log("Estatus vehiculo...", dataArrayEmi.CotiData.IDEstatusVehiculo)
+
     if (calle === "") {
       Alert.alert('Debe ingresa datos completos de dirección');
       setEmisionOK(false);
@@ -799,6 +811,7 @@ const EmisionScreen = () => {
           setloadingEmision(false);
         } else {
           const TipoIdentificacionPersona = opcionesIdentificacion.find((opcion) => opcion.value === tipoIdentificacion);
+          
           if (isPL) {
             const LabelFP = MetodosPagos.find(be => be.Id === selectedMetodosPagos)?.Valor;
             const LabelBE = BancosEmisores.find(be => be.Id === selectedBancoEmisor)?.Valor;
@@ -810,12 +823,18 @@ const EmisionScreen = () => {
             vexpyear = fechaExpiracion.substring(fechaExpiracion.length - 2);
             vcvv = cvv;
           }
-          date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-          console.log(date.toLocaleDateString())
-          var yearfv = date.getFullYear();
-          var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
-          var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
-          var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+
+          // date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+          // console.log(date.toLocaleDateString())
+          // var yearfv = date.getFullYear();
+          // var monthfv = ('0' + (date.getMonth() + 1)).slice(-2);
+          // var dayfv = ('0' + (date.getDate() + 1)).slice(-2);
+          // var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
+
+            var [dayfv, monthfv, yearfv] = TextDateVP.split("/");
+            dayfv = dayfv.padStart(2, '0');
+            monthfv = monthfv.padStart(2, '0');
+            var formattedDatefv = yearfv + '-' + monthfv + '-' + dayfv;
 
             const dataemi = {
               "IdCotizacion": dataArrayEmi.DataItemSelect.id,
@@ -846,7 +865,7 @@ const EmisionScreen = () => {
               "NumeroSocio": numerosocio,
               "NumeroCredito": numCredito,
               "TipoIdentificacionPersona": TipoIdentificacionPersona.label,
-              "NumIdentificacionPersona": numIdentificacion,
+              "NumIdentificacionPersona": numIdentificacion ? numIdentificacion : '9999999999',
               "usuario": dataArrayEmi.CotiData.usuario,
               "Contraseña": dataArrayEmi.CotiData.contraseña,
               "IDSubcananal": parseInt(dataArrayEmi.CotiData.IDSubcananal, 10),
@@ -872,6 +891,8 @@ const EmisionScreen = () => {
               "renovacion": isRenovacion
             }
 
+            console.log('DATAAAA EMIIII', dataemi);
+
             if (EmisionOK == false) {
               console.log('Mande a emitir....')
               console.log(dataemi)
@@ -885,6 +906,7 @@ const EmisionScreen = () => {
                 setEmisionOK(true);
                 Alert.alert('Información', 'Emisión de poliza exitosa. Número de poliza: ' + NumeroPoliza);
                 setloadingEmision(false);
+
               } else {
                 Alert.alert('Error', response.data.Data.Message);
                 setEmisionOK(false);
@@ -893,19 +915,25 @@ const EmisionScreen = () => {
               }
             }
 
+            console.log('EMIII OK ', EmisionOK);
+
             if (EmisionOK) {
               setloadingEmision(true);
+              console.log('DATAAAA PARA IMPRESION....', dataemi.strPoliza);
               await PagoLineaProcess(dataemi, dataemi.strPoliza);
               setloadingEmision(false);
             }
-            //console.log('DATAAAA EMIIII', dataemi);
+            
         }
       }
     }
   };
 
   const PagoLineaProcess = async (emi, NumeroPoliza) => {
+
     const ProcessPL = false;
+    console.log("isEnabledPL...",isEnabledPL);
+
     if (isEnabledPL) {
       const res_pl = await CallPL(emi);
       if (res_pl.pls == false) {
@@ -930,6 +958,7 @@ const EmisionScreen = () => {
     }
 
     if (ProcessPL) {
+      console.log("pase a impresión.....",NumeroPoliza);
       await GetImpresionPoliza(NumeroPoliza)
     }
 
