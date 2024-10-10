@@ -69,6 +69,16 @@ const NewPolizas = ({ route }) => {
   const [isModalCoberturasVisible, setModalCoberturasVisible] = useState(false);
   const [CoberturasPolizas, setCoberturasPolizas] = useState([]);
 
+  const [rol, setRol] = useState('');
+  const [numeroPoliza, setNumeroPoliza] = useState('');
+  const [verificacion, setVerificacion] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [isVisibleModalAP, setisVisibleModalAP] = useState(false);
+
+  const [codigoVerificacion, setCodigoVerificacion] = useState('');
+ const [isVisibleModalVERI, setisVisibleModalVERI] = useState(false);
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -557,6 +567,10 @@ const NewPolizas = ({ route }) => {
     // });
   };
 
+  const handleAgregarPoliza = async () => {
+
+  };
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
@@ -567,6 +581,8 @@ const NewPolizas = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
+
+      {/* MODAL COBERTURAS */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -594,13 +610,118 @@ const NewPolizas = ({ route }) => {
           </View>
         </View>
       </Modal>
+
+    {/* MODAL AGREGAR POLIZA */}
+      <Modal visible={isVisibleModalAP} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.description}>Agregar Póliza</Text>
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Rol</Text>
+              <Picker
+                selectedValue={rol}
+                onValueChange={(itemValue) => setRol(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="Autos" value="1" />
+                <Picker.Item label="Casa Habitación" value="2" />
+                <Picker.Item label="Empaquetados" value="3" />
+                <Picker.Item label="Agropecuario" value="4" />
+              </Picker>
+            </View>
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Número póliza</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Ingrese el número de póliza"
+                value={numeroPoliza}
+                onChangeText={setNumeroPoliza}
+              />
+            </View>
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Verificación</Text>
+              <Picker
+                selectedValue={verificacion}
+                onValueChange={(itemValue) => setVerificacion(itemValue)}
+                style={styles.picker}>
+                <Picker.Item label="Correo" value="1" />
+                <Picker.Item label="Teléfono" value="2" />
+              </Picker>
+            </View>
+
+            {verificacion === '2' ? (
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>Número de teléfono</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Ingrese el teléfono"
+                  value={telefono}
+                  onChangeText={setTelefono}
+                />
+              </View>
+            ) : (
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>Correo</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Ingrese el correo"
+                  value={correo}
+                  onChangeText={setCorreo}
+                />
+              </View>
+            )}
+
+            <TouchableOpacity style={styles.button} onPress={() => console.log('Agregar póliza')}>
+              <Text style={styles.buttonText}>Agregar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.buttonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+    {/* MODAL VERIFICA POLIZA */}
+      <Modal visible={isVisibleModalVERI} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+
+            <Text style={styles.modalText}>Verificación</Text>
+            <Text style={styles.label}>La póliza ha sido válida</Text>
+            <Text style={styles.label}>Ingresa código recibido por correo/sms asociado a su cuenta de usuario</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Ingresa el código"
+              value={codigoVerificacion}
+              onChangeText={setCodigoVerificacion}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={() => console.log('Verificar código')}>
+              <Text style={styles.buttonText}>VERIFICAR</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.buttonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <TouchableOpacity onPress={handleAgregarPoliza} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Agregar poliza</Text>
+      </TouchableOpacity>
+
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-        renderTabBar={renderTabBar}
-      />
+        renderTabBar={renderTabBar}/>
+
     </View>
   );
 
@@ -612,7 +733,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flex: 1,
   },
-
+  formGroup: {
+    marginBottom: 20,
+  },
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
