@@ -1103,8 +1103,6 @@ const CotizacionAutosScreen = () => {
               borderRadius: 10,
               padding: 8
             }}>
-
-
               <TextInput
                 placeholder="Ingresa el número de pasajeros"
                 value={TextNumeroPasajeros}

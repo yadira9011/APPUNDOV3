@@ -12,6 +12,7 @@ import {
   FlatList,
   Modal,
   Image,
+  TextInput,
   ImageBackground,
 } from 'react-native';
 import { Linking } from 'expo';
@@ -35,6 +36,8 @@ import UndoAutosImage from '../../assets/Polizas/UndoAutos.png';
 import UndoProteccionImage from '../../assets/Polizas/UndoProteccion.png';
 import UndoVidaImage from '../../assets/Polizas/UndoVida.png';
 import { imagenesAseguradoras } from '../Utilities';
+import RNPickerSelect from 'react-native-picker-select';
+
 
 const NewPolizas = ({ route }) => {
 
@@ -78,6 +81,8 @@ const NewPolizas = ({ route }) => {
 
   const [codigoVerificacion, setCodigoVerificacion] = useState('');
  const [isVisibleModalVERI, setisVisibleModalVERI] = useState(false);
+
+ const [selectedOptionTipoRol, setselectedOptionTipoRol] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -568,8 +573,18 @@ const NewPolizas = ({ route }) => {
   };
 
   const handleAgregarPoliza = async () => {
-
+    setisVisibleModalAP(true);
   };
+
+  const onClose = async () => {
+    setisVisibleModalAP(false);
+  };
+
+  const handleEnviarPoliza = async () => {
+    setisVisibleModalVERI(true);
+    setisVisibleModalAP(false);
+  };
+
 
   if (loading) {
     return (
@@ -612,68 +627,125 @@ const NewPolizas = ({ route }) => {
       </Modal>
 
     {/* MODAL AGREGAR POLIZA */}
-      <Modal visible={isVisibleModalAP} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.description}>Agregar Póliza</Text>
+    <Modal visible={isVisibleModalAP} transparent={true} animationType="slide">
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          
+          <Text style={styles.descriptiontwo}>Agregar Póliza</Text>
+          
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Rol</Text>
+            <RNPickerSelect
+              onValueChange={(itemValue) => setRol(itemValue)}
+              items={[
+                { label: "Autos", value: "1" },
+                { label: "Casa Habitación", value: "2" },
+                { label: "Empaquetados", value: "3" },
+                { label: "Agropecuario", value: "4" },
+              ]}
+              value={rol || "1"} 
+              placeholder={{}}
+              style={pickerSelectStyles}
+            />
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Número póliza</Text>
+            <View style={{
+              flexDirection: 'row',
+              marginBottom: 15,
+              alignItems: 'center',
+              borderColor: 'gray',
+              borderWidth: 1,
+              marginLeft: 20,
+              width: '90%',
+              marginRight: 8,
+              marginTop: 10,
+              borderRadius: 10,
+              padding: 8
+            }}>
+            <TextInput
+              style={styles.inputxx}
+              placeholder="Ingrese el número de póliza"
+              value={numeroPoliza}
+              onChangeText={setNumeroPoliza} 
+            />
+            </View>
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Verificación</Text>
+            <RNPickerSelect
+              onValueChange={(itemValue) => setVerificacion(itemValue)}
+              items={[
+                { label: "Correo", value: "1" },
+                { label: "Teléfono", value: "2" },
+              ]}
+
+              value={verificacion || "1"} 
+              style={pickerSelectStyles}
+              placeholder={{ label: "Selecciona un método de verificación", value: null }}
+            />
+          </View>
+
+          {verificacion === '2' ? (
             <View style={styles.formGroup}>
-              <Text style={styles.label}>Rol</Text>
-              <Picker
-                selectedValue={rol}
-                onValueChange={(itemValue) => setRol(itemValue)}
-                style={styles.picker}
-              >
-                <Picker.Item label="Autos" value="1" />
-                <Picker.Item label="Casa Habitación" value="2" />
-                <Picker.Item label="Empaquetados" value="3" />
-                <Picker.Item label="Agropecuario" value="4" />
-              </Picker>
+              <Text style={styles.label}>Número de teléfono</Text>
+           
+            <View style={{
+              flexDirection: 'row',
+              marginBottom: 15,
+              alignItems: 'center',
+              borderColor: 'gray',
+              borderWidth: 1,
+              marginLeft: 20,
+              width: '100%',
+              marginRight: 8,
+              marginTop: 10,
+              borderRadius: 10,
+              padding: 8
+            }}>
+            <TextInput
+              style={styles.inputxx}
+              placeholder="Ingrese el teléfono"
+              value={numeroPoliza}
+              onChangeText={setTelefono} 
+            />
             </View>
 
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Número póliza</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Ingrese el número de póliza"
-                value={numeroPoliza}
-                onChangeText={setNumeroPoliza}
-              />
             </View>
-
+          ) : (
             <View style={styles.formGroup}>
-              <Text style={styles.label}>Verificación</Text>
-              <Picker
-                selectedValue={verificacion}
-                onValueChange={(itemValue) => setVerificacion(itemValue)}
-                style={styles.picker}>
-                <Picker.Item label="Correo" value="1" />
-                <Picker.Item label="Teléfono" value="2" />
-              </Picker>
+              <Text style={styles.label}>Correo</Text>
+           
+
+             <View style={{
+              flexDirection: 'row',
+              marginBottom: 15,
+              alignItems: 'center',
+              borderColor: 'gray',
+              borderWidth: 1,
+              marginLeft: 20,
+              width: '90%',
+              marginRight: 8,
+              marginTop: 10,
+              borderRadius: 10,
+              padding: 8
+            }}>
+            <TextInput
+              style={styles.inputxx}
+              placeholder="Ingrese el correo"
+              value={numeroPoliza}
+              onChangeText={setCorreo} 
+            />
             </View>
+        
+            </View>
+          )}
 
-            {verificacion === '2' ? (
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Número de teléfono</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Ingrese el teléfono"
-                  value={telefono}
-                  onChangeText={setTelefono}
-                />
-              </View>
-            ) : (
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Correo</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Ingrese el correo"
-                  value={correo}
-                  onChangeText={setCorreo}
-                />
-              </View>
-            )}
-
-            <TouchableOpacity style={styles.button} onPress={() => console.log('Agregar póliza')}>
+          {/* Contenedor de botones alineados */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleEnviarPoliza} >
               <Text style={styles.buttonText}>Agregar</Text>
             </TouchableOpacity>
 
@@ -681,8 +753,11 @@ const NewPolizas = ({ route }) => {
               <Text style={styles.buttonText}>Cerrar</Text>
             </TouchableOpacity>
           </View>
+
         </View>
-      </Modal>
+      </View>
+    </Modal>
+
 
     {/* MODAL VERIFICA POLIZA */}
       <Modal visible={isVisibleModalVERI} transparent={true} animationType="slide">
@@ -693,6 +768,7 @@ const NewPolizas = ({ route }) => {
             <Text style={styles.label}>La póliza ha sido válida</Text>
             <Text style={styles.label}>Ingresa código recibido por correo/sms asociado a su cuenta de usuario</Text>
 
+
             <TextInput
               style={styles.input}
               placeholder="Ingresa el código"
@@ -700,18 +776,23 @@ const NewPolizas = ({ route }) => {
               onChangeText={setCodigoVerificacion}
             />
 
-            <TouchableOpacity style={styles.button} onPress={() => console.log('Verificar código')}>
+            
+              {/* Contenedor de botones alineados */}
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleEnviarPoliza} >
               <Text style={styles.buttonText}>VERIFICAR</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Text style={styles.buttonText}>Cerrar</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setisVisibleModalVERI(false)}>
+              <Text style={styles.buttonText}>CERRAR</Text>
             </TouchableOpacity>
+          </View>
+
           </View>
         </View>
       </Modal>
 
-      <TouchableOpacity onPress={handleAgregarPoliza} style={styles.closeButton}>
+      <TouchableOpacity onPress={handleAgregarPoliza} style={styles.buttonAP}>
               <Text style={styles.closeButtonText}>Agregar poliza</Text>
       </TouchableOpacity>
 
@@ -737,10 +818,50 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: 'row', // Distribuye los botones en fila
+    justifyContent: 'space-between', // Espacio entre los botones
+    alignItems: 'center', // Alinea los botones en el centro verticalmente
+    marginTop: 20, // Separación superior
+  },
+
+  button: {
+    backgroundColor: '#007BFF', // Color de fondo del botón
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginHorizontal: 10, // Margen entre los botones
+    alignItems: 'center',
+  },
+
+  buttonAP: {
+    backgroundColor: '#007BFF', 
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    width: '60%',
+    marginHorizontal: 10,
+    alignItems: 'center',
+    alignSelf:'center',
+    marginTop:10,
+    marginBottom:10
+  },
+
+  label: {
     marginTop: 10,
-    marginBottom: 10,
-    justifyContent: 'center',
+    marginLeft: 25,
+    marginRight: 15,
+    alignItems: 'right',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 10,
+
+  },
+
+  inputxx: {
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    fontSize: 14,
+    color: 'blue',
   },
 
   itemContainer: {
@@ -780,12 +901,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 5,
   },
-  button: {
-    backgroundColor: '#3498db',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
+ 
   buttonText: {
     color: 'white',
     fontSize: 16,
@@ -807,6 +923,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  descriptiontwo: {
+    fontSize: 20, // Tamaño de fuente más grande
+    fontWeight: 'bold', // Negrita para resaltar
+    color: '#007BFF', // Color destacado (azul)
+    textAlign: 'center', // Centra el texto
+    marginBottom: 20, // Espaciado inferior
+    textTransform: 'uppercase', // Convierte el texto a mayúsculas
+    letterSpacing: 1.5, // Espaciado entre letras para un toque más moderno
+    shadowColor: '#000', // Sombra suave para destacar el texto
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5, // Sombra en Android
+  },
+
   description: {
     marginTop: 4,
     color: '#091496',
@@ -864,10 +995,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   closeButton: {
-    marginTop: 10,
     backgroundColor: '#e74c3c',
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
+    flex: 1, // Toma espacio disponible
+    marginHorizontal: 10, // Margen entre los botones
+    alignItems: 'center',
   },
   modalContainer: {
     flex: 1,
@@ -974,5 +1108,44 @@ const styles = StyleSheet.create({
   },
 
 });
+
+const pickerSelectStyles = {
+  inputIOS: {
+    fontSize: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderWidth: 1,
+    borderColor: '#D1D1D1',
+    borderRadius: 10,
+    color: '#333', // Texto oscuro
+    backgroundColor: '#F9F9F9', // Fondo claro
+    paddingRight: 30, // Para el ícono de dropdown
+    shadowColor: '#000', // Sombra suave
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2, // Sombra en Android
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#D1D1D1',
+    borderRadius: 10,
+    color: '#333',
+    backgroundColor: '#F9F9F9',
+    paddingRight: 200,
+    width: '100%',
+  },
+  iconContainer: {
+    top: 15,
+    right: 12, 
+    width: '100%',// Posiciona el ícono a la derecha
+  },
+  placeholder: {
+    color: '#888', // Color del placeholder
+  },
+};
 
 export default NewPolizas;
