@@ -60,3 +60,19 @@ export const ActualizaUsuarioPerfil = (datarequest) => {
   return axios.post(`${BASE_URL}/API/Polizas/ActualizaUsuarioPerfil`, datarequest);
 };
 
+export const BusquedaPolizasEnRamos = (datarequest) => {
+  return axios.get(`${BASE_URL}/API/Polizas/BusquedaPolizasEnRamos`, {
+    params: datarequest
+  });
+};
+
+export const GenerarCodigoMail = (datarequest) => {
+  return axios.get(`${BASE_URL}/API/Polizas/GenerarCodigoMail`, {
+    params: datarequest
+  });
+};
+
+export const GuardarPolizaAll = (datarequest) => {
+  console.log(datarequest)
+  return axios.post(`${BASE_URL}/API/Polizas/GuardarPolizaAll`, datarequest);
+};

@@ -24,7 +24,10 @@ import {
   GetPolizasXContratanteTitular,
   GetBotonesServPoliza,
   GetCertificadoPoliza,
-  GetCoberturasPoliza
+  GetCoberturasPoliza,
+  BusquedaPolizasEnRamos,
+  GenerarCodigoMail,
+  GuardarPolizaAll
 } from '../Api/api_polizas';
 
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -37,7 +40,7 @@ import UndoProteccionImage from '../../assets/Polizas/UndoProteccion.png';
 import UndoVidaImage from '../../assets/Polizas/UndoVida.png';
 import { imagenesAseguradoras } from '../Utilities';
 import RNPickerSelect from 'react-native-picker-select';
-
+import CustomAlert from '../Componentes/CustomAlert';
 
 const NewPolizas = ({ route }) => {
 
@@ -72,6 +75,7 @@ const NewPolizas = ({ route }) => {
   const [isModalCoberturasVisible, setModalCoberturasVisible] = useState(false);
   const [CoberturasPolizas, setCoberturasPolizas] = useState([]);
 
+  const [IdPoliza, setIdPoliza] = useState('');
   const [rol, setRol] = useState('');
   const [numeroPoliza, setNumeroPoliza] = useState('');
   const [verificacion, setVerificacion] = useState('');
@@ -82,7 +86,15 @@ const NewPolizas = ({ route }) => {
   const [codigoVerificacion, setCodigoVerificacion] = useState('');
  const [isVisibleModalVERI, setisVisibleModalVERI] = useState(false);
 
+ const [ValidationTime, setValidationTime] = useState('');
+
  const [selectedOptionTipoRol, setselectedOptionTipoRol] = useState(null);
+
+
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
+  const [isAlertTwo, setAlertTwo] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -580,9 +592,99 @@ const NewPolizas = ({ route }) => {
     setisVisibleModalAP(false);
   };
 
+  const hideAlert = () => {
+    setAlertVisible(false);
+  };
+
   const handleEnviarPoliza = async () => {
-    setisVisibleModalVERI(true);
-    setisVisibleModalAP(false);
+
+    const valorSeleccionado = parseInt(rol,10);
+    const verificacion= parseInt(verificacion, 10);
+ 
+    const DataRquest = {
+      idRamo: numeroPoliza,
+      numeropoliza: valorSeleccionado,
+      usuario: DataParameter.email,
+      contraseña: DataParameter.password,
+    }
+
+    const response = await BusquedaPolizasEnRamos(DataRquest);
+    console.log(response)
+    if (!response.hasError) {
+        if (response.data.length > 0) {
+            setIdPoliza(response.data[0].FIIDPOLIZA)
+            console.log("El ID de la póliza es: " + IdPoliza);
+            setisVisibleModalAP(false);
+            setisVisibleModalVERI(true);
+            verificarOpcion();
+ 
+        } else {
+            setAlertMessage('No se localizo la poliza ingresada en el ramo seleccionado');
+            setAlertVisible(true);
+        }
+    } else {
+      setAlertMessage('No se localizo la poliza ingresada en el ramo seleccionado');
+      setAlertVisible(true);
+    }
+  };
+
+  const verificarOpcion = () => {
+    if (opcionSeleccionada === "1") {
+      verificarMail();
+    } else if (opcionSeleccionada === "2") {
+      // Acciones para la opción 2
+    }
+  };
+
+  const verificarMail = async () => {
+   
+    const objVerificacion = {
+        email:"",
+        telefono:telefono,
+        idPersona:DataParameter.IdPersona,
+        codeMail:0,
+        expirationMail:new Date(),
+        codeCel:0,
+        expirationCel:new Date(),
+        nombreUsuario,
+        usuario: DataParameter.email,
+        contraseña: DataParameter.password,
+     };
+
+    const result = await GenerarCodigoMail(objVerificacion);
+    if (!result.data.HasError) {
+        const miliseconds = result.data.Data.expirationMail != null ? parseInt(result.data.Data.expirationMail.replace(/\/Date\((.*?)\)\//, '$1'), 10) : '';
+        const fecha = miliseconds == '' ? '' : new Date(miliseconds);
+        ValidationTime.value = fecha;
+        codigoVerificacion= objVerificacion.codeMail = result.data.Data.codeMail;
+        setAlertMessage("Se envió a su correo el código de verificación.");
+        setAlertVisible(true);
+    }
+
+  };
+  
+  const handleGuardarPoliza = async () => {
+
+    const valorSeleccionado = parseInt(rol, 10);
+    const IdPoliza = IdPoliza;
+
+    const DataRquest = {
+      idRamo: valorSeleccionado,
+      IdPoliza: IdPoliza,
+      usuario: DataParameter.email,
+      contraseña: DataParameter.password,
+    }
+
+    const result = await GuardarPolizaAll(DataRquest);
+    console.log(result);
+    if (!result.hasError) {
+        msj = result.data
+        setAlertMessage(msj);
+        setAlertVisible(true);
+        setisVisibleModalAP(false);
+        setisVisibleModalVERI(false);
+    }
+
   };
 
 
@@ -768,7 +870,6 @@ const NewPolizas = ({ route }) => {
             <Text style={styles.label}>La póliza ha sido válida</Text>
             <Text style={styles.label}>Ingresa código recibido por correo/sms asociado a su cuenta de usuario</Text>
 
-
             <TextInput
               style={styles.input}
               placeholder="Ingresa el código"
@@ -779,7 +880,7 @@ const NewPolizas = ({ route }) => {
             
               {/* Contenedor de botones alineados */}
             <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleEnviarPoliza} >
+            <TouchableOpacity style={styles.button} onPress={handleGuardarPoliza} >
               <Text style={styles.buttonText}>VERIFICAR</Text>
             </TouchableOpacity>
 
@@ -802,6 +903,16 @@ const NewPolizas = ({ route }) => {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
         renderTabBar={renderTabBar}/>
+
+      {isAlertVisible && (
+        <CustomAlert
+          visible={isAlertVisible}
+          message={alertMessage}
+          iconName={IconMessage}
+          onClose={hideAlert}
+          AlertTwo={isAlertTwo}
+        />
+      )}   
 
     </View>
   );
