@@ -89,7 +89,7 @@ const NewPolizas = ({ route }) => {
  const [ValidationTime, setValidationTime] = useState('');
 
  const [selectedOptionTipoRol, setselectedOptionTipoRol] = useState(null);
-
+ const [nombreCompleto, setNombreCompleto] = useState('');
 
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -104,6 +104,7 @@ const NewPolizas = ({ route }) => {
         await fetchCertificadosDepTitular();
         await fetchPolizasIdividualesTitular();
         await fetchPolizasXContratanteTitular();
+        await fetchDetallePersona();
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -238,6 +239,25 @@ const NewPolizas = ({ route }) => {
       return [];
     }
   };
+
+  const fetchDetallePersona = async () => {
+    try {
+        const DataRquest = {
+            idPersona: DataParameter.IdPersona,
+            usuario: DataParameter.email,
+            contraseña: DataParameter.password
+        }
+        const response = await GetDetallePersona(DataRquest);
+        if (response.data.Data) {
+            const data = response.data.Data;
+            setNombreCompleto(response.data.Data.FSNOMBRE_COMPLETO);
+        } else {
+            console.error('La respuesta de la API no contiene personas.');
+        }
+    } catch (error) {
+        console.error('Error al obtener los datos:', error);
+    }
+};
 
   const handleFetchBotonesServPoliza = async (idPoliza) => {
     try {
@@ -646,7 +666,7 @@ const NewPolizas = ({ route }) => {
         expirationMail:new Date(),
         codeCel:0,
         expirationCel:new Date(),
-        nombreUsuario,
+        nombreUsuario:nombreCompleto,
         usuario: DataParameter.email,
         contraseña: DataParameter.password,
      };
@@ -686,7 +706,6 @@ const NewPolizas = ({ route }) => {
     }
 
   };
-
 
   if (loading) {
     return (
