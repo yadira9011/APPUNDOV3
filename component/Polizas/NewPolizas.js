@@ -675,7 +675,7 @@ const NewPolizas = ({ route }) => {
     if (!result.data.HasError) {
         const miliseconds = result.data.Data.expirationMail != null ? parseInt(result.data.Data.expirationMail.replace(/\/Date\((.*?)\)\//, '$1'), 10) : '';
         const fecha = miliseconds == '' ? '' : new Date(miliseconds);
-        ValidationTime.value = fecha;
+        ValidationTime = fecha;
         codigoVerificacion= objVerificacion.codeMail = result.data.Data.codeMail;
         setAlertMessage("Se envió a su correo el código de verificación.");
         setAlertVisible(true);
@@ -706,6 +706,32 @@ const NewPolizas = ({ route }) => {
     }
 
   };
+
+
+const validateCode = async () => {
+  const now = new Date();
+  const expiration = new Date(ValidationTime);
+  
+  if (code !== codigoVerificacion) {
+    setAlertMessage('Código incorrecto.');
+    setAlertVisible(true);
+    return;
+  }
+  
+  if (now.getTime() > expiration.getTime()) {
+    setAlertMessage('Código expirado');
+    setAlertVisible(true);
+    return;
+  } else {
+    // Agregar póliza
+    await handleGuardarPoliza();
+    //alert('Se ha verificado correctamente');
+  }
+  
+};
+
+
+
 
   if (loading) {
     return (
@@ -899,7 +925,7 @@ const NewPolizas = ({ route }) => {
             
               {/* Contenedor de botones alineados */}
             <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleGuardarPoliza} >
+            <TouchableOpacity style={styles.button} onPress={validateCode} >
               <Text style={styles.buttonText}>VERIFICAR</Text>
             </TouchableOpacity>
 
