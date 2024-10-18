@@ -76,9 +76,9 @@ const NewPolizas = ({ route }) => {
   const [CoberturasPolizas, setCoberturasPolizas] = useState([]);
 
   const [IdPoliza, setIdPoliza] = useState('');
-  const [rol, setRol] = useState('');
-  const [numeroPoliza, setNumeroPoliza] = useState('');
-  const [verificacion, setVerificacion] = useState('');
+  const [rol, setRol] = useState("1"); // Valor inicial "1"
+  const [numeroPoliza, setNumeroPoliza] = useState('5910029467');
+  const [verificacion, setVerificacion] = useState("1")
   const [telefono, setTelefono] = useState('');
   const [correo, setCorreo] = useState('');
   const [isVisibleModalAP, setisVisibleModalAP] = useState(false);
@@ -622,26 +622,21 @@ const NewPolizas = ({ route }) => {
     const verificacion= parseInt(verificacion, 10);
  
     const DataRquest = {
-      idRamo: numeroPoliza,
-      numeropoliza: valorSeleccionado,
+      idRamo: valorSeleccionado,
+      numeropoliza: numeroPoliza,
       usuario: DataParameter.email,
       contraseña: DataParameter.password,
     }
+    console.log(DataRquest)
 
     const response = await BusquedaPolizasEnRamos(DataRquest);
-    console.log(response)
-    if (!response.hasError) {
-        if (response.data.length > 0) {
-            setIdPoliza(response.data[0].FIIDPOLIZA)
+    console.log(response.data.Data)
+    if (response.data.Data) {
+            setIdPoliza(response.data.Data.FIIDPOLIZA)
             console.log("El ID de la póliza es: " + IdPoliza);
             setisVisibleModalAP(false);
             setisVisibleModalVERI(true);
             verificarOpcion();
- 
-        } else {
-            setAlertMessage('No se localizo la poliza ingresada en el ramo seleccionado');
-            setAlertVisible(true);
-        }
     } else {
       setAlertMessage('No se localizo la poliza ingresada en el ramo seleccionado');
       setAlertVisible(true);
@@ -649,17 +644,18 @@ const NewPolizas = ({ route }) => {
   };
 
   const verificarOpcion = () => {
-    if (opcionSeleccionada === "1") {
+
+    const vverificacion= parseInt(verificacion, 10);
+    if (vverificacion === 1) {
       verificarMail();
-    } else if (opcionSeleccionada === "2") {
-      // Acciones para la opción 2
+    } else if (vverificacion === 2) {
     }
   };
 
   const verificarMail = async () => {
    
     const objVerificacion = {
-        email:"",
+        email: DataParameter.email,
         telefono:telefono,
         idPersona:DataParameter.IdPersona,
         codeMail:0,
@@ -671,7 +667,9 @@ const NewPolizas = ({ route }) => {
         contraseña: DataParameter.password,
      };
 
+    console.log("PARA ENVIO CODIFO VERIFI..",objVerificacion)
     const result = await GenerarCodigoMail(objVerificacion);
+    console.log(result)
     if (!result.data.HasError) {
         const miliseconds = result.data.Data.expirationMail != null ? parseInt(result.data.Data.expirationMail.replace(/\/Date\((.*?)\)\//, '$1'), 10) : '';
         const fecha = miliseconds == '' ? '' : new Date(miliseconds);
@@ -783,14 +781,14 @@ const validateCode = async () => {
           <View style={styles.formGroup}>
             <Text style={styles.label}>Rol</Text>
             <RNPickerSelect
-              onValueChange={(itemValue) => setRol(itemValue)}
+              onValueChange={(itemValue) => setRol(itemValue)} 
               items={[
                 { label: "Autos", value: "1" },
                 { label: "Casa Habitación", value: "2" },
                 { label: "Empaquetados", value: "3" },
                 { label: "Agropecuario", value: "4" },
               ]}
-              value={rol || "1"} 
+              value={rol} 
               placeholder={{}}
               style={pickerSelectStyles}
             />
@@ -828,14 +826,13 @@ const validateCode = async () => {
                 { label: "Correo", value: "1" },
                 { label: "Teléfono", value: "2" },
               ]}
-
-              value={verificacion || "1"} 
+              value={verificacion} 
               style={pickerSelectStyles}
               placeholder={{ label: "Selecciona un método de verificación", value: null }}
             />
           </View>
 
-          {verificacion === '2' ? (
+          {/* {verificacion === '2' ? (
             <View style={styles.formGroup}>
               <Text style={styles.label}>Número de teléfono</Text>
            
@@ -855,7 +852,7 @@ const validateCode = async () => {
             <TextInput
               style={styles.inputxx}
               placeholder="Ingrese el teléfono"
-              value={numeroPoliza}
+              value={telefono}
               onChangeText={setTelefono} 
             />
             </View>
@@ -882,13 +879,13 @@ const validateCode = async () => {
             <TextInput
               style={styles.inputxx}
               placeholder="Ingrese el correo"
-              value={numeroPoliza}
+              value={correo}
               onChangeText={setCorreo} 
             />
             </View>
         
             </View>
-          )}
+          )} */}
 
           {/* Contenedor de botones alineados */}
           <View style={styles.buttonContainer}>
