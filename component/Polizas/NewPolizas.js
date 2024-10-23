@@ -77,7 +77,7 @@ const NewPolizas = ({ route }) => {
 
   const [IdPoliza, setIdPoliza] = useState('');
   const [rol, setRol] = useState("1"); // Valor inicial "1"
-  const [numeroPoliza, setNumeroPoliza] = useState('5910029467');
+  const [numeroPoliza, setNumeroPoliza] = useState('5910029493');
   const [verificacion, setVerificacion] = useState("1")
   const [telefono, setTelefono] = useState('');
   const [correo, setCorreo] = useState('');
