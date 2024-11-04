@@ -61,6 +61,7 @@ export const ActualizaUsuarioPerfil = (datarequest) => {
 };
 
 export const BusquedaPolizasEnRamos = (datarequest) => {
+  console.log("okoko",datarequest)
   return axios.get(`${BASE_URL}/API/Polizas/BusquedaPolizasEnRamos`, {
     params: datarequest
   });

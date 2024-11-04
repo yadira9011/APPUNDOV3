@@ -670,32 +670,40 @@ const NewPolizas = ({ route }) => {
   };
 
   const handleEnviarPoliza = async () => {
-
-    const valorSeleccionado = parseInt(rol,10);
-    const verificacion= parseInt(verificacion, 10);
- 
-    const DataRquest = {
-      idRamo: valorSeleccionado,
-      numeropoliza: numeroPoliza,
-      usuario: DataParameter.email,
-      contraseña: DataParameter.password,
-    }
-    console.log(DataRquest)
-
-    const response = await BusquedaPolizasEnRamos(DataRquest);
-    console.log(response.data.Data)
-    if (response.data.Data) {
-            setIdPoliza(response.data.Data.FIIDPOLIZA)
-            console.log("El ID de la póliza es: " + IdPoliza);
-            setisVisibleModalAP(false);
-            setisVisibleModalVERI(true);
-            verificarOpcion();
-    } else {
-      setAlertMessage('No se localizo la poliza ingresada en el ramo seleccionado');
+    try {
+      const valorSeleccionado = parseInt(rol, 10);
+      const verificacion = parseInt(verificacion, 10);
+  
+      const DataRquest = {
+        idRamo: valorSeleccionado,
+        idPersona: DataParameter.IdPersona,
+        numeropoliza: numeroPoliza,
+        usuario: DataParameter.email,
+        contraseña: DataParameter.password,
+      };
+  
+      console.log("Datos de solicitud:", DataRquest);
+  
+      const response = await BusquedaPolizasEnRamos(DataRquest);
+      console.log("Respuesta:", response.data.Data);
+  
+      if (response.data.Data) {
+        setIdPoliza(response.data.Data.FIIDPOLIZA);
+        console.log("El ID de la póliza es: " + response.data.Data.FIIDPOLIZA);
+        setisVisibleModalAP(false);
+        setisVisibleModalVERI(true);
+        verificarOpcion();
+      } else {
+        setAlertMessage('No se localizó la póliza ingresada en el ramo seleccionado');
+        setAlertVisible(true);
+      }
+    } catch (error) {
+      console.error("Error al enviar la póliza:", error);
+      setAlertMessage('Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.');
       setAlertVisible(true);
     }
   };
-
+  
   const verificarOpcion = () => {
 
     const vverificacion= parseInt(verificacion, 10);
@@ -780,8 +788,6 @@ const validateCode = async () => {
   }
   
 };
-
-
 
 
   if (loading) {
@@ -962,8 +968,8 @@ const validateCode = async () => {
           <View style={styles.modalContent}>
 
             <Text style={styles.modalText}>Verificación</Text>
-            <Text style={styles.label}>La póliza ha sido válida</Text>
-            <Text style={styles.label}>Ingresa código recibido por correo/sms asociado a su cuenta de usuario</Text>
+            <Text style={styles.label}>La póliza ha sido validada.</Text>
+            <Text style={styles.label}>Ingresa el código recibido por correo/mensaje de texto.</Text>
 
             <TextInput
               style={styles.input}
