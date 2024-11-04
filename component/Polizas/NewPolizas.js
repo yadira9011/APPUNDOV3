@@ -13,6 +13,7 @@ import {
   Modal,
   Image,
   TextInput,
+  Animated,
   ImageBackground,
 } from 'react-native';
 import { Linking } from 'expo';
@@ -117,6 +118,7 @@ const NewPolizas = ({ route }) => {
   const FirstRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'white' }} >
       <Text style={styles.HeaderTxt}> INDIVIDUALES </Text>
+      <AgregarPolizaButton />
       {PolizasIdividualesTitular.length > 0 ? (
         <FlatList
           data={PolizasIdividualesTitular}
@@ -133,6 +135,7 @@ const NewPolizas = ({ route }) => {
   const SecondRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Text style={styles.HeaderTxt}>Polizas de grupo</Text>
+      <AgregarPolizaButton />
       {PolizasGpo.length > 0 ? (
         <FlatList
           data={PolizasGpo}
@@ -149,6 +152,7 @@ const NewPolizas = ({ route }) => {
   const TercerRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'white' }} >
       <Text style={styles.HeaderTxt}>Dependientes</Text>
+      <AgregarPolizaButton />
       {CertificadosDepTitular.length > 0 ? (
         <FlatList
           data={CertificadosDepTitular}
@@ -165,6 +169,7 @@ const NewPolizas = ({ route }) => {
   const CuartaRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'white' }} >
       <Text style={styles.HeaderTxt}>Contratantes</Text>
+      <AgregarPolizaButton />
       {PolizasXContratanteTitular.length > 0 ? (
         <FlatList
           data={PolizasXContratanteTitular}
@@ -177,6 +182,54 @@ const NewPolizas = ({ route }) => {
       )}
     </View>
   );
+
+  const AgregarPolizaButton = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const fadeAnim = useRef(new Animated.Value(0)).current; // Animación de opacidad
+    const slideAnim = useRef(new Animated.Value(-30)).current; // Animación de desplazamiento
+  
+    const toggleButton = () => {
+      setIsVisible(!isVisible);
+    };
+  
+    useEffect(() => {
+      // Inicia la animación al cambiar la visibilidad
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: isVisible ? 1 : 0, // Controla la opacidad
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: isVisible ? 0 : -30, // Controla la posición vertical
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, [isVisible, fadeAnim, slideAnim]);
+  
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <TouchableOpacity onPress={toggleButton} style={styles.iconButton}>
+          <Ionicons name="add-circle-outline" size={50} color="#0051C4" />
+        </TouchableOpacity>
+        {isVisible && (
+          <Animated.View // Vista animada para el botón
+            style={{
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+              marginTop: 10,
+            }}
+          >
+            <TouchableOpacity onPress={handleAgregarPoliza} style={styles.buttonAP}>
+              <Text style={styles.closeButtonText}>Agregar póliza</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
+    );
+  };
+
 
   const renderTabBar = (props) => (
     <TabBar
@@ -779,7 +832,7 @@ const validateCode = async () => {
           <Text style={styles.descriptiontwo}>Agregar Póliza</Text>
           
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Rol</Text>
+            <Text style={styles.label}>Producto</Text>
             <RNPickerSelect
               onValueChange={(itemValue) => setRol(itemValue)} 
               items={[
@@ -795,7 +848,7 @@ const validateCode = async () => {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Número póliza</Text>
+            <Text style={styles.labelY}>Número póliza</Text>
             <View style={{
               flexDirection: 'row',
               marginBottom: 15,
@@ -935,9 +988,9 @@ const validateCode = async () => {
         </View>
       </Modal>
 
-      <TouchableOpacity onPress={handleAgregarPoliza} style={styles.buttonAP}>
+      {/* <TouchableOpacity onPress={handleAgregarPoliza} style={styles.buttonAP}>
               <Text style={styles.closeButtonText}>Agregar poliza</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TabView
         navigationState={{ index, routes }}
@@ -1001,7 +1054,19 @@ const styles = StyleSheet.create({
 
   label: {
     marginTop: 10,
-    marginLeft: 25,
+    marginLeft: 0,
+    marginRight: 15,
+    alignItems: 'right',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 10,
+
+  },
+
+
+  labelY: {
+    marginTop: 10,
+    marginLeft: 35,
     marginRight: 15,
     alignItems: 'right',
     fontWeight: 'bold',
