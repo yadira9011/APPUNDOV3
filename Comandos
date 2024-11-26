@@ -1,0 +1,4 @@
+eas build --platform ios --profile production
+eas build -p android --profile preview
+npx expo start
+EAS_DEBUG=1 eas build --platform ios --profile production
