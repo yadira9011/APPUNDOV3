@@ -39,11 +39,11 @@ const LoginScreen = ({ navigation, route }) => {
   //const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
   //const [password, setPassword] = useState('Sanchez74');
 
-  const [email, setEmail] = useState('yadira.perez@rodac.com');
-  const [password, setPassword] = useState('yadira.1990');
+  //const [email, setEmail] = useState('yadira.perez@rodac.com');
+  //const [password, setPassword] = useState('yadira.1990');
 
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [IdUsr, setIdUsr] = useState(0);
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -52,6 +52,7 @@ const LoginScreen = ({ navigation, route }) => {
   const [IconMessage, setIconMessage] = useState('Icon_Blue.png');
   const [isAlertTwo, setAlertTwo] = useState(false);
   const [ShowTyC, setShowTyC] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   useEffect(() => {
     const tokenFromProps = route.params?.expoPushToken || '';
@@ -205,24 +206,40 @@ const LoginScreen = ({ navigation, route }) => {
       <TextInput
         placeholder="Correo electrónico"
         value={email}
+        secureTextEntry={!isPasswordVisible}
         onChangeText={setEmail}
         style={styles.textInput}
         keyboardType="email-address"
       />
-      <TextInput
-        placeholder="Contraseña"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        style={styles.textInput}
-      />
+
+      {/* Contenedor de la contraseña con icono */}
+      <View style={styles.passwordContainer}>
+        <TextInput
+            placeholder="Contraseña"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            style={styles.passwordInput}
+          />
+
+          <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)} style={styles.eyeIcon}>
+          <Ionicons
+            name={isPasswordVisible ? "eye-off" : "eye"}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
+ 
       {/* <Text>TOKEN: {expoPushToken} </Text> */}
       {/* <Button title="Iniciar sesión" onPress={handleLogin}  style={styles.button} /> */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.ButtonText}>Iniciar sesión</Text>
       </TouchableOpacity>
+      
       {/* <Image source={require('../../assets/IconoU.png')} style={styles.imageU} resizeMode="contain" /> */}
       <Text selectable={true} style={styles.Copyright}> ©UNDO 2017 - 2024</Text>
+
       {isAlertVisible && (
         <CustomAlert
           visible={isAlertVisible}
@@ -232,6 +249,7 @@ const LoginScreen = ({ navigation, route }) => {
           AlertTwo={isAlertTwo}
         />
       )}
+
       {ShowTyC && <TerminosCondiciones
         onClose={handleCloseTerminosCondiciones}
         password={password}
@@ -296,6 +314,30 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginTop: 10
   },
+
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+
+  passwordInput: {
+    flex: 1,
+    height: 50,
+    paddingRight: 40,
+  },
+
+  eyeIcon: {
+    position: "absolute",
+    right: 10,
+  },
+
+
 });
 
 export default LoginScreen;
