@@ -18,6 +18,7 @@ import { CountGrupos, CountClientes, CountCanales, CountSubCanales } from '../Ut
 import CustomAlert from '../Componentes/CustomAlert';
 import TerminosCondiciones from './TerminosCondiciones';
 import { ForceTouchGestureHandler } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -27,8 +28,8 @@ const LoginScreen = ({ navigation, route }) => {
   //const [email, setEmail] = useState('mail@mail.com');
   //const [password, setPassword] = useState('Ven99234');
 
-  // const [email, setEmail] = useState('jonathan.vences@rodac.com.mx');
-  // const [password, setPassword] = useState('Ven99234');
+  //const [email, setEmail] = useState('jonathan.vences@rodac.com.mx');
+  //const [password, setPassword] = useState('Ven99234');
 
   // const [email, setEmail] = useState('marcos.sanchez@rodac.com.mx');
   // const [password, setPassword] = useState('SLmarcos');
@@ -206,26 +207,24 @@ const LoginScreen = ({ navigation, route }) => {
       <TextInput
         placeholder="Correo electrónico"
         value={email}
-        secureTextEntry={!isPasswordVisible}
         onChangeText={setEmail}
         style={styles.textInput}
         keyboardType="email-address"
       />
 
       {/* Contenedor de la contraseña con icono */}
-      <View style={styles.passwordContainer}>
+      <View style={styles.textInput}>
         <TextInput
             placeholder="Contraseña"
-            secureTextEntry
+            secureTextEntry={!isPasswordVisible} // ← Aquí se liga al estado
             value={password}
             onChangeText={setPassword}
             style={styles.passwordInput}
           />
-
           <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)} style={styles.eyeIcon}>
           <Ionicons
             name={isPasswordVisible ? "eye-off" : "eye"}
-            size={24}
+            size={35}
             color="gray"
           />
         </TouchableOpacity>
@@ -330,6 +329,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     paddingRight: 40,
+  },
+
+  passwordInput: {
+    flex: 1, // Ocupar todo el ancho restante
+    fontSize: 16,
   },
 
   eyeIcon: {

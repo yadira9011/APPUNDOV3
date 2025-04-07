@@ -741,6 +741,8 @@ const CotizacionAutosScreen = () => {
       mensajeError = "Por favor selecciona un Código Postal.";
     } else if (TextColonia === '' || TextMunicipio === '' || TextEstado === '' || TextCiudad === '') {
       mensajeError = "Por favor revisa los datos de dirección.";
+    } else if (selectedOptionIndemnizacion === 1 && textMonto === '') {
+      mensajeError = "Por favor ingresa un valor factura.";
     }
 
     const resultadoValidacion = {
