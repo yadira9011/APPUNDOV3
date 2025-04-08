@@ -199,7 +199,7 @@ const CotizacionAutosScreen = () => {
         setSelectedOptionTipoVehiculo(data[0].Id);
         setselectedTextTipoVehiculo(data[0].Valor);
       } else {
-        console.error('La respuesta de la API no contiene Estaus vehiculos.');
+        console.error('La respuesta de la API no contiene tipos vehiculos.');
       }
       setLoading(false);
     } catch (error) {
@@ -258,7 +258,7 @@ const CotizacionAutosScreen = () => {
         if (typeof data[0] !== 'undefined' && data[0].Valor !== undefined && data[0].Valor !== null && data[0].Valor !== '') {
 
           setAutoMarcas(data);
-          // setSelectedOptionMarca(data[0].Valor);
+          setSelectedOptionMarca(data[0].Valor);
           // setselectedLabel(data[0].Valor);
           // setselectedTextMarca(data[0].Valor);
           await fetchAutoTipos(TipoVehiculoId, Modelo, data[0].Valor);
@@ -558,6 +558,9 @@ const CotizacionAutosScreen = () => {
       fetchAutoModelos(itemValue);
       fetchAutoIndenmizaciones(itemValue);
       fetchAutoTipoVehiculos();
+      fetchAutoCotMarcas(selectedOptionTipoVehiculo, selectedOptionModelo);
+      fetchAutoTipos(selectedOptionTipoVehiculo,selectedOptionModelo, selectedOptionMarca)
+
     }
   };
 
@@ -1047,7 +1050,7 @@ const CotizacionAutosScreen = () => {
           //   label: 'Selecciona una descripción',
           //   value: null,
           // }}
-          placeholder={{ label: 'Selecciona descrición...', value: null }}
+          placeholder={{ label: 'Selecciona descripción...', value: null }}
         />
 
         <Text style={styles.label}>Indemnización:</Text>

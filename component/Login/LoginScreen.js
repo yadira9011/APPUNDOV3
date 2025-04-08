@@ -86,7 +86,7 @@ const LoginScreen = ({ navigation, route }) => {
         setAlertVisible(true);
       }
     } catch (error) {
-      setAlertMessage('Inicio de sesión fallidocccc');
+      setAlertMessage('Inicio de sesión fallido');
       setIconMessage('Icon_Red.png');
       setAlertVisible(true);
     }
