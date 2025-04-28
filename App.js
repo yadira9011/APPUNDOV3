@@ -276,6 +276,16 @@ export default function App() {
             options={({ route, navigation }) => ({
               ...defaultHeaderOptions,
               title: 'Documento',
+              headerLeft: () => (
+                <TouchableOpacity
+                  style={{ marginLeft: 10 }}
+                  onPress={() => {
+                    navigation.navigate('CotizacionAutos', { DataParameter: route.params?.DataParameter });
+                  }}
+                >
+                  {headerBackImageFuntion()}
+                </TouchableOpacity>
+              ),
               headerRight: () => <MenuButtonAndModal navigation={navigation} route={route} />,
             })}
           />

@@ -108,7 +108,7 @@ const EmisionScreen = () => {
   //Datos DatosVehiculo
 
   // const [numCredito, setNumCredito] = useState('00000');
-  // const [numSerie, setNumSerie] = useState('1B7FL66X2KS204573');
+  // const [numSerie, setNumSerie] = useState('JH4KB16306C200001');
   // const [numMotor, setNumMotor] = useState('HECHOMX');
   // const [placas, setPlacas] = useState('YJPC');
 
@@ -1004,18 +1004,30 @@ const EmisionScreen = () => {
   };
 
   const GetImpresionPoliza = async (NumeroPoliza) => {
+
     console.log('Impresión poliza...', NumeroPoliza);
+
     const DataRquest = {
       IDCotizacion: dataArrayEmi.DataItemSelect.id,
       IDSubcananal: dataArrayEmi.CotiData.IDSubcananal,
       usuario: dataArrayEmi.CotiData.usuario,
       Contraseña: dataArrayEmi.CotiData.contraseña
     }
+
     const response = await ImpresionPoliza(DataRquest);
+
     console.log(response.data.Data)
+
     if (!response.data.Data.HasError) {
+
       const pdfUrl = response.data.Data.Data;
-      navigation.navigate('PDFViewerScreen', { pdfUrl });
+
+      navigation.navigate('PDFViewerScreen', { 
+        pdfUrl: pdfUrl,
+        DataParameter: dataArrayEmi.DataParameter,
+      });
+
+
     } else {
       Alert.alert('Error', response.data.Data.Message);
       console.error('Ocurrio un error al procesar la impresión.', response.data.Data.Message);

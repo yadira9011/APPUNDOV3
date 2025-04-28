@@ -7,8 +7,12 @@ import LoadingComponent from './LoadingComponent';
 
 const PDFViewerScreen = ({ route }) => {
 
-    const { pdfUrl } = route.params;
+    const { pdfUrl, DataParameter } = route.params;
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        console.log("URLL",pdfUrl);
+      }, [pdfUrl]);
 
     // const htmlContent = `<html><body><embed src="data:application/pdf;base64,${pdfUrl}"
     //  type="application/pdf" width="100%" height="100%"></embed></body></html>`;
@@ -30,6 +34,7 @@ const PDFViewerScreen = ({ route }) => {
     const downloadAndSharePDF = async () => {
 
         try {
+            console.log("URLL",pdfUrl);
             setLoading(true);
             const pdfUri = `${FileSystem.documentDirectory}sample.pdf`;
             const response = await FileSystem.downloadAsync(pdfUrl, pdfUri);
